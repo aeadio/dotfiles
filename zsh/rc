@@ -1,0 +1,29 @@
+#!/usr/bin/env zsh
+# vim: ft=sh ts=2 sw=2 et:
+
+export ZSH=$CONF/zsh
+
+if [[ ! -d $ZSH ]]; then
+  print "Warning: zsh config directory not found: $ZSH"
+  return
+fi
+
+# Plugins
+# Plugins provide a cohesive and self-contained set of functionality/features, 
+# and assume nothing non-extraordinary about the user's config. They should be
+# loaded first, as the user may need to call into them within rc.d.
+# Note: third party plugins are placed in subdirectories, containing a
+# .plugin.zsh file directly underneath. This is frequently NOT executable.
+for f in $ZSH/plugins/*(-.e:'[[ -x $REPLY ]]':N); . "$f"  # first party plugins
+for f in $ZSH/plugins/*/*.plugin.zsh(-.N); . "$f"         # third party plugins
+
+# Users site-functions
+# Function definitions (but not bodies) are autoloaded
+if [[ -d $ZSH/functions ]]; then
+  fpath=($ZSH/functions $fpath)  # prepend to prefer ours over vendor's
+  autoload -Uz $ZSH/functions/*(.:t)
+fi
+
+# zshrc.d
+# User's ZSH config, organized as they see fit.
+for f in $ZSH/rc.d/*(e:'[[ -x $REPLY ]]':N); . "$f"

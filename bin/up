@@ -1,0 +1,152 @@
+#!/bin/sh
+# vim: ft=sh ts=2 sw=2 et:
+
+ssh_user="${UP_REMOTEUSER:-$(id -un)}"
+ssh_host="$UP_REMOTEHOST"
+
+remote_server_path="${UP_REMOTEPATH:-/var/www/html}"
+
+url_alphabet="${UP_ALPHABET:-abcdefghijklmnopqrstuvwxyz1234567890}"
+url_salt="$ssh_host"
+
+url_proto="https"
+if [ -n "$UP_NOTLS" ]; then
+  url_proto="http"
+fi
+
+gen_hash=1
+
+fail() {
+  printf '%s\n' "$(basename "$0"): $*"
+  exit 1
+}
+
+exists() {
+  command -v "$1" >/dev/null 2>/dev/null
+}
+
+requires() {
+  exists "$1" ||
+    fail "requires $1"
+}
+
+requires "bashids"
+requires "curl"
+requires "ssh"
+
+usage() {
+  progname="$(basename "$0")"
+  printf '%s\n' "usage:"
+  cat <<EOF
+  $progname [-N] item [item...]
+  - Uploads all items and displays URLs for each. If a single item is given,
+    also copies the URL to the clipboard. Unless [-N] is supplied, calculates a
+    new short hashed name for each file, preserving the original extension
+    (if any).
+  
+  echo foo | $progname [-n name]
+  - Uploads the contents of stdin in "paste mode". If -n is given, uses this as
+    the filename. Otherwise, generates a short hashed file name. Displays the
+    URL, and copies it to the clipboard.
+  
+  Note: All filenames are stripped of characters which do not fit into the
+  POSIX portable filename specification (valid characters: A-Z a-z 0-9 - _ .)
+EOF
+  exit 1
+}
+
+conv_posix() {
+  printf '%s' "$*" | sed 's/[^A-Za-z0-9._-]//g'
+}
+
+clipboard() {
+  if exists pbcopy; then
+    pbcopy
+  elif exists xsel; then
+    xsel -ib
+  elif exists xclip; then
+    xclip -in -selection "clipboard"
+  else
+    cat - > /dev/null
+  fi
+}
+
+upload() {
+  cat "${2:-/dev/stdin}" |
+    ssh "$ssh_user@$ssh_host" "cat >\"$remote_server_path/$1\""
+}
+
+get_filename_hash() {
+  this="$(curl -s $url_proto://$ssh_host/upid)"
+  if [ -z "$this" ] || [ ! "$this" -eq "$this" ]; then
+    fail "could not get upload ID"
+  fi
+  hash="$(bashids -s "$url_salt" -a "$url_alphabet" -e "$this")" ||
+    fail "unable to generate upload hash"
+  printf '%s' "$(( this + 1 ))" | upload "upid" ||
+    fail "unable to save next upload ID"
+  printf '%s' "$hash"
+}
+
+file_mode() {
+  for item in "$@"; do
+    if [ ! -r "$item" ]; then
+      fail "could not read item: $item"
+    fi
+    if [ "$gen_hash" -eq 1 ]; then
+      ext=".${item##*.}"
+      if [ "$ext" = ".$item" ]; then
+        ext=""
+      fi
+      itemname="$(get_filename_hash)$ext" ||
+        fail "unable to generate filename hash"
+    else
+      itemname="$(conv_posix "$(basename "$item")")"
+    fi
+    upload "$itemname" "$item" ||
+      fail "failed to upload"
+    url="$url_proto://$ssh_host/$itemname"
+    printf '%s\n' "$url"
+  done
+  if [ $# -eq 1 ]; then
+    printf '%s' "$url" | clipboard
+  fi
+}
+
+paste_mode() {
+  itemname="$paste_name"
+  if [ -z "$itemname" ]; then
+    itemname="$(get_filename_hash)" ||
+      fail "unable to generate filename hash"
+  fi
+  upload "$itemname" ||
+    fail "failed to upload"
+  url="$url_proto://$ssh_host/$itemname"
+  printf '%s\n' "$url"
+  printf '%s' "$url" | clipboard
+}
+
+if [ $# -eq 0 ] && [ -t 0 ]; then
+  usage
+fi
+
+OPTIND=0
+while getopts "u:h:p:n:a:s:NhT" opt; do
+  case "$opt" in
+    u) ssh_user="$OPTARG" ;;
+    h) ssh_host="$OPTARG" ;;
+    p) remote_server_path="$OPTARG" ;;
+    n) paste_name="$OPTARG" ;;
+    a) url_alphabet="$OPTARG" ;;
+    N) gen_hash=0 ;;
+    T) url_proto="http" ;;
+    *) usage ;;
+  esac
+done
+shift $(( OPTIND - 1 ))
+
+if [ $# -eq 0 ]; then
+  paste_mode
+else
+  file_mode "$@"
+fi

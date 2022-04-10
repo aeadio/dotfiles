@@ -1,0 +1,74 @@
+#!/usr/bin/env zsh
+# vim: ft=sh ts=2 sw=2 et:
+
+# NOTE: The original implementation used fc -p and fc -P to push and pop
+# natively supported zsh alternate history buffers. This was fragile as we
+# could not reliably tell if other actors were manipulating history lists
+# at the same time -- there is no reliable way to tell which history list
+# we're on, or where our target (default) history list is in the stack.
+
+# This approach is more explicit. It carries over the assumption that the user
+# or other actors will not be changing the history buffer on their own, but
+# that becomes primarily a UX issue. We usually won't set the wrong HISTFILE by
+# mistake (assuming other actor(s) don't change or unset 
+# PROJHIST_DEFAULT_HISTFILE).
+
+# We still cannot protect against flaky munging of the history state -- ie, an
+# actor sets HISTFILE on us without properly saving and clearing the history 
+# buffer, or other buggy behavior. We can't really detect or fix that, so we're 
+# stuck assuming the user's other plugins and config are not awful.
+  
+_chpwd_projecthistory() {
+  local gitroot=$(git rev-parse --show-toplevel 2>/dev/null)
+  local new_histfile
+  if [[ -d $gitroot ]]; then
+    if [[ $HISTFILE == $gitroot/.history.user ]]; then
+      # We're moving around inside the gitroot. Do nothing.
+      return
+    fi
+    if ! set + | grep -q '^PROJHIST_DEFAULT_HISTFILE$'; then
+      # Only save the HISTFILE if we're coming from a normal folder, not
+      # another gitroot.
+      PROJHIST_DEFAULT_HISTFILE=$HISTFILE
+    fi
+    new_histfile=$gitroot/.history.user 
+  elif set + | grep -q '^PROJHIST_DEFAULT_HISTFILE$'; then
+    # We just left a gitroot, so pivot back to default history.
+    new_histfile=$PROJHIST_DEFAULT_HISTFILE
+    unset PROJHIST_DEFAULT_HISTFILE
+  else
+    # We're moving between normal folders. Do nothing.
+    return
+  fi
+  # Write out the current history buffer to HISTFILE.
+  # NOTE: If the user's default HISTFILE is empty/null, this will throw an
+  # error which is safe to ignore.
+  fc -AI 2>/dev/null | :
+  # Clear the history buffer
+  local size=$HISTSIZE
+  HISTSIZE=0
+  HISTSIZE=$size
+  # Pivot to and read in our new histfile
+  HISTFILE=$new_histfile
+  fc -R
+}
+
+autoload -Uz add-zsh-hook
+add-zsh-hook chpwd _chpwd_projecthistory
+
+# For the user
+# Safely sets the changes the HISTFILE setting even if the plugin is in the 
+# middle of alternate history mode (in a gitroot). Also fully pivots to the
+# HISTFILE, flushing and clearing any dirty history buffer.
+sethistfile() {
+  if set + | grep -q '^PROJHIST_DEFAULT_HISTFILE$'; then
+    PROJHIST_DEFAULT_HISTFILE=$1
+  else
+    fc -AI 2>/dev/null | :
+    local size=$HISTSIZE
+    HISTSIZE=0
+    HISTSIZE=$size
+    HISTFILE=$1
+    fc -R
+  fi
+}

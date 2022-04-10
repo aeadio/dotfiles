@@ -1,0 +1,17 @@
+#!/usr/bin/env zsh
+# vim: ft=sh ts=2 sw=2 et:
+
+HISTSIZE=10000
+SAVEHIST=10000
+sethistfile $ZSH/history
+
+setopt append_history
+setopt extended_history
+setopt hist_ignore_all_dups
+setopt hist_ignore_space
+setopt hist_lex_words       # warning: may be slow on large savehist size
+setopt hist_no_functions
+setopt hist_no_store
+setopt hist_reduce_blanks
+setopt hist_verify
+setopt share_history

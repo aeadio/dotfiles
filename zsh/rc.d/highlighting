@@ -1,0 +1,4 @@
+#!/usr/bin/env zsh
+# vim: ft=sh ts=2 sw=2 et:
+
+fast-theme $ZSH/incl.d/highlight-theme.ini &>/dev/null

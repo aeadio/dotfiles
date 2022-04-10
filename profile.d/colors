@@ -1,0 +1,17 @@
+#!/bin/sh
+# vim: ft=sh ts=2 sw=2 et:
+
+# GNU ls
+for binary in \
+  /usr/local/opt/coreutils/libexec/gnubin/dircolors    \
+  /opt/homebrew/opt/coreutils/libexec/gnubin/dircolors \
+  "$(command -v dircolors 2>/dev/null)"; do
+  [ -x "$binary" ] && eval "$("$binary" -b "$CONF/dir_colors")"
+done
+
+# General
+# https://bixense.com/clicolors/
+export CLICOLOR=1
+
+# Apps
+export BAT_THEME="Nord"

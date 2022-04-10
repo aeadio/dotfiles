@@ -1,0 +1,37 @@
+{
+    "*.md": {
+        "softwrap": true
+    },
+    "*.txt": {
+        "softwrap": true
+    },
+    "Makefile": {
+        "tabstospaces": false
+    },
+    "autoclose": false,
+    "backup": false,
+    "colorcolumn": 80,
+    "colorscheme": "nord-16",
+    "diffgutter": true,
+    "filemanager-compressparent": true,
+    "filemanager-foldersfirst": true,
+    "filemanager-openonstart": false,
+    "filemanager-showdotfiles": false,
+    "filemanager-showignored": true,
+    "hidehelp": false,
+    "keepautoindent": true,
+    "linter": false,
+    "mkparents": true,
+    "parsecursor": true,
+    "savehistory": false,
+    "statusformatl": "$(filename)$(modified) $(status.paste)",
+    "statusformatr": "$(opt:encoding) | $(opt:fileformat) | $(opt:filetype) | $(line),$(col)",
+    "sucmd": "doas",
+    "tabsize": 2,
+    "tabstospaces": true,
+    "template": {
+        "tabstospaces": false
+    },
+    "termtitle": false,
+    "useprimary": false
+}

@@ -1,0 +1,14 @@
+#!/bin/sh
+# vim: ft=sh ts=2 sw=2 et:
+
+# Basic utils
+export EDITOR="micro"
+export GIT_EDITOR="$EDITOR"
+export TERMINAL="alacritty"
+export PAGER="less"
+export CLICOLOR=1
+export LESSHISTFILE="-"
+
+if [ -n "$GUI" ]; then
+  export VISUAL="code"
+fi

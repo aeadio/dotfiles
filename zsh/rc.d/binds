@@ -1,0 +1,8 @@
+#!/usr/bin/env zsh
+# vim: ft=sh ts=2 sw=2 et:
+
+bindkey "^[[H"    beginning-of-line
+bindkey "^[[F"    end-of-line
+bindkey "^[[3~"   delete-char
+bindkey "^[[1;5D" backward-word
+bindkey "^[[1;5C" forward-word

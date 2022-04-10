@@ -1,0 +1,63 @@
+#!/usr/bin/env zsh
+# vim: ft=sh ts=2 sw=2 et:
+
+# colors
+if grep --version 2>/dev/null | grep -q "GNU"; then
+  alias grep='grep --color=auto'
+fi
+alias less='less -R --use-color'
+alias diff='diff --color=auto'
+
+# command default options
+alias rg='rg --no-ignore'
+alias ranger='. ranger'
+
+# pastes
+alias sprunge="curl -F 'sprunge=<-' http://sprunge.us"
+
+# tool shorthands
+if ls --version 2>/dev/null | grep -q "GNU"; then
+  alias l='ls -lFkh --quoting-style=literal --color=auto --group-directories-first'
+  alias L='ls -lFkh --quoting-style=literal --color=auto --group-directories-first -a'
+else
+  alias l='ls -lpq'
+  alias L='ls -lpq -a'
+fi
+alias e='micro'
+alias f='ranger'
+alias c=${${GUI:+code}:-micro}
+
+# platform specific
+case $OS in
+  darwin)
+    # x86 aliases
+    if [[ $(uname -m) == 'arm64' ]]; then
+      alias briw='arch --x86_64 /usr/local/Homebrew/bin/brew'
+      alias terraform11='arch --x86_64 /usr/local/Cellar/terraform@0.11/0.11.15/bin/terraform'
+      alias terraform13='arch --x86_64 /usr/local/Cellar/terraform@0.13/0.13.7/bin/terraform'
+    fi
+    ;;
+  linux)
+    # Void tools
+    if grep -q 'NAME="Void"' /etc/os-release; then
+      alias xr='xbps-remove -R'
+      alias xoo='xbps-remove -oO'
+      alias xqf='xbps-query -f'
+      alias xqx='xbps-query -x'
+      alias XQX='xbps-query -X'
+      alias vkp='vkpurge rm all'
+      alias s='vsv'
+    fi
+    ;;
+esac
+
+case $GUI in
+  aqua)
+    alias copy='pbcopy'
+    alias paste='pbpaste'
+    ;;
+  x11)
+    alias copy='xsel -ib'
+    alias paste='xsel -ob'
+    ;;
+esac

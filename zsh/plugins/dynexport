@@ -1,0 +1,59 @@
+#!/usr/bin/env zsh
+# vim: ft=sh ts=2 sw=2 et:
+
+_precmd_dynenv() {
+  [[ -r ${DYNENV_FILE:-$HOME/.dynenv} ]] && . ${DYNENV_FILE:-$HOME/.dynenv}
+}
+autoload -Uz add-zsh-hook
+add-zsh-hook precmd _precmd_dynenv
+
+dynexport() {
+  setopt extended_glob
+  local dynenv=${DYNENV_FILE:-$HOME/.dynenv}
+  local arg var val
+  for arg in $@; do
+    if [[ -z ${arg:#[[:alpha:]_][[:alnum:]_]#=*} ]]; then
+      # arg was given in `var=val` form
+      var=${arg%%=*}
+      val=${arg#*=}
+    else
+      var=$arg
+    fi
+    # Specials may fail to import on precmd source, and shouldn't be expected
+    # to be portable across shell instances.
+    if [[ ${(tP)var} == *special* ]]; then
+      print "$0: cannot export special parameter $arg" >&2
+      continue
+    fi
+    # Remove the old copy from the dynenv, if present.
+    if [[ -r $dynenv && -w $dynenv ]]; then
+      # note: sed -i is not portable
+      sed "/^unset $var;.*/d" <<EOF >$dynenv
+$(cat $dynenv)
+EOF
+    fi
+    # Get the val if it wasn't passed in. If it's unset, do not propagate it.
+    if set + | grep -q "^$var$"; then
+      val=${(P)var}
+    else
+      continue
+    fi
+    local evalstring="unset $var; $(typeset -p $var); export $var # $(date -u '+%Y-%m-%dT%H:%M:%S')"
+    eval $evalstring
+    print -r $evalstring >> $dynenv
+  done
+  setopt local_options
+}
+
+dynunset() {
+  local dynenv=${DYNENV_FILE:-$HOME/.dynenv}
+  [[ -r $dynenv && -w $dynenv ]] || return
+  local var
+  for var in $@; do
+    # note: sed -i is not portable
+    sed "/^unset $var;.*/d" <<EOF >$dynenv
+$(cat $dynenv)
+EOF
+    unset $var
+  done
+}

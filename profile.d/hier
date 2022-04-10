@@ -1,0 +1,15 @@
+#!/bin/sh
+# vim: ft=sh ts=2 sw=2 et:
+
+export XDG_CONFIG_HOME="$CONF"
+
+case "$OS" in
+  darwin)
+    export GOPATH="$HOME/Source/go"
+    export PATH="$HOME/Bin:/opt/homebrew/opt/coreutils/libexec/gnubin:/usr/local/opt/coreutils/libexec/gnubin:/opt/homebrew/bin:$PATH:$GOPATH/bin"
+    ;;
+  linux)
+    export GOPATH="$HOME/src/go"
+    export PATH="$HOME/bin:/opt/bin:$PATH:$GOPATH/bin"
+    ;;
+esac

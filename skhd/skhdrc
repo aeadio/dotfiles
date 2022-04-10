@@ -1,0 +1,6 @@
+# Applications
+        cmd - 0x2C : open -na /Applications/Alacritty.app                        # /
+        cmd - 0x2B : code -n                                                     # ,
+        cmd - 0x29 : open -n $HOME                                               # ; (finder)
+        cmd - 0x27 : open -gna /Applications/Vivaldi.app --args                  # '
+shift + cmd - 0x27 : open -gna /Applications/Vivaldi.app --args --incognito      # '

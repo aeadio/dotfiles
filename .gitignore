@@ -1,0 +1,26 @@
+# junk
+.DS_Store
+Thumbs.db
+*.user
+
+# sensitive
+aws
+circleci
+gh
+micro/buffers
+msmtp
+profile.d/up
+profile.d/work
+terraform
+zsh/history
+
+# machine-specific
+git/user
+
+# uninteresting stuff
+ansible
+micro/*
+!micro/bindings.json
+!micro/settings.json
+packer
+vscode
