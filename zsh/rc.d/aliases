@@ -32,22 +32,16 @@ case $OS in
     if [[ $(uname -m) == 'arm64' ]]; then
       [[ -x /usr/local/Homebrew/bin/brew ]] && alias briw='arch --x86_64 /usr/local/Homebrew/bin/brew'
       () {
+        setopt glob_subst
         local tf ver bin
         for tf in /usr/local/Cellar/terraform@*(N); do
           ver=${${${tf:t}#*@}#0.}
-          [[ -z $ver ]] && continue
-          # Note: based on my reading of the zsh manual, the below glob should 
-          # return the highest version. But on my local zsh, it does not. Bug?
-          #local bin=$tf/*/bin/terraform(OnY1)
-          #if [[ -n $ver && -n $bin ]]; then
-          #  alias ="arch --x86_64 $bin"
-          #fi
-          # We use a loop to select the first match instead
-          for bin in $tf/*/bin/terraform(NOn); do
+          bin=$tf/*/bin/terraform(NOn[1])
+          if [[ -n $ver && -n $bin ]]; then
             alias "terraform$ver"="arch --x86_64 $bin"
-            break
-          done
+          fi
         done
+        setopt local_options
       }
     fi
     ;;
