@@ -8,6 +8,25 @@ if [[ ! -d $ZSH ]]; then
   return
 fi
 
+# Some functions we'll use throughout rc.d and first party plugins.
+quiet() {
+  # If we're not connected to a terminal, then don't suppress stdout -- so that
+  # quiet can be used inside pipelines without wrapping the whole thing.
+  if [[ -t 1 ]]; then
+    "$@" &>/dev/null
+  else
+    "$@" 2>/dev/null
+  fi
+}
+
+has() {
+  (( ${+commands[$1]} > 0 ))
+}
+
+isgnu() {
+  has $1 && quiet "$1" --version | grep -q GNU
+}
+
 # Plugins
 # Plugins provide a cohesive and self-contained set of functionality/features, 
 # and assume nothing non-extraordinary about the user's config. They should be

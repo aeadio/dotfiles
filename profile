@@ -38,7 +38,7 @@ case "$OS" in
 esac
 export GUI
 
-# Some useful functions we'll use multiple times
+# Some functions we'll use during profile initialization
 quiet() {
   # If we're not connected to a terminal, then don't suppress stdout -- so that
   # quiet can be used inside pipelines without wrapping the whole thing.
