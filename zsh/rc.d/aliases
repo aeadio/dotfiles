@@ -29,21 +29,28 @@ has code     && alias E='code'
 case $OS in
   darwin)
     # x86 aliases
-    if [[ $(uname -m) == 'arm64' ]]; then
-      [[ -x /usr/local/Homebrew/bin/brew ]] && alias briw='arch --x86_64 /usr/local/Homebrew/bin/brew'
-      () {
-        setopt glob_subst
-        local tf ver bin
-        for tf in /usr/local/Cellar/terraform@*(N); do
-          ver=${${${tf:t}#*@}#0.}
-          bin=$tf/*/bin/terraform(NOn[1])
-          if [[ -n $ver && -n $bin ]]; then
-            alias "terraform$ver"="arch --x86_64 $bin"
-          fi
-        done
-        setopt local_options
-      }
-    fi
+    () {
+      setopt glob_subst
+      local isa=$(uname -m)
+      local emu
+      if [[ $isa == 'arm64' ]]; then
+        emu="arch --x86_64"
+        [[ -x /usr/local/Homebrew/bin/brew ]] &&
+          alias briw="$emu /usr/local/Homebrew/bin/brew"
+      fi
+      local tf ver bin
+      for tf in /usr/local/Cellar/terraform@*(N) /opt/homebrew/Celler/terraform@*(N); do
+        ver=${${${tf:t}#*@}#0.}
+        bin=$tf/*/bin/terraform(NOn[1])
+        [[ -n $ver && -n $bin ]] || continue
+        if quiet file $bin | grep -q $isa; then
+          alias "terraform$ver"="$bin"
+        else
+          alias "terraform$ver"="$emu $bin"
+        fi
+      done
+      setopt local_options
+    }
     ;;
   linux)
     # Void tools
