@@ -39,14 +39,14 @@ case $OS in
           alias briw="$emu /usr/local/Homebrew/bin/brew"
       fi
       local tf ver bin
-      for tf in /usr/local/Cellar/terraform@*(N) /opt/homebrew/Celler/terraform@*(N); do
+      for tf in /usr/local/Cellar/terraform@*(N) /opt/homebrew/Cellar/terraform@*(N); do
         ver=${${${tf:t}#*@}#0.}
-        bin=$tf/*/bin/terraform(NOn[1])
-        [[ -n $ver && -n $bin ]] || continue
-        if quiet file $bin | grep -q $isa; then
-          alias "terraform$ver"="$bin"
+        bin=( $tf/*/bin/terraform(NOn) )
+        [[ -n $ver && -n ${bin[1]} ]] || continue
+        if quiet file ${bin[1]} | grep -q $isa; then
+          alias "terraform$ver"="${bin[1]}"
         else
-          alias "terraform$ver"="$emu $bin"
+          alias "terraform$ver"="$emu ${bin[1]}"
         fi
       done
       setopt local_options
