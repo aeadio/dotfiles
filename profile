@@ -38,9 +38,29 @@ case "$OS" in
 esac
 export GUI
 
+# Some useful functions we'll use multiple times
+quiet() {
+  # If we're not connected to a terminal, then don't suppress stdout -- so that
+  # quiet can be used inside pipelines without wrapping the whole thing.
+  if [ -t 1 ]; then
+    "$@" >/dev/null 2>/dev/null
+  else
+    "$@" 2>/dev/null
+  fi
+}
+
+has() {
+  quiet command -v "$1"
+}
+
+isgnu() {
+  quiet command -v "$1" && quiet "$1" --version | grep -q GNU
+}
+
 # profile.d
 if [ -d "$CONF/profile.d" ]; then
   for f in "$CONF"/profile.d/*; do
     [ -x "$f" ] && . "$f"
   done
 fi
+unset f

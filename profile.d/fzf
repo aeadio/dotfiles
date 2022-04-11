@@ -2,7 +2,7 @@
 # vim: ft=sh ts=2 sw=2 et:
 
 # Use fd for faster searching
-if command -v fd >/dev/null 2>/dev/null; then
+if has fd; then
   export FZF_DEFAULT_COMMAND="fd"
   export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
   export FZF_ALT_C_COMMAND="$FZF_DEFAULT_COMMAND --type d"

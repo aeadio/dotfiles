@@ -14,8 +14,11 @@ fi
 # loaded first, as the user may need to call into them within rc.d.
 # Note: third party plugins are placed in subdirectories, containing a
 # .plugin.zsh file directly underneath. This is frequently NOT executable.
-for f in $ZSH/plugins/*(-.e:'[[ -x $REPLY ]]':N); . "$f"  # first party plugins
-for f in $ZSH/plugins/*/*.plugin.zsh(-.N); . "$f"         # third party plugins
+() {
+  local f
+  for f in $ZSH/plugins/*(-.e:'[[ -x $REPLY ]]':N); . "$f"  # first party plugins
+  for f in $ZSH/plugins/*/*.plugin.zsh(-.N); . "$f"         # third party plugins
+}
 
 # Users site-functions
 # Function definitions (but not bodies) are autoloaded
@@ -26,4 +29,7 @@ fi
 
 # zshrc.d
 # User's ZSH config, organized as they see fit.
-for f in $ZSH/rc.d/*(e:'[[ -x $REPLY ]]':N); . "$f"
+() {
+  local f
+  for f in $ZSH/rc.d/*(e:'[[ -x $REPLY ]]':N); . "$f"
+}

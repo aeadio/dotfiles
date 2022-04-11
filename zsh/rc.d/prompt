@@ -32,7 +32,10 @@ PS1=$(
 	add ":%B%F{blue}%~%f%b"
 	
 	# Git branch
-	if (( $+commands[git] )); then
+  # Fun: inside $() expansion, stdout is not considered to be connected to a 
+  # terminal. That's obvious in hindsight, but breaks our 'quiet' function 
+  # inside 'has'. Need to think of a clever POSIX fix to cover this case.
+	if has git &>/dev/null; then
 		add '$(
 			exec 2>/dev/null
 			local branch="$(git symbolic-ref -q --short HEAD ||

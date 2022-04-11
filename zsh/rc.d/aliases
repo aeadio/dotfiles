@@ -1,53 +1,70 @@
 #!/usr/bin/env zsh
 # vim: ft=sh ts=2 sw=2 et:
 
-# colors
-if grep --version 2>/dev/null | grep -q "GNU"; then
+# Default command options
+if isgnu grep; then
   alias grep='grep --color=auto'
 fi
-alias less='less -R --use-color'
-alias diff='diff --color=auto'
+has rg     && alias rg='rg --no-ignore'
+has ranger && alias ranger='. ranger'
 
-# command default options
-alias rg='rg --no-ignore'
-alias ranger='. ranger'
-
-# pastes
-alias sprunge="curl -F 'sprunge=<-' http://sprunge.us"
+# misc extras
+has curl && alias sprunge="curl -F 'sprunge=<-' http://sprunge.us"
+has git  && alias conf="env GIT_DIR=$CONF/.git GIT_WORK_TREE=$CONF git"
 
 # tool shorthands
-if ls --version 2>/dev/null | grep -q "GNU"; then
+if isgnu ls; then
   alias l='ls -lFkh --quoting-style=literal --color=auto --group-directories-first'
   alias L='ls -lFkh --quoting-style=literal --color=auto --group-directories-first -a'
 else
   alias l='ls -lpq'
   alias L='ls -lpq -a'
 fi
-alias e='micro'
-alias f='ranger'
-alias c=${${GUI:+code}:-micro}
+has micro    && alias e='micro'
+has ranger   && alias f='ranger'
+has code-oss && alias c='code-oss'
+has code     && alias c='code'
 
 # platform specific
 case $OS in
   darwin)
     # x86 aliases
     if [[ $(uname -m) == 'arm64' ]]; then
-      alias briw='arch --x86_64 /usr/local/Homebrew/bin/brew'
-      alias terraform11='arch --x86_64 /usr/local/Cellar/terraform@0.11/0.11.15/bin/terraform'
-      alias terraform13='arch --x86_64 /usr/local/Cellar/terraform@0.13/0.13.7/bin/terraform'
+      [[ -x /usr/local/Homebrew/bin/brew ]] && alias briw='arch --x86_64 /usr/local/Homebrew/bin/brew'
+      () {
+        local tf ver bin
+        for tf in /usr/local/Cellar/terraform@*(N); do
+          ver=${${${tf:t}#*@}#0.}
+          [[ -z $ver ]] && continue
+          # Note: based on my reading of the zsh manual, the below glob should 
+          # return the highest version. But on my local zsh, it does not. Bug?
+          #local bin=$tf/*/bin/terraform(OnY1)
+          #if [[ -n $ver && -n $bin ]]; then
+          #  alias ="arch --x86_64 $bin"
+          #fi
+          # We use a loop to select the first match instead
+          for bin in $tf/*/bin/terraform(NOn); do
+            alias "terraform$ver"="arch --x86_64 $bin"
+            break
+          done
+        done
+      }
     fi
     ;;
   linux)
     # Void tools
-    if grep -q 'NAME="Void"' /etc/os-release; then
+    if has xbps-query; then
       alias xr='xbps-remove -R'
       alias xoo='xbps-remove -oO'
       alias xqf='xbps-query -f'
       alias xqx='xbps-query -x'
       alias XQX='xbps-query -X'
-      alias vkp='vkpurge rm all'
-      alias s='vsv'
     fi
+    if has vsv; then
+      alias s="vsv -d $HOME/sv"
+      alias S='vsv'
+    fi
+    has vkpurge && alias vkp='vkpurge rm all'
     ;;
 esac
 
@@ -57,7 +74,12 @@ case $GUI in
     alias paste='pbpaste'
     ;;
   x11)
-    alias copy='xsel -ib'
-    alias paste='xsel -ob'
+    if has xsel; then
+      alias copy='xsel -ib'
+      alias paste='xsel -ob'
+    elif has xclip; then
+      alias copy='xclip -in -selection clipboard'
+      alias paste='xclip -out -selection clipboard'
+    fi
     ;;
 esac
