@@ -22,8 +22,8 @@ else
 fi
 has micro    && alias e='micro'
 has ranger   && alias f='ranger'
-has code-oss && alias c='code-oss'
-has code     && alias c='code'
+has code-oss && alias E='code-oss'
+has code     && alias E='code'
 
 # platform specific
 case $OS in
@@ -70,16 +70,16 @@ esac
 
 case $GUI in
   aqua)
-    alias copy='pbcopy'
-    alias paste='pbpaste'
+    alias c='pbcopy'
+    alias p='pbpaste'
     ;;
   x11)
     if has xsel; then
-      alias copy='xsel -ib'
-      alias paste='xsel -ob'
+      alias c='xsel -ib'
+      alias p='xsel -ob'
     elif has xclip; then
-      alias copy='xclip -in -selection clipboard'
-      alias paste='xclip -out -selection clipboard'
+      alias c='xclip -in -selection clipboard'
+      alias p='xclip -out -selection clipboard'
     fi
     ;;
 esac
