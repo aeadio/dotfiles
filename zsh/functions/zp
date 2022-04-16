@@ -1,0 +1,128 @@
+# vim: ft=zsh ts=2 sw=2 et:
+# Quickly add/remove third-party Zsh plugins from Github repos, as submodule
+# Ignores first-party plugins within local config (plain files under plugins/)
+
+if [[ -z $ZSH ]]; then
+  <<< "Fatal: ZSH is not set. Cannot determine plugin root." >&2
+  return
+fi
+
+local plugdir=$ZSH/plugins
+mkdir -p $plugdir
+
+local clean=()
+local force=
+local autoclean=1
+local p
+local action=$1
+shift
+OPTIND=0
+while getopts "aAf" opt; do
+  case $opt in
+    a) autoclean=1 ;;
+    A) autoclean= ;;
+    f) force=1 ;;
+  esac
+done
+shift $(( OPTIND - 1 ))
+
+case $action in
+  try)
+    if [[ $# -eq 0 ]]; then
+      <<< "Provide one or more Git checkout links to try as Zsh plugins." >&2
+      return
+    fi
+    if (( ${+commands[zshi]} == 0 )); then
+      <<< "Requires zshi." >&2
+      return
+    fi
+    local tmpdir=$(mktemp -d)
+    if [[ ! -d $tmpdir ]]; then
+      <<< "Unable to create temp directory." >&2
+      return
+    fi
+    trap '[[ -d $tmpdir ]] && rm -rf $tmpdir' EXIT
+    local plugins=()
+    for p in "$@"; do
+      if ! git clone $p $tmpdir/${p:t:r}; then
+        <<< "Failed to load plugin $p." >&2
+        return
+      fi
+      plugins+=( ${(q)p:t:r} )
+    done
+    zshi '
+    for f in "'$tmpdir'"/*/*.plugin.zsh(-.N); do
+      . $f
+    done
+    PS1="'$'\n''[demo: '${(pj:, :)plugins}']'$'\n''${PS1#'"$'\n'"'}"
+    '
+    ;;
+    
+  list) ;&
+  ls)
+    for p in $plugdir/*(N/on); <<< ${p:t}
+    ;;
+    
+  install) ;&
+  add)
+    (
+      cd $plugdir &&
+      for p in "$@"; git submodule add ${force:+--force} $p
+    )
+    ;;
+    
+  uninstall) ;&
+  remove)    ;&
+  delete)    ;&
+  del)
+    for p in "$@"; do
+      [[ -z $p ]] && continue
+      if [[ ! -d $plugdir/$p ]]; then
+        <<< "Plugin $p not found."
+        continue
+      fi
+      if [[ -e $plugdir/$p/.git ]]; then
+        (
+          cd $plugdir &&
+          git rm ./$p &&
+          git commit ./$p -m "zsh: Remove plugin $p"
+        )
+        if [[ $autoclean -eq 1 ]]; then
+          clean+=( $p )
+        fi
+      elif [[ $force -eq 1 ]]; then
+        rm -rf $plugdir/$p
+      else
+        <<< "Warning: plugin $p is not a Git submodule. Use -f to force removal." >&2
+        continue
+      fi
+    done
+    if [[ ${#clean[@]} -eq 0 ]]; then
+      return
+    fi
+    ;&
+    
+  clean)
+    if [[ -z $CONF ]]; then
+      <<< "Fatal: CONF not set. Cannot determine Git root." >&2
+      return
+    fi
+    local cachedir=$CONF/.git/modules/${plugdir#$CONF/}
+    [[ -d $cachedir ]] || return
+    [[ ${#clean[@]} -eq 0 ]] && clean+=( "$@" )
+    [[ ${#clean[@]} -eq 0 ]] && clean+=( $cachedir/*(N/one,'[[ ! -e $plugdir/${REPLY:t} ]]',:t) )
+    for p in $clean; do
+      if [[ ! -e $cachedir/$p ]]; then
+        <<< "No cache for $p, skipping..."
+        continue
+      fi
+      if [[ -e $plugdir/$p ]]; then
+        <<< "Cannot clean $p: currently installed." >&2
+        continue
+      fi
+      <<< "Cleaning $p..."
+      rm -rf $cachedir/$p
+    done
+    ;;
+    
+esac
