@@ -24,7 +24,7 @@ has() {
 }
 
 isgnu() {
-  has $1 && quiet "$1" --version | grep -q GNU
+  has $1 && quiet $1 --version | grep -q GNU
 }
 
 # Plugins
@@ -35,8 +35,8 @@ isgnu() {
 # .plugin.zsh file directly underneath. This is frequently NOT executable.
 () {
   local f
-  for f in $ZSH/plugins/*(-.e:'[[ -x $REPLY ]]':N); . "$f"  # first party plugins
-  for f in $ZSH/plugins/*/*.plugin.zsh(-.N); . "$f"         # third party plugins
+  for f in $ZSH/plugins/*(-.e:'[[ -x $REPLY ]]':N); . $f  # first party plugins
+  for f in $ZSH/plugins/*/*.plugin.zsh(-.N);        . $f  # third party plugins
 }
 
 # Users site-functions
@@ -50,5 +50,5 @@ fi
 # User's ZSH config, organized as they see fit.
 () {
   local f
-  for f in $ZSH/rc.d/*(e:'[[ -x $REPLY ]]':N); . "$f"
+  for f in $ZSH/rc.d/*(e:'[[ -x $REPLY ]]':N); . $f
 }

@@ -62,5 +62,5 @@ if [ -d "$CONF/profile.d" ]; then
   for f in "$CONF"/profile.d/*; do
     [ -x "$f" ] && . "$f"
   done
+  unset f
 fi
-unset f
