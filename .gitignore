@@ -21,6 +21,9 @@ git/user
 
 # uninteresting stuff
 ansible
+aws-sam
+docker
+kube
 micro/*
 !micro/bindings.json
 !micro/settings.json
