@@ -20,7 +20,7 @@ quiet() {
 }
 
 has() {
-  (( ${+commands[$1]} > 0 ))
+  (( $+commands[$1] ))
 }
 
 isgnu() {
