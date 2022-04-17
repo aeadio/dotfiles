@@ -6,3 +6,15 @@ compinit
 
 # Case insensitive path-completion
 zstyle ':completion:*' matcher-list 'm:{[:lower:]}={[:upper:]}'
+
+# Autosuggestion plugin
+# By defaults only autocompletes from history. But if history has nothing, also
+# try falling back to Zsh's recommended completion.
+ZSH_AUTOSUGGEST_STRATEGY=(history completion)
+# If we paste in a huge command, don't try to autocomplete
+ZSH_AUTOSUGGEST_BUFFER_MAX_SIZE=20
+# I don't think we need auto rebinding w/ our other plugins, and it eats a lot 
+# of performance on precmd
+ZSH_AUTOSUGGEST_MANUAL_REBIND=1
+
+bindkey '^[[Z' autosuggest-accept

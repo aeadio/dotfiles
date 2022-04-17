@@ -1,8 +1,76 @@
-#!/usr/bin/env zsh
-# vim: ft=sh ts=2 sw=2 et:
+#!/usr/bin/env zshvim: ft=sh ts=2 sw=2 et:
 
-bindkey "^[[H"    beginning-of-line
-bindkey "^[[F"    end-of-line
-bindkey "^[[3~"   delete-char
-bindkey "^[[1;5D" backward-word
-bindkey "^[[1;5C" forward-word
+# This is an attempt to set keybinds that feel more conventional for a user
+# that grew up with post-90s GUI applications. This has not yet been tested
+# across a wide range of terminal emulators / environments, where some of the
+# keycodes mey not be as expected. 
+
+# TODO: Implement via some custom widget work:
+# - Selection via shift+arrow
+# - Selection-aware copy/paste (using kill buffer? or maybe integration into system clipboard)
+
+autoload -U edit-command-line
+zle -N edit-command-line
+
+bindkey -N mine
+bindkey -A mine main
+
+bindkey '^[[H'    beginning-of-line                  # home
+bindkey '^[[F'    end-of-line                        # end
+bindkey '^[[5~'   up-history                         # pgup
+bindkey '^[[6~'   down-history                       # pgdn
+
+bindkey '^[[3~'   delete-char                        # del
+bindkey '^[[3;2~' kill-line                          # shift-del
+
+bindkey '^[[A'    up-line-or-history                 # up
+bindkey '^[[B'    down-line-or-history               # down
+bindkey '^[[D'    backward-char                      # left
+bindkey '^[[C'    forward-char                       # right
+
+bindkey '^[[1;3A' history-beginning-search-backward  # alt-up
+bindkey '^[[1;3B' history-beginning-search-forward   # alt-down
+bindkey '^[[1;3D' beginning-of-line                  # alt-left
+bindkey '^[[1;3C' end-of-line                        # alt-right
+
+bindkey '^[[1;5D' backward-word                      # ctrl-left
+bindkey '^[[1;5C' forward-word                       # ctrl-right
+
+bindkey '^[[1;6A' up-case-word                       # shift-ctrl-up
+bindkey '^[[1;6B' down-case-word                     # shift-ctrl-down
+bindkey '^[[1;6D' backward-kill-word                 # shift-ctrl-left
+bindkey '^[[1;6C' kill-word                          # shift-ctrl-right
+
+bindkey '^[[1;7A' accept-and-hold                    # alt-ctrl-up
+bindkey '^[[1;7B' accept-line-and-down-history       # alt-ctrl-down
+bindkey '^[[1;7D' transpose-words                    # alt-ctrl-left
+bindkey '^[[1;7C' copy-prev-word                     # alt-ctrl-right
+
+bindkey '^M'      accept-line                        # enter
+bindkey '^?'      backward-delete-char               # backspace
+
+bindkey '^E'      edit-command-line
+bindkey '^F'      history-incremental-pattern-search-backward
+bindkey '^G'      send-break
+bindkey '^H'      run-help
+bindkey '^I'      expand-or-complete-prefix          # tab
+bindkey '^K'      kill-whole-line
+bindkey '^L'      list-choices
+bindkey '^Q'      quote-line
+bindkey '^R'      quoted-insert
+bindkey '^S'      spell-word
+bindkey '^Y'      redo
+bindkey '^X'      clear-screen
+bindkey '^Z'      undo
+
+# Perform history expansion during normal editing flow
+bindkey ' '       magic-space
+bindkey '^@'      expand-history                     # ctrl-space
+
+# Preserve insertion for normal characters/sequences
+bindkey    '^[^I'          self-insert-unmeta
+bindkey    '^[^J'          self-insert-unmeta
+bindkey    '^[^M'          self-insert-unmeta
+bindkey -R '!'-'~'         self-insert
+bindkey -R '\M-^@'-'\M-^?' self-insert
+bindkey    '^[[200~'       bracketed-paste
