@@ -1,0 +1,6 @@
+#!/usr/bin/env zsh
+# vim: ft=sh ts=2 sw=2 et:
+
+if [[ -x $HOME/.profile ]]; then
+  emulate -R sh -c '. $HOME/.profile'
+fi

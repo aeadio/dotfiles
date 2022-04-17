@@ -11,31 +11,14 @@ if [[ ! -d $ZSH ]]; then
   return
 fi
 
-# Some utility functions we'll use throughout rc.d and first party plugins.
-quiet() {
-  # If we're not connected to a terminal, then don't suppress stdout -- so that
-  # quiet can be used inside pipelines without wrapping the whole thing.
-  if [[ -t 1 ]]; then
-    "$@" &>/dev/null
-  else
-    "$@" 2>/dev/null
-  fi
-}
-
-has() {
-  (( $+commands[$1] ))
-}
-
-isgnu() {
-  has $1 && quiet $1 --version | grep -q GNU
-}
-
 # Plugins
 # Plain (executable) files in zsh/plugins/ are first-party plugins -- mine.
 # Directories are third-party plugins (if they contain a .plugin.zh file), and 
 # are expected to be installed as Git submodules. See zsh/functions/zp for 
 # installation wrapper.
 () {
+  # Plugins shouldn't be affected by -- or care about -- our choice of options
+  emulate -LR zsh
   local f
   for f in $ZSH/plugins/*(-.e:'[[ -x $REPLY ]]':N); . $f  # first party plugins
   for f in $ZSH/plugins/*/*.plugin.zsh(-.N);        . $f  # third party plugins
