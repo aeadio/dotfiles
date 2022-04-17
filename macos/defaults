@@ -1,6 +1,9 @@
 #!/usr/bin/env bash
 # vim: ft=bash ts=2 sw=2 et:
 
+# Based on:
+# ~/.macos — https://mths.be/macos
+
 # Close any open System Preferences panes, to prevent them from overriding
 # settings we’re about to change
 osascript -e 'tell application "System Preferences" to quit'
