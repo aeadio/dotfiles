@@ -5,6 +5,7 @@ setopt prompt_subst
 setopt interactive_comments  # Allows comments in a proc substitution $()
 
 PS1=$(
+  # Build up our prompt piece by piece. Result:
   # user@host:dir (gitbranch) %awsprofile
   # > 
   
@@ -76,4 +77,5 @@ PS2=$(
 )
 PS3=$PS2
 
+# Display history line number on the right-hand side, for use with ! expansion
 RPS1='%!'

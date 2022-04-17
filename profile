@@ -1,10 +1,10 @@
 #!/bin/sh
 # vim: ft=sh ts=2 sw=2 et:
 
-# Reminder: This file is intended to be sourced on many shells. It should be 
-# usable regardless of environment. Stick to POSIX, and make concessions for
-# where common shells (bash, zsh, *ksh) diverge from POSIX, in a way that is
-# compatible with the lowest common denominator.
+# Common environment setup for all Bourne-like shells. Should be POSIX 
+# compliant, with concessions for where common shells (bash, zsh, *ksh) diverge 
+# from POSIX. Symlinked to from both .profile, as well as the various
+# shell-specific .*profile locations.
 
 # Export some niceties for use later on
 # Where does our config live?

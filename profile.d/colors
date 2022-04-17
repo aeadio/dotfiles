@@ -2,6 +2,7 @@
 # vim: ft=sh ts=2 sw=2 et:
 
 # GNU ls
+# TODO: Replace with third party LS_COLORS tool.
 for b in \
   /usr/local/opt/coreutils/libexec/gnubin/dircolors    \
   /opt/homebrew/opt/coreutils/libexec/gnubin/dircolors \

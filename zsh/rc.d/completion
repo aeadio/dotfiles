@@ -16,5 +16,3 @@ ZSH_AUTOSUGGEST_BUFFER_MAX_SIZE=20
 # I don't think we need auto rebinding w/ our other plugins, and it eats a lot 
 # of performance on precmd
 ZSH_AUTOSUGGEST_MANUAL_REBIND=1
-
-bindkey '^[[Z' autosuggest-accept

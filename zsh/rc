@@ -1,6 +1,9 @@
 #!/usr/bin/env zsh
 # vim: ft=sh ts=2 sw=2 et:
 
+# NOTE: This file (and rc.d/, etc) contain zsh-specific configuration.
+# Environment exports are primarily found in profile.d/*.
+
 export ZSH=$CONF/zsh
 
 if [[ ! -d $ZSH ]]; then
@@ -8,7 +11,7 @@ if [[ ! -d $ZSH ]]; then
   return
 fi
 
-# Some functions we'll use throughout rc.d and first party plugins.
+# Some utility functions we'll use throughout rc.d and first party plugins.
 quiet() {
   # If we're not connected to a terminal, then don't suppress stdout -- so that
   # quiet can be used inside pipelines without wrapping the whole thing.
@@ -28,26 +31,25 @@ isgnu() {
 }
 
 # Plugins
-# Plugins provide a cohesive and self-contained set of functionality/features, 
-# and assume nothing non-extraordinary about the user's config. They should be
-# loaded first, as the user may need to call into them within rc.d.
-# Note: third party plugins are placed in subdirectories, containing a
-# .plugin.zsh file directly underneath. This is frequently NOT executable.
+# Plain (executable) files in zsh/plugins/ are first-party plugins -- mine.
+# Directories are third-party plugins (if they contain a .plugin.zh file), and 
+# are expected to be installed as Git submodules. See zsh/functions/zp for 
+# installation wrapper.
 () {
   local f
   for f in $ZSH/plugins/*(-.e:'[[ -x $REPLY ]]':N); . $f  # first party plugins
   for f in $ZSH/plugins/*/*.plugin.zsh(-.N);        . $f  # third party plugins
 }
 
-# Users site-functions
-# Function definitions (but not bodies) are autoloaded
+# User functions
+# All first-party function definitions (but not bodies) are autoloaded
 if [[ -d $ZSH/functions ]]; then
   fpath=($ZSH/functions $fpath)  # prepend to prefer ours over vendor's
   autoload -Uz $ZSH/functions/*(.:t)
 fi
 
 # zshrc.d
-# User's ZSH config, organized as they see fit.
+# Primary place for zsh config. Load last so that it may make use of plugins.
 () {
   local f
   for f in $ZSH/rc.d/*(e:'[[ -x $REPLY ]]':N); . $f

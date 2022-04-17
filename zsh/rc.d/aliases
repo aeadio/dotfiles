@@ -1,11 +1,10 @@
 #!/usr/bin/env zsh
 # vim: ft=sh ts=2 sw=2 et:
 
-# Default command options
+# default command options
 if isgnu grep; then
   alias grep='grep --color=auto'
 fi
-has rg     && alias rg='rg --no-ignore'
 has ranger && alias ranger='. ranger'
 
 # misc extras
@@ -35,9 +34,14 @@ case $OS in
       local emu
       if [[ $isa == 'arm64' ]]; then
         emu="arch --x86_64"
+        # If we're on M1 Mac and x86 Homebrew is installed, alias to 'briw'.
         [[ -x /usr/local/Homebrew/bin/brew ]] &&
           alias briw="$emu /usr/local/Homebrew/bin/brew"
       fi
+      # The following searches for all Terraform versions installed via 
+      # Homebrew. Sets up an alias for each version in the form 'terraformXX' 
+      # where XX is the minor number for 0.XX releases. Emulation via Rosetta 
+      # is used, if needed.
       local tf ver bin
       for tf in /usr/local/Cellar/terraform@*(N) /opt/homebrew/Cellar/terraform@*(N); do
         ver=${${${tf:t}#*@}#0.}

@@ -5,9 +5,9 @@
 # across a wide range of terminal emulators / environments, where some of the
 # keycodes mey not be as expected. 
 
-# TODO: Implement via some custom widget work:
-# - Selection via shift+arrow
-# - Selection-aware copy/paste (using kill buffer? or maybe integration into system clipboard)
+# TODO: Implement selection w/ shift+arrow?
+# TODO: Make use of yank & kill buffer for clipboard
+# TODO: Fix quoting. Custom widget for smartly quoting word we're inside?
 
 for widget in edit-command-line fzf-history; do
   autoload -U $widget &&

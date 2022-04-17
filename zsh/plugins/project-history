@@ -1,6 +1,10 @@
 #!/usr/bin/env zsh
 # vim: ft=sh ts=2 sw=2 et:
 
+# Implements per-project shell history for Git.
+# When entering a folder that's part of a Git repo, HISTFILE is switched to
+# <gitroot>/.history.user.
+
 # NOTE: The original implementation used fc -p and fc -P to push and pop
 # natively supported zsh alternate history buffers. This was fragile as we
 # could not reliably tell if other actors were manipulating history lists
