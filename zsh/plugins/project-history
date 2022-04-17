@@ -23,6 +23,7 @@
 # stuck assuming the user's other plugins and config are not awful.
   
 _chpwd_projecthistory() {
+  emulate -LR zsh
   local gitroot=$(git rev-parse --show-toplevel 2>/dev/null)
   local new_histfile
   if [[ -d $gitroot ]]; then
@@ -65,6 +66,7 @@ add-zsh-hook chpwd _chpwd_projecthistory
 # middle of alternate history mode (in a gitroot). Also fully pivots to the
 # HISTFILE, flushing and clearing any dirty history buffer.
 sethistfile() {
+  emulate -LR zsh
   if set + | grep -q '^PROJHIST_DEFAULT_HISTFILE$'; then
     PROJHIST_DEFAULT_HISTFILE=$1
   else

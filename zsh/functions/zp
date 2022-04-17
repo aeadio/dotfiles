@@ -1,6 +1,7 @@
 # vim: ft=zsh ts=2 sw=2 et:
 # Quickly add/remove third-party Zsh plugins from Git repos, as submodule
 # Ignores first-party plugins within local config (plain files under plugins/)
+emulate -LR zsh
 
 if [[ -z $ZSH ]]; then
   <<< "Fatal: ZSH is not set. Cannot determine plugin root." >&2

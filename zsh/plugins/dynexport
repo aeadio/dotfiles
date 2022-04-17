@@ -2,12 +2,14 @@
 # vim: ft=sh ts=2 sw=2 et:
 
 _precmd_dynenv() {
+  emulate -LR zsh
   [[ -r ${DYNENV_FILE:-$HOME/.dynenv} ]] && . ${DYNENV_FILE:-$HOME/.dynenv}
 }
 autoload -Uz add-zsh-hook
 add-zsh-hook precmd _precmd_dynenv
 
 dynexport() {
+  emulate -LR zsh
   setopt extended_glob
   local dynenv=${DYNENV_FILE:-$HOME/.dynenv}
   local arg var val
@@ -42,10 +44,10 @@ EOF
     eval $evalstring
     print -r $evalstring >> $dynenv
   done
-  setopt local_options
 }
 
 dynunset() {
+  emulate -LR zsh
   local dynenv=${DYNENV_FILE:-$HOME/.dynenv}
   [[ -r $dynenv && -w $dynenv ]] || return
   local var

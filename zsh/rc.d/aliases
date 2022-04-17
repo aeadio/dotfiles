@@ -29,6 +29,7 @@ case $OS in
   darwin)
     # x86 aliases
     () {
+      emulate -LR zsh
       setopt glob_subst
       local isa=$(uname -m)
       local emu
@@ -53,7 +54,6 @@ case $OS in
           alias "terraform$ver"="$emu ${bin[1]}"
         fi
       done
-      setopt local_options
     }
     ;;
   linux)
