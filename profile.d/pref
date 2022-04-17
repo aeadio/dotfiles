@@ -3,7 +3,6 @@
 
 # Basic utils
 export EDITOR="micro"
-export GIT_EDITOR="$EDITOR"
 export TERMINAL="alacritty"
 export CLICOLOR=1
 export LESSHISTFILE="-"
@@ -14,9 +13,5 @@ if has bat; then
 fi
 
 if [ -n "$GUI" ]; then
-  # For the pedantic: I'm aware VISUAL should be set to a "visual mode" editor,
-  # as opposed to a line-mode, ie, something like vi inside the terminal, not
-  # necessarily a GUI app. But most tools have forgotten this convention by now
-  # so I think it's useful to repurpose them for a more modern distinction.
-  export VISUAL="code"
+  export GEDITOR="code"
 fi
