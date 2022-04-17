@@ -17,3 +17,6 @@ export CLICOLOR=1
 
 # Apps
 export HIGHLIGHT_STYLE="nord"
+export FZF_DEFAULT_OPTS="$FZF_DEFAULT_OPTS --color=16,hl:6,hl+:14,fg:-1,\
+fg+:11,bg:-1,bg+:-1,prompt:6,pointer:11,disabled:8,info:12,marker:3,\
+spinner:13,header:12"
