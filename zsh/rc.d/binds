@@ -67,7 +67,7 @@ bindkey '^Z'      undo
 
 # Perform history expansion during normal editing flow
 bindkey ' '       magic-space
-bindkey '^@'      expand-history                     # ctrl-space
+bindkey '^@'      autosuggest-accept                 # ctrl-space
 
 # Preserve insertion for normal characters/sequences
 bindkey    '^[^I'          self-insert-unmeta
