@@ -17,6 +17,14 @@ done
 bindkey -N mine
 bindkey -A mine main
 
+# Preserve insertion for normal characters/sequences
+bindkey    '^[^I'          self-insert-unmeta
+bindkey    '^[^J'          self-insert-unmeta
+bindkey    '^[^M'          self-insert-unmeta
+bindkey -R '!'-'~'         self-insert
+bindkey -R '\M-^@'-'\M-^?' self-insert
+bindkey    '^[[200~'       bracketed-paste
+
 bindkey '^[[H'    beginning-of-line                  # home
 bindkey '^[[F'    end-of-line                        # end
 bindkey '^[[5~'   up-history                         # pgup
@@ -68,11 +76,3 @@ bindkey '^Z'      undo
 # Perform history expansion during normal editing flow
 bindkey ' '       magic-space
 bindkey '^@'      autosuggest-accept                 # ctrl-space
-
-# Preserve insertion for normal characters/sequences
-bindkey    '^[^I'          self-insert-unmeta
-bindkey    '^[^J'          self-insert-unmeta
-bindkey    '^[^M'          self-insert-unmeta
-bindkey -R '!'-'~'         self-insert
-bindkey -R '\M-^@'-'\M-^?' self-insert
-bindkey    '^[[200~'       bracketed-paste
