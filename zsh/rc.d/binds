@@ -9,8 +9,10 @@
 # - Selection via shift+arrow
 # - Selection-aware copy/paste (using kill buffer? or maybe integration into system clipboard)
 
-autoload -U edit-command-line
-zle -N edit-command-line
+for widget in edit-command-line fzf-history; do
+  autoload -U $widget &&
+  zle -N $widget
+done
 
 bindkey -N mine
 bindkey -A mine main
@@ -50,7 +52,7 @@ bindkey '^M'      accept-line                        # enter
 bindkey '^?'      backward-delete-char               # backspace
 
 bindkey '^E'      edit-command-line
-bindkey '^F'      history-incremental-pattern-search-backward
+bindkey '^F'      fzf-history
 bindkey '^G'      send-break
 bindkey '^H'      run-help
 bindkey '^I'      expand-or-complete-prefix          # tab
