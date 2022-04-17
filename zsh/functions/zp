@@ -1,5 +1,5 @@
 # vim: ft=zsh ts=2 sw=2 et:
-# Quickly add/remove third-party Zsh plugins from Github repos, as submodule
+# Quickly add/remove third-party Zsh plugins from Git repos, as submodule
 # Ignores first-party plugins within local config (plain files under plugins/)
 
 if [[ -z $ZSH ]]; then
