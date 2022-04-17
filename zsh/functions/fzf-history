@@ -1,17 +1,24 @@
 if (( ! $+commands[fzf] )); then
   return
 fi
+
 local line=$(fc -ln -1 0 | fzf --no-sort --height=40% --border=none --no-info)
 local ret=$?
+
+# NOTE: Reset prompt immediately after fzf. If we back out or it fails, the
+# prompt is munged.
+zle reset-prompt
+
 if [[ -z $line ]]; then
   return $ret
 fi
+
 if [[ -n $WIDGET ]]; then
   # We're invoked as a ZLE widget
   BUFFER=$line
   CURSOR=$#BUFFER
-  zle reset-prompt
 else
   print $line
 fi
+
 return $ret
