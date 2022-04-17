@@ -7,6 +7,11 @@ if [[ -z $ZSH ]]; then
   return
 fi
 
+if ! has git; then
+  <<< "Fatal: Requires Git." >&2
+  return
+fi
+
 local plugdir=$ZSH/plugins
 mkdir -p $plugdir
 

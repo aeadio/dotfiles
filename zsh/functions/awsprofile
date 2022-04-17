@@ -17,5 +17,10 @@ if ! grep -q "^\[$profname\]" $CONF/aws/credentials &&
   return
 fi
 
-dynexport AWS_PROFILE=$1
-dynunset AWS_ACCESS_KEY_ID AWS_SECRET_ACCESS_KEY AWS_SESSION_TOKEN
+if (( $+functions[dynexport] )); then
+  dynexport AWS_PROFILE=$1
+  dynunset AWS_ACCESS_KEY_ID AWS_SECRET_ACCESS_KEY AWS_SESSION_TOKEN
+else
+  export AWS_PROFILE=$1
+  unset AWS_ACCESS_KEY_ID AWS_SECRET_ACCESS_KEY AWS_SESSION_TOKEN
+fi

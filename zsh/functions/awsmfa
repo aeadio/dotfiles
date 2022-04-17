@@ -1,9 +1,5 @@
 # vim: ft=zsh ts=2 sw=2 et:
 
-unset AWS_ACCESS_KEY_ID
-unset AWS_SECRET_ACCESS_KEY
-unset AWS_SESSION_TOKEN
-
 if [[ -z $MFA_ARN ]]; then
   print "$0: MFA_ARN not set" >&2
   return 1
@@ -12,19 +8,22 @@ fi
 local mfacode
 
 if [[ -z $1 ]]; then
-  print -n "MFA code: "
+  print -n "MFA code: " >&2
   read mfacode
 else
   mfacode=$1
 fi
+
+unset AWS_ACCESS_KEY_ID
+unset AWS_SECRET_ACCESS_KEY
+unset AWS_SESSION_TOKEN
 
 aws sts get-session-token \
   --duration-seconds 86400 \
   --output json \
   --serial-number $MFA_ARN \
   --token-code $mfacode \
-  | jq '.Credentials' \
-  | jq -r '[.AccessKeyId, .SecretAccessKey, .SessionToken] | @tsv' \
+  | jq -r '.Credentials | [.AccessKeyId, .SecretAccessKey, .SessionToken] | @tsv' \
   | read AWS_ACCESS_KEY_ID AWS_SECRET_ACCESS_KEY AWS_SESSION_TOKEN
 
 if [[ -z $AWS_ACCESS_KEY_ID ]]; then
@@ -32,4 +31,8 @@ if [[ -z $AWS_ACCESS_KEY_ID ]]; then
   return 2
 fi
 
-dynexport AWS_ACCESS_KEY_ID AWS_SECRET_ACCESS_KEY AWS_SESSION_TOKEN
+if (( $+functions[dynexport] )); then
+  dynexport AWS_ACCESS_KEY_ID AWS_SECRET_ACCESS_KEY AWS_SESSION_TOKEN
+else
+  export AWS_ACCESS_KEY_ID AWS_SECRET_ACCESS_KEY AWS_SESSION_TOKEN
+fi
