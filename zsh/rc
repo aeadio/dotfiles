@@ -16,11 +16,17 @@ fi
 # Directories are third-party plugins (if they contain a .plugin.zsh file). See
 # zsh/functions/zp* for installation helper.
 () {
+  # NOTE: Run each plugin within clean options. Do not make it sticky, as
+  # plugin functions should have the ability to respond to our chosen options.
   local f
-  for f in $ZSH/plugins/*(-.e:'[[ -x $REPLY ]]':N); # first party plugins
-     emulate -R zsh -c ". $f"
-  for f in $ZSH/plugins/*/*.plugin.zsh(-.N);        # third party plugins
-     emulate -R zsh -c ". $f"
+  for f in $ZSH/plugins/*(-.e:'[[ -x $REPLY ]]':N); do  # first party plugins
+    emulate -LR zsh
+    . $f
+  done
+  for f in $ZSH/plugins/*/*.plugin.zsh(-.N); do         # third party plugins
+    emulate -LR zsh
+    . $f
+  done
 }
 
 # User functions
