@@ -63,7 +63,7 @@ bindkey '^E'      edit-command-line
 bindkey '^F'      fzf-history
 bindkey '^G'      send-break
 bindkey '^H'      run-help
-bindkey '^I'      expand-or-complete-prefix          # tab
+bindkey '^I'      fzf-tab-complete                   # tab
 bindkey '^K'      kill-whole-line
 bindkey '^L'      list-choices
 bindkey '^Q'      quote-line
@@ -76,7 +76,3 @@ bindkey '^Z'      undo
 # Perform history expansion during normal editing flow
 bindkey ' '       magic-space
 bindkey '^@'      autosuggest-accept                 # ctrl-space
-
-# Escape key breaks out of menu selection
-zmodload -i zsh/complist &&
-bindkey -M menuselect '\e' send-break

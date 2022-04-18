@@ -30,6 +30,10 @@ isgnu() {
   has $1 && [[ $(quiet $1 --version) == *GNU* ]]
 }
 
+# NOTE: compinit must be initialized before fzf-tab
+autoload -Uz compinit &&
+compinit
+
 # Plugins
 # Plain (executable) files in zsh/plugins/ are first-party plugins -- mine.
 # Directories are third-party plugins (if they contain a .plugin.zsh file). See

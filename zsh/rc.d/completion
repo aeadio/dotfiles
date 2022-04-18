@@ -1,25 +1,19 @@
 #!/usr/bin/env zsh
 # vim: ft=sh ts=2 sw=2 et:
 
-autoload -Uz compinit &&
-compinit
+# NOTE: Moved to zsh/rc as compinit must be initialized before fzf-tab
+#autoload -Uz compinit &&
+#compinit
 
-# Use menu selection
-zstyle ':completion:*' menu select
-LISTMAX=-1            # And don't prompt for "do you wish to see all N?"
-setopt menu_complete  # And start menu selection immediately
+# Configure fzf-tab
+zstyle ':fzf-tab:*' fzf-flags '--height=40% --no-sort'
 
-# Use LS_COLORS for completion items
-zstyle ':completion:*:default' list-colors ${(s.:.)LS_COLORS}
-
-# Describe command lime parameters if recognized
-zstyle ':completion:*' verbose true
-zstyle ':completion:*' list-separator '#'
-
-# List directories first
+# Sorting
 zstyle ':completion:*' list-dirs-first true
+zstyle ':completion:complete:*:options' sort false
+zstyle ':completion:*:git-checkout:*' sort false
 
-# Don't insert tab when there's no completions
+# Don't insert tab on empty completion
 zstyle ':completion:*' insert-tab false
 
 # Case insensitive path-completion
@@ -37,9 +31,6 @@ zstyle ':completion:*:functions' ignored-patterns \
 
 # Don't complete pwd during a 'cd ../'
 zstyle ':completion:*:cd:*' ignore-parents parent pwd
-
-# Don't sort refs with 'git checkout'
-zstyle ':completion:*:git-checkout:*' sort false
 
 # Autosuggestion plugin
 ZSH_AUTOSUGGEST_STRATEGY=(history completion)
