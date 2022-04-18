@@ -38,11 +38,11 @@ isgnu() {
   # NOTE: Run each plugin within clean options. Do not make it sticky, as
   # plugin functions should have the ability to respond to our chosen options.
   local f
-  for f in $ZSH/plugins/*(-.e:'[[ -x $REPLY ]]':N); do  # first party plugins
+  for f in $ZSH/plugins/*(-.e:'[[ -x $REPLY ]]':onN); do  # first party plugins
     emulate -LR zsh
     . $f
   done
-  for f in $ZSH/plugins/*/*.plugin.zsh(-.N); do         # third party plugins
+  for f in $ZSH/plugins/*/*.plugin.zsh(-.onN); do         # third party plugins
     emulate -LR zsh
     . $f
   done
@@ -59,5 +59,5 @@ fi
 # Primary place for zsh config. Load last so that it may make use of plugins.
 () {
   local f
-  for f in $ZSH/rc.d/*(e:'[[ -x $REPLY ]]':N); . $f
+  for f in $ZSH/rc.d/*(e:'[[ -x $REPLY ]]':onN); . $f
 }
