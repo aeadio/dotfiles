@@ -29,29 +29,23 @@ case $OS in
   darwin)
     # x86 aliases
     () {
-      emulate -L zsh -o glob_subst
-      local isa=$(uname -m)
-      local emu
-      if [[ $isa == 'arm64' ]]; then
-        emu="arch --x86_64"
-        # If we're on M1 Mac and x86 Homebrew is installed, alias to 'briw'.
+      emulate -L zsh
+      if [[ $(arch) == 'arm64' ]]; then
         [[ -x /usr/local/Homebrew/bin/brew ]] &&
-          alias briw="$emu /usr/local/Homebrew/bin/brew"
+          alias briw='/usr/local/Homebrew/bin/brew'
       fi
-      # The following searches for all Terraform versions installed via 
-      # Homebrew. Sets up an alias for each version in the form 'terraformXX' 
-      # where XX is the minor number for 0.XX releases. Emulation via Rosetta 
-      # is used, if needed.
-      local tf ver bin
-      for tf in /usr/local/Cellar/terraform@*(N) /opt/homebrew/Cellar/terraform@*(N); do
-        ver=${${${tf:t}#*@}#0.}
-        bin=( $tf/*/bin/terraform(NOn) )
-        [[ -n $ver && -n $bin[1] ]] || continue
-        if [[ $(quiet file $bin[1]) == *$isa* ]]; then
-          alias "terraform$ver"="${bin[1]}"
-        else
-          alias "terraform$ver"="$emu ${bin[1]}"
-        fi
+      # Search for all alternative/pinned versions of Homebrew packages, and
+      # sets up <name><ver> aliases for each of that package's binaries.
+      local brew_prefixes=( /usr/local/Cellar*(N) /opt/homebrew/Cellar*(N) )
+      local prefix progpath ver binpaths bin
+      for prefix in $brew_prefixes; do
+        for progpath in $prefix/*@*(-/N); do
+          ver=${${progpath:t}##*@}
+          binpaths=( $progpath/*/bin(-/OnN) )
+          [[ -n $ver && -n $binpaths[1] ]] || continue
+          for bin in $binpaths[1]/*(-*N);
+            alias "${bin:t}$ver"=$bin
+        done
       done
     }
     ;;
