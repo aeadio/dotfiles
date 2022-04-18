@@ -29,3 +29,6 @@ micro/*
 !micro/settings.json
 packer
 vscode
+
+# zsh third party plugins
+zsh/plugins/*/
