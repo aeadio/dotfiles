@@ -1,6 +1,28 @@
 #!/usr/bin/env zsh
 # vim: ft=sh ts=2 sw=2 et:
 
+# Provides two commands:
+# 
+# dynexport [var[=val]] ...
+# 
+#   Behaves like "export" for variables, except also writes the variable to a 
+#   global store which is automatically sourced during precmd by all shells. 
+#   This allows variables such as session tokens / API keys to be shared across 
+#   shells.
+#   
+#   If =val is absent, the value of 'var' is taken from the shell's current
+#   environment. In the var=val form, val may only be scalar. In the 'var'
+#   for, val may be non-scalar, however note that non-scalar variables are 
+#   always exported to child processes as scalar. In either case, if the value 
+#   of 'val' is empty (including if 'var' was unset), the var is removed from 
+#   the global store.
+#   
+#   Parameters considered special by the shell will raise an error and abort.
+# 
+# dynunset var ...
+#   
+#   Unsets 'var', and removes it from the global store.
+
 _precmd_dynenv() {
   emulate -LR zsh
   [[ -r ${DYNENV_FILE:-$HOME/.dynenv} ]] && . ${DYNENV_FILE:-$HOME/.dynenv}
@@ -8,54 +30,62 @@ _precmd_dynenv() {
 autoload -Uz add-zsh-hook
 add-zsh-hook precmd _precmd_dynenv
 
+_dynunset_delete() {
+  emulate -LR zsh
+  local dynenv=${DYNENV_FILE:-$HOME/.dynenv}
+  [[ -r $dynenv && -w $dynenv ]] || return
+  # note: sed -i is not portable
+  sed "/^unset $var;.*/d" <<EOF >$dynenv
+$(< $dynenv)
+EOF
+}
+
 dynexport() {
   emulate -LR zsh
-  setopt extended_glob
-  local dynenv=${DYNENV_FILE:-$HOME/.dynenv}
-  local arg var val
+  local arg var val interpret
   for arg in $@; do
-    if [[ -z ${arg:#[[:alpha:]_][[:alnum:]_]#=*} ]]; then
-      # arg was given in `var=val` form
+    if [[ $arg =~ ^[[:alnum:]_]+= ]]; then
       var=${arg%%=*}
-      val=${arg#*=}
-    else
+      interpret=1
+    elif [[ $arg =~ ^[[:alnum:]_]+$ ]]; then
       var=$arg
-    fi
-    # Specials may fail to import on precmd source, and shouldn't be expected
-    # to be portable across shell instances.
-    if [[ ${(tP)var} == *special* ]]; then
-      print "$0: cannot export special parameter $arg" >&2
-      continue
-    fi
-    # Remove the old copy from the dynenv, if present.
-    if [[ -r $dynenv && -w $dynenv ]]; then
-      # note: sed -i is not portable
-      sed "/^unset $var;.*/d" <<EOF >$dynenv
-$(cat $dynenv)
-EOF
-    fi
-    # Get the val if it wasn't passed in. If it's unset, do not propagate it.
-    if set + | grep -q "^$var$"; then
-      val=${(P)var}
+      interpret=
     else
+      >&2 <<< "fatal: unable to parse parameter: $arg"
+      return
+    fi
+    if [[ ${(tP)var} == *special* ]]; then
+      >&2 <<< "fatal: cannot set special parameter $var"
+      return
+    fi
+    if (( $interpret )); then
+      # Have the shell interpret the assignment so future expansion & typeset
+      # dumping works as expected.
+      if ! eval "$arg"; then
+        >&2 <<< "fatal: bad assignment"
+        return
+      fi
+    fi
+    _dynunset_delete $var
+    val=${(P)var}
+    if [[ -z $val ]]; then
       continue
     fi
-    local evalstring="unset $var; $(typeset -p $var); export $var # $(date -u '+%Y-%m-%dT%H:%M:%S')"
+    export $var
+    local evalstring="unset $var; $(typeset -p $var) # $(date -u '+%Y-%m-%dT%H:%M:%S')"
     eval $evalstring
-    print -r $evalstring >> $dynenv
+    >> ${DYNENV_FILE:-$HOME/.dynenv} <<< $evalstring 
   done
 }
 
 dynunset() {
   emulate -LR zsh
-  local dynenv=${DYNENV_FILE:-$HOME/.dynenv}
-  [[ -r $dynenv && -w $dynenv ]] || return
   local var
   for var in $@; do
-    # note: sed -i is not portable
-    sed "/^unset $var;.*/d" <<EOF >$dynenv
-$(cat $dynenv)
-EOF
+    _dynunset_delete $var
+    if [[ ${(tP)var} == *special* ]]; then
+      continue
+    fi
     unset $var
   done
 }
