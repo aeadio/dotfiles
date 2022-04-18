@@ -76,3 +76,7 @@ bindkey '^Z'      undo
 # Perform history expansion during normal editing flow
 bindkey ' '       magic-space
 bindkey '^@'      autosuggest-accept                 # ctrl-space
+
+# Escape key breaks out of menu selection
+zmodload -i zsh/complist &&
+bindkey -M menuselect '\e' send-break
