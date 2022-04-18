@@ -21,7 +21,7 @@
 # actor sets HISTFILE on us without properly saving and clearing the history 
 # buffer, or other buggy behavior. We can't really detect or fix that, so we're 
 # stuck assuming the user's other plugins and config are not awful.
-  
+
 _chpwd_projecthistory() {
   emulate -LR zsh
   local gitroot=$(git rev-parse --show-toplevel 2>/dev/null)
@@ -31,13 +31,13 @@ _chpwd_projecthistory() {
       # We're moving around inside the gitroot. Do nothing.
       return
     fi
-    if ! set + | grep -q '^PROJHIST_DEFAULT_HISTFILE$'; then
+    if (( ! $+PROJHIST_DEFAULT_HISTFILE )); then
       # Only save the HISTFILE if we're coming from a normal folder, not
       # another gitroot.
       PROJHIST_DEFAULT_HISTFILE=$HISTFILE
     fi
     new_histfile=$gitroot/.history.user 
-  elif set + | grep -q '^PROJHIST_DEFAULT_HISTFILE$'; then
+  elif (( $+PROJHIST_DEFAULT_HISTFILE )); then
     # We just left a gitroot, so pivot back to default history.
     new_histfile=$PROJHIST_DEFAULT_HISTFILE
     unset PROJHIST_DEFAULT_HISTFILE
@@ -67,7 +67,7 @@ add-zsh-hook chpwd _chpwd_projecthistory
 # HISTFILE, flushing and clearing any dirty history buffer.
 sethistfile() {
   emulate -LR zsh
-  if set + | grep -q '^PROJHIST_DEFAULT_HISTFILE$'; then
+  if (( $+PROJHIST_DEFAULT_HISTFILE )); then
     PROJHIST_DEFAULT_HISTFILE=$1
   else
     fc -AI 2>/dev/null | :
