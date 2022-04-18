@@ -29,8 +29,7 @@ case $OS in
   darwin)
     # x86 aliases
     () {
-      emulate -LR zsh
-      setopt glob_subst
+      emulate -L zsh -o glob_subst
       local isa=$(uname -m)
       local emu
       if [[ $isa == 'arm64' ]]; then
@@ -47,8 +46,8 @@ case $OS in
       for tf in /usr/local/Cellar/terraform@*(N) /opt/homebrew/Cellar/terraform@*(N); do
         ver=${${${tf:t}#*@}#0.}
         bin=( $tf/*/bin/terraform(NOn) )
-        [[ -n $ver && -n ${bin[1]} ]] || continue
-        if quiet file ${bin[1]} | grep -q $isa; then
+        [[ -n $ver && -n $bin[1] ]] || continue
+        if [[ $(quiet file $bin[1]) == *$isa* ]]; then
           alias "terraform$ver"="${bin[1]}"
         else
           alias "terraform$ver"="$emu ${bin[1]}"

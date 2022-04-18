@@ -17,11 +17,11 @@ fi
 # are expected to be installed as Git submodules. See zsh/functions/zp for 
 # installation wrapper.
 () {
-  # Plugins shouldn't be affected by -- or care about -- our choice of options
-  emulate -LR zsh
   local f
-  for f in $ZSH/plugins/*(-.e:'[[ -x $REPLY ]]':N); . $f  # first party plugins
-  for f in $ZSH/plugins/*/*.plugin.zsh(-.N);        . $f  # third party plugins
+  for f in $ZSH/plugins/*(-.e:'[[ -x $REPLY ]]':N); # first party plugins
+     emulate -R zsh -c ". $f"
+  for f in $ZSH/plugins/*/*.plugin.zsh(-.N);        # third party plugins
+     emulate -R zsh -c ". $f"
 }
 
 # User functions

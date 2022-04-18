@@ -2,80 +2,80 @@
 # vim: ft=sh ts=2 sw=2 et:
 
 setopt prompt_subst
-setopt interactive_comments  # Allows comments in a proc substitution $()
 
-PS1=$(
-  # Build up our prompt piece by piece. Result:
-  # user@host:dir (gitbranch) %awsprofile
-  # > 
+() {
+  emulate -L zsh -o interactive_comments
   
-  add()     print -n "$*"
-  newline() print ""
-  
-  # Start with a newline so we always have some visual padding between commands
-  newline
-  
-  # Username
-  # Colored red if root, else cyan
-  add "%(!,%F{red},%F{cyan})%n%f"
-  
-  # Hostname
-  # Use the full hostname (FQDN) if over SSH/mosh, else the short hostname
-  # Colored green if over SSH/mosh, else bright magenta
-  if [[ -n $SSH_CLIENT || -n $SSH_TTY ]]; then
-    add "@%F{green}%M%f"
-  else
-    add "@%B%F{magenta}%m%f%b"
-  fi
-  
-  # Directory
-  # Colored bright blue
-  add ":%B%F{blue}%~%f%b"
-  
-  # Git branch
-  # Fun: inside $() expansion, stdout is not considered to be connected to a 
-  # terminal. That's obvious in hindsight, but breaks our 'quiet' function 
-  # inside 'has'. Need to think of a clever POSIX fix to cover this case.
-  if has git &>/dev/null; then
-    add '$(
-      exec 2>/dev/null
-      local branch="$(git symbolic-ref -q --short HEAD ||
-        git rev-parse --short HEAD)"
-      [[ -n $branch ]] && print -n " (%B%F{cyan}$branch%f%b)"
-    )'
-  fi
-  
-  # AWS profile
-  # Only shows up if within a project directory (~/Source/*, ~/src/*)
-  add '$(
-    if [[ -n $AWS_PROFILE && ($PWD = $HOME/Source* || $PWD = $HOME/src*) ]]; then
-      print -n " %%%F{cyan}$AWS_PROFILE%f"
+  PS1=$(
+    # Build up our prompt piece by piece. Result:
+    # user@host:dir (gitbranch) %awsprofile
+    # > 
+    
+    add()     print -n "$*"
+    newline() print ""
+    
+    # Start with a newline so we always have some visual padding between commands
+    newline
+    
+    # Username
+    # Colored red if root, else cyan
+    add "%(!,%F{red},%F{cyan})%n%f"
+    
+    # Hostname
+    # Use the full hostname (FQDN) if over SSH/mosh, else the short hostname
+    # Colored green if over SSH/mosh, else bright magenta
+    if [[ -n $SSH_CLIENT || -n $SSH_TTY ]]; then
+      add "@%F{green}%M%f"
+    else
+      add "@%B%F{magenta}%m%f%b"
     fi
-  )'
-  
-  newline
-  
-  # Prompt
-  # Letter R if within ranger, else >
-  #  Colored red if root, green if within ranger, else cyan
-  if [[ -n $RANGER_LEVEL ]]; then
-    add "%(!,%F{red},%F{green})R%f "
-  else
-    add "%(!,%F{red},%F{cyan})>%f "
-  fi
-)
+    
+    # Directory
+    # Colored bright blue
+    add ":%B%F{blue}%~%f%b"
+    
+    # Git branch
+    # Fun: inside $() expansion, stdout is not considered to be connected to a 
+    # terminal. That's obvious in hindsight, but breaks our 'quiet' function 
+    # inside 'has'. Need to think of a clever POSIX fix to cover this case.
+    if has git &>/dev/null; then
+      add '$(
+        exec 2>/dev/null
+        local branch="$(git symbolic-ref -q --short HEAD ||
+          git rev-parse --short HEAD)"
+        [[ -n $branch ]] && print -n " (%B%F{cyan}$branch%f%b)"
+      )'
+    fi
+    
+    # AWS profile
+    # Only shows up if within a project directory (~/Source/*, ~/src/*)
+    add '$(
+      if [[ -n $AWS_PROFILE && ($PWD = $HOME/Source* || $PWD = $HOME/src*) ]]; then
+        print -n " %%%F{cyan}$AWS_PROFILE%f"
+      fi
+    )'
+    
+    newline
+    
+    # Prompt
+    # Letter R if within ranger, else >
+    #  Colored red if root, green if within ranger, else cyan
+    if [[ -n $RANGER_LEVEL ]]; then
+      add "%(!,%F{red},%F{green})R%f "
+    else
+      add "%(!,%F{red},%F{cyan})>%f "
+    fi
+  )
 
-PS2=$(
-  # Prompt
-  # Letter R if within ranger, else >
-  #  Colored red if root, green if within ranger, else cyan
-  if [[ -n $RANGER_LEVEL ]]; then
-    print -n "%(!,%F{red},%F{green})R%f "
-  else
-    print -n "%(!,%F{red},%F{cyan})>%f "
-  fi
-)
-PS3=$PS2
-
-# Display history line number on the right-hand side, for use with ! expansion
-RPS1='%!'
+  PS2=$(
+    # Prompt
+    # Letter R if within ranger, else >
+    #  Colored red if root, green if within ranger, else cyan
+    if [[ -n $RANGER_LEVEL ]]; then
+      print -n "%(!,%F{red},%F{green})R%f "
+    else
+      print -n "%(!,%F{red},%F{cyan})>%f "
+    fi
+  )
+  PS3=$PS2
+}
