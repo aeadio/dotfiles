@@ -21,7 +21,7 @@ local plugins
 if (( $# )); then
   plugins=( "$@" )
 else
-  plugins=( $plugindir/*(-/e:'[[ -e $REPLY/.git ]]':N) )
+  plugins=( $plugindir/*(-/e:'[[ -e $REPLY/.git ]]':N:t) )
 fi
 
 local p
@@ -37,6 +37,8 @@ for p in $plugins; do
       >&2 <<< "error: Could not enter plugin directory $p."
       return 1
     fi
+    <<< ""
+    <<< "Updating $p..."
     git reset --hard &&
     git pull
   )
