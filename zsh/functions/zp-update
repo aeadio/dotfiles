@@ -13,7 +13,7 @@ if [[ ! -d $ZSH ]]; then
 fi
 
 local plugindir=$ZSH/plugins
-if [[ ! -d $plugdir ]]; then
+if [[ ! -d $plugindir ]]; then
   return
 fi
 
