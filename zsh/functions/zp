@@ -90,8 +90,7 @@ case $action in
       if [[ -e $plugdir/$p/.git ]]; then
         (
           cd $plugdir &&
-          git rm ./$p &&
-          git commit ./$p -m "zsh: Remove plugin $p"
+          git rm ./$p
         )
         if [[ $autoclean -eq 1 ]]; then
           clean+=( $p )
