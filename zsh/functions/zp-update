@@ -1,0 +1,46 @@
+#!/usr/bin/env zsh
+# vim: ft=sh ts=2 sw=2 et:
+emulate -LR zsh
+
+if (( ! $+commands[git] )); then
+  >&2 <<< "fatal: requires git"
+  return
+fi
+
+if [[ ! -d $ZSH ]]; then
+  >&2 <<< "error: zsh config directory not found: $ZSH"
+  return
+fi
+
+local plugindir=$ZSH/plugins
+if [[ ! -d $plugdir ]]; then
+  return
+fi
+
+local plugins
+if (( $# )); then
+  plugins=( "$@" )
+else
+  plugins=( $plugindir/*(-/e:'[[ -e $REPLY/.git ]]':N) )
+fi
+
+local p
+for p in $plugins; do
+  [[ -z "$p" ]] && continue
+  if [[ ! -e $plugindir/$p ]]; then
+    >&2 <<< "error: Plugin $p not found"
+    return
+  fi
+  (
+    unset GIT_DIR GIT_WORK_TREE &&
+    if ! cd $plugindir/$p; then
+      >&2 <<< "error: Could not enter plugin directory $p."
+      return 1
+    fi
+    git reset --hard &&
+    git pull
+  )
+  if (( $? )); then
+    >&2 <<< "error: plugin $p failed to update"
+  fi
+done

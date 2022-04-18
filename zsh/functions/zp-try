@@ -1,0 +1,40 @@
+#!/usr/bin/env zsh
+# vim: ft=sh ts=2 sw=2 et:
+emulate -LR zsh
+
+if (( ! $# )); then
+  >&2 <<< "usage: zp-try <giturl> [<giturl>...]"
+  return
+fi
+
+local cmd
+for cmd in git zshi; do
+  if (( ! $+commands[$cmd] )); then
+    >&2 <<< "fatal: requires $cmd"
+    return
+  fi
+fi
+
+local tmpdir=$(mktemp -d)  # XXX: -d option is not POSIX
+if [[ ! -d $tmpdir ]]; then
+  >&2 <<< "fatal: unable to create temp directory"
+  return
+fi
+trap "[[ -d $tmpdir ]] && rm -rf $tmpdir" EXIT
+
+local plugins=()
+local p
+for p in "$@"; do
+  if ! git clone --depth 1 $p $tmpdir/${p:t:r}; then
+    >&2 <<< "fatal: failed to load plugin $p"
+    return
+  fi
+  plugins+( ${(q)p:t:r} )
+done
+
+zshi '
+for f in "'$tmpdir'"/*/*.plugin.zsh(-.N); do
+  emulate -R zsh -c ". $f"
+done
+PS1="'$'\n''[demo: '${(pj:, :)plugins}']'$'\n''${PS1#'"$'\n'"'}"
+'

@@ -13,9 +13,8 @@ fi
 
 # Plugins
 # Plain (executable) files in zsh/plugins/ are first-party plugins -- mine.
-# Directories are third-party plugins (if they contain a .plugin.zh file), and 
-# are expected to be installed as Git submodules. See zsh/functions/zp for 
-# installation wrapper.
+# Directories are third-party plugins (if they contain a .plugin.zsh file). See
+# zsh/functions/zp* for installation helper.
 () {
   local f
   for f in $ZSH/plugins/*(-.e:'[[ -x $REPLY ]]':N); # first party plugins
