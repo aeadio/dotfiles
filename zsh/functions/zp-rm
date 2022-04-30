@@ -60,7 +60,7 @@ fi
     fi
   done
   
-  if (( ! $#changed )); then
+  if (( ! ${#changed} )); then
     return
   fi
   

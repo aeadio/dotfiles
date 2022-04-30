@@ -21,7 +21,7 @@ fi
 if [[ -n $WIDGET ]]; then
   # We're invoked as a ZLE widget
   BUFFER=$line
-  CURSOR=$#BUFFER
+  CURSOR=${#BUFFER}
 else
   print $line
 fi

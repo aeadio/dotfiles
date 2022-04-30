@@ -22,7 +22,7 @@ zstyle ':completion:*' matcher-list 'm:{[:lower:]}={[:upper:]}'
 zstyle ':completion:*' completer _complete _match _approximate
 zstyle ':completion:*:match:*' original only
 zstyle -e ':completion:*:approximate:*' \
-  max-errors 'reply=($((($#PREFIX+$#SUFFIX)/4))numeric)'
+  max-errors 'reply=($(((${#PREFIX}+${#SUFFIX})/4))numeric)'
 
 # Ignore functions not intended to be user-facing
 zstyle ':completion:*:functions' ignored-patterns \

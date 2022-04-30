@@ -52,7 +52,7 @@ mkdir -p $plugindir
     changed+=( $name )
   done
   
-  if (( $#changed )); then
+  if (( ${#changed} )); then
     git commit -m "zsh: Add plugins ${(pj:, :)changed}" --only $changed
   fi
 )
