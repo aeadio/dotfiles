@@ -5,25 +5,18 @@
   # user@host:dir (gitbranch) %awsprofile
   # » 
   local ps1=(
-    # For some padding between commands
-    $'\n'
+    $'\n'  # Start with newline for some padding between commands
     
-    # Username
-    # Colored red if root, else cyan
-    '%(!,%F{red},%F{cyan})%n%f'
-    
-    '$(_prompt_host "@%s")'
-    
-    # Directory
-    ':%B%F{blue}%~%f%b'
-    
-    '$(_prompt_gitinfo    " %s")'
+    '%(!,%F{red},%F{cyan})%n%f'   # Username, colored red if root, else cyan
+    '$(_prompt_host       "@%s")'
+    '$(_prompt_directory  ":%s")'
     '$(_prompt_awsmfa     " %s")'
-    '$(_prompt_awsprofile " ⠶%s")'
+    '$(_prompt_awsprofile "⠶%s")'
+    '$(_prompt_gitinfo    " %s")'
     
     $'\n'
     
-    '$(_prompt_chevron "%s ")'
+    '$(_prompt_chevron    "%s ")'
   )
   
   # » 
@@ -59,6 +52,26 @@ _prompt_host() {
   else
     printf -- ${1:-%s} '%B%F{magenta}%m%f%b'
   fi
+}
+
+_prompt_directory() {
+  local fullpath=${(%):-%~}
+  local final=${(%):-%1d}
+  local components=$(( ${#fullpath//[^\/]/} + 1 ))
+  local maxwidth=$(( $COLUMNS / 2 ))
+  local display=$fullpath
+  if (( $#fullpath > $maxwidth && $components > 1 )); then
+    if (( $#final + 2 >= $maxwidth )); then
+      display="…/$final"
+    else
+      case $components in
+        2) display='…/%1d' ;;
+        3) display='%-1~/…/%1d' ;;
+        *) display='%-1~/…/%2d' ;;
+      esac
+    fi
+  fi
+  printf -- ${1:-%s} "%B%F{blue}$display%f%b"
 }
 
 _prompt_gitinfo() {
