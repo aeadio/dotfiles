@@ -9,8 +9,8 @@
     
     '%(!,%F{red},%F{cyan})%n%f'   # Username, colored red if root, else cyan
     '$(_prompt_host       "@%s")'
-    '$(_prompt_directory  ":%s")'
-    '$(_prompt_awsmfa     " %s")'
+    '$(_prompt_directory  ":%s ")'
+    '$(_prompt_awsmfa     "%s")'
     '$(_prompt_awsprofile "⠶%s")'
     '$(_prompt_gitinfo    " %s")'
     
