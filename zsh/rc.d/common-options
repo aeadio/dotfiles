@@ -10,6 +10,7 @@ setopt pushd_minus
 setopt equals
 setopt extended_glob
 setopt glob_star_short
+setopt interactive_comments
 setopt no_case_glob
 setopt no_case_match
 
