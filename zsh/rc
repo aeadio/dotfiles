@@ -34,15 +34,15 @@ fi
 # All first-party function definitions (but not bodies) are autoloaded
 if [[ -d $ZSH/functions ]]; then
   fpath=($ZSH/functions $fpath)  # prepend to prefer ours over vendor's
-  autoload -Uz $ZSH/functions/*(.:t)
+  autoload -z $ZSH/functions/*(.:t)
 fi
 
-# User ZLE widget
+# User ZLE widgets
 if [[ -d $ZSH/widgets ]]; then
   fpath=($ZSH/widgets $fpath)
   local f
   for f in $ZSH/widgets/*(-.N:t); do
-    autoload -U $f
+    autoload -z $f
     zle -N $f
   done
 fi
