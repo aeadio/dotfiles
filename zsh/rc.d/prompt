@@ -8,19 +8,18 @@
     $'\n'  # Start with newline for some padding between commands
     
     '%(!,%F{red},%F{cyan})%n%f'   # Username, colored red if root, else cyan
-    '$(_prompt_host       "@%s")'
-    '$(_prompt_directory  ":%s ")'
-    '$(_prompt_awsmfa     "%s")'
-    '$(_prompt_awsprofile "⠶%s")'
-    '$(_prompt_gitinfo    " %s")'
+    '@$(_prompt_host)'
+    ':$(_prompt_directory)'
+    '$(_prompt_aws)'
+    '$(_prompt_gitinfo)'
     
     $'\n'
     
-    '$(_prompt_chevron    "%s ")'
+    '$(_prompt_chevron)'
   )
   
   # » 
-  local ps2=( '$(_prompt_chevron "%s ")' )
+  local ps2=( '$(_prompt_chevron)' )
   
   # ?
   local ps3=( '%(!,%F{red},%F{cyan})?%f ' )
@@ -48,9 +47,9 @@
 # Functions for generating prompt content
 _prompt_host() {
   if (( $+SSH_CLIENT || $+SSH_TTY )); then
-    printf -- ${1:-%s} '%F{green}%M%f'
+    print -n '%F{green}%M%f'
   else
-    printf -- ${1:-%s} '%B%F{magenta}%m%f%b'
+    print -n '%B%F{magenta}%m%f%b'
   fi
 }
 
@@ -71,44 +70,46 @@ _prompt_directory() {
       esac
     fi
   fi
-  printf -- ${1:-%s} "%B%F{blue}$display%f%b"
+  if (( $#display > $maxwidth )); then
+    display="$display"$'\n'
+  else
+    display="$display "
+  fi
+  print -n "%B%F{blue}$display%f%b"
 }
 
 _prompt_gitinfo() {
   # PROMPT_GITINFO is populated by _prompt_gitinfo_async (see zsh/functions/)
   # asynchronously (see below)
   if [[ -n $PROMPT_GITINFO ]]; then
-    printf -- ${1:-%s} "$PROMPT_GITINFO"
+    print -n "$PROMPT_GITINFO "
   fi
 }
 
-_prompt_awsprofile() {
-  if [[ -n $AWS_PROFILE ]]; then
-    printf -- ${1:-%s} "%B%F{magenta}$AWS_PROFILE%f%b"
-  fi
-}
-
-_prompt_awsmfa() {
-  if [[ -z $MFA_ARN ]]; then
-    return
-  fi
-  local good="🯊" expired="🯊" unknown="🯊" bad="🯊"
-  if [[ -z $AWS_SESSION_TOKEN ]]; then
-    printf -- ${1:-%s} "%B%F{red}$bad%f%b"
-    return
-  fi
+_prompt_aws() {
+  local token profile
   local age
-  if [[ -n $DYNENV_FILE ]]; then
-    age=$(quiet sed -n 's/^unset AWS_SESSION_TOKEN.*# \([[:digit:]]*\)$/\1/p' $DYNENV_FILE)
+  if (( $+MFA_ARN )); then
+    if [[ -z $AWS_SESSION_TOKEN ]]; then
+      token='%B%F{red}🯊%f%b'
+    elif [[ -n $DYNENV_FILE ]]; then
+      age=$(quiet sed -n 's/^unset AWS_SESSION_TOKEN.*# \([[:digit:]]*\)$/\1/p' $DYNENV_FILE)
+      if [[ -n $age ]]; then
+        if (( $(date +%s) - age > ${MFA_DURATION:-86400} )); then
+          token='%F{yellow}🯊%f'
+        else
+          token='%B%F{green}🯊%f%b'
+        fi
+      else
+        token='%B%F{yellow}🯊%f%b'
+      fi
+    fi
   fi
-  if [[ -z $age ]]; then
-    printf -- ${1:-%s} "%B%F{yellow}$unknown%f%b"
-    return
+  if [[ -n ${AWS_PROFILE:/default/} ]]; then
+    profile="⠶%B%F{magenta}${AWS_PROFILE:/default/}%f%b"
   fi
-  if (( $(date +%s) - age > ${MFA_DURATION:-86400} )); then
-    printf -- ${1:-%s} "%F{yellow}$expired%f"
-  else
-    printf -- ${1:-%s} "%B%F{green}$good%f%b"
+  if [[ -n "$token$profile" ]]; then
+    print -n "$token$profile "
   fi
 }
 
@@ -120,9 +121,9 @@ _prompt_chevron() {
     chevron="»"
   fi
   if (( _BAD_INPUT > 0 )); then
-    printf -- ${1:-%s} "%(!,%F{magenta},%F{red})$chevron%f"
+    printf -- ${1:-%s} "%(!,%F{magenta},%F{red})$chevron%f "
   else
-    printf -- ${1:-%s} "%(!,%F{red},%F{cyan})$chevron%f"
+    printf -- ${1:-%s} "%(!,%F{red},%F{cyan})$chevron%f "
   fi
 }
 
