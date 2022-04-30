@@ -23,20 +23,51 @@
 #   
 #   Unsets 'var', and removes it from the global store.
 
-_precmd_dynenv() {
+: ${DYNENV_FILE:=$HOME/.dynenv}
+: ${DYNENV_FSWATCH:=1}
+
+_dynenv_source() {
   emulate -LR zsh
-  [[ -r ${DYNENV_FILE:-$HOME/.dynenv} ]] && . ${DYNENV_FILE:-$HOME/.dynenv}
+  [[ -r $DYNENV_FILE ]] && . $DYNENV_FILE
 }
 autoload -Uz add-zsh-hook
-add-zsh-hook precmd _precmd_dynenv
+add-zsh-hook precmd _dynenv_source
 
-_dynunset_delete() {
+if (( $DYNENV_FSWATCH && $+commands[fswatch] )); then
+  # We do not handle the DYNENV_FILE changing if we're monitoring it.
+  typeset -gr DYNENV_FILE
+  
+  _dynenv_zle_callback() {
+    emulate -LR zsh
+    local fd=$1 err=$2
+    if [[ -n $err ]]; then
+      return
+    fi
+    if ! read -r -u $fd; then
+      return
+    fi
+    # If we're not at the prompt, then don't invoke. Dynenv will be sourced
+    # on next precmd.
+    if zle && [[ $CONTEXT == 'start' ]]; then
+      _dynenv_source
+    fi
+  }
+  zle -N _dynenv_zle_callback
+  
+  () {
+    local fd
+    exec {fd}< <( fswatch -o $DYNENV_FILE )
+    command true  # https://www.zsh.org/mla/workers/2018/msg00966.html
+    zle -Fw $fd _dynenv_zle_callback
+  }
+fi
+
+_dynenv_delete() {
   emulate -LR zsh
-  local dynenv=${DYNENV_FILE:-$HOME/.dynenv}
-  [[ -r $dynenv && -w $dynenv ]] || return
+  [[ -r $DYNENV_FILE && -w $DYNENV_FILE ]] || return
   # note: sed -i is not portable
-  sed "/^unset $var;.*/d" <<EOF >$dynenv
-$(< $dynenv)
+  sed "/^unset $1;.*/d" <<EOF >$DYNENV_FILE
+$(< $DYNENV_FILE)
 EOF
 }
 
@@ -66,7 +97,7 @@ dynexport() {
         return
       fi
     fi
-    _dynunset_delete $var
+    _dynenv_delete $var
     val=${(P)var}
     if [[ -z $val ]]; then
       continue
@@ -74,7 +105,7 @@ dynexport() {
     export $var
     local evalstring="unset $var; $(typeset -p $var) # $(date -u '+%Y-%m-%dT%H:%M:%S')"
     eval $evalstring
-    >> ${DYNENV_FILE:-$HOME/.dynenv} <<< $evalstring 
+    >> $DYNENV_FILE <<< $evalstring 
   done
 }
 
@@ -82,7 +113,7 @@ dynunset() {
   emulate -LR zsh
   local var
   for var in $@; do
-    _dynunset_delete $var
+    _dynenv_delete $var
     if [[ ${(tP)var} == *special* ]]; then
       continue
     fi
