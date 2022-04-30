@@ -103,7 +103,7 @@ dynexport() {
       continue
     fi
     export $var
-    local evalstring="unset $var; $(typeset -p $var) # $(date -u '+%Y-%m-%dT%H:%M:%S')"
+    local evalstring="unset $var; $(typeset -p $var) # $(date '+%s' 2>/dev/null)"
     eval $evalstring
     >> $DYNENV_FILE <<< $evalstring 
   done
