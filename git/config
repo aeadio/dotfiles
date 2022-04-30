@@ -1,11 +1,20 @@
 [include]
   path = user
-[pull]
-  rebase = true
 [init]
   defaultBranch = main
+[pull]
+  rebase = true
+[fetch]
+	recurseSubmodules = true
+	parallel = 0
 [filter "lfs"]
   clean = git-lfs clean -- %f
   smudge = git-lfs smudge -- %f
   process = git-lfs filter-process
   required = true
+[status]
+	submoduleSummary = true
+[submodule]
+	recurse = true
+[alias]
+	pullall = !git pull && git submodule sync --recursive && git submodule update --init --recursive
