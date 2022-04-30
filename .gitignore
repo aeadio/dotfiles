@@ -17,6 +17,7 @@ terraform
 zsh/history
 
 # machine-specific
+asciinema/install-id
 git/user
 
 # uninteresting stuff
