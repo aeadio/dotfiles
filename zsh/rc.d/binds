@@ -66,9 +66,10 @@ bindkey '^H'      run-help
 bindkey '^I'      fzf-tab-complete                   # tab
 bindkey '^K'      kill-whole-line
 bindkey '^L'      list-choices
-bindkey '^Q'      quote-line
+bindkey '^N'      autosuggest-toggle
 bindkey '^R'      quoted-insert
 bindkey '^S'      spell-word
+bindkey '^W'      quote-line
 bindkey '^Y'      redo
 bindkey '^X'      clear-screen
 bindkey '^Z'      undo
