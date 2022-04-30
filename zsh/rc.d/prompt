@@ -20,7 +20,6 @@
     '$(_prompt_gitinfo    " %s")'
     '$(_prompt_awsmfa     " %s")'
     '$(_prompt_awsprofile " ⠶%s")'
-    '$(_prompt_ranger     " [%s]")'
     
     $'\n'
     
@@ -100,17 +99,17 @@ _prompt_awsmfa() {
   fi
 }
 
-_prompt_ranger() {
-  if (( $+RANGER_LEVEL )); then
-    print -n '%F{green}R%f'
-  fi
-}
-
 _prompt_chevron() {
-  if (( _BAD_INPUT > 0 )); then
-    printf -- ${1:-%s} '%(!,%F{magenta},%F{red})»%f'
+  local chevron
+  if (( $+RANGER_LEVEL )); then
+    chevron="R›"
   else
-    printf -- ${1:-%s} '%(!,%F{red},%F{cyan})»%f'
+    chevron="»"
+  fi
+  if (( _BAD_INPUT > 0 )); then
+    printf -- ${1:-%s} "%(!,%F{magenta},%F{red})$chevron%f"
+  else
+    printf -- ${1:-%s} "%(!,%F{red},%F{cyan})$chevron%f"
   fi
 }
 

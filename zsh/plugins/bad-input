@@ -22,6 +22,6 @@ _paste_command() {
   _BAD_INPUT=2
 }
 
-for promptchar in » $; do
+for promptchar in » › R› $; do
   alias $promptchar=_paste_command
 done
