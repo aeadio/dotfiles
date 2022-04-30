@@ -39,11 +39,7 @@ if (( $DYNENV_FSWATCH && $+commands[fswatch] )); then
   
   _dynenv_zle_callback() {
     emulate -LR zsh
-    local fd=$1 err=$2
-    if [[ -n $err ]]; then
-      return
-    fi
-    if ! read -r -u $fd; then
+    if ! read -r -u $1; then
       return
     fi
     # If we're not at the prompt, then don't invoke. Dynenv will be sourced
