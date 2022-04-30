@@ -58,10 +58,10 @@ _prompt_directory() {
   local final=${(%):-%1d}
   local components=$(( ${#fullpath//[^\/]/} + 1 ))
   local maxwidth=$(( $COLUMNS / 2 ))
-  local display=$fullpath
+  local display='%~'
   if (( $#fullpath > $maxwidth && $components > 1 )); then
     if (( $#final + 2 >= $maxwidth )); then
-      display="…/$final"
+      display="…/%1d"
     else
       case $components in
         2) display='…/%1d' ;;
@@ -70,7 +70,7 @@ _prompt_directory() {
       esac
     fi
   fi
-  if (( $#display > $maxwidth )); then
+  if (( ${#${(%)display}} > $maxwidth )); then
     display="$display"$'\n'
   else
     display="$display "
