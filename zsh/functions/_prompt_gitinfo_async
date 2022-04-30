@@ -1,0 +1,95 @@
+# vim: ft=sh ts=2 sw=2 et:
+emulate -L zsh -e
+
+# Core awk code adapted from https://github.com/woefe/git-prompt.zsh
+# Upstream license:
+#   git-prompt.zsh -- a lightweight git prompt for zsh.
+#   Copyright © 2019 Wolfgang Popp
+#  
+#   Permission is hereby granted, free of charge, to any person obtaining
+#   a copy of this software and associated documentation files (the "Software"),
+#   to deal in the Software without restriction, including without limitation
+#   the rights to use, copy, modify, merge, publish, distribute, sublicense,
+#   and/or sell copies of the Software, and to permit persons to whom the
+#   Software is furnished to do so, subject to the following conditions:
+#  
+#   The above copyright notice and this permission notice shall be included
+#   in all copies or substantial portions of the Software.
+#  
+#   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+#   EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES
+#   OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+#   IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,
+#   DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
+#   TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE
+#   OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+env GIT_OPTIONAL_LOCKS=0 git status --branch --porcelain=v2 2>&1 \
+  | awk '
+    BEGIN {
+      fmt_branch    = "⨕%%B%%F{cyan}%s%%f%%b"
+      fmt_detached  = "%%B%%F{cyan}%s%%f%%b"
+      fmt_behind    = "%%B%%F{red}↓%d%%f%%b"
+      fmt_ahead     = "%%B%%F{green}↑%d%%f%%b"
+      fmt_unmerged  = "%%F{yellow}↯%d%%f"
+      fmt_staged    = "%%B%%F{yellow}▲%d%%f%%b"
+      fmt_unstaged  = "%%B%%F{yellow}△%d%%f%%b"
+      fmt_untracked = "%%F{blue}⊘%d%%f"
+    }
+    
+    $2 == "branch.oid" {
+      oid = $3;
+    }
+    $2 == "branch.head" {
+      head = $3;
+    }
+    $2 == "branch.ab" {
+      ahead = $3;
+      behind = $4;
+    }
+    $1 == "?" {
+      ++untracked;
+    }
+    $1 == "u" {
+      ++unmerged;
+    }
+    $1 == "1" || $1 == "2" {
+      split($2, arr, "");
+      if (arr[1] != ".") {
+        ++staged;
+      }
+      if (arr[2] != ".") {
+        ++unstaged;
+      }
+    }
+    
+    END {
+      if (head == "(detached)")
+        printf(fmt_detached, substr(oid, 0, 7))
+      else if (head) {
+        gsub("%", "%%", head)
+        printf(fmt_branch, head)
+      } else
+        exit
+      
+      if (ahead || behind) {
+        printf ":"
+        if (behind < 0)
+          printf(fmt_behind, behind * -1)
+        if (ahead > 0)
+          printf(fmt_ahead, ahead)
+      }
+      
+      if (unmerged || staged || unstaged || untracked) {
+        printf " ⇄ "
+        if (unmerged > 0)
+          printf(fmt_unmerged, unmerged)
+        if (staged > 0)
+          printf(fmt_staged, staged)
+        if (unstaged > 0)
+          printf(fmt_unstaged, unstaged)
+        if (untracked > 0)
+          printf(fmt_untracked, untracked)
+      }
+    }
+  '

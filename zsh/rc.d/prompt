@@ -17,8 +17,9 @@
     # Directory
     ':%B%F{blue}%~%f%b'
     
-    '$(_prompt_gitinfo    " (%s)")'
-    '$(_prompt_awsprofile " %%%s")'
+    '$(_prompt_gitinfo    " %s")'
+    '$(_prompt_awsmfa     " %s")'
+    '$(_prompt_awsprofile " ⠶%s")'
     '$(_prompt_ranger     " [%s]")'
     
     $'\n'
@@ -62,23 +63,40 @@ _prompt_host() {
 }
 
 _prompt_gitinfo() {
+  # PROMPT_GITINFO is populated by _prompt_gitinfo_async (see zsh/functions/)
+  # asynchronously (see below)
   if [[ -n $PROMPT_GITINFO ]]; then
-    printf -- ${1:-%s} "%B%F{cyan}$PROMPT_GITINFO%f%b"
+    printf -- ${1:-%s} "$PROMPT_GITINFO"
   fi
-}
-
-_prompt_gitinfo_async() {
-  # current branch / hash in detached head
-  # commits ahead/behind/diverged
-  # inside?: rebase, bisect
-  local branch=$(git symbolic-ref -q --short HEAD ||
-    git rev-parse --short HEAD) 2>/dev/null
-  print -r -- "$branch"  # populates PROMPT_GITINFO, see below
 }
 
 _prompt_awsprofile() {
   if [[ -n $AWS_PROFILE && $PWD == $HOME/(Source|src)* ]]; then
-    printf -- ${1:-%s} "%F{cyan}$AWS_PROFILE%f"
+    printf -- ${1:-%s} "%B%F{magenta}$AWS_PROFILE%f%b"
+  fi
+}
+
+_prompt_awsmfa() {
+  if [[ -z $MFA_ARN ]]; then
+    return
+  fi
+  local ok="∿" no="≁"
+  if [[ -z $AWS_SESSION_TOKEN ]]; then
+    printf -- ${1:-%s} "%B%F{red}$no%f%b"
+    return
+  fi
+  local age
+  if [[ -n $DYNENV_FILE ]]; then
+    age=$(quiet sed -n 's/^unset AWS_SESSION_TOKEN.*# \([[:digit:]]*\)$/\1/p' $DYNENV_FILE)
+  fi
+  if [[ -z $age ]]; then
+    printf -- ${1:-%s} "%B%F{yellow}$ok%f%b"
+    return
+  fi
+  if (( $(date +%s) - age > ${MFA_DURATION:-86400} )); then
+    printf -- ${1:-%s} "%F{yellow}$ok%f"
+  else
+    printf -- ${1:-%s} "%B%F{green}$ok%f%b"
   fi
 }
 
@@ -99,8 +117,10 @@ _prompt_chevron() {
 # Async git status plumbing
 # Invokes on every precmd (before the prompt is drawn) plus once every 10 sec
 if has git; then
+  autoload -Uz add-zsh-hook
+  
   _prompt_gitinfo_finished_zle() {
-    emulate -LR zsh -o prompt_subst
+    emulate -L zsh
     local fd=$1
     local result
     zle -F $fd
@@ -115,17 +135,22 @@ if has git; then
     fi
   }
   zle -N _prompt_gitinfo_finished_zle
-
+  
   _prompt_gitinfo_invoke() {
-    emulate -LR zsh
+    emulate -L zsh
     local fd
     exec {fd}< <( _prompt_gitinfo_async )
     command true  # https://www.zsh.org/mla/workers/2018/msg00966.html
     zle -Fw $fd _prompt_gitinfo_finished_zle
   }
-  autoload -Uz add-zsh-hook
   add-zsh-hook precmd _prompt_gitinfo_invoke
-
+  
   TMOUT=10
   trap _prompt_gitinfo_invoke ALRM
+  
+  _prompt_gitinfo_clear() {
+    # Otherwise old prompt shows up for a few frames
+    unset PROMPT_GITINFO
+  }
+  add-zsh-hook chpwd _prompt_gitinfo_clear
 fi
