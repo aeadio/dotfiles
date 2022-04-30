@@ -1,4 +1,3 @@
-#!/usr/bin/env zsh
 # vim: ft=sh ts=2 sw=2 et:
 
 # NOTE: This file (and rc.d/, etc) contain zsh-specific configuration.
@@ -11,28 +10,13 @@ if [[ ! -d $ZSH ]]; then
   return
 fi
 
-# Some utility functions we'll use throughout rc.d and first party plugins.
-quiet() {
-  # If we're not connected to a terminal, then don't suppress stdout -- so that
-  # quiet can be used inside pipelines without wrapping the whole thing.
-  if [[ -t 1 ]]; then
-    "$@" &>/dev/null
-  else
-    "$@" 2>/dev/null
-  fi
+# pre.d
+# Bootstrap functions to be run before anything else is loaded. Ie, make sure
+# compinit is initialized before plugins that hook it.
+() {
+  local f
+  for f in $ZSH/pre.d/*(e:'[[ -x $REPLY ]]':onN); . $f
 }
-
-has() {
-  (( $+commands[$1] ))
-}
-
-isgnu() {
-  has $1 && [[ $(quiet $1 --version) == *GNU* ]]
-}
-
-# NOTE: compinit must be initialized before fzf-tab
-autoload -Uz compinit &&
-compinit
 
 # Plugins
 # Plain (executable) files in zsh/plugins/ are first-party plugins -- mine.

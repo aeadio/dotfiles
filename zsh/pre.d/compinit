@@ -1,0 +1,6 @@
+#!/usr/bin/env zsh
+# vim: ft=sh ts=2 sw=2 et:
+
+# NOTE: compinit must be initialized before fzf-tab
+autoload -Uz compinit &&
+compinit
