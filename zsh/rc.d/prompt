@@ -1,78 +1,131 @@
 #!/usr/bin/env zsh
 # vim: ft=sh ts=2 sw=2 et:
 
-setopt prompt_subst
-
 () {
-  emulate -L zsh -o interactive_comments
-  
-  PS1=$(
-    # Build up our prompt piece by piece. Result:
-    # user@host:dir (gitbranch) %awsprofile
-    # » 
-    
-    add()     print -n "$*"
-    newline() print ""
-    
-    # Start with a newline so we always have some visual padding between commands
-    newline
+  # user@host:dir (gitbranch) %awsprofile
+  # » 
+  local ps1=(
+    # For some padding between commands
+    $'\n'
     
     # Username
     # Colored red if root, else cyan
-    add '%(!,%F{red},%F{cyan})%n%f'
+    '%(!,%F{red},%F{cyan})%n%f'
     
-    # Hostname
-    # Use the full hostname (FQDN) if over SSH/mosh, else the short hostname
-    # Colored green if over SSH/mosh, else bright magenta
-    if (( $+SSH_CLIENT || $+SSH_TTY )); then
-      add '@%F{green}%M%f'
-    else
-      add '@%B%F{magenta}%m%f%b'
-    fi
+    '$(_prompt_host "@%s")'
     
     # Directory
-    # Colored bright blue
-    add ':%B%F{blue}%~%f%b'
+    ':%B%F{blue}%~%f%b'
     
-    # Git branch
-    # Fun: inside $() expansion, stdout is not considered to be connected to a 
-    # terminal. That's obvious in hindsight, but breaks our 'quiet' function 
-    # inside 'has'. Need to think of a clever POSIX fix to cover this case.
-    if has git &>/dev/null; then
-      add '$(
-        exec 2>/dev/null
-        local branch="$(git symbolic-ref -q --short HEAD ||
-          git rev-parse --short HEAD)"
-        [[ -n $branch ]] && print -n " (%B%F{cyan}$branch%f%b)"
-      )'
-    fi
+    '$(_prompt_gitinfo    " (%s)")'
+    '$(_prompt_awsprofile " %%%s")'
+    '$(_prompt_ranger     " [%s]")'
     
-    # AWS profile
-    # Only shows up if within a project directory (~/Source/*, ~/src/*)
-    add '$(
-      if [[ -n $AWS_PROFILE && ($PWD = $HOME/Source* || $PWD = $HOME/src*) ]]; then
-        print -n " %%%F{cyan}$AWS_PROFILE%f"
-      fi
-    )'
+    $'\n'
     
-    if (( $+RANGER_LEVEL )); then
-      add ' [%F{green}R%f]'
-    fi
-    
-    newline
-    
-    # Prompt
-    # If we tried to copy and paste a command, the prompt portion turns red.
-    # See: zsh/plugins/bad-input.
-    add '$(
-      if (( _BAD_INPUT > 0 )); then
-        print -n "%(!,%F{magenta},%F{red})»%f "
-      else
-        print -n "%(!,%F{red},%F{cyan})»%f "
-      fi
-    )'
+    '$(_prompt_chevron "%s ")'
   )
-
-  PS2="%(!,%F{red},%F{cyan})»%f "
-  PS3=$PS2
+  
+  # » 
+  local ps2=( '$(_prompt_chevron "%s ")' )
+  
+  # ?
+  local ps3=( '%(!,%F{red},%F{cyan})?%f ' )
+  
+  # function:linenum @ file:linenum
+  # → details
+  # Indent by 2 spaces for each execution depth
+  local ps4=(
+    $'\n'
+    '${(pl[${(%):-%e}+1][  ])}'
+    '%N:%i @ %x:%I'
+    $'\n'
+    '${(pl[${(%):-%e}+1][  ])}'
+    '→ '
+  )
+  
+  # Build prompts from arrays
+  setopt prompt_subst
+  for i in {1..4}; do
+    eval -- "PS$i=\"\${(j::)ps$i}\""
+    eval -- "RPS$i=\"\${(j::)rps$i}\""
+  done
 }
+
+# Functions for generating prompt content
+_prompt_host() {
+  if (( $+SSH_CLIENT || $+SSH_TTY )); then
+    printf -- ${1:-%s} '%F{green}%M%f'
+  else
+    printf -- ${1:-%s} '%B%F{magenta}%m%f%b'
+  fi
+}
+
+_prompt_gitinfo() {
+  if [[ -n $PROMPT_GITINFO ]]; then
+    printf -- ${1:-%s} "%B%F{cyan}$PROMPT_GITINFO%f%b"
+  fi
+}
+
+_prompt_gitinfo_async() {
+  # current branch / hash in detached head
+  # commits ahead/behind/diverged
+  # inside?: rebase, bisect
+  local branch=$(git symbolic-ref -q --short HEAD ||
+    git rev-parse --short HEAD) 2>/dev/null
+  print -r -- "$branch"  # populates PROMPT_GITINFO, see below
+}
+
+_prompt_awsprofile() {
+  if [[ -n $AWS_PROFILE && $PWD == $HOME/(Source|src)* ]]; then
+    printf -- ${1:-%s} "%F{cyan}$AWS_PROFILE%f"
+  fi
+}
+
+_prompt_ranger() {
+  if (( $+RANGER_LEVEL )); then
+    print -n '%F{green}R%f'
+  fi
+}
+
+_prompt_chevron() {
+  if (( _BAD_INPUT > 0 )); then
+    printf -- ${1:-%s} '%(!,%F{magenta},%F{red})»%f'
+  else
+    printf -- ${1:-%s} '%(!,%F{red},%F{cyan})»%f'
+  fi
+}
+
+# Async git status plumbing
+# Invokes on every precmd (before the prompt is drawn) plus once every 10 sec
+if has git; then
+  _prompt_gitinfo_finished_zle() {
+    emulate -LR zsh -o prompt_subst
+    local fd=$1
+    local result
+    zle -F $fd
+    read -ru $fd result
+    exec {fd}<&-
+    if [[ $result == $PROMPT_GITINFO ]]; then
+      return
+    fi
+    PROMPT_GITINFO=$result
+    if zle && [[ $CONTEXT == 'start' ]]; then
+      zle .reset-prompt
+    fi
+  }
+  zle -N _prompt_gitinfo_finished_zle
+
+  _prompt_gitinfo_invoke() {
+    emulate -LR zsh
+    local fd
+    exec {fd}< <( _prompt_gitinfo_async )
+    command true  # https://www.zsh.org/mla/workers/2018/msg00966.html
+    zle -Fw $fd _prompt_gitinfo_finished_zle
+  }
+  autoload -Uz add-zsh-hook
+  add-zsh-hook precmd _prompt_gitinfo_invoke
+
+  TMOUT=10
+  trap _prompt_gitinfo_invoke ALRM
+fi
