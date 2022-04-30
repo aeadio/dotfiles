@@ -20,7 +20,7 @@ unset AWS_SECRET_ACCESS_KEY
 unset AWS_SESSION_TOKEN
 
 aws sts get-session-token \
-  --duration-seconds 86400 \
+  --duration-seconds ${MFA_DURATION:-86400} \
   --output json \
   --serial-number $MFA_ARN \
   --token-code $mfacode \
