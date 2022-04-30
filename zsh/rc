@@ -38,10 +38,10 @@ if [[ -d $ZSH/functions ]]; then
 fi
 
 # User ZLE widget
-if [[ -d $ZSH/zle ]]; then
-  fpath=($ZSH/zle $fpath)
+if [[ -d $ZSH/widgets ]]; then
+  fpath=($ZSH/widgets $fpath)
   local f
-  for f in $ZSH/zle/*(-.N:t); do
+  for f in $ZSH/widgets/*(-.N:t); do
     autoload -U $f
     zle -N $f
   done
