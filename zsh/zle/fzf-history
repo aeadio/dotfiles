@@ -14,16 +14,8 @@ local ret=$?
 # prompt is munged.
 zle reset-prompt
 
-if [[ -z $line ]]; then
-  return $ret
-fi
-
-if [[ -n $WIDGET ]]; then
-  # We're invoked as a ZLE widget
-  BUFFER=$line
-  CURSOR=${#BUFFER}
-else
-  print $line
+if [[ -n $line ]]; then
+  LBUFFER=$line
 fi
 
 return $ret

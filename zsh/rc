@@ -37,6 +37,16 @@ if [[ -d $ZSH/functions ]]; then
   autoload -Uz $ZSH/functions/*(.:t)
 fi
 
+# User ZLE widget
+if [[ -d $ZSH/zle ]]; then
+  fpath=($ZSH/zle $fpath)
+  local f
+  for f in $ZSH/zle/*(-.N:t); do
+    autoload -U $f
+    zle -N $f
+  done
+fi
+
 # zshrc.d
 # Primary place for zsh config. Load last so that it may make use of plugins.
 () {

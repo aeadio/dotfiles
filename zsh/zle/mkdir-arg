@@ -1,0 +1,12 @@
+# vim: ft=sh ts=2 sw=2 et:
+# Credit: leah https://leahneukirchen.org/dotfiles/.zshrc
+emulate -L zsh
+
+local dir=
+modify-current-argument '${dir:=$ARG}'
+zle push-line
+if [[ $dir != */ ]]; then
+  dir=${dir:h}
+fi
+LBUFFER="mkdir -p $dir"
+RBUFFER=
