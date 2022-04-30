@@ -35,7 +35,7 @@ case $OS in
       fi
       # Search for all alternative/pinned versions of Homebrew packages, and
       # sets up <name><ver> aliases for each of that package's binaries.
-      local brew_prefixes=( /usr/local/Cellar*(N) /opt/homebrew/Cellar*(N) )
+      local brew_prefixes=( /usr/local/Cellar(N) /opt/homebrew/Cellar(N) )
       local prefix progpath ver binpaths bin
       for prefix in $brew_prefixes; do
         for progpath in $prefix/*@*(-/N); do

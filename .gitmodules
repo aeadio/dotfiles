@@ -11,5 +11,5 @@
 	path = zsh/plugins/fast-syntax-highlighting
 	url = https://github.com/zdharma-continuum/fast-syntax-highlighting.git
 [submodule "zsh/plugins/fzf-tab"]
-	path = zsh/plugins/fzf-tab
+	path = zsh/plugins/!fzf-tab
 	url = git@github.com:aeadio/fzf-tab.git
