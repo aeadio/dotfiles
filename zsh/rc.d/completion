@@ -7,6 +7,9 @@
 # Configure fzf-tab
 zstyle ':fzf-tab:*' fzf-flags '--height=40% --no-sort'
 
+# Auto rehash
+zstyle ":completion:*:commands" rehash true
+
 # Sorting
 zstyle ':completion:*' list-dirs-first true
 zstyle ':completion:complete:*:options' sort false
