@@ -1,9 +1,16 @@
 # vim: ft=sh ts=2 sw=2 et:
 emulate -L zsh
 
+local force=0
+
 if (( ! $# )); then
   >&2 <<< "usage: zp-add <giturl> [<giturl>...]"
   return
+fi
+
+if [[ $1 == -f ]]; then
+  force=1
+  shift
 fi
 
 if (( ! $+commands[git] )); then
@@ -11,7 +18,7 @@ if (( ! $+commands[git] )); then
   return
 fi
 
-if [[ ! -d $ZSH ]]; then
+if [[ -z $ZSH || ! -d $ZSH ]]; then
   >&2 <<< "error: zsh config directory not found: $ZSH"
   return
 fi
@@ -19,23 +26,33 @@ fi
 local plugindir=$ZSH/plugins
 mkdir -p $plugindir
 
-local repo name
-for repo in "$@"; do
-  [[ -z "$repo" ]] && continue
-  name=${repo:t:r}
-  if [[ -e $plugindir/$name ]]; then
-    >&2 <<< "warning: plugin $name exists, skipping..."
-    continue
+(
+  if ! cd $plugindir; then
+    >&2 <<< "fatal: could not enter plugin directory."
+    return 1
   fi
-  (
-    if ! cd $plugindir; then
-      >&2 <<< "error: Could not enter plugin directory."
-      return 1
+  unset GIT_DIR GIT_WORK_TREE GIT_INDEX_FILE GIT_OBJECT_DIRECTORY \
+    GIT_ALTERNATE_OBJECT_DIRECTORIES
+  
+  local changed=()
+  local repo name
+  for repo in "$@"; do
+    [[ -z "$repo" ]] && continue
+    name=${repo:t:r}
+    if [[ -e $name ]]; then
+      >&2 <<< "warning: plugin $name exists, skipping..."
+      continue
     fi
-    git clone $repo $name
-  )
-  if (( $? )); then
-    >&2 <<< "error: plugin $name failed to install"
-    return
+    git submodule add ${force:+--force} $repo $name
+    if (( $? )); then
+      >&2 <<< "error: failed to install plugin $name"
+      [[ -e $name ]] && rm -i -r $name
+      continue
+    fi
+    changed+=( $name )
+  done
+  
+  if (( $#changed )); then
+    git commit -m "zsh: Add plugins ${(pj:, :)changed}" --only $changed
   fi
-done
+)

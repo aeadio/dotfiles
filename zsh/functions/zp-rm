@@ -1,0 +1,73 @@
+# vim: ft=sh ts=2 sw=2 et:
+emulate -L zsh
+
+local force=
+
+if (( ! $# )); then
+  >&2 <<< "usage: zp-rm <pluginname> [<pluginname>...]"
+  return
+fi
+
+if [[ $1 == -f ]]; then
+  force=1
+  shift
+fi
+
+if (( ! $+commands[git] )); then
+  >&2 <<< "fatal: requires git"
+  return
+fi
+
+if [[ -z $ZSH || ! -d $ZSH ]]; then
+  >&2 <<< "error: zsh config directory not found: $ZSH"
+  return
+fi
+
+local plugindir=$ZSH/plugins
+if [[ ! -d $plugindir ]]; then
+  return
+fi
+
+(
+  if ! cd $plugindir; then
+    >&2 <<< "fatal: could not enter plugin directory."
+    return 1
+  fi
+  unset GIT_DIR GIT_WORK_TREE GIT_INDEX_FILE GIT_OBJECT_DIRECTORY \
+    GIT_ALTERNATE_OBJECT_DIRECTORIES
+  
+  local changed=() fail=
+  local p
+  for p in "$@"; do
+    [[ -z "$p" ]] && continue
+    if [[ ! -e $p ]]; then
+      >&2 <<< "warning: plugin $p not found"
+      continue
+    fi
+    if [[ -e $p/.git ]]; then
+      git submodule deinit ${force:+--force} $p &&
+      git rm ${force:+--force} $p
+      if (( $? )); then
+        >&2 <<< "fatal: failed to remove plugin $p"
+        fail=1
+        break
+      fi
+      changed+=( $p )
+    elif (( $force )); then
+      rm -i -r $p
+    else
+      >&2 <<< "fatal: plugin $p not a git module"
+    fi
+  done
+  
+  if (( ! $#changed )); then
+    return
+  fi
+  
+  if (( $fail )); then
+    >&2 <<< "warning: some plugins failed to remove; not committing"
+    return
+  fi
+  
+  git commit -m "zsh: Remove plugins ${(pj:, :)changed}" --only $changed
+)
