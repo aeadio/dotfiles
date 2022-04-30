@@ -43,11 +43,11 @@ compinit
   # plugin functions should have the ability to respond to our chosen options.
   local f
   for f in $ZSH/plugins/*(-.e:'[[ -x $REPLY ]]':onN); do  # first party plugins
-    emulate -LR zsh
+    emulate -L zsh
     . $f
   done
   for f in $ZSH/plugins/*/*.plugin.zsh(-.onN); do         # third party plugins
-    emulate -LR zsh
+    emulate -L zsh
     . $f
   done
 }

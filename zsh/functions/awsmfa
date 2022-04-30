@@ -1,5 +1,5 @@
 # vim: ft=zsh ts=2 sw=2 et:
-emulate -LR zsh
+emulate -L zsh
 
 if [[ -z $MFA_ARN ]]; then
   print "$0: MFA_ARN not set" >&2

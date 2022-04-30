@@ -1,6 +1,6 @@
 #!/usr/bin/env zsh
 # vim: ft=sh ts=2 sw=2 et:
-emulate -LR zsh
+emulate -L zsh
 
 if (( ! $# )); then
   >&2 <<< "usage: zp-add <giturl> [<giturl>...]"

@@ -1,5 +1,5 @@
 # vim: ft=zsh ts=2 sw=2 et:
-emulate -LR zsh
+emulate -L zsh
 
 if [[ $# -eq 0 ]]; then
   print "usage: awsprofile profilename" >&2

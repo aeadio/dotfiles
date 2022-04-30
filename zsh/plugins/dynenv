@@ -27,7 +27,7 @@
 : ${DYNENV_FSWATCH:=1}
 
 _dynenv_source() {
-  emulate -LR zsh
+  emulate -L zsh
   [[ -r $DYNENV_FILE ]] && . $DYNENV_FILE
 }
 autoload -Uz add-zsh-hook
@@ -38,7 +38,7 @@ if (( $DYNENV_FSWATCH && $+commands[fswatch] )); then
   typeset -gr DYNENV_FILE
   
   _dynenv_zle_callback() {
-    emulate -LR zsh
+    emulate -L zsh
     if ! read -r -u $1; then
       # If callback was triggered for an empty fd, an error occurred. Detach to
       # avoid busy loop.
@@ -63,7 +63,7 @@ if (( $DYNENV_FSWATCH && $+commands[fswatch] )); then
 fi
 
 _dynenv_delete() {
-  emulate -LR zsh
+  emulate -L zsh
   [[ -r $DYNENV_FILE && -w $DYNENV_FILE ]] || return
   # note: sed -i is not portable
   sed "/^unset $1;.*/d" <<EOF >$DYNENV_FILE
@@ -72,7 +72,7 @@ EOF
 }
 
 dynexport() {
-  emulate -LR zsh
+  emulate -L zsh
   local arg var val interpret
   for arg in $@; do
     if [[ $arg =~ ^[[:alnum:]_]+= ]]; then
@@ -110,7 +110,7 @@ dynexport() {
 }
 
 dynunset() {
-  emulate -LR zsh
+  emulate -L zsh
   local var
   for var in $@; do
     _dynenv_delete $var

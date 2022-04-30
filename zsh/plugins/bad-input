@@ -16,7 +16,7 @@ autoload -Uz add-zsh-hook
 add-zsh-hook precmd _bad_input_reset
 
 _paste_command() {
-  emulate -LR zsh
+  emulate -L zsh
   (( $# )) || return
   print -z "$*" &&
   _BAD_INPUT=2
