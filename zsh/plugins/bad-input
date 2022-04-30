@@ -1,26 +1,28 @@
 # vim: ft=sh ts=2 sw=2 et:
 
-# If we try to copy paste a command, reload it into the editing buffer and set
-# _BAD_INPUT flag so we can make it visually obvious the user made a mistake.
-
-# precmd happens before the prompt draws. The portion of the prompt which
-# checks _BAD_INPUT is in a subshell, so cannot unset. So decay from 2 on 
-# precmd. This way, when the target prompt is drawn, _BAD_INPUT is set to 1. By
-# the time the next prompt is drawn, it has already hit 0 and becomes unset.
-
 _bad_input_reset() {
   (( --_BAD_INPUT )) || unset _BAD_INPUT
 }
 autoload -Uz add-zsh-hook
 add-zsh-hook precmd _bad_input_reset
 
-_paste_command() {
-  emulate -L zsh
-  (( $# )) || return
-  print -z "$*" &&
-  _BAD_INPUT=2
-}
+typeset -Ag PROMPT_DANGEROUS=(
+  '>' 1
+  '$' 1
+  '»' 1
+  '›' 1
+  'R›' 1
+)
 
-for promptchar in » › R› $; do
-  alias $promptchar=_paste_command
-done
+# Note: this widget is auto-invoked by ZLE if present
+zle-line-finish() {
+  emulate -L zsh -o extended_glob
+  local firstword=${${(z)BUFFER}[1]}
+  if (( $+PROMPT_DANGEROUS[$firstword] )); then
+    BUFFER=${BUFFER/#${firstword}[[:space:]]#/}
+    zle push-line
+    BUFFER=
+    _BAD_INPUT=2
+  fi
+}
+zle -N zle-line-finish
