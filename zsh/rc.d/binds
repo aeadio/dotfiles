@@ -1,4 +1,4 @@
-#!/usr/bin/env zshvim: ft=sh ts=2 sw=2 et:
+# vim: ft=sh ts=2 sw=2 et:
 
 # This is an attempt to set keybinds that feel more conventional for a user
 # that grew up with post-90s GUI applications. This has not yet been tested

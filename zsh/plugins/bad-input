@@ -1,4 +1,3 @@
-#!/usr/bin/env zsh
 # vim: ft=sh ts=2 sw=2 et:
 
 # If we try to copy paste a command, reload it into the editing buffer and set
