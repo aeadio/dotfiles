@@ -11,7 +11,7 @@ if [[ ! -d $ZSH ]]; then
 fi
 
 # pre.d
-# Bootstrap functions to be run before anything else is loaded. Ie, make sure
+# Bootstrap config to be run before anything else is loaded. Ie, make sure
 # compinit is initialized before plugins that hook it.
 () {
   local f
@@ -26,14 +26,8 @@ fi
   # NOTE: Run each plugin within clean options. Do not make it sticky, as
   # plugin functions should have the ability to respond to our chosen options.
   local f
-  for f in $ZSH/plugins/*(-.e:'[[ -x $REPLY ]]':onN); do  # first party plugins
-    emulate -L zsh
-    . $f
-  done
-  for f in $ZSH/plugins/*/*.plugin.zsh(-.onN); do         # third party plugins
-    emulate -L zsh
-    . $f
-  done
+  for f in $ZSH/plugins/*(-.e:'[[ -x $REPLY ]]':onN); . $f  # 1st party plugins
+  for f in $ZSH/plugins/*/*.plugin.zsh(-.onN);        . $f  # 3rd party plugins
 }
 
 # User functions
