@@ -79,9 +79,9 @@ _prompt_awsmfa() {
   if [[ -z $MFA_ARN ]]; then
     return
   fi
-  local ok="∿" no="≁"
+  local good="🯊" expired="🯊" unknown="🯊" bad="🯊"
   if [[ -z $AWS_SESSION_TOKEN ]]; then
-    printf -- ${1:-%s} "%B%F{red}$no%f%b"
+    printf -- ${1:-%s} "%B%F{red}$bad%f%b"
     return
   fi
   local age
@@ -89,13 +89,13 @@ _prompt_awsmfa() {
     age=$(quiet sed -n 's/^unset AWS_SESSION_TOKEN.*# \([[:digit:]]*\)$/\1/p' $DYNENV_FILE)
   fi
   if [[ -z $age ]]; then
-    printf -- ${1:-%s} "%B%F{yellow}$ok%f%b"
+    printf -- ${1:-%s} "%B%F{yellow}$unknown%f%b"
     return
   fi
   if (( $(date +%s) - age > ${MFA_DURATION:-86400} )); then
-    printf -- ${1:-%s} "%F{yellow}$ok%f"
+    printf -- ${1:-%s} "%F{yellow}$expired%f"
   else
-    printf -- ${1:-%s} "%B%F{green}$ok%f%b"
+    printf -- ${1:-%s} "%B%F{green}$good%f%b"
   fi
 }
 
