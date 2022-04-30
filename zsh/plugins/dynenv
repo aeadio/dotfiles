@@ -40,6 +40,10 @@ if (( $DYNENV_FSWATCH && $+commands[fswatch] )); then
   _dynenv_zle_callback() {
     emulate -LR zsh
     if ! read -r -u $1; then
+      # If callback was triggered for an empty fd, an error occurred. Detach to
+      # avoid busy loop.
+      zle -F $1
+      exec {1}<&-
       return
     fi
     # If we're not at the prompt, then don't invoke. Dynenv will be sourced
