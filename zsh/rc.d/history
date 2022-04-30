@@ -6,10 +6,10 @@ SAVEHIST=10000
 sethistfile $ZSH/history
 
 setopt append_history
-setopt extended_history
+#setopt extended_history
 setopt hist_ignore_all_dups
 setopt hist_ignore_space
-setopt hist_lex_words       # warning: may be slow on large savehist size
+#setopt hist_lex_words       # warning: may be slow on large savehist size
 setopt hist_no_store
 setopt hist_reduce_blanks
 setopt hist_verify
