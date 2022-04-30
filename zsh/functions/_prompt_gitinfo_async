@@ -70,7 +70,7 @@ env GIT_OPTIONAL_LOCKS=0 git status --branch --porcelain=v2 2>&1 \
         len = length(head)
         if (len > 8) {
           # Prefer showing more at the end because it may contain, eg, issue ID
-          head = substr(head, 0, 2) "…" substr(head, len - 5, 5)
+          head = substr(head, 0, 2) "…" substr(head, len - 4, 5)
         }
         gsub("%", "%%", head)
         printf(fmt_branch, head)
