@@ -14,11 +14,11 @@
     
     $'\n'
     
-    '$(_prompt_chevron)'
+    '$(_prompt_caret)'
   )
   
   # » 
-  local ps2=( '$(_prompt_chevron)' )
+  local ps2=( '$(_prompt_caret)' )
   
   # ?
   local ps3=( '%(!,%F{red},%F{cyan})?%f ' )
@@ -112,18 +112,24 @@ _prompt_aws() {
   fi
 }
 
-_prompt_chevron() {
-  local chevron
-  if (( $+RANGER_LEVEL )); then
-    chevron="R›"
+_prompt_caret() {
+  local pre caret
+  if (( BUFSTACK > 0 )); then
+    pre="⋮%B%F{yellow}$BUFSTACK%f%b"
+    caret="⇉"
+    #caret="⩾"
   else
-    chevron="»"
+    caret="»"
+  fi
+  if (( $+RANGER_LEVEL )); then
+    pre="%F{green}R%f$pre"
   fi
   if (( _BAD_INPUT > 0 )); then
-    print -n "%(!,%F{magenta},%F{red})$chevron%f "
+    caret="%(!,%F{magenta},%F{red})≯%f"
   else
-    print -n "%(!,%F{red},%F{cyan})$chevron%f "
+    caret="%(!,%F{red},%F{cyan})$caret%f"
   fi
+  print -n "$pre$caret "
 }
 
 # Async git status plumbing
