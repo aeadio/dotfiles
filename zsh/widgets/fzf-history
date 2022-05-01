@@ -16,6 +16,7 @@ zle reset-prompt
 
 if [[ -n $line ]]; then
   LBUFFER=$line
+  RBUFFER=
 fi
 
 return $ret
