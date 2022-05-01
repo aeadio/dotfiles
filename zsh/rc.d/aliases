@@ -22,6 +22,11 @@ has micro    && alias e='micro'
 has ranger   && alias f='ranger'
 has code-oss && alias E='code-oss'
 has code     && alias E='code'
+if has doas; then
+  alias root='doas -s'
+else
+  alias root='sudo -sE'
+fi
 
 # platform specific
 case $OS in

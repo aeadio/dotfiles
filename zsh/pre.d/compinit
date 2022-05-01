@@ -6,4 +6,4 @@ fpath=( $ZSH/plugins/zsh-completions/src(N) $fpath )
 
 # NOTE: compinit must be initialized before fzf-tab
 autoload -Uz compinit &&
-compinit
+compinit -i

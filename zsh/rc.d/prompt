@@ -1,27 +1,30 @@
 # vim: ft=sh ts=2 sw=2 et:
 
+# Prompt formats
 () {
-  # user@host:dir (gitbranch) %awsprofile
-  # » 
+  # [[user][@host]:]dir [⨕gitbranch[:commits][ ⇄ localchanges]]
+  # [R ][🯊[⠶awsprofile ]][⋮stack]» 
   local ps1=(
     $'\n'  # Start with newline for some padding between commands
-    
-    '%(!,%F{red},%F{cyan})%n%f'   # Username, colored red if root, else cyan
-    '@$(_prompt_host)'
-    ':$(_prompt_directory)'
-    '$(_prompt_aws)'
-    '$(_prompt_gitinfo)'
-    
+    '$(ps-basicinfo)'
+    '$(ps-directory; ps-git)'
     $'\n'
-    
-    '$(_prompt_caret)'
+    '$(ps-ranger)'
+    '$(ps-aws)'
+    '$(ps-bufstack)'
+    '$(ps-caret) '
   )
   
-  # » 
-  local ps2=( '$(_prompt_caret)' )
+  # [R][🯊[⠶awsprofile]][⋮stack]» 
+  local ps2=(
+    '$(ps-ranger)'
+    '$(ps-aws)'
+    '$(ps-bufstack)'
+    '$(ps-caret) '
+  )
   
   # ?
-  local ps3=( '%(!,%F{red},%F{cyan})?%f ' )
+  local ps3=( '$(ps-caret "?")' )
   
   # function:linenum @ file:linenum
   # → details
@@ -43,128 +46,191 @@
   done
 }
 
-# Functions for generating prompt content
-_prompt_host() {
+
+# Info blocks
+ps-basicinfo() {
+  local user host
+  # Username
+  # Only show if we've su'd to a user that's out of the ordinary
+  if [[ ${(%):-%n} != (a(|nt(|hony(|eadicicco)))|root) ]]; then
+    user="%%(!,%B%F{red},%F{cyan})%n%f%b"
+  fi
+  # Hostname
+  # Only show if connected to remote host
   if (( $+SSH_CLIENT || $+SSH_TTY )); then
-    print -n '%F{green}%M%f'
-  else
-    print -n '%B%F{magenta}%m%f%b'
+    host='@%(!,%B%F{yellow},%B%F{magenta})%m%f%b'
+  fi
+  if [[ -n "$user$host" ]]; then
+    print -n "$user$host:"
   fi
 }
 
-_prompt_directory() {
+ps-directory() {
+  local maxwidth=$COLUMNS
   local fullpath=${(%):-%~}
-  local final=${(%):-%1d}
-  local components=$(( ${#fullpath//[^\/]/} + 1 ))
-  local maxwidth=$(( $COLUMNS / 2 ))
-  local display='%~'
-  if (( ${#fullpath} > $maxwidth && $components > 1 )); then
-    if (( ${#final} + 2 >= $maxwidth )); then
-      display="…/%1d"
-    else
-      case $components in
-        2) display='…/%1d' ;;
-        3) display='%-1~/…/%1d' ;;
-        *) display='%-1~/…/%2d' ;;
-      esac
+  if [[ -n $PS_GIT_HEAD ]] && (( COLUMNS > 15 )); then
+    (( maxwidth = COLUMNS >= 120 ? COLUMNS - 40 : COLUMNS / 3 * 2 ))
+  fi
+  local display=$fullpath
+  if (( ${#display} > maxwidth )); then
+    # Favor the last components in the path
+    # If the first component is '~', always display it
+    local components=( ${(s:/:)fullpath} ) pre='/'
+    if [[ $components[1] == '~' ]]; then
+      components=( $components[2,-1] )
+      pre='~/'
     fi
+    local n=${#components} npre=${#pre}
+    local i rem=$(( maxwidth - npre )) len
+    for (( i = n; i > 0; i-- )); do
+      len=${#components[$i]}
+      if (( rem - len - npre <= 2 )); then
+        components[$i]=${(%):-%$(( rem - npre ))<…<$components[$i]%<<}
+        break
+      else
+        (( rem -= len + 1 ))  # count one for the preceding /
+      fi
+    done
+    if (( --i > 0 )); then
+      components[$i]='…'
+      for (( --i ; i > 0; i-- )); components[$i]=
+    fi
+    display="$pre${(j:/:):-${=components}}"
   fi
-  if (( ${#${(%)display}} > $maxwidth )); then
-    display="$display"$'\n'
-  else
-    display="$display "
-  fi
-  print -n "%B%F{blue}$display%f%b"
+  PS_DIRLEN=${#display}
+  print -n "%(!,%F{magenta},%B%F{blue})$display%f%b"
 }
 
-_prompt_gitinfo() {
-  # PROMPT_GITINFO is populated by _prompt_gitinfo_async (see zsh/functions/)
-  # asynchronously (see below)
-  if [[ -n $PROMPT_GITINFO ]]; then
-    print -n "$PROMPT_GITINFO "
+ps-git() {
+  local branch=$PS_GIT_HEAD commits=$PS_GIT_COMMITS changes=$PS_GIT_CHANGES
+  if [[ -z $branch ]]; then
+    return
+  fi
+  local maxsize=$(( COLUMNS - PS_DIRLEN - 1 ))
+  if (( maxsize < 4 )); then
+    return
+  fi
+  local invisible='%([BSUbfksu]|([FK]|){*})'
+  local lbr=$(( ${#branch} + 1 ))
+  local lco=$(( ${#${(S%%)commits//$~invisible/}} + 1 ))
+  local lch=$(( ${#${(S%%)changes//$~invisible/}} + 3 ))
+  local bsize=$(( maxsize - lco - lch ))
+  if (( lbr > bsize )); then
+    # If we don't have enough space to show much, elide some portions
+    if (( bsize < maxsize / 2 )); then
+      changes=
+      bsize=$(( maxsize - lco ))
+    fi
+    if (( bsize < maxsize / 2 )); then
+      commits=
+      bsize=maxsize
+    fi
+    branch="%$bsize<…<$branch%<<"
+  fi
+  print -n " ⨕%(!,%B%F{red},%B%F{cyan})$branch%f%b"
+  if [[ -n $commits ]]; then
+    print -n ":$commits"
+  fi
+  if [[ -n $changes ]]; then
+    print -n " ⇄ $changes"
   fi
 }
 
-_prompt_aws() {
-  local token profile
+ps-ranger() {
+  if (( $+RANGER_LEVEL )); then
+    print -n "%F{green}R%f "
+  fi
+}
+
+ps-aws() {
+  local token='🯊' profile
   local age
   if (( $+MFA_ARN )); then
     if [[ -z $AWS_SESSION_TOKEN ]]; then
-      token='%B%F{red}🯊%f%b'
+      token="%B%F{red}$token%f%b"
     elif [[ -n $DYNENV_FILE ]]; then
       age=$(quiet sed -n 's/^unset AWS_SESSION_TOKEN.*# \([[:digit:]]*\)$/\1/p' $DYNENV_FILE)
       if [[ -n $age ]]; then
         if (( $(date +%s) - age > ${MFA_DURATION:-86400} )); then
-          token='%F{yellow}🯊%f'
+          token="%F{yellow}$token%f"
         else
-          token='%B%F{green}🯊%f%b'
+          token="%B%F{green}$token%f%b"
         fi
       else
-        token='%B%F{yellow}🯊%f%b'
+        token="%B%F{yellow}$token%f%b"
       fi
     fi
+  else
+    token=
   fi
-  if [[ -n ${AWS_PROFILE:/default/} ]]; then
-    profile="⠶%B%F{magenta}${AWS_PROFILE:/default/}%f%b"
+  if [[ -n ${AWS_PROFILE:#default} ]]; then
+    profile="⠶%(!,%B%F{yellow},%B%F{magenta})%10>…>$AWS_PROFILE%>>%f%b"
   fi
   if [[ -n "$token$profile" ]]; then
     print -n "$token$profile "
   fi
 }
 
-_prompt_caret() {
-  local caret stack ranger
-  if (( _BAD_INPUT > 0 )); then
-    caret="%(!,%F{magenta},%F{red})»%f"
-  else
-    caret="%(!,%F{red},%F{cyan})»%f"
-  fi
+ps-bufstack() {
   if (( BUFSTACK > 0 )); then
-    stack="⋮%B%F{yellow}$BUFSTACK%f%b"
+    print -n "⋮%(!,%F{yellow},%B%F{yellow})$BUFSTACK%f%b "
   fi
-  if (( $+RANGER_LEVEL )); then
-    ranger="%F{green}R%f"
-  fi
-  print -n "$ranger$stack$caret "
 }
+
+ps-caret() {
+  local caret
+  if (( _BAD_INPUT > 0 )); then
+    caret="≯"
+  else
+    caret="»"
+  fi
+  print -n "%(!,%F{red},%F{cyan})${1:-$caret}%f"
+}
+
 
 # Async git status plumbing
 # Invokes on every precmd (before the prompt is drawn) plus once every 10 sec
 if has git; then
   autoload -Uz add-zsh-hook
   
-  _prompt_gitinfo_finished_zle() {
+  ps-git-finished-zle() {
     emulate -L zsh
     local fd=$1
-    local result
+    local head commits changes
     zle -F $fd
-    read -ru $fd result
+    read -ru $fd head
+    read -ru $fd commits
+    read -ru $fd changes
     exec {fd}<&-
-    if [[ $result == $PROMPT_GITINFO ]]; then
+    if [[ $head == $PS_GIT_HEAD
+      && $commits == $PS_GIT_COMMITS
+      && $changes == $PS_GIT_CHANGES ]]; then
       return
     fi
-    PROMPT_GITINFO=$result
+    PS_GIT_HEAD=$head
+    PS_GIT_COMMITS=$commits
+    PS_GIT_CHANGES=$changes
     if zle && [[ $CONTEXT == 'start' ]]; then
       zle reset-prompt
     fi
   }
-  zle -N _prompt_gitinfo_finished_zle
+  zle -N ps-git-finished-zle
   
-  _prompt_gitinfo_invoke() {
+  ps-git-dispatch() {
     emulate -L zsh
     local fd
-    exec {fd}< <( _prompt_gitinfo_async )
+    exec {fd}< <( ps-git-async )
     command true  # https://www.zsh.org/mla/workers/2018/msg00966.html
-    zle -Fw $fd _prompt_gitinfo_finished_zle
+    zle -Fw $fd ps-git-finished-zle
   }
-  add-zsh-hook precmd _prompt_gitinfo_invoke
+  add-zsh-hook precmd ps-git-dispatch
   
   TMOUT=10
-  trap _prompt_gitinfo_invoke ALRM
+  trap ps-git-dispatch ALRM
   
-  _prompt_gitinfo_clear() {
+  ps-git-clear() {
     # Otherwise old prompt shows up for a few frames
     unset PROMPT_GITINFO
   }
-  add-zsh-hook chpwd _prompt_gitinfo_clear
+  add-zsh-hook chpwd ps-git-clear
 fi
