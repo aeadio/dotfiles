@@ -34,7 +34,7 @@ fi
 # All first-party function definitions (but not bodies) are autoloaded
 if [[ -d $ZSH/functions ]]; then
   fpath=($ZSH/functions $fpath)  # prepend to prefer ours over vendor's
-  autoload -z $ZSH/functions/*(.:t)
+  autoload -z $ZSH/functions/*(-.N:t)
 fi
 
 # User ZLE widgets
