@@ -15,7 +15,7 @@ typeset -Ag PROMPT_DANGEROUS=(
 )
 
 # Note: this widget is auto-invoked by ZLE if present
-zle-line-finish() {
+_badinput-zle-line-finish() {
   emulate -L zsh -o extended_glob
   local firstword=${${(z)BUFFER}[1]}
   if (( $+PROMPT_DANGEROUS[$firstword] )); then
@@ -25,4 +25,5 @@ zle-line-finish() {
     _BAD_INPUT=2
   fi
 }
-zle -N zle-line-finish
+autoload -Uz add-zle-hook-widget &&
+add-zle-hook-widget zle-line-finish _badinput-zle-line-finish
