@@ -143,7 +143,7 @@ if has git; then
     fi
     PROMPT_GITINFO=$result
     if zle && [[ $CONTEXT == 'start' ]]; then
-      zle .reset-prompt
+      zle reset-prompt
     fi
   }
   zle -N _prompt_gitinfo_finished_zle
