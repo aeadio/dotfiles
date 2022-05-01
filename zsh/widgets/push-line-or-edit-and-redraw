@@ -1,0 +1,5 @@
+# vim: ft=sh ts=2 sw=2 et:
+emulate -L zsh
+
+zle push-line-or-edit
+zle reset-prompt

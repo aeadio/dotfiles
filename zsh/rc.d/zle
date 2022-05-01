@@ -78,7 +78,7 @@ bindkey '^K'      kill-whole-line
 bindkey '^L'      list-choices
 bindkey '^N'      mkdir-arg
 #bindkey '^N'      autosuggest-toggle
-bindkey '^P'      push-line
+bindkey '^P'      push-line-or-edit-and-redraw
 bindkey '^R'      run-elevated
 bindkey '^S'      spell-word
 bindkey '^W'      quote-line
