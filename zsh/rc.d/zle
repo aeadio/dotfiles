@@ -8,15 +8,20 @@
 # TODO: Implement selection w/ shift+arrow?
 # TODO: Make use of yank & kill buffer for clipboard
 # TODO: Fix quoting. Custom widget for smartly quoting word we're inside?
+# TODO: Use terminfo for key sequences
+# TODO: Insert falback sequences for terminals not supporting these modifiers
 
+# Vendor-provided widgets
 () {
-  local f
-  for f in edit-command-line modify-current-argument; do
-    autoload -U $f
-    zle -N $f
-  done
+  local f load=(
+    edit-command-line modify-current-argument transpose-words-match
+  )
+  autoload -U $load
+  for f in $load; zle -N $f
 }
+zle -N transpose-words transpose-words-match
 
+# Custom binding set
 bindkey -N mine
 bindkey -A mine main
 
@@ -28,6 +33,7 @@ bindkey -R '!'-'~'         self-insert
 bindkey -R '\M-^@'-'\M-^?' self-insert
 bindkey    '^[[200~'       bracketed-paste
 
+# Action bindings
 bindkey '^[[H'    beginning-of-line                  # home
 bindkey '^[[F'    end-of-line                        # end
 bindkey '^[[5~'   up-history                         # pgup
@@ -72,7 +78,8 @@ bindkey '^K'      kill-whole-line
 bindkey '^L'      list-choices
 bindkey '^N'      mkdir-arg
 #bindkey '^N'      autosuggest-toggle
-bindkey '^R'      quoted-insert
+bindkey '^P'      push-line
+bindkey '^R'      run-elevated
 bindkey '^S'      spell-word
 bindkey '^W'      quote-line
 bindkey '^Y'      redo
