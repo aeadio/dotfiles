@@ -120,9 +120,9 @@ _prompt_chevron() {
     chevron="»"
   fi
   if (( _BAD_INPUT > 0 )); then
-    printf -- ${1:-%s} "%(!,%F{magenta},%F{red})$chevron%f "
+    print -n "%(!,%F{magenta},%F{red})$chevron%f "
   else
-    printf -- ${1:-%s} "%(!,%F{red},%F{cyan})$chevron%f "
+    print -n "%(!,%F{red},%F{cyan})$chevron%f "
   fi
 }
 
