@@ -1,0 +1,52 @@
+# vim: ft=sh ts=2 sw=2 et:
+
+# Attempts to track the size of the bufstack (the ZLE stack used during
+# push-line and get-line). May not cover some edge cases if plugins are
+# manipulating the buffer and stack.
+
+() {
+  emulate -L zsh
+  
+  local widgets_push=(
+    #accept-and-hold
+    #accept-and-infer-next-history
+    #accept-line-and-down-history
+    push-input
+    push-line
+  )
+  local widgets_pop=(
+    get-line
+  )
+  
+  local w 
+  for w in $widgets_push; do
+    zle -N $w _bufstack_push_widget
+  done
+  for w in $widgets_pop; do
+    zle -N $w _bufstack_pop_widget
+  done
+}
+
+_bufstack_push_widget() {
+  (( BUFSTACK++ ))
+  zle .$WIDGET
+}
+
+_bufstack_pop_widget() {
+  (( BUFSTACK > 0 && BUFSTACK-- ))
+  zle .$WIDGET
+}
+
+_bufstack_push-line-or-edit() {
+  if [[ $CONTEXT == start ]]; then
+    (( BUFSTACK++ ))
+  fi
+  zle .push-line-or-edit
+}
+zle -N push-line-or-edit _bufstack_push-line-or-edit
+
+_bufstack_line-init() {
+  (( BUFSTACK > 0 && BUFSTACK-- ))
+}
+autoload -Uz add-zle-hook-widget &&
+add-zle-hook-widget zle-line-init _bufstack_line-init
