@@ -113,23 +113,19 @@ _prompt_aws() {
 }
 
 _prompt_caret() {
-  local pre caret
-  if (( BUFSTACK > 0 )); then
-    pre="⋮%B%F{yellow}$BUFSTACK%f%b"
-    caret="⇉"
-    #caret="⩾"
+  local caret stack ranger
+  if (( _BAD_INPUT > 0 )); then
+    caret="%(!,%F{magenta},%F{red})»%f"
   else
-    caret="»"
+    caret="%(!,%F{red},%F{cyan})»%f"
+  fi
+  if (( BUFSTACK > 0 )); then
+    stack="⋮%B%F{yellow}$BUFSTACK%f%b"
   fi
   if (( $+RANGER_LEVEL )); then
-    pre="%F{green}R%f$pre"
+    ranger="%F{green}R%f"
   fi
-  if (( _BAD_INPUT > 0 )); then
-    caret="%(!,%F{magenta},%F{red})≯%f"
-  else
-    caret="%(!,%F{red},%F{cyan})$caret%f"
-  fi
-  print -n "$pre$caret "
+  print -n "$ranger$stack$caret "
 }
 
 # Async git status plumbing
