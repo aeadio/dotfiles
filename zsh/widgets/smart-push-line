@@ -1,0 +1,22 @@
+# vim: ft=sh ts=2 sw=2 et:
+emulate -L zsh -o extended_glob
+
+case $CONTEXT in
+  start)
+    if [[ -z $BUFFER || $BUFFER == [[:space:]]# ]]; then
+      BUFFER=
+      return
+    fi
+    zle push-line
+    zle reset-prompt
+    ;;
+    
+  cont)
+    zle push-input
+    zle get-line
+    ;;
+    
+  *)
+    return ;;
+  
+esac
