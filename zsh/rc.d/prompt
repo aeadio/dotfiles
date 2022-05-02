@@ -3,7 +3,7 @@
 # Prompt formats
 () {
   # [[user][@host]:]dir [⨕gitbranch[:commits][ ⇄ localchanges]]
-  # [R ][🯊[⠶awsprofile ]][⋮stack]» 
+  # [R ][🯊[⠶awsprofile] ][⋮stack]» 
   local ps1=(
     $'\n'  # Start with newline for some padding between commands
     '$(ps-basicinfo)'

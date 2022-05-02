@@ -1,25 +1,17 @@
 # vim: ft=sh ts=2 sw=2 et:
 
-# This is an attempt to set keybinds that feel more conventional for a user
-# that grew up with post-90s GUI applications. This has not yet been tested
-# across a wide range of terminal emulators / environments, where some of the
-# keycodes mey not be as expected. 
-
-# TODO: Implement selection w/ shift+arrow?
-# TODO: Make use of yank & kill buffer for clipboard
-# TODO: Fix quoting. Custom widget for smartly quoting word we're inside?
-# TODO: Use terminfo for key sequences
-# TODO: Insert falback sequences for terminals not supporting these modifiers
-
 # Vendor-provided widgets
-() {
-  local f load=(
-    edit-command-line modify-current-argument transpose-words-match
-  )
-  autoload -U $load
-  for f in $load; zle -N $f
-}
-zle -N transpose-words transpose-words-match
+load-widget() {
+  autoload -U $1 &&
+  zle -N ${2:-$1} $1
+} &> /dev/null
+
+load-widget edit-command-line
+load-widget insert-files
+load-widget modify-current-argument
+load-widget run-help
+load-widget tetris
+load-widget transpose-words-match transpose-words
 
 # Custom binding set
 bindkey -N mine
@@ -75,12 +67,14 @@ bindkey '^G'      send-break
 bindkey '^H'      run-help
 bindkey '^I'      fzf-tab-complete                   # tab
 bindkey '^K'      kill-whole-line
-bindkey '^L'      list-choices
+bindkey '^L'      insert-files
 bindkey '^N'      mkdir-arg
-#bindkey '^N'      autosuggest-toggle
 bindkey '^P'      smart-push-line
 bindkey '^R'      run-elevated
 bindkey '^S'      spell-word
+bindkey '^T'      tetris
+bindkey '^U'      autosuggest-toggle
+bindkey '^Q'      quoted-insert
 bindkey '^W'      quote-line
 bindkey '^Y'      redo
 bindkey '^X'      clear-screen
