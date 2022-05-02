@@ -36,7 +36,7 @@ case $OS in
       emulate -L zsh
       if [[ $(arch) == 'arm64' ]]; then
         [[ -x /usr/local/Homebrew/bin/brew ]] &&
-          alias briw='/usr/local/Homebrew/bin/brew'
+          alias briw='arch --x86_64 /usr/local/Homebrew/bin/brew'
       fi
       # Search for all alternative/pinned versions of Homebrew packages, and
       # sets up <name><ver> aliases for each of that package's binaries.
