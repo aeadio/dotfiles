@@ -1,0 +1,25 @@
+# vim: ft=sh ts=2 sw=2 et:
+
+# Attempts to put the terminal into application mode whenever ZLE is active
+() {
+  emulate -LR zsh
+  if (( $+terminfo[smkx] && $+terminfo[rmkx] )); then
+    zle-mode-app() echoti smkx
+    zle-mode-raw() echoti rmkx
+  elif (( $+termcap[ks] && $+termcap[ke] )); then
+    zle-mode-app() echotc ks
+    zle-mode-raw() echotc ke
+  else
+    return
+  fi
+  zle -N zle-mode-app
+  zle -N zle-mode-raw
+  autoload -Uz add-zle-hook-widget
+  if (( $+functions[add-zle-hook-widget] )); then
+    add-zle-hook-widget zle-line-init   zle-mode-app
+    add-zle-hook-widget zle-line-finish zle-mode-raw
+  else
+    zle -A zle-line-init   zle-mode-app
+    zle -A zle-line-finish zle-mode-raw
+  fi
+}
