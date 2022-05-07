@@ -4,6 +4,16 @@
 # Add zsh-completions if it exists
 fpath=( $ZSH/plugins/zsh-completions/src(N) $fpath )
 
-# NOTE: compinit must be initialized before fzf-tab
-autoload -Uz compinit &&
-compinit -i
+() {
+  local zcompfile=${ZCOMPDUMP:-$HOME/.zcompdump}
+  # NOTE: compinit must be initialized before fzf-tab
+  autoload -Uz compinit &&
+  compinit -d $zcompfile -u
+  
+  if [[ ! -e $zcompfile.zwc || $zcompfile.zwc -ot $zcompfile ]]; then
+    # In profiling, this was the only file worth compiling. All others did not
+    # meaningfully change startup times.
+    # compinit will automatically use the .zwc file, if it exists
+    zcompile $zcompfile & &> /dev/null
+  fi
+}

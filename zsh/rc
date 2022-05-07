@@ -10,25 +10,35 @@ if [[ ! -d $ZSH ]]; then
   return
 fi
 
+# Entrypoint for profiling
+if false; then
+  ZSH_PROFILE_STARTUP=1
+  zmodload zsh/zprof
+fi
+
 # pre.d
 # Bootstrap config to be run before anything else is loaded. Ie, make sure
 # compinit is initialized before plugins that hook it.
-() {
+zshrc-pre.d() {
   local f
   for f in $ZSH/pre.d/*(e:'[[ -x $REPLY ]]':onN); . $f
 }
+zshrc-pre.d
+unfunction zshrc-pre.d
 
 # Plugins
 # Plain (executable) files in zsh/plugins/ are first-party plugins -- mine.
 # Directories are third-party plugins (if they contain a .plugin.zsh file). See
 # zsh/functions/zp* for installation helper.
-() {
+zshrc-plugins() {
   # NOTE: Run each plugin within clean options. Do not make it sticky, as
   # plugin functions should have the ability to respond to our chosen options.
   local f
   for f in $ZSH/plugins/*(-.e:'[[ -x $REPLY ]]':onN); . $f  # 1st party plugins
   for f in $ZSH/plugins/*/*.plugin.zsh(-.onN);        . $f  # 3rd party plugins
 }
+zshrc-plugins
+unfunction zshrc-plugins
 
 # User functions & ZLE widgets
 # Function and widget definitions are autoloaded if the file is marked 
@@ -53,7 +63,7 @@ zshrc-loaduserfns() {
   REPLY=( $fns )
 }
 
-() {
+zshrc-functions() {
   local fn fname action REPLY
   zshrc-loaduserfns $ZSH/functions || return
   for fn in $REPLY; do
@@ -76,8 +86,10 @@ zshrc-loaduserfns() {
     done
   done
 }
+zshrc-functions
+unfunction zshrc-functions
 
-() {
+zshrc-widgets() {
   local fn fname action arg REPLY
   zshrc-loaduserfns $ZSH/widgets || return
   for fn in $REPLY; do
@@ -102,12 +114,21 @@ zshrc-loaduserfns() {
     done
   done
 }
+zshrc-widgets
+unfunction zshrc-widgets
 
 unfunction zshrc-getbangactions zshrc-loaduserfns
 
 # zshrc.d
 # Primary place for zsh config. Load last so that it may make use of plugins.
-() {
+zshrc-zshrc.d() {
   local f
   for f in $ZSH/rc.d/*(e:'[[ -x $REPLY ]]':onN); . $f
 }
+zshrc-zshrc.d
+unfunction zshrc-zshrc.d
+
+# Stop profiling
+if (( $+ZSH_PROFILE_STARTUP )); then
+  zprof
+fi

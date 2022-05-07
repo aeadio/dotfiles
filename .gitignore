@@ -4,6 +4,7 @@ Thumbs.db
 *.user
 __pycache__
 __init__.py
+*.zwc
 
 # sensitive
 aws
