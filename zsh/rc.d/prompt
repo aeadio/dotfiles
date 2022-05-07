@@ -9,7 +9,7 @@
     '$(ps-basicinfo)'
     '$(ps-directory; ps-git)'
     $'\n'
-    '$(ps-level)'
+    '$(ps-promptception)'
     '$(ps-aws)'
     '$(ps-bufstack)'
     '$(ps-caret) '
@@ -141,11 +141,16 @@ ps-git() {
   fi
 }
 
-ps-level() {
+ps-promptception() {
+  # How deep is our prompt? ((Is it like the ocean?))
+  # If ( SHLVL - RANGER_LEVEL ) is over 1, show as a number.
+  # If inside ranger, show R, plus ( RANGER_LEVEL ) if > 1.
+  local rlvl lvl=${${:-$(( SHLVL - RANGER_LEVEL ))}:#1}
   if (( $+RANGER_LEVEL )); then
-    print -n "%F{green}R%f "
-  elif (( SHLVL > 1 )); then
-    print -n "%F{green}$SHLVL%f "
+    rlvl="%F{green}R${RANGER_LEVEL:#1}%f"
+  fi
+  if [[ -n "$rlvl$lvl" ]]; then
+    print -n "$rlvl⁑%{\e[2m%}%F{cyan}$lvl%f%b "
   fi
 }
 
