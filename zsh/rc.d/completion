@@ -38,3 +38,4 @@ zstyle ':completion:*:cd:*' ignore-parents parent pwd
 ZSH_AUTOSUGGEST_STRATEGY=(history completion)
 ZSH_AUTOSUGGEST_BUFFER_MAX_SIZE=20
 ZSH_AUTOSUGGEST_MANUAL_REBIND=1
+ZSH_AUTOSUGGEST_COMPLETION_IGNORE='brew*([[:space:]])*([[:alnum:]])*([[:space:]])*'
