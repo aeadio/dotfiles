@@ -225,8 +225,8 @@ if has git; then
   }
   add-zsh-hook precmd ps-git-dispatch
   
-  TMOUT=10
-  trap ps-git-dispatch ALRM
+  #TMOUT=10
+  #trap ps-git-dispatch ALRM
   
   ps-git-clear() {
     # Otherwise old prompt shows up for a few frames
