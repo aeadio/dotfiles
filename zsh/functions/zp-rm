@@ -1,25 +1,30 @@
 # vim: ft=sh ts=2 sw=2 et:
-emulate -L zsh
+emulate -L zsh -o extended_glob
 
 local force=
+local commit=1
+
+OPTIND=0
+while getopts "fn" opt; do
+  case "$opt" in
+    f) force=1 ;;
+    n) commit= ;;
+  esac
+done
+shift $(( OPTIND - 1 ))
 
 if (( ! $# )); then
-  >&2 <<< "usage: zp-rm <pluginname> [<pluginname>...]"
+  print "usage: zp-rm <pluginname> [<pluginname>...]" >&2
   return
 fi
 
-if [[ $1 == -f ]]; then
-  force=1
-  shift
-fi
-
 if (( ! $+commands[git] )); then
-  >&2 <<< "fatal: requires git"
+  print "fatal: requires git" >&2
   return
 fi
 
 if [[ -z $ZSH || ! -d $ZSH ]]; then
-  >&2 <<< "error: zsh config directory not found: $ZSH"
+  print "error: zsh config directory not found: $ZSH" >&2
   return
 fi
 
@@ -30,34 +35,38 @@ fi
 
 (
   if ! cd $plugindir; then
-    >&2 <<< "fatal: could not enter plugin directory."
+    print "fatal: could not enter plugin directory." >&2
     return 1
   fi
   unset GIT_DIR GIT_WORK_TREE GIT_INDEX_FILE GIT_OBJECT_DIRECTORY \
     GIT_ALTERNATE_OBJECT_DIRECTORIES
   
   local changed=() fail=
-  local p
+  local p f
   for p in "$@"; do
     [[ -z "$p" ]] && continue
+    print -P "%B%F{blue}Removing plugin $name%f%b"
     if [[ ! -e $p ]]; then
-      >&2 <<< "warning: plugin $p not found"
+      print -P "%B%F{blue}-> Plugin $name not found, skipping%f%b"
+      print " "
       continue
     fi
     if [[ -e $p/.git ]]; then
       git submodule deinit ${force:+--force} $p &&
       git rm ${force:+--force} $p
       if (( $? )); then
-        >&2 <<< "fatal: failed to remove plugin $p"
+        print -P "%B%F{red}-> Failed to remove plugin $name%f%b"
+        print " "
         fail=1
-        break
+        continue
       fi
       changed+=( $p )
     elif (( $force )); then
       rm -i -r $p
     else
-      >&2 <<< "fatal: plugin $p not a git module"
+      print -P "%B%F{red}-> Plugin $name is not a Git module, skipping%f%b"
     fi
+    print " "
   done
   
   if (( ! ${#changed} )); then
@@ -65,9 +74,14 @@ fi
   fi
   
   if (( $fail )); then
-    >&2 <<< "warning: some plugins failed to remove; not committing"
+    print -P "%B%F{red}Some plugins could not be removed, skipping commit%f%b"
     return
   fi
   
-  git commit -m "zsh: Remove plugins ${(pj:, :)changed}" --only $changed
+  print -P "%B%F{blue}${#changed} plugins removed%f%b"
+  if (( commit )); then
+    print -P "%B%F{blue}Committing changes...%f%b"
+    git commit -m "zsh: Remove plugins ${(pj:, :)changed}" \
+      --only $changed $gitroot/.gitmodules
+  fi
 )

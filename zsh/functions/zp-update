@@ -3,23 +3,19 @@ emulate -L zsh -o extended_glob
 
 local force=
 local commit=1
-local instname
 
 OPTIND=0
-while getopts "fna:" opt; do
+while getopts "fn" opt; do
   case "$opt" in
     f) force=1 ;;
     n) commit= ;;
-    a)
-      instname="$OPTARG"
-      ;;
   esac
 done
 shift $(( OPTIND - 1 ))
 
-if (( ! $# )); then
-  print "usage: zp-add <giturl> [<giturl>...]" >&2
-  return
+if [[ $1 == -f ]]; then
+  force=1
+  shift
 fi
 
 if (( ! $+commands[git] )); then
@@ -33,7 +29,6 @@ if [[ -z $ZSH || ! -d $ZSH ]]; then
 fi
 
 local plugindir=$ZSH/plugins
-mkdir -p $plugindir
 
 (
   if ! cd $plugindir; then
@@ -44,41 +39,45 @@ mkdir -p $plugindir
     GIT_ALTERNATE_OBJECT_DIRECTORIES
   
   local list=( "$@" )
-  if (( ${#list} > 1 )) && [[ -n $instname ]]; then
-    print "fatal: can only install one plugin as name $instname" >&2
-    return
+  if (( ${#list} == 0 )); then
+    list=( $ZSH/plugins/*(-/e:'[[ -e $REPLY/.git ]]':N:t) )
   fi
   
   local changed=()
-  local repo name f
-  for repo in $list; do
-    [[ -z "$repo" ]] && continue
-    name=${repo:t:r}
-    print -P "%B%F{blue}Adding plugin $name from $repo%f%b"
-    if [[ -e $name ]] && (( ! force )); then
-      print -P "%B%F{blue}-> Plugin $name exists, skipping%f%b"
+  local name reason f
+  for name in $list; do
+    [[ -z "$name" ]] && continue
+    print -P "%B%F{blue}Checking plugin $name for updates%f%b"
+    if [[ ! -d $name ]]; then
+      print -P "%B%F{blue}-> Plugin $name not found, skipping%f%b"
       print " "
       continue
     fi
-    git submodule add ${force:+--force} $repo ${instname:-$name}
+    #(
+    #  cd $name || return 1
+    #  if (( force )); then
+    #    git reset --hard HEAD
+    #  fi
+    #  git pull
+    #)
+    git submodule update --recursive --remote ${force:+--force} $name
     if (( $? )); then
-      print -P "%B%F{red}-> Plugin $name failed to install%f%b"
+      print -P "%B%F{red}-> Plugin $name failed to update%f%b"
       print " "
-      [[ -e $name ]] && rm -i -r $name
       continue
     fi
-    print -P "%B%F{blue}Compiling sources for plugin $name%f%b"
-    for f in $name/**/^*.zwc(-.N); zcompile $f &> /dev/null
+    print -P "%B%F{blue}Recompiling sources for plugin $name%f%b"
+    for f in $name/**/^*.zwc(-.); zcompile $f &> /dev/null
     changed+=( $name )
     print " "
   done
   
   if (( ${#changed} )); then
     local gitroot=$(git rev-parse --show-toplevel)
-    print -P "%B%F{blue}${#changed} plugins added%f%b"
+    print -P "%B%F{blue}${#changed} plugins updated.%f%b"
     if (( commit )); then
       print -P "%B%F{blue}Committing changes...%f%b"
-      git commit -m "zsh: Remove plugins ${(pj:, :)changed}" \
+      git commit -m "zsh: Updated plugins ${(pj:, :)changed}" \
         --only $changed $gitroot/.gitmodules
     fi
   fi
