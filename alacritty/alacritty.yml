@@ -41,37 +41,35 @@ colors:
   primary:
     foreground: '#d8dee9'
     background: '#323845'
-    dim_foreground: '#9da1a8'
+    dim_foreground: '#a8afbd'
     bright_foreground: '#eceff4'
   normal:
-    black:   '#3b4252'
+    black:   '#616e88'
     red:     '#bf616a'
     green:   '#a3be8c'
-    yellow:  '#dca493'
+    yellow:  '#ebcb8b'
     blue:    '#81a1c1'
     magenta: '#b48ead'
     cyan:    '#88c0d0'
     white:   '#d8dee9'
   bright:
-    black:   '#616e88'
+    black:   '#77829c'
     red:     '#cc8289'
     green:   '#b8cda5'
-    yellow:  '#ebcb8b'
+    yellow:  '#ebe089'
     blue:    '#9cb5ce'
     magenta: '#c4a6be'
     cyan:    '#8fbcbb'
     white:   '#eceff4'
-  #dim:
-  # If the dim colors are not set, they will be calculated automatically based
-  # on the `normal` colors.
-  #  black:   '#'
-  #  red:     '#'
-  #  green:   '#'
-  #  yellow:  '#'
-  #  blue:    '#'
-  #  magenta: '#'
-  #  cyan:    '#'
-  #  white:   '#'
+  dim:
+    black:   '#566176'
+    red:     '#a35c68'
+    green:   '#8da37b'
+    yellow:  '#dca493'
+    blue:    '#5e81ac'
+    magenta: '#9d8098'
+    cyan:    '#89afcd'
+    white:   '#a8afbd'
   cursor:
     text: CellBackground
     cursor: CellForeground

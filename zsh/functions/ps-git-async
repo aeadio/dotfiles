@@ -31,9 +31,9 @@ env GIT_OPTIONAL_LOCKS=0 git status --branch --porcelain=v2 \
     BEGIN {
       fmt_behind    = "%%B%%F{red}↓%d%%f%%b"
       fmt_ahead     = "%%B%%F{green}↑%d%%f%%b"
-      fmt_unmerged  = "%%F{yellow}↯%d%%f"
-      fmt_staged    = "%%B%%F{yellow}▲%d%%f%%b"
-      fmt_unstaged  = "%%B%%F{yellow}△%d%%f%%b"
+      fmt_unmerged  = "%%{\\e[2m%%}%%F{yellow}↯%d%%f%%b"
+      fmt_staged    = "%%F{yellow}▲%d%%f"
+      fmt_unstaged  = "%%F{yellow}△%d%%f"
       fmt_untracked = "%%F{blue}⊘%d%%f"
     }
     

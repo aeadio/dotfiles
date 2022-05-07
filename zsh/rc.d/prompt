@@ -59,7 +59,7 @@ ps-basicinfo() {
   # Hostname
   # Only show if connected to remote host
   if (( $+SSH_CLIENT || $+SSH_TTY )); then
-    host='@%(!,%B%F{yellow},%B%F{magenta})%m%f%b'
+    host='@%(!,%F{yellow},%B%F{magenta})%m%f%b'
   fi
   if [[ -n "$user$host" ]]; then
     info="$user$host:"
@@ -159,19 +159,19 @@ ps-aws() {
       age=$(quiet sed -n 's/^unset AWS_SESSION_TOKEN.*# \([[:digit:]]*\)$/\1/p' $DYNENV_FILE)
       if [[ -n $age ]]; then
         if (( $(date +%s) - age > ${MFA_DURATION:-86400} )); then
-          token="%F{yellow}$token%f"
+          token="%{\e[2m%}%F{yellow}$token%f%b"
         else
           token="%B%F{green}$token%f%b"
         fi
       else
-        token="%B%F{yellow}$token%f%b"
+        token="%F{yellow}$token%f"
       fi
     fi
   else
     token=
   fi
   if [[ -n ${AWS_PROFILE:#default} ]]; then
-    profile="⠶%(!,%B%F{yellow},%B%F{magenta})%10>…>$AWS_PROFILE%>>%f%b"
+    profile="⠶%(!,%F{yellow},%B%F{magenta})%10>…>$AWS_PROFILE%>>%f%b"
   fi
   if [[ -n "$token$profile" ]]; then
     print -n "$token$profile "
@@ -180,7 +180,7 @@ ps-aws() {
 
 ps-bufstack() {
   if (( BUFSTACK > 0 )); then
-    print -n "⋮%(!,%F{yellow},%B%F{yellow})$BUFSTACK%f%b "
+    print -n "⋮%(!,%{\e[2m%}%F{yellow},%F{yellow})$BUFSTACK%f%b "
   fi
 }
 
