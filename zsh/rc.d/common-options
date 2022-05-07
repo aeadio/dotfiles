@@ -16,3 +16,8 @@ setopt no_case_match
 # Annoyances
 setopt no_beep
 setopt no_flow_control
+
+# UTF-8
+if [[ $(locale LC_CTYPE) == "UTF-8" ]]; then
+  setopt combining_chars
+fi
