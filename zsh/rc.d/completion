@@ -5,7 +5,7 @@
 #compinit
 
 # Configure fzf-tab
-zstyle ':fzf-tab:*' fzf-flags '--height=40% --no-sort'
+zstyle ':fzf-tab:*' fzf-flags '--height=40%' '--no-sort'
 
 # Auto rehash
 zstyle ":completion:*:commands" rehash true
