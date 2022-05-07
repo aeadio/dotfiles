@@ -35,7 +35,7 @@
     '%N:%i @ %x:%I'
     $'\n'
     '${(pl[${(%):-%e}+1][  ])}'
-    '→ '
+    "${${UTF8_OK:+→ }:->}"
   )
   
   # Build prompts from arrays
@@ -77,6 +77,7 @@ ps-directory() {
   fi
   local fullpath=${(%):-%~}
   local display=$fullpath
+  local ellipses=${${UTF8_OK:+…}:-..}
   if (( ${#display} > maxwidth )); then
     # Favor the last components in the path
     # If the first component is '~', always display it
@@ -89,15 +90,15 @@ ps-directory() {
     local i rem=$(( maxwidth - npre )) len
     for (( i = n; i > 0; i-- )); do
       len=${#components[$i]}
-      if (( rem - len - npre <= 2 )); then
-        components[$i]=${(%):-%$(( rem - npre ))<…<$components[$i]%<<}
+      if (( rem - len - npre <= ${#ellipses} + 1 )); then
+        components[$i]=${(%):-%$(( rem - npre ))<$ellipses<$components[$i]%<<}
         break
       else
         (( rem -= len + 1 ))  # count one for the preceding /
       fi
     done
     if (( --i > 0 )); then
-      components[$i]='…'
+      components[$i]=$ellipses
       for (( --i ; i > 0; i-- )); components[$i]=
     fi
     display="$pre${(j:/:):-${=components}}"
@@ -128,16 +129,16 @@ ps-git() {
     fi
     if (( bsize < maxsize / 2 )); then
       commits=
-      bsize=maxsize
+      bsize=$maxsize
     fi
-    branch="%$bsize<…<$branch%<<"
+    branch="%$bsize<${${UTF8_OK:+…}:-..}<$branch%<<"
   fi
-  print -n " ⨕%(!,%B%F{red},%B%F{cyan})$branch%f%b"
+  print -n " ${UTF8_OK:+⨕}%(!,%B%F{red},%B%F{cyan})$branch%f%b"
   if [[ -n $commits ]]; then
     print -n ":$commits"
   fi
   if [[ -n $changes ]]; then
-    print -n " ⇄ $changes"
+    print -n "${UTF8_OK:+ ⇄} $changes"
   fi
 }
 
@@ -150,12 +151,17 @@ ps-promptception() {
     rlvl="%F{green}R${RANGER_LEVEL:#1}%f"
   fi
   if [[ -n "$rlvl$lvl" ]]; then
-    print -n "$rlvl⁑%{\e[2m%}%F{cyan}$lvl%f%b "
+    print -n "$rlvl${${UTF8_OK:+⁑}:- }%{\e[2m%}%F{cyan}$lvl%f%b "
   fi
 }
 
 ps-aws() {
-  local token='🯊' profile
+  local token profile
+  if (( $+UTF8_OK )); then
+    token='🯊'
+  else
+    token='A'
+  fi
   local age
   if (( $+MFA_ARN )); then
     if [[ -z $AWS_SESSION_TOKEN ]]; then
@@ -176,7 +182,7 @@ ps-aws() {
     token=
   fi
   if [[ -n ${AWS_PROFILE:#default} ]]; then
-    profile="⠶%(!,%F{yellow},%B%F{magenta})%10>…>$AWS_PROFILE%>>%f%b"
+    profile="${${UTF8_OK:+⠶}:-%}%(!,%F{yellow},%B%F{magenta})%10>${${UTF8_OK:+…}:-..}>$AWS_PROFILE%>>%f%b"
   fi
   if [[ -n "$token$profile" ]]; then
     print -n "$token$profile "
@@ -185,16 +191,18 @@ ps-aws() {
 
 ps-bufstack() {
   if (( BUFSTACK > 0 )); then
-    print -n "⋮%(!,%{\e[2m%}%F{yellow},%F{yellow})$BUFSTACK%f%b "
+    print -n "${${UTF8_OK:+⋮}:-S:}%(!,%{\e[2m%}%F{yellow},%F{yellow})$BUFSTACK%f%b "
   fi
 }
 
 ps-caret() {
   local caret
-  if (( _BAD_INPUT > 0 )); then
-    caret="≯"
+  if (( ! $+UTF8_OK )); then
+    caret='>'
+  elif (( _BAD_INPUT > 0 )); then
+    caret='≯'
   else
-    caret="»"
+    caret='»'
   fi
   print -n "%(!,%F{red},%F{cyan})${1:-$caret}%f"
 }

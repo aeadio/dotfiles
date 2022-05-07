@@ -27,14 +27,23 @@ emulate -L zsh -e
 exec 2>/dev/null
 
 env GIT_OPTIONAL_LOCKS=0 git status --branch --porcelain=v2 \
-  | awk -v size=$(( COLUMNS / 4 )) '
+  | awk -v utf8=$UTF8_OK '
     BEGIN {
-      fmt_behind    = "%%B%%F{red}↓%d%%f%%b"
-      fmt_ahead     = "%%B%%F{green}↑%d%%f%%b"
-      fmt_unmerged  = "%%{\\e[2m%%}%%F{yellow}↯%d%%f%%b"
-      fmt_staged    = "%%F{yellow}▲%d%%f"
-      fmt_unstaged  = "%%F{yellow}△%d%%f"
-      fmt_untracked = "%%F{blue}⊘%d%%f"
+      if (utf8) {
+        fmt_behind    = "%%B%%F{red}↓%d%%f%%b"
+        fmt_ahead     = "%%B%%F{green}↑%d%%f%%b"
+        fmt_unmerged  = "%%{\\e[2m%%}%%F{yellow}↯%d%%f%%b"
+        fmt_staged    = "%%F{yellow}▲%d%%f"
+        fmt_unstaged  = "%%F{yellow}△%d%%f"
+        fmt_untracked = "%%F{blue}⊘%d%%f"
+      } else {
+        fmt_behind    = "%%B%%F{red}b%d%%f%%b"
+        fmt_ahead     = "%%B%%F{green}a%d%%f%%b"
+        fmt_unmerged  = "%%{\\e[2m%%}%%F{yellow}m%d%%f%%b"
+        fmt_staged    = "%%F{yellow}s%d%%f"
+        fmt_unstaged  = "%%F{yellow}u%d%%f"
+        fmt_untracked = "%%F{blue}n%d%%f"
+      }
     }
     
     $2 == "branch.oid" {

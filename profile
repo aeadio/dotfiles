@@ -13,29 +13,6 @@
 : ${CONF:="$HOME/.config"}
 export CONF
 
-# Some facts about the environment we're in
-export OS="$(uname -s | tr '[:upper:]' '[:lower:]')"
-
-case "$OS" in
-  linux)
-    if [ -n "$XDG_SESSION_TYPE" ]; then
-      GUI="$(printf '%s' "$XDG_SESSION_TYPE" | tr '[:upper:]' '[:lower:]')"
-    elif [ -n "$WAYLAND_DISPLAY" ]; then
-      GUI=wayland
-    elif ps -fe | grep -q '[x]init' && [ -n "$DISPLAY" ]; then
-      GUI=x11
-    fi
-    ;;
-  darwin)
-    if ps -fe | grep -q '[W]indowServer'; then
-      GUI=aqua
-    elif ps -fe | grep -q '[x]init' && [ -n "$DISPLAY" ]; then
-      GUI=x11
-    fi
-    ;;
-esac
-export GUI
-
 # Some functions we'll use during profile initialization
 quiet() {
   # If we're not connected to a terminal, then don't suppress stdout -- so that
@@ -61,4 +38,31 @@ if [ -d "$CONF/profile.d" ]; then
     [ -x "$f" ] && . "$f"
   done
   unset f
+fi
+
+# Some facts about the environment we're in
+export OS="$(uname -s | tr '[:upper:]' '[:lower:]')"
+
+case "$OS" in
+  linux)
+    if [ -n "$XDG_SESSION_TYPE" ]; then
+      GUI="$(printf '%s' "$XDG_SESSION_TYPE" | tr '[:upper:]' '[:lower:]')"
+    elif [ -n "$WAYLAND_DISPLAY" ]; then
+      GUI=wayland
+    elif ps -fe | grep -q '[x]init' && [ -n "$DISPLAY" ]; then
+      GUI=x11
+    fi
+    ;;
+  darwin)
+    if ps -fe | grep -q '[W]indowServer'; then
+      GUI=aqua
+    elif ps -fe | grep -q '[x]init' && [ -n "$DISPLAY" ]; then
+      GUI=x11
+    fi
+    ;;
+esac
+export GUI
+
+if quiet locale charmap | grep -qi 'utf.8'; then
+  export UTF8_OK=1
 fi
