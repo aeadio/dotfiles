@@ -10,7 +10,6 @@ if [[ ! -d $ZSH ]]; then
   return
 fi
 
-
 # pre.d
 # Bootstrap config to be run before anything else is loaded. Ie, make sure
 # compinit is initialized before plugins that hook it.
@@ -18,7 +17,6 @@ fi
   local f
   for f in $ZSH/pre.d/*(e:'[[ -x $REPLY ]]':onN); . $f
 }
-
 
 # Plugins
 # Plain (executable) files in zsh/plugins/ are first-party plugins -- mine.
@@ -31,7 +29,6 @@ fi
   for f in $ZSH/plugins/*(-.e:'[[ -x $REPLY ]]':onN); . $f  # 1st party plugins
   for f in $ZSH/plugins/*/*.plugin.zsh(-.onN);        . $f  # 3rd party plugins
 }
-
 
 # User functions & ZLE widgets
 # Function and widget definitions are autoloaded if the file is marked 
@@ -95,7 +92,7 @@ zshrc-loaduserfns() {
           autoload -Uz add-zle-hook-widget
           quiet add-zle-hook-widget $arg $fname || zle -N $arg $fname ;;
         transform=*)
-          zle -T ${action#hook=} $fname ;;
+          zle -T ${action#transform=} $fname ;;
         reload)
           # Invoke the function to perform initialization
           $fn ;;
@@ -107,7 +104,6 @@ zshrc-loaduserfns() {
 }
 
 unfunction zshrc-getbangactions zshrc-loaduserfns
-
 
 # zshrc.d
 # Primary place for zsh config. Load last so that it may make use of plugins.
