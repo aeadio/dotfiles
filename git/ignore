@@ -1,1 +1,9 @@
+# local-only
 *.user
+
+# junk
+.DS_Store
+Thumbs.db
+__pycache__
+__init__.py
+*.zwc
