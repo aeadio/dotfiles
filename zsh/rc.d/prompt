@@ -9,7 +9,7 @@
     '$(ps-basicinfo)'
     '$(ps-directory; ps-git)'
     $'\n'
-    '$(ps-ranger)'
+    '$(ps-level)'
     '$(ps-aws)'
     '$(ps-bufstack)'
     '$(ps-caret) '
@@ -17,7 +17,7 @@
   
   # [R][🯊[⠶awsprofile]][⋮stack]» 
   local ps2=(
-    '$(ps-ranger)'
+    '$(ps-level)'
     '$(ps-aws)'
     '$(ps-bufstack)'
     '$(ps-caret) '
@@ -141,9 +141,11 @@ ps-git() {
   fi
 }
 
-ps-ranger() {
+ps-level() {
   if (( $+RANGER_LEVEL )); then
     print -n "%F{green}R%f "
+  elif (( SHLVL > 1 )); then
+    print -n "%F{green}$SHLVL%f "
   fi
 }
 
