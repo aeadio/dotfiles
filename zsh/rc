@@ -10,6 +10,7 @@ if [[ ! -d $ZSH ]]; then
   return
 fi
 
+
 # pre.d
 # Bootstrap config to be run before anything else is loaded. Ie, make sure
 # compinit is initialized before plugins that hook it.
@@ -17,6 +18,7 @@ fi
   local f
   for f in $ZSH/pre.d/*(e:'[[ -x $REPLY ]]':onN); . $f
 }
+
 
 # Plugins
 # Plain (executable) files in zsh/plugins/ are first-party plugins -- mine.
@@ -30,22 +32,82 @@ fi
   for f in $ZSH/plugins/*/*.plugin.zsh(-.onN);        . $f  # 3rd party plugins
 }
 
-# User functions
-# All first-party function definitions (but not bodies) are autoloaded
-if [[ -d $ZSH/functions ]]; then
-  fpath=($ZSH/functions $fpath)  # prepend to prefer ours over vendor's
-  autoload -z $ZSH/functions/*(-.N:t)
-fi
 
-# User ZLE widgets
-if [[ -d $ZSH/widgets ]]; then
-  fpath=($ZSH/widgets $fpath)
-  local f
-  for f in $ZSH/widgets/*(-.N:t); do
-    autoload -z $f
-    zle -N $f
+# User functions & ZLE widgets
+# Function and widget definitions are autoloaded if the file is marked 
+# executable. If the first line of the file begins with the pattern
+# '#*([[:space:]])(fn|zle):', then some actions are taken after auto-loading.
+zshrc-getbangactions() {
+  emulate -L zsh -o ksh_glob
+  local bang
+  read -r bang < $2
+  if [[ $bang == \#*([[:space:]])${~1}:* ]]; then
+    print -- ${=bang#\#*([[:space:]])${~1}:*([[:space:]])}
+  fi
+}
+
+zshrc-loaduserfns() {
+  local f fns=( $1/*(-.e:'[[ -x $REPLY ]]':N) )
+  if (( ${#fns} == 0 )); then
+    return 1
+  fi
+  fpath=($1 $fpath)
+  for f in $fns; autoload -z ${f:t}
+  REPLY=( $fns )
+}
+
+() {
+  local fn fname action REPLY
+  zshrc-loaduserfns $ZSH/functions || return
+  for fn in $REPLY; do
+    fname=${fn:t}
+    for action in $(zshrc-getbangactions "fn" $fn); do
+      case $action in
+        nocorrect)
+          alias $fname="nocorrect $fname" ;;
+        noglob)
+          alias $fname="noglob $fname" ;;
+        hook=*)
+          autoload -Uz add-zsh-hook &&
+          add-zsh-hook ${action#hook=} $fname ;;
+        reload)
+          # Invoke the function to perform initialization
+          $fn ;;
+        *)
+          print "$fname: unknown fn action: $action" >&2 ;;
+      esac
+    done
   done
-fi
+}
+
+() {
+  local fn fname action arg REPLY
+  zshrc-loaduserfns $ZSH/widgets || return
+  for fn in $REPLY; do
+    zle -N ${fname::=${fn:t}}
+    for action in $(zshrc-getbangactions "zle" $fn); do
+      case $action in
+        alias=*)
+          zle -A $fname ${action#alias=} ;;
+        hook=*)
+          arg=${action#hook=}
+          zle -A $arg ${fname}-hook-$arg
+          autoload -Uz add-zle-hook-widget
+          quiet add-zle-hook-widget $arg $fname || zle -N $arg $fname ;;
+        transform=*)
+          zle -T ${action#hook=} $fname ;;
+        reload)
+          # Invoke the function to perform initialization
+          $fn ;;
+        *)
+          print "$fname: unknown zle action: $action" >&2 ;;
+      esac
+    done
+  done
+}
+
+unfunction zshrc-getbangactions zshrc-loaduserfns
+
 
 # zshrc.d
 # Primary place for zsh config. Load last so that it may make use of plugins.
