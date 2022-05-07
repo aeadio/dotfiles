@@ -81,18 +81,18 @@ dynexport() {
       var=$arg
       interpret=
     else
-      >&2 <<< "fatal: unable to parse parameter: $arg"
+      print "fatal: unable to parse parameter: $arg" >&2
       return
     fi
     if [[ ${(tP)var} == *special* ]]; then
-      >&2 <<< "fatal: cannot set special parameter $var"
+      print "fatal: cannot set special parameter $var" >&2
       return
     fi
     if (( $interpret )); then
       # Have the shell interpret the assignment so future expansion & typeset
       # dumping works as expected.
       if ! eval "$arg"; then
-        >&2 <<< "fatal: bad assignment"
+        print "fatal: bad assignment" >&2
         return
       fi
     fi
