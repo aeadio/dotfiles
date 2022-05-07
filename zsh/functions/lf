@@ -1,0 +1,17 @@
+# fn: noglob
+# vim: ft=zsh ts=2 sw=2 et:
+
+emulate -L zsh
+
+local pattern=${1:-*}
+local fns
+
+for dir in $fpath; do
+  fns=( $dir/${~pattern}(-.N) )
+  if (( ${#fns} == 0 )); then
+    continue
+  fi
+  print -P "%B%F{blue}$dir%f%b"
+  print -f '%s\n' -- ${fns:t}
+  print ''
+done
