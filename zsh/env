@@ -1,0 +1,7 @@
+# vim: ft=sh ts=2 sw=2 et:
+
+# Our environment variables are exported in .profile for common use across
+# contemporary ksh-like shells.
+if [[ -x $HOME/.profile ]]; then
+  emulate -R sh -c '. $HOME/.profile'
+fi
