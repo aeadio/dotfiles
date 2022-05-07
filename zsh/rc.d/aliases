@@ -1,32 +1,34 @@
 # vim: ft=sh ts=2 sw=2 et:
 
-# default command options
-if isgnu grep; then
-  alias grep='grep --color=auto'
-fi
+# functional aliases
+has curl   && alias sprunge="curl -F 'sprunge=<-' http://sprunge.us"
+has git    && alias conf="env GIT_DIR=$CONF/.git GIT_WORK_TREE=$CONF git"
 has ranger && alias ranger='. ranger'
 
-# misc extras
-has curl && alias sprunge="curl -F 'sprunge=<-' http://sprunge.us"
-has git  && alias conf="env GIT_DIR=$CONF/.git GIT_WORK_TREE=$CONF git"
-
-# tool shorthands
-if isgnu ls; then
-  alias l='ls -lFkh --quoting-style=literal --color=auto --group-directories-first'
-  alias L='ls -lFkh --quoting-style=literal --color=auto --group-directories-first -a'
-else
-  alias l='ls -lpq'
-  alias L='ls -lpq -a'
-fi
-has micro    && alias e='micro'
-has ranger   && alias f='ranger'
-has code-oss && alias E='code-oss'
-has code     && alias E='code'
 if has doas; then
   alias root='doas -s'
 else
   alias root='sudo -sE'
 fi
+
+# shorthands
+if has exa; then
+  alias l='exa -lbF --group-directories-first --no-time --git --no-icons'
+  alias L='exa -lbF --group-directories-first --no-time --git --no-icons --all'
+  alias ll='exa -lbFgm --group-directories-first --git --no-icons'
+  alias LL='exa -lbFgm --group-directories-first --git --no-icons --all'
+elif isgnu ls; then
+  alias l='ls -lFkh --quoting-style=literal --color=auto --group-directories-first'
+  alias L='ls -lFkh --quoting-style=literal --color=auto --group-directories-first -A'
+else
+  alias l='ls -lpq'
+  alias L='ls -lpq -a'
+fi
+
+has micro    && alias e='micro'
+has ranger   && alias f='ranger'
+has code-oss && alias E='code-oss'
+has code     && alias E='code'
 
 # platform specific
 case $OS in

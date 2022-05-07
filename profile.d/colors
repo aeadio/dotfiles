@@ -1,21 +1,21 @@
 #!/bin/sh
 # vim: ft=sh ts=2 sw=2 et:
 
-# GNU ls
-# TODO: Replace with third party LS_COLORS tool.
-for b in \
-  /usr/local/opt/coreutils/libexec/gnubin/dircolors    \
-  /opt/homebrew/opt/coreutils/libexec/gnubin/dircolors \
-  "$(command -v dircolors 2>/dev/null)"; do
-  [ -x "$b" ] && eval "$("$b" -b "$CONF/dir_colors")"
-done
-unset b
+# LS_COLORS
+# Originally for GNU ls, several apps respect this
+export LS_COLORS="no=00:rs=0:fi=00:di=01;34:ln=36:mh=04;36:pi=04;01;36:\
+so=04;33:do=04;01;36:bd=01;33:cd=33:or=31:mi=01;37;41:ex=01;36:su=01;04;37:\
+sg=01;04;37:ca=01;37:tw=01;37;44:ow=01;04;34:st=04;37;44:*=0:"
 
-# General
+# Encourage apps to use color
 # https://bixense.com/clicolors/
 export CLICOLOR=1
 
-# Apps
+# Specific apps
+export EXA_COLORS="ur=0:uw=0:ux=1;36:ue=0:gr=0:gw=1;33:gx=0:tr=00:tw=1;41:tx=0:\
+su=0:sf=0:xa=1;35:sn=0:sb=1;34:df=1;35:ds=35::uu=0:un=1;30:gu=0:gn=1;30:\
+xx=0:da=1;36:in=1;36:bl=1;36:hd=1;30:lp=36:cc=0;41:b0=1;31:lc=36:lm=35:ga=1;32:\
+gm=1;33:gd=1;31:gv=33:gt=35"
 export HIGHLIGHT_STYLE="nord"
 export FZF_DEFAULT_OPTS="$FZF_DEFAULT_OPTS --color=16,hl:6,hl+:14,fg:-1,\
 fg+:11,bg:-1,bg+:-1,prompt:13,pointer:11,disabled:8,info:12,marker:3,\
