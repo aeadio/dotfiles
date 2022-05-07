@@ -28,14 +28,23 @@ unfunction zshrc-pre.d
 
 # Plugins
 # Plain (executable) files in zsh/plugins/ are first-party plugins -- mine.
-# Directories are third-party plugins (if they contain a .plugin.zsh file). See
-# zsh/functions/zp* for installation helper.
+# Directories are third-party plugins (if they contain a .plugin.zsh file).
+# See zsh/functions/zp* for installation helper.
 zshrc-plugins() {
-  # NOTE: Run each plugin within clean options. Do not make it sticky, as
-  # plugin functions should have the ability to respond to our chosen options.
-  local f
-  for f in $ZSH/plugins/*(-.e:'[[ -x $REPLY ]]':onN); . $f  # 1st party plugins
-  for f in $ZSH/plugins/*/*.plugin.zsh(-.onN);        . $f  # 3rd party plugins
+  local f name plugins=(
+    $ZSH/plugins/*(-.e:'[[ -x $REPLY ]]':onN)
+    $ZSH/plugins/*/*.plugin.zsh(-.onN)
+  )
+  # Build an enclosing function for each so profiling can blame their startup
+  # time correctly.
+  for f in $plugins; do
+    name=${f:t}
+    zshrc-plugins:$name() {
+      . $f
+    }
+    zshrc-plugins:$name
+    unfunction zshrc-plugins:$name
+  done
 }
 zshrc-plugins
 unfunction zshrc-plugins
