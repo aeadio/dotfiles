@@ -49,11 +49,12 @@
 
 # Info blocks
 ps-basicinfo() {
-  local user host
+  unset PROMPT_INFOLEN
+  local user host info
   # Username
   # Only show if we've su'd to a user that's out of the ordinary
   if [[ ${(%):-%n} != (a(|nt(|hony(|eadicicco)))|root) ]]; then
-    user="%%(!,%B%F{red},%F{cyan})%n%f%b"
+    user="%(!,%B%F{red},%F{cyan})%n%f%b"
   fi
   # Hostname
   # Only show if connected to remote host
@@ -61,16 +62,20 @@ ps-basicinfo() {
     host='@%(!,%B%F{yellow},%B%F{magenta})%m%f%b'
   fi
   if [[ -n "$user$host" ]]; then
-    print -n "$user$host:"
+    info="$user$host:"
+    PROMPT_INFOLEN=$(( ${#info} + 1 ))
+    print -n $info
   fi
 }
 
 ps-directory() {
-  local maxwidth=$COLUMNS
-  local fullpath=${(%):-%~}
-  if [[ -n $PS_GIT_HEAD ]] && (( COLUMNS > 15 )); then
-    (( maxwidth = COLUMNS >= 120 ? COLUMNS - 40 : COLUMNS / 3 * 2 ))
+  local maxwidth=$(( COLUMNS - PROMPT_INFOLEN ))
+  if (( maxwidth < 0 )); then
+    return
+  elif [[ -n $PS_GIT_HEAD ]] && (( maxwidth > 15 )); then
+    (( maxwidth = maxwidth >= 120 ? maxwidth - 40 : maxwidth / 3 * 2 ))
   fi
+  local fullpath=${(%):-%~}
   local display=$fullpath
   if (( ${#display} > maxwidth )); then
     # Favor the last components in the path
