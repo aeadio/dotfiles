@@ -12,7 +12,7 @@ for cmd in git zshi; do
     >&2 <<< "fatal: requires $cmd"
     return
   fi
-fi
+done
 
 local tmpdir=$(mktemp -d)  # XXX: -d option is not POSIX
 if [[ ! -d $tmpdir ]]; then
