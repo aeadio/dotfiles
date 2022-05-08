@@ -86,4 +86,10 @@ case $GUI in
       alias p='xclip -out -selection clipboard'
     fi
     ;;
+  wayland)
+    if has wlcopy; then
+      alias c='wl-copy'
+      alias p='wl-paste'
+    fi
+    ;;
 esac
