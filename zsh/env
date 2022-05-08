@@ -1,7 +1,63 @@
 # vim: ft=sh ts=2 sw=2 et:
 
-# Our environment variables are exported in .profile for common use across
-# contemporary ksh-like shells.
-if [[ -x $HOME/.profile ]]; then
-  emulate -R sh -c '. $HOME/.profile'
+# NOTE: Try to make no assumptions about the options set within env[.d]. Assume
+# the default for `emulate -L zsh`.
+
+# Some helper functions to make env.d and rc.d files more succinct.
+quiet() {
+  if [[ -t 1 ]]; then
+    "$@" &>/dev/null
+  else
+    "$@" 2>/dev/null
+  fi
+}
+
+has() {
+  (( $+commands[$1] ))
+}
+
+isgnu() {
+  has $1 && [[ $(quiet $1 --version) =~ GNU ]]
+}
+
+# If we're a login shell, export some facts about the environment, which are
+# used throughout env.d and rc.d. Do this here, as .zshenv is sourced before
+# .zlogin.
+if [[ -o login ]]; then
+  export OS=${"$(uname -s)":l}
+  
+  : ${GUI:=${XDG_SESSION_TYPE:l}}
+  : ${GUI:=${WAYLAND_DISPLAY:+wayland}}
+  [[ -z $GUI && -n $DISPLAY && $(ps -fe) =~ xinit ]] && GUI=x11
+  [[ -z $GUI && $OS == darwin && $(ps -fe) =~ WindowServer ]] && GUI=aqua
+  export GUI
+  
+  : ${CONF:=$XDG_CONFIG_HOME}
+  : ${CONF:=$HOME/.config}
+  : ${CONF::=${CONF:A}}
+  [[ -e $CONF ]] || unset CONF
+  export CONF
+  
+  : ${ZSH:=$ZDOTDIR}
+  : ${ZSH:=$CONF/zsh}
+  [[ -e $ZSH ]] || unset ZSH
+  export ZSH
+  
+  () {
+    emulate -L zsh -o no_case_match
+    if [[ -o multibyte && $(locale charmap) =~ utf.8 ]]; then
+      export UTF8=1
+    fi
+  }
 fi
+
+if [[ ! -d $ZSH ]]; then
+  print "Warning: zsh config directory not found: $ZSH"
+  return
+fi
+
+# env.d
+() {
+  local f
+  for f in $ZSH/env.d/*(e:'[[ -x $REPLY ]]':onN); . $f
+}

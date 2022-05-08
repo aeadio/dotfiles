@@ -1,9 +1,0 @@
-#!/usr/bin/env zsh
-# vim: ft=sh ts=2 sw=2 et:
-
-() {
-  emulate -L zsh -o no_case_match
-  if [[ $(locale charmap) =~ utf.8 && -o multibyte ]]; then
-    UTF8=1
-  fi
-}

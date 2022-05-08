@@ -1,0 +1,116 @@
+# vim: ft=sh ts=2 sw=2 et:
+
+# Does our environment support color?
+(( $terminfo[colors] )) ||
+(( $termcap[Co] )) ||
+(( $+COLORTERM )) ||
+[[ $TERM == *color* ]] ||
+  return
+
+# Per-application colors
+() {
+  emulate -L zsh -o extended_glob
+  local -A lscolors=(
+    # normals
+    [no]='00'
+    [rs]='0'
+    
+    # files, dir, links
+    [fi]='00'
+    [di]='01;34'
+    [ln]='36'
+    [mh]='04;36'
+    
+    # specials: fifo, socks, blocks, etc
+    [pi]='04;01;36'
+    [so]='04;33'
+    [do]='04;01;36'
+    [bd]='33'
+    [cd]='-02;33'
+    
+    # broken, oprhened
+    [or]='31'
+    [mi]='01;37;41'
+    
+    # executable
+    [ex]='01;36'
+    
+    # exceptional: set*id, cap
+    [su]='01;04;37'
+    [sg]='01;04;37'
+    [ca]='01;37'
+    
+    # sticky, writable
+    [tw]='01;37;44'
+    [ow]='01;04;34'
+    [st]='04;37;44'
+    
+    # file types
+    ['*']='0' 
+  )
+  export LS_COLORS=${(kj,:,)lscolors/(#m)*/$MATCH=$lscolors[$MATCH]}
+  
+  local -A exacolors=(
+    # permissions
+    [ur]='0'  [uw]='0'     [ux]='1;36'  [ue]='0'
+    [gr]='2'  [gw]='33'    [gx]='2'
+    [tr]='2'  [tw]='1;41'  [tx]='2'
+    [su]='1;35'
+    [sf]='1;35'
+    [xa]='1;35'
+    
+    # file sizes
+    [sn]='0'
+    [sb]='0'
+    [df]='1;35'
+    [ds]='35'
+    
+    # owners and groups
+    [uu]='0' [un]='1;30'
+    [gu]='2' [gn]='1;30'
+    
+    # details and metadata
+    [xx]='2'
+    [hd]='1;30'
+    [cc]='0;41' 
+    [in]='2;36'
+    [bl]='34'
+    [da]='2;36'
+    [lp]='36'
+    
+    # overlays
+    [b0]='1;31'
+    
+    # hard links
+    [lc]='36'
+    [lm]='2;36'
+    
+    # git
+    [ga]='1;32'
+    [gm]='33'
+    [gd]='1;31'
+    [gv]='2;33'
+    [gt]='35'
+  )
+  export EXA_COLORS=${(kj,:,)exacolors/(#m)*/$MATCH=$exacolors[$MATCH]}
+  
+  local fzfopts=(
+    '--color=16'
+    'fg:-1' 'fg+:11'
+    'bg:-1' 'bg+:-1'
+    'hl:6'  'hl+:14'
+    'prompt:3'
+    'pointer:11'
+    'disabled:8'
+    'info:12'
+    'marker:3:dim'
+    'spinner:12'
+    'header:12'
+  )
+  : ${FZF_DEFAULT_OPTS:=${(j:,:)fzfopts}}
+  export FZF_DEFAULT_OPTS
+}
+
+# Encourage apps to use color
+# https://bixense.com/clicolors/
+export CLICOLOR=1

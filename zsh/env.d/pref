@@ -1,0 +1,18 @@
+# vim: ft=sh ts=2 sw=2 et:
+
+# Sets basic user preferences that applications expect as env vars
+
+# Basic utils
+export EDITOR='micro'
+export TERMINAL='alacritty'
+export LESSHISTFILE='-'
+export PAGER='less'
+
+if has bat; then
+  export PAGER='bat'
+  export MANPAGER="sh -c 'col -bx | bat -l man -p'"
+fi
+
+if (( $+GUI )); then
+  export GEDITOR='code'
+fi

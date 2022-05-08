@@ -12,9 +12,9 @@ circleci
 gh
 micro/buffers
 msmtp
-profile.d/up
-profile.d/work
 terraform
+zsh/env.d/up
+zsh/env.d/work
 zsh/history
 
 # machine-specific

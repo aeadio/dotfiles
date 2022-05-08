@@ -1,10 +1,5 @@
 # vim: ft=sh ts=2 sw=2 et:
 
-# NOTE: This file (and rc.d/, etc) contain zsh-specific configuration.
-# Environment exports are primarily found in profile.d/*.
-
-ZSH=$CONF/zsh
-
 if [[ ! -d $ZSH ]]; then
   print "Warning: zsh config directory not found: $ZSH"
   return

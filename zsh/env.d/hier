@@ -1,0 +1,21 @@
+# vim: ft=sh ts=2 sw=2 et:
+
+# Informs as to the directory hierarchy of ~
+
+gopath=(
+  $HOME/Source/go(N)
+  $HOME/src/go(N)
+)
+export GOPATH=${(j,:,)gopath}
+
+path=(
+  $HOME/[Bb]in(N)
+  ${~GOPATH:+$GOPATH/bin(N)}
+  /opt/homebrew/opt/coreutils/libexec/gnubin(N)
+  /usr/local/opt/coreutils/libexec/gnubin(N)
+  /opt/homebrew/bin(N)
+  /opt/bin(N)
+  $path
+)
+
+export XDG_CONFIG_HOME=$CONF
