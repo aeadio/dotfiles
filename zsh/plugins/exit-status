@@ -1,0 +1,23 @@
+# vim: ft=sh ts=2 sw=2 et:
+
+# Display exit status after a command if it's not zero, and only display once.
+# Using %? in the prompt would continue to redisplay the error code when
+# returning at an empty prompt -- not what we want.
+
+autoload -Uz add-zsh-hook
+
+_exitstatus-preexec() {
+  _EXITSTATUS_CHECK=1
+}
+add-zsh-hook preexec _exitstatus-preexec
+
+_exitstatus-precmd() {
+  local ret=$?
+  if (( $+_EXITSTATUS_CHECK )); then
+    if (( ret )); then
+      print -P "%B%F{red}exited:%f%b $ret"
+    fi
+    unset _EXITSTATUS_CHECK
+  fi
+}
+add-zsh-hook precmd _exitstatus-precmd
