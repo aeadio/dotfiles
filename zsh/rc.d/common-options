@@ -17,6 +17,9 @@ setopt no_case_match
 setopt no_beep
 setopt no_flow_control
 
+# Automatically time long commands
+REPORTTIME=10
+
 # UTF-8
 if (( $+UTF8_OK )); then
   setopt combining_chars
