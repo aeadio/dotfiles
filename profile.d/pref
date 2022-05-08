@@ -4,7 +4,6 @@
 # Basic utils
 export EDITOR="micro"
 export TERMINAL="alacritty"
-export CLICOLOR=1
 export LESSHISTFILE="-"
 export PAGER="less"
 if has bat; then
