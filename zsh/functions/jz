@@ -23,7 +23,7 @@ local pathfilter='
 
 jq -r $pathfilter $jsonfile | fzf \
   --preview="jq --color-output {q} \"$jsonfile\"" \
-  --preview-window="up:75%" \
+  --preview-window="up,75%,border-bottom" \
   --query="." \
   --print-query \
   --bind="tab:replace-query" \
