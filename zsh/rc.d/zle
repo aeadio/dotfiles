@@ -7,7 +7,6 @@ load-widget() {
 } &> /dev/null
 
 load-widget edit-command-line
-load-widget insert-files
 load-widget modify-current-argument
 load-widget run-help
 load-widget tetris
@@ -66,8 +65,8 @@ bindkey '^F'      fzf-history
 bindkey '^G'      send-break
 bindkey '^H'      run-help
 bindkey '^I'      fzf-tab-complete                   # tab
-bindkey '^K'      kill-whole-line
-bindkey '^L'      insert-files
+bindkey '^K'      kill-to-clipboard
+bindkey '^L'      fzf-select-files
 bindkey '^N'      mkdir-arg
 bindkey '^P'      smart-push-line
 bindkey '^R'      run-elevated

@@ -1,0 +1,13 @@
+# vim: ft=sh ts=2 sw=2 et:
+# Credit: leah https://leahneukirchen.org/dotfiles/.zshrc
+emulate -L zsh -o ksh_glob
+
+if [[ -z $BUFFER || $BUFFER == *([[:space:]]) ]]; then
+  return
+fi
+
+if quiet alias c; then
+  print -f '%s' -- $BUFFER | c 
+fi
+
+zle kill-whole-line

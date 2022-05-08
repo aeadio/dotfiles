@@ -1,0 +1,35 @@
+# vim: ft=zsh ts=2 sw=2 et:
+emulate -L zsh -o multios -e
+
+if (( ! $+commands[fzf] )); then
+  return
+fi
+
+local prev_opts
+if (( $+commands[preview] )); then
+  prev_opts=(
+    --preview="preview {}"
+    --preview-window=right,60%,border-left
+  )
+else
+  prev_opts=(
+    --height=40%
+  )
+fi
+
+local ret
+local matches=$(
+  find . | fzf \
+    --layout=reverse \
+    --filepath-word  \
+    --tiebreak=begin \
+    ${prev_opts}    \
+    --multi
+) || ret=$?
+matches=( ${(f)matches} )
+
+zle reset-prompt
+
+if (( ! ret && ${#matches} > 0 )); then
+  LBUFFER="$LBUFFER${${LBUFFER[-1]:#[[:space:]]}:+ }$matches "
+fi

@@ -7,16 +7,20 @@ if (( ! $+commands[fzf] )); then
   return
 fi
 
-local line=$(fc -ln -1 0 | fzf --no-sort --height=40% --border=none --no-info)
-local ret=$?
+local ret
+local line=$(
+  fc -ln -1 0 | fzf  \
+    --no-sort        \
+    --height=40%     \
+    --layout=reverse \
+    --no-info
+) || ret=$?
 
 # NOTE: Reset prompt immediately after fzf. If we back out or it fails, the
 # prompt is munged.
 zle reset-prompt
 
-if [[ -n $line ]]; then
+if (( ! ret )) && [[ -n $line ]]; then
   LBUFFER=$line
   RBUFFER=
 fi
-
-return $ret
