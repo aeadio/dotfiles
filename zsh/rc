@@ -3,7 +3,7 @@
 # NOTE: This file (and rc.d/, etc) contain zsh-specific configuration.
 # Environment exports are primarily found in profile.d/*.
 
-export ZSH=$CONF/zsh
+ZSH=$CONF/zsh
 
 if [[ ! -d $ZSH ]]; then
   print "Warning: zsh config directory not found: $ZSH"

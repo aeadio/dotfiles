@@ -11,7 +11,6 @@
 : ${CONF:="$XDG_CONFIG_HOME"}
 : ${CONF:="$(test -d "$HOME/.config" && cd -P "$HOME/.config" && pwd -P)"}
 : ${CONF:="$HOME/.config"}
-export CONF
 
 # Some functions we'll use during profile initialization
 quiet() {
@@ -41,7 +40,7 @@ if [ -d "$CONF/profile.d" ]; then
 fi
 
 # Some facts about the environment we're in
-export OS="$(uname -s | tr '[:upper:]' '[:lower:]')"
+OS="$(uname -s | tr '[:upper:]' '[:lower:]')"
 
 case "$OS" in
   linux)
