@@ -17,7 +17,7 @@
   
   # [R][🯊[⠶awsprofile]][⋮stack]» 
   local ps2=(
-    '$(ps-level)'
+    '$(ps-promptception)'
     '$(ps-aws)'
     '$(ps-bufstack)'
     '$(ps-caret) '
