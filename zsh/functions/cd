@@ -1,0 +1,17 @@
+# vim: ft=zsh ts=2 sw=2 et:
+
+emulate -L zsh
+
+local OPTIND=0 _
+while getopts ":qsLP" _; do :; done
+local argn=$OPTIND
+
+if (( ARGC == argn )) && [[ $argv[$argn] == "@" ]]; then
+  local gitroot
+  git rev-parse --show-toplevel 2>/dev/null | read gitroot
+  if [[ -n $gitroot ]]; then
+    argv[$argn]=$gitroot
+  fi
+fi
+
+builtin cd "$@"
