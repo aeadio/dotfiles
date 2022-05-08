@@ -60,8 +60,3 @@ case "$OS" in
     fi
     ;;
 esac
-export GUI
-
-if quiet locale charmap | grep -qi 'utf.8'; then
-  export UTF8_OK=1
-fi

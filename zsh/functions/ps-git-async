@@ -27,7 +27,7 @@ emulate -L zsh -e
 exec 2>/dev/null
 
 env GIT_OPTIONAL_LOCKS=0 git status --branch --porcelain=v2 \
-  | awk -v utf8=$UTF8_OK '
+  | awk -v utf8=$UTF8 '
     BEGIN {
       if (utf8) {
         fmt_behind    = "%%B%%F{red}↓%d%%f%%b"
