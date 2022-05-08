@@ -1,0 +1,38 @@
+# vim: ft=zsh ts=2 sw=2 et:
+
+# TODO: Implement compatible interface to jq so this can be used as a drop-in
+# replacement.
+
+local jqflags
+
+local jsonfile=$1
+if (( ! $# )) || [[ $1 == "-" ]]; then
+  jsonfile=$(mktemp) || return
+  trap "rm -f $jsonfile" EXIT
+  cat > $jsonfile
+fi
+
+local pathfilter='
+  select(objects)|=[.] 
+  | map( paths(scalars) )
+  | map( map(select(numbers)="[]")
+  | join("."))
+  | map("." + .)
+  | unique
+  | .[]'
+
+jq -r $pathfilter $jsonfile | fzf \
+  --preview="jq --color-output {q} \"$jsonfile\"" \
+  --preview-window="up:75%" \
+  --query="." \
+  --print-query \
+  --bind="tab:replace-query" \
+  --bind="enter:print-query" \
+  --bind="alt-up:preview-page-up,alt-down:preview-page-down" \
+  --bind="pgup:preview-page-up,pgdn:preview-page-down" |
+  {
+    local query
+    read -r query
+    print -r -f '%s\n' $query >&2
+    jq ${=jqflags} $query $jsonfile
+  }
