@@ -30,12 +30,12 @@ env GIT_OPTIONAL_LOCKS=0 git status --branch --porcelain=v2 \
   | awk -v utf8=$UTF8 '
     BEGIN {
       if (utf8) {
-        fmt_behind    = "%%B%%F{red}↓%d%%f%%b"
-        fmt_ahead     = "%%B%%F{green}↑%d%%f%%b"
-        fmt_unmerged  = "%%{\\e[2m%%}%%F{yellow}↯%d%%f%%b"
-        fmt_staged    = "%%F{yellow}▲%d%%f"
-        fmt_unstaged  = "%%F{yellow}△%d%%f"
-        fmt_untracked = "%%F{blue}⊘%d%%f"
+        fmt_behind    = "%%B%%F{red}\\u2193%d%%f%%b"
+        fmt_ahead     = "%%B%%F{green}\\u2191%d%%f%%b"
+        fmt_unmerged  = "%%{\\e[2m%%}%%F{yellow}\\u21af%d%%f%%b"
+        fmt_staged    = "%%F{yellow}\\u25b2%d%%f"
+        fmt_unstaged  = "%%F{yellow}\\u25b3%d%%f"
+        fmt_untracked = "%%F{blue}\\u2298%d%%f"
       } else {
         fmt_behind    = "%%B%%F{red}b%d%%f%%b"
         fmt_ahead     = "%%B%%F{green}a%d%%f%%b"

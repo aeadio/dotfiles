@@ -9,9 +9,9 @@ add-zsh-hook precmd _bad_input_reset
 typeset -Ag PROMPT_DANGEROUS=(
   '>' 1
   '$' 1
-  '»' 1
-  '›' 1
-  'R›' 1
+  "${(#):-16#226f}" 1
+  "${(#):-16#bb}"   1
+  "${(#):-16#203a}" 1
 )
 
 # Note: this widget is auto-invoked by ZLE if present
