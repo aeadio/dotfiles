@@ -56,15 +56,19 @@ bindkey '^[[1;7B' accept-line-and-down-history       # alt-ctrl-down
 bindkey '^[[1;7D' transpose-words                    # alt-ctrl-left
 bindkey '^[[1;7C' copy-prev-word                     # alt-ctrl-right
 
+bindkey '^[^['    send-break                         # esc + esc
+
 bindkey '^M'      accept-line                        # enter
 bindkey '^?'      backward-delete-char               # backspace
 
 bindkey '^A'      after-first-word
+bindkey '^B'      git-zbranch
 bindkey '^E'      edit-command-line
 bindkey '^F'      fzf-history
-bindkey '^G'      send-break
+bindkey '^G'      git-zlog
 bindkey '^H'      run-help
 bindkey '^I'      fzf-tab-complete                   # tab
+bindkey '^J'      git-zfiles
 bindkey '^K'      kill-to-clipboard
 bindkey '^L'      fzf-select-files
 bindkey '^N'      mkdir-arg
