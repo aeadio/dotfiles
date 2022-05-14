@@ -28,7 +28,7 @@ for p in "$@"; do
     >&2 <<< "fatal: failed to load plugin $p"
     return
   fi
-  plugins+( ${(q)p:t:r} )
+  plugins+=( ${(q)p:t:r} )
 done
 
 zshi '
