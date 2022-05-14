@@ -217,22 +217,25 @@ if has git; then
     emulate -L zsh
     local fd=$1
     local head commits changes
-    zle -F $fd
-    read -ru $fd head
-    read -ru $fd commits
-    read -ru $fd changes
-    exec {fd}<&-
-    if [[ $head == $PS_GIT_HEAD
-      && $commits == $PS_GIT_COMMITS
-      && $changes == $PS_GIT_CHANGES ]]; then
-      return
-    fi
-    PS_GIT_HEAD=$head
-    PS_GIT_COMMITS=$commits
-    PS_GIT_CHANGES=$changes
-    if zle && [[ $CONTEXT == 'start' ]]; then
-      zle reset-prompt
-    fi
+    {
+      zle -F $fd
+      read -ru $fd head
+      read -ru $fd commits
+      read -ru $fd changes
+      if [[ $head == $PS_GIT_HEAD
+        && $commits == $PS_GIT_COMMITS
+        && $changes == $PS_GIT_CHANGES ]]; then
+        return
+      fi
+      PS_GIT_HEAD=$head
+      PS_GIT_COMMITS=$commits
+      PS_GIT_CHANGES=$changes
+      if zle && [[ $CONTEXT == 'start' ]]; then
+        zle reset-prompt
+      fi
+    } always {
+      exec {fd}<&-
+    }
   }
   zle -N ps-git-finished-zle
   
