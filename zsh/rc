@@ -33,8 +33,15 @@ fi
 
 # pre.d
 zshrc:load-pre.d() {
-  local f REPLY
-  for f in $ZSH/pre.d/*(e:'[[ -x $REPLY ]]':onN); source $f
+  local f name REPLY
+  for f in $ZSH/pre.d/*(e:'[[ -x $REPLY ]]':onN); do
+    name=${f:t}
+    zshrc:load-pre.d:$name() {
+      source $f
+    }
+    zshrc:load-pre.d:$name
+    unfunction zshrc:load-pre.d:$name
+  done
 }
 zshrc:load-pre.d
 unfunction zshrc:load-pre.d
@@ -49,8 +56,6 @@ zshrc:load-plugins() {
     $ZSH/plugins/*(-.e:'[[ -x $REPLY ]]':onN)
     $ZSH/plugins/*/*.plugin.zsh(-.onN)
   )
-  # Build an enclosing function for each so profiling can blame their startup
-  # time correctly.
   for f in $plugins; do
     name=${f:t}
     zshrc:load-plugins:$name() {
@@ -84,12 +89,19 @@ unfunction zshrc:load-functions
 
 # zshrc.d
 # Primary place for zsh config. Load last so that it may make use of plugins.
-zshrc:load-zshrc.d() {
-  local f REPLY
-  for f in $ZSH/rc.d/*(e:'[[ -x $REPLY ]]':onN); source $f
+zshrc:load-rc.d() {
+  local f name REPLY
+  for f in $ZSH/rc.d/*(e:'[[ -x $REPLY ]]':onN); do
+    name=${f:t}
+    zshrc:load-rc.d:$name() {
+      source $f
+    }
+    zshrc:load-rc.d:$name
+    unfunction zshrc:load-rc.d:$name
+  done
 }
-zshrc:load-zshrc.d
-unfunction zshrc:load-zshrc.d
+zshrc:load-rc.d
+unfunction zshrc:load-rc.d
 
 # Stop profiling
 (( ZSHRC_PROFILE )) && zprof
