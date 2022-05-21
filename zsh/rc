@@ -104,4 +104,21 @@ zshrc:load-rc.d
 unfunction zshrc:load-rc.d
 
 # Stop profiling
-(( ZSHRC_PROFILE )) && zprof
+if (( ZSHRC_PROFILE == 1 )) zprof >&2
+if (( ZSHRC_PROFILE == 2 )); then
+  # Stop timing after all startup scripts, including those that have been
+  # deferred to early hooks and/or ZLE callbacks.
+  zshrc:profile:finish() {
+    zprof >&2
+    unset TMOUT
+    trap - ALRM
+    unfunction zshrc:profile:finish zshrc:profile:precmd
+  }
+  zshrc:profile:precmd() {
+    add-zsh-hook -d precmd zshrc:profile:precmd
+    typeset -g TMOUT=1
+    trap zshrc:profile:finish ALRM
+  }
+  autoload -U add-zsh-hook &&
+  add-zsh-hook precmd zshrc:profile:precmd
+fi
