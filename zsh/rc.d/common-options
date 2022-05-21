@@ -17,10 +17,11 @@ setopt no_case_glob
 setopt no_case_match
 
 # Safety
-setopt no_clobber
 setopt append_create
+setopt no_clobber
 is-at-least 5.9 &&
   setopt clobber_empty
+setopt rm_star_wait
 
 # Annoyances
 setopt no_beep
