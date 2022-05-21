@@ -1,5 +1,11 @@
 # vim: ft=sh ts=2 sw=2 et:
 
+# If the user copy-pasted a code snippet beginning with some caret character,
+# then prevents them from trying to execute it with that (potentially
+# dangerous) caret in-place. Instead, loads the line, caret removed, back into
+# the line editor when they try to execute it, setting _BAD_INPUT so the prompt
+# can display some visual warning cue.
+
 bad-input:reset() {
   emulate -L zsh
   typeset -g _BAD_INPUT
