@@ -5,7 +5,7 @@
 fpath=( $ZSH/plugins/zsh-completions/src(N) $fpath )
 
 () {
-  emulate -L zsh -o extended_glob
+  setopt localoptions extended_glob
   local zcompfile=${ZCOMPDUMP:-$HOME/.zcompdump}
   # NOTE: compinit must be initialized before fzf-tab
   # NOTE: Elide the compdump autocheck and do manually. The compdump check

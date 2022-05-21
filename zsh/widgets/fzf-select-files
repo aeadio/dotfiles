@@ -1,5 +1,6 @@
 # vim: ft=zsh ts=2 sw=2 et:
-emulate -L zsh -o multios -e
+
+emulate -L zsh -o multios -o err_return
 
 if (( ! $+commands[fzf] )); then
   return

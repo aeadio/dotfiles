@@ -35,7 +35,7 @@ zstyle ':completion:*:functions' ignored-patterns \
 zstyle ':completion:*:cd:*' ignore-parents parent pwd
 
 # Autosuggestion plugin
-ZSH_AUTOSUGGEST_STRATEGY=(history completion)
-ZSH_AUTOSUGGEST_BUFFER_MAX_SIZE=20
-ZSH_AUTOSUGGEST_MANUAL_REBIND=1
-ZSH_AUTOSUGGEST_COMPLETION_IGNORE='brew*([[:space:]])*([[:alnum:]])*([[:space:]])*'
+typeset -g ZSH_AUTOSUGGEST_STRATEGY=(history completion)
+typeset -g ZSH_AUTOSUGGEST_BUFFER_MAX_SIZE=20
+typeset -g ZSH_AUTOSUGGEST_MANUAL_REBIND=1
+typeset -g ZSH_AUTOSUGGEST_COMPLETION_IGNORE='brew*([[:space:]])*([[:alnum:]])*([[:space:]])*'

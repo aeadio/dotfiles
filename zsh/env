@@ -1,17 +1,6 @@
 # vim: ft=sh ts=2 sw=2 et:
 
-# NOTE: Try to make no assumptions about the options set within env[.d]. Assume
-# the default for `emulate -L zsh`.
-
 # Some helper functions to make env.d and rc.d files more succinct.
-quiet() {
-  if [[ -t 1 ]]; then
-    "$@" &>/dev/null
-  else
-    "$@" 2>/dev/null
-  fi
-}
-
 has() {
   (( $+commands[$1] ))
 }
@@ -44,10 +33,9 @@ if [[ -o login ]]; then
   export ZSH
   
   () {
-    emulate -L zsh -o no_case_match
-    if [[ -o multibyte && $(locale charmap) =~ utf.8 ]]; then
+    setopt localoptions no_case_match
+    [[ -o multibyte && $(locale charmap) =~ utf.8 ]] &&
       export UTF8=1
-    fi
   }
 fi
 
@@ -59,5 +47,5 @@ fi
 # env.d
 () {
   local f
-  for f in $ZSH/env.d/*(e:'[[ -x $REPLY ]]':onN); . $f
+  for f in $ZSH/env.d/*(e:'[[ -x $REPLY ]]':onN); source $f
 }

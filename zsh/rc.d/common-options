@@ -1,5 +1,7 @@
 # vim: ft=sh ts=2 sw=2 et:
 
+autoload -U is-at-least
+
 # Navigation
 setopt auto_pushd
 setopt pushd_ignore_dups
@@ -9,18 +11,24 @@ setopt pushd_minus
 setopt equals
 setopt extended_glob
 setopt glob_star_short
+setopt ksh_glob
 setopt interactive_comments
 setopt no_case_glob
 setopt no_case_match
+
+# Safety
+setopt no_clobber
+setopt append_create
+is-at-least 5.9 &&
+  setopt clobber_empty
 
 # Annoyances
 setopt no_beep
 setopt no_flow_control
 
 # Automatically time long commands
-REPORTTIME=10
+typeset -g REPORTTIME=10
 
 # UTF-8
-if (( $+UTF8_OK )); then
+(( $+UTF8 )) &&
   setopt combining_chars
-fi

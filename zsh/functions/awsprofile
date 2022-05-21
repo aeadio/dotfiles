@@ -1,7 +1,8 @@
 # vim: ft=zsh ts=2 sw=2 et:
+
 emulate -L zsh
 
-if [[ $# -eq 0 ]]; then
+if (( ! $# )); then
   print "usage: awsprofile profilename" >&2
   return
 fi
@@ -10,18 +11,20 @@ if [[ $1 == $AWS_PROFILE ]]; then
   return
 fi
 
-local profname=$(print -n $1 | sed 's/[.[\*^()$+?{|]/\\&/g')
+local profname
+sed 's/[.[\*^()$+?{|]/\\&/g' <<< $1 | read profname
 
-if ! grep -q "^\[$profname\]" $CONF/aws/credentials &&
-  ! grep -q "^\[profile $profname\]" $CONF/aws/config; then
+[[ $(cat $CONF/aws/credentials) =~ \[$profname\] ]] ||
+[[ $(cat $CONF/aws/config)      =~ \[$profname\] ]] ||
+{
   print "awsprofile: profile $1 not found in stored credentials" >&2
   return
-fi
+}
+
+typeset -gx AWS_PROFILE=$1
+unset AWS_ACCESS_KEY_ID AWS_SECRET_ACCESS_KEY AWS_SESSION_TOKEN
 
 if (( $+functions[dynexport] )); then
-  dynexport AWS_PROFILE=$1
+  dynexport AWS_PROFILE
   dynunset AWS_ACCESS_KEY_ID AWS_SECRET_ACCESS_KEY AWS_SESSION_TOKEN
-else
-  export AWS_PROFILE=$1
-  unset AWS_ACCESS_KEY_ID AWS_SECRET_ACCESS_KEY AWS_SESSION_TOKEN
 fi

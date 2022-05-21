@@ -9,7 +9,10 @@
 
 # Per-application colors
 () {
-  emulate -L zsh -o extended_glob
+  setopt localoptions extended_glob
+  
+  local MBEGIN MEND MATCH
+  
   local -A lscolors=(
     # normals
     [no]='00'
@@ -48,7 +51,7 @@
     # file types
     ['*']='0' 
   )
-  export LS_COLORS=${(kj,:,)lscolors/(#m)*/$MATCH=$lscolors[$MATCH]}
+  typeset -gx LS_COLORS=${(kj,:,)lscolors/(#m)*/$MATCH=$lscolors[$MATCH]}
   
   local -A exacolors=(
     # permissions
@@ -92,7 +95,7 @@
     [gv]='2;33'
     [gt]='35'
   )
-  export EXA_COLORS=${(kj,:,)exacolors/(#m)*/$MATCH=$exacolors[$MATCH]}
+  typeset -gx EXA_COLORS=${(kj,:,)exacolors/(#m)*/$MATCH=$exacolors[$MATCH]}
   
   local fzfopts=(
     '--color=16'
@@ -107,10 +110,9 @@
     'spinner:12'
     'header:12'
   )
-  : ${FZF_DEFAULT_OPTS:=${(j:,:)fzfopts}}
-  export FZF_DEFAULT_OPTS
+  typeset -gx FZF_DEFAULT_OPTS=${FZF_DEFAULT_OPTS:-${(j:,:)fzfopts}}
 }
 
 # Encourage apps to use color
 # https://bixense.com/clicolors/
-export CLICOLOR=1
+typeset -gx CLICOLOR=1

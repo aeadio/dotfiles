@@ -1,4 +1,5 @@
 # vim: ft=sh ts=2 sw=2 et:
+
 emulate -L zsh -o extended_glob
 
 local force=

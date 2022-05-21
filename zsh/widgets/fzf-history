@@ -1,7 +1,6 @@
 # vim: ft=zsh ts=2 sw=2 et:
-# Invoking reset-prompt below will inherit our sterile environment, so we must
-# carry over prompt_subst.
-emulate -L zsh
+
+emulate -L zsh -o prompt_subst
 
 if (( ! $+commands[fzf] )); then
   return

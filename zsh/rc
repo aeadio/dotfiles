@@ -1,32 +1,49 @@
 # vim: ft=sh ts=2 sw=2 et:
 
+# This file primarily bootstraps the zshrc. For actual config, see:
+# - rc.d      most user configuration
+# - pre.d     early-run initialization, eg compinit
+# - env.d     static exports for all shells, including non-interactive
+# - incl.d    non-rc config files for sub utilities
+# - functions utility functions for the user, auto-loaded on demand
+# - widgets   functions which modify Zsh's input editor (see also: rc.d/zle)
+# - plugins   bundles of self-contained functionality
+
+# Each section below is wrapped in a named function so that we can blame their
+# contribution to startup when ZSHRC_PROFILE is set, and trace their activity
+# in the log when ZSHRC_DEBUG is set.
+
+: ${ZSHRC_PROFILE:=0}
+: ${ZSHRC_DEBUG:=0}
+
 if [[ ! -d $ZSH ]]; then
+  # Exported by zsh/env
   print "Warning: zsh config directory not found: $ZSH"
   return
 fi
 
-# Entrypoint for profiling
-if false; then
-  ZSH_PROFILE_STARTUP=1
-  zmodload zsh/zprof
-fi
+# Tracing entrypoint
+(( ZSHRC_DEBUG > 0 )) && setopt warn_create_global warn_nested_var
+(( ZSHRC_DEBUG > 1 )) && setopt source_trace
+(( ZSHRC_DEBUG > 2 )) && setopt verbose
+(( ZSHRC_DEBUG > 3 )) && setopt xtrace
+(( ZSHRC_PROFILE )) && zmodload zsh/zprof
 
 # pre.d
-# Bootstrap config to be run before anything else is loaded. Ie, make sure
-# compinit is initialized before plugins that hook it.
-zshrc-pre.d() {
-  local f
-  for f in $ZSH/pre.d/*(e:'[[ -x $REPLY ]]':onN); . $f
+zshrc:load-pre.d() {
+  local f REPLY
+  for f in $ZSH/pre.d/*(e:'[[ -x $REPLY ]]':onN); source $f
 }
-zshrc-pre.d
-unfunction zshrc-pre.d
+zshrc:load-pre.d
+unfunction zshrc:load-pre.d
 
 # Plugins
 # Plain (executable) files in zsh/plugins/ are first-party plugins -- mine.
 # Directories are third-party plugins (if they contain a .plugin.zsh file).
 # See zsh/functions/zp* for installation helper.
-zshrc-plugins() {
-  local f name plugins=(
+zshrc:load-plugins() {
+  local f name REPLY
+  local plugins=(
     $ZSH/plugins/*(-.e:'[[ -x $REPLY ]]':onN)
     $ZSH/plugins/*/*.plugin.zsh(-.onN)
   )
@@ -34,105 +51,43 @@ zshrc-plugins() {
   # time correctly.
   for f in $plugins; do
     name=${f:t}
-    zshrc-plugins:$name() {
-      . $f
+    zshrc:load-plugins:$name() {
+      source $f
     }
-    zshrc-plugins:$name
-    unfunction zshrc-plugins:$name
+    zshrc:load-plugins:$name
+    unfunction zshrc:load-plugins:$name
   done
 }
-zshrc-plugins
-unfunction zshrc-plugins
+zshrc:load-plugins
+unfunction zshrc:load-plugins
 
 # User functions & ZLE widgets
-# Function and widget definitions are autoloaded if the file is marked 
-# executable. If the first line of the file begins with the pattern
-# '#*([[:space:]])(fn|zle):', then some actions are taken after auto-loading.
-zshrc-getbangactions() {
-  emulate -L zsh -o ksh_glob
-  local bang
-  read -r bang < $2
-  if [[ $bang == \#*([[:space:]])${~1}:* ]]; then
-    print -- ${=bang#\#*([[:space:]])${~1}:*([[:space:]])}
+# zsh/functions/* and zsh/widgets/* are autoloaded only if marked executable
+zshrc:load-functions() {
+  local f REPLY
+  local fns=( $ZSH/functions/*(-.e:'[[ -x $REPLY ]]':N:t) )
+  local wdg=( $ZSH/widgets/*(-.e:'[[ -x $REPLY ]]':N:t) )
+  if (( ${#fns} )); then
+    fpath=( $ZSH/functions $fpath )
+    autoload $fns
+  fi
+  if (( ${#wdg} )); then
+    fpath=( $ZSH/widgets $fpath )
+    autoload $wdg
+    for f in $wdg; zle -N $f
   fi
 }
-
-zshrc-loaduserfns() {
-  local f fns=( $1/*(-.e:'[[ -x $REPLY ]]':N) )
-  if (( ${#fns} == 0 )); then
-    return 1
-  fi
-  fpath=($1 $fpath)
-  for f in $fns; autoload -z ${f:t}
-  REPLY=( $fns )
-}
-
-zshrc-functions() {
-  local fn fname action REPLY
-  zshrc-loaduserfns $ZSH/functions || return
-  for fn in $REPLY; do
-    fname=${fn:t}
-    for action in $(zshrc-getbangactions "fn" $fn); do
-      case $action in
-        nocorrect)
-          alias $fname="nocorrect $fname" ;;
-        noglob)
-          alias $fname="noglob $fname" ;;
-        hook=*)
-          autoload -Uz add-zsh-hook &&
-          add-zsh-hook ${action#hook=} $fname ;;
-        reload)
-          # Invoke the function to perform initialization
-          $fn ;;
-        *)
-          print "$fname: unknown fn action: $action" >&2 ;;
-      esac
-    done
-  done
-}
-zshrc-functions
-unfunction zshrc-functions
-
-zshrc-widgets() {
-  local fn fname action arg REPLY
-  zshrc-loaduserfns $ZSH/widgets || return
-  for fn in $REPLY; do
-    zle -N ${fname::=${fn:t}}
-    for action in $(zshrc-getbangactions "zle" $fn); do
-      case $action in
-        alias=*)
-          zle -A $fname ${action#alias=} ;;
-        hook=*)
-          arg=${action#hook=}
-          zle -A $arg ${fname}-hook-$arg
-          autoload -Uz add-zle-hook-widget
-          quiet add-zle-hook-widget $arg $fname || zle -N $arg $fname ;;
-        transform=*)
-          zle -T ${action#transform=} $fname ;;
-        reload)
-          # Invoke the function to perform initialization
-          $fn ;;
-        *)
-          print "$fname: unknown zle action: $action" >&2 ;;
-      esac
-    done
-  done
-}
-zshrc-widgets
-unfunction zshrc-widgets
-
-unfunction zshrc-getbangactions zshrc-loaduserfns
+zshrc:load-functions
+unfunction zshrc:load-functions
 
 # zshrc.d
 # Primary place for zsh config. Load last so that it may make use of plugins.
-zshrc-zshrc.d() {
-  local f
-  for f in $ZSH/rc.d/*(e:'[[ -x $REPLY ]]':onN); . $f
+zshrc:load-zshrc.d() {
+  local f REPLY
+  for f in $ZSH/rc.d/*(e:'[[ -x $REPLY ]]':onN); source $f
 }
-zshrc-zshrc.d
-unfunction zshrc-zshrc.d
+zshrc:load-zshrc.d
+unfunction zshrc:load-zshrc.d
 
 # Stop profiling
-if (( $+ZSH_PROFILE_STARTUP )); then
-  zprof
-fi
+(( ZSHRC_PROFILE )) && zprof

@@ -1,10 +1,12 @@
 # vim: ft=sh ts=2 sw=2 et:
 
-_bad_input_reset() {
+bad-input:reset() {
+  emulate -L zsh
+  typeset -g _BAD_INPUT
   (( --_BAD_INPUT )) || unset _BAD_INPUT
 }
 autoload -Uz add-zsh-hook
-add-zsh-hook precmd _bad_input_reset
+add-zsh-hook precmd bad-input:reset
 
 typeset -Ag PROMPT_DANGEROUS=(
   '>' 1
@@ -15,15 +17,15 @@ typeset -Ag PROMPT_DANGEROUS=(
 )
 
 # Note: this widget is auto-invoked by ZLE if present
-_badinput-zle-line-finish() {
+bad-input:zle-line-finish() {
   emulate -L zsh -o extended_glob
   local firstword=${${(z)BUFFER}[1]}
   if (( $+PROMPT_DANGEROUS[$firstword] )); then
     BUFFER=${BUFFER/#${firstword}[[:space:]]#/}
     zle push-line
     BUFFER=
-    _BAD_INPUT=2
+    typeset -g _BAD_INPUT=2
   fi
 }
 autoload -Uz add-zle-hook-widget &&
-add-zle-hook-widget zle-line-finish _badinput-zle-line-finish
+add-zle-hook-widget zle-line-finish bad-input:zle-line-finish

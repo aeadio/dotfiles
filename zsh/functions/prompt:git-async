@@ -1,5 +1,4 @@
 # vim: ft=sh ts=2 sw=2 et:
-emulate -L zsh -e
 
 # Core awk code adapted from https://github.com/woefe/git-prompt.zsh
 # Upstream license:
@@ -23,6 +22,8 @@ emulate -L zsh -e
 #   DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
 #   TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE
 #   OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+emulate -L zsh -o err_return -o pipefail
 
 exec 2>/dev/null
 

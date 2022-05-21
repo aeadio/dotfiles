@@ -3,6 +3,8 @@
 # TODO: Implement compatible interface to jq so this can be used as a drop-in
 # replacement.
 
+emulate -L zsh
+
 local jqflags
 
 local jsonfile=$1

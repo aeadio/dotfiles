@@ -5,11 +5,11 @@ has curl   && alias sprunge="curl -F 'sprunge=<-' http://sprunge.us"
 has git    && alias conf="env GIT_DIR=$CONF/.git GIT_WORK_TREE=$CONF git"
 has ranger && alias ranger='. ranger'
 
-if has doas; then
-  alias root='doas -s'
-else
+has doas &&
+  alias root='doas -s' ||
   alias root='sudo -sE'
-fi
+
+alias lf='noglob lf'
 
 # shorthands
 if has exa; then
@@ -34,12 +34,10 @@ has code     && alias E='code'
 case $OS in
   darwin)
     # x86 aliases
+    [[ $(arch) == 'arm64' && -x /usr/local/Homebrew/bin/brew ]] &&
+      alias briw='arch --x86_64 /usr/local/Homebrew/bin/brew'
+    
     () {
-      emulate -L zsh
-      if [[ $(arch) == 'arm64' ]]; then
-        [[ -x /usr/local/Homebrew/bin/brew ]] &&
-          alias briw='arch --x86_64 /usr/local/Homebrew/bin/brew'
-      fi
       # Search for all alternative/pinned versions of Homebrew packages, and
       # sets up <name><ver> aliases for each of that package's binaries.
       local brew_prefixes=( /usr/local/Cellar(N) /opt/homebrew/Cellar(N) )
@@ -55,6 +53,7 @@ case $OS in
       done
     }
     ;;
+    
   linux)
     # Void tools
     if has xbps-query; then
@@ -64,11 +63,14 @@ case $OS in
       alias xqx='xbps-query -x'
       alias XQX='xbps-query -X'
     fi
+    
     if has vsv; then
       alias s="vsv -d $HOME/sv"
       alias S='vsv'
     fi
+    
     has vkpurge && alias vkp='vkpurge rm all'
+    
     ;;
 esac
 
@@ -77,6 +79,7 @@ case $GUI in
     alias c='pbcopy'
     alias p='pbpaste'
     ;;
+    
   x11)
     if has xsel; then
       alias c='xsel -ib'
@@ -86,10 +89,12 @@ case $GUI in
       alias p='xclip -out -selection clipboard'
     fi
     ;;
+    
   wayland)
     if has wlcopy; then
       alias c='wl-copy'
       alias p='wl-paste'
     fi
     ;;
+    
 esac

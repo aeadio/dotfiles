@@ -4,36 +4,44 @@
 # push-line and get-line). May not cover some edge cases if plugins are
 # manipulating the buffer and stack.
 
-_bufstack_push-input() {
+bufstack:push-input() {
+  emulate -L zsh
+  typeset -g BUFSTACK
   (( BUFSTACK++ ))
   zle .push-input
 }
-zle -N push-input _bufstack_push-input
+zle -N push-input bufstack:push-input
 
-_bufstack_push-line() {
+bufstack:push-line() {
+  emulate -L zsh
+  typeset -g BUFSTACK
   (( BUFSTACK++ ))
   zle .push-line
 }
-zle -N push-line _bufstack_push-line
+zle -N push-line bufstack:push-line
 
-_bufstack_push-line-or-edit() {
+bufstack:push-line-or-edit() {
+  emulate -L zsh
+  typeset -g BUFSTACK
   if [[ $CONTEXT == start ]]; then
     (( BUFSTACK++ ))
   fi
   zle .push-line-or-edit
 }
-zle -N push-line-or-edit _bufstack_push-line-or-edit
+zle -N push-line-or-edit bufstack:push-line-or-edit
 
-_bufstack_get-line() {
+bufstack:get-line() {
+  emulate -L zsh
+  typeset -g BUFSTACK
   (( BUFSTACK > 0 && BUFSTACK-- ))
   zle .get-line
 }
 zle -N get-line _bufstack_get-line
 
-_bufstack_line-init() {
+bufstack:line-init() {
+  emulate -L zsh
+  typeset -g BUFSTACK
   (( BUFSTACK > 0 && BUFSTACK-- ))
 }
 autoload -Uz add-zsh-hook
-add-zsh-hook precmd _bufstack_line-init
-#autoload -Uz add-zle-hook-widget &&
-#add-zle-hook-widget zle-line-init _bufstack_line-init
+add-zsh-hook precmd bufstack:line-init

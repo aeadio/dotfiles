@@ -6,25 +6,25 @@
   # [R ][🯊[⠶awsprofile] ][⋮stack]» 
   local ps1=(
     $'\n'  # Start with newline for some padding between commands
-    '$(ps-basicinfo)'
-    '$(ps-directory; ps-git)'
+    '$(prompt:basicinfo)'
+    '$(prompt:directory; prompt:git)'
     $'\n'
-    '$(ps-promptception)'
-    '$(ps-aws)'
-    '$(ps-bufstack)'
-    '$(ps-caret) '
+    '$(prompt:promptception)'
+    '$(prompt:aws)'
+    '$(prompt:bufstack)'
+    '$(prompt:caret) '
   )
   
   # [R][🯊[⠶awsprofile]][⋮stack]» 
   local ps2=(
-    '$(ps-promptception)'
-    '$(ps-aws)'
-    '$(ps-bufstack)'
-    '$(ps-caret) '
+    '$(prompt:promptception)'
+    '$(prompt:aws)'
+    '$(prompt:bufstack)'
+    '$(prompt:caret) '
   )
   
   # ?
-  local ps3=( '$(ps-caret "?")' )
+  local ps3=( '$(prompt:caret "?")' )
   
   # function:linenum @ file:linenum
   # → details
@@ -40,15 +40,15 @@
   
   # Build prompts from arrays
   setopt prompt_subst
+  local i
   for i in {1..4}; do
-    eval -- "PS$i=\"\${(j::)ps$i}\""
-    eval -- "RPS$i=\"\${(j::)rps$i}\""
+    eval -- "typeset -g PS$i=\"\${(j::)ps$i}\""
+    eval -- "typeset -g RPS$i=\"\${(j::)rps$i}\""
   done
 }
 
-
 # Info blocks
-ps-basicinfo() {
+prompt:basicinfo() {
   unset PROMPT_INFOLEN
   local user host info
   # Username
@@ -63,12 +63,12 @@ ps-basicinfo() {
   fi
   if [[ -n "$user$host" ]]; then
     info="$user$host:"
-    PROMPT_INFOLEN=$(( ${#info} + 1 ))
+    typeset -g PROMPT_INFOLEN=$(( ${#info} + 1 ))
     print -n $info
   fi
 }
 
-ps-directory() {
+prompt:directory() {
   local maxwidth=$(( COLUMNS - PROMPT_INFOLEN ))
   if (( maxwidth < 0 )); then
     return
@@ -103,11 +103,11 @@ ps-directory() {
     fi
     display="$pre${(j:/:):-${=components}}"
   fi
-  PS_DIRLEN=${#display}
+  typeset -g PS_DIRLEN=${#display}
   print -n "%(!,%F{magenta},%B%F{blue})$display%f%b"
 }
 
-ps-git() {
+prompt:git() {
   local branch=$PS_GIT_HEAD commits=$PS_GIT_COMMITS changes=$PS_GIT_CHANGES
   if [[ -z $branch ]]; then
     return
@@ -142,8 +142,7 @@ ps-git() {
   fi
 }
 
-ps-promptception() {
-  # How deep is our prompt? ((Is it like the ocean?))
+prompt:promptception() {
   # If ( SHLVL - RANGER_LEVEL ) is over 1, show as a number.
   # If inside ranger, show R, plus ( RANGER_LEVEL ) if > 1.
   local rlvl lvl=${${:-$(( SHLVL - ${RANGER_LEVEL:-0} ))}:#1}
@@ -151,23 +150,23 @@ ps-promptception() {
     rlvl="%F{green}R${RANGER_LEVEL:#1}%f"
   fi
   if [[ -n "$rlvl$lvl" ]]; then
-    print -n "$rlvl${${UTF8:+${(#):-16#2051}}:- }%{\e[2m%}%F{cyan}$lvl%f%b "
+    print -n "$rlvl${${UTF8:+${(#):-16#2051}}:- }%(!,%B%F{red},%{\e[2m%}%F{cyan})$lvl%f%b "
   fi
 }
 
-ps-aws() {
-  local token profile
+prompt:aws() {
+  local token profile age
   if (( $+UTF8 )); then
     token="${(#):-16#1fbca}"
   else
     token='A'
   fi
-  local age
   if (( $+MFA_ARN )); then
     if [[ -z $AWS_SESSION_TOKEN ]]; then
       token="%B%F{red}$token%f%b"
     elif [[ -n $DYNENV_FILE ]]; then
-      age=$(quiet sed -n 's/^unset AWS_SESSION_TOKEN.*# \([[:digit:]]*\)$/\1/p' $DYNENV_FILE)
+      age=$(sed -n 's/^unset AWS_SESSION_TOKEN.*# \([[:digit:]]*\)$/\1/p' \
+        $DYNENV_FILE 2>/dev/null)
       if [[ -n $age ]]; then
         if (( $(date +%s) - age > ${MFA_DURATION:-86400} )); then
           token="%{\e[2m%}%F{yellow}$token%f%b"
@@ -189,13 +188,13 @@ ps-aws() {
   fi
 }
 
-ps-bufstack() {
+prompt:bufstack() {
   if (( BUFSTACK > 0 )); then
     print -n "${${UTF8:+${(#):-16#22ee}}:-S:}%(!,%{\e[2m%}%F{yellow},%F{yellow})$BUFSTACK%f%b "
   fi
 }
 
-ps-caret() {
+prompt:caret() {
   local caret
   if (( ! $+UTF8 )); then
     caret='>'
@@ -204,17 +203,13 @@ ps-caret() {
   else
     caret="${(#):-16#bb}"
   fi
-  print -n "%(!,%F{red},%F{cyan})${1:-$caret}%f"
+  print -n "%(!,%B%F{red},%F{cyan})${1:-$caret}%f%b"
 }
 
-
-# Async git status plumbing
-# Invokes on every precmd (before the prompt is drawn) plus once every 10 sec
 if has git; then
-  autoload -Uz add-zsh-hook
+  autoload -U add-zsh-hook
   
-  ps-git-finished-zle() {
-    emulate -L zsh
+  prompt:git-finished-zle() {
     local fd=$1
     local head commits changes
     {
@@ -227,9 +222,9 @@ if has git; then
         && $changes == $PS_GIT_CHANGES ]]; then
         return
       fi
-      PS_GIT_HEAD=$head
-      PS_GIT_COMMITS=$commits
-      PS_GIT_CHANGES=$changes
+      typeset -g PS_GIT_HEAD=$head
+      typeset -g PS_GIT_COMMITS=$commits
+      typeset -g PS_GIT_CHANGES=$changes
       if zle && [[ $CONTEXT == 'start' ]]; then
         zle reset-prompt
       fi
@@ -237,23 +232,18 @@ if has git; then
       exec {fd}<&-
     }
   }
-  zle -N ps-git-finished-zle
-  
-  ps-git-dispatch() {
-    emulate -L zsh
+  zle -N prompt:git-finished-zle
+
+  prompt:git-dispatch() {
     local fd
-    exec {fd}< <( ps-git-async )
+    exec {fd}< <( prompt:git-async )
     command true  # https://www.zsh.org/mla/workers/2018/msg00966.html
-    zle -Fw $fd ps-git-finished-zle
+    zle -Fw $fd prompt:git-finished-zle
   }
-  add-zsh-hook precmd ps-git-dispatch
-  
-  #TMOUT=10
-  #trap ps-git-dispatch ALRM
-  
-  ps-git-clear() {
-    # Otherwise old prompt shows up for a few frames
+  add-zsh-hook precmd prompt:git-dispatch
+
+  prompt:git-clear() {
     unset PROMPT_GITINFO
   }
-  add-zsh-hook chpwd ps-git-clear
+  add-zsh-hook chpwd prompt:git-clear
 fi

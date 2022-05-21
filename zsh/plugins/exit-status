@@ -6,13 +6,15 @@
 
 autoload -Uz add-zsh-hook
 
-_exitstatus-preexec() {
-  _EXITSTATUS_CHECK=1
+exitstatus:preexec() {
+  emulate -L zsh
+  typeset -g _EXITSTATUS_CHECK=1
 }
-add-zsh-hook preexec _exitstatus-preexec
+add-zsh-hook preexec exitstatus:preexec
 
-_exitstatus-precmd() {
+exitstatus:precmd() {
   local ret=$?
+  emulate -L zsh
   if (( $+_EXITSTATUS_CHECK )); then
     if (( ret )); then
       print -P "%B%F{red}exited:%f%b $ret"
@@ -20,4 +22,4 @@ _exitstatus-precmd() {
     unset _EXITSTATUS_CHECK
   fi
 }
-add-zsh-hook precmd _exitstatus-precmd
+add-zsh-hook precmd exitstatus:precmd

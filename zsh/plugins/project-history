@@ -21,7 +21,7 @@
 # buffer, or other buggy behavior. We can't really detect or fix that, so we're 
 # stuck assuming the user's other plugins and config are not awful.
 
-_chpwd_projecthistory() {
+projecthistory:chpwd() {
   emulate -L zsh
   local gitroot=$(git rev-parse --show-toplevel 2>/dev/null)
   local new_histfile
@@ -33,7 +33,7 @@ _chpwd_projecthistory() {
     if (( ! $+PROJHIST_DEFAULT_HISTFILE )); then
       # Only save the HISTFILE if we're coming from a normal folder, not
       # another gitroot.
-      PROJHIST_DEFAULT_HISTFILE=$HISTFILE
+      typeset -g PROJHIST_DEFAULT_HISTFILE=$HISTFILE
     fi
     new_histfile=$gitroot/.history.user 
   elif (( $+PROJHIST_DEFAULT_HISTFILE )); then
@@ -50,15 +50,15 @@ _chpwd_projecthistory() {
   fc -AI 2>/dev/null | :
   # Clear the history buffer
   local size=$HISTSIZE
-  HISTSIZE=0
-  HISTSIZE=$size
+  typeset -g HISTSIZE=0
+  typeset -g HISTSIZE=$size
   # Pivot to and read in our new histfile
-  HISTFILE=$new_histfile
+  typeset -g HISTFILE=$new_histfile
   fc -R
 }
 
 autoload -Uz add-zsh-hook
-add-zsh-hook chpwd _chpwd_projecthistory
+add-zsh-hook chpwd projecthistory:chpwd
 
 # For the user
 # Safely sets the changes the HISTFILE setting even if the plugin is in the 
@@ -67,13 +67,13 @@ add-zsh-hook chpwd _chpwd_projecthistory
 sethistfile() {
   emulate -L zsh
   if (( $+PROJHIST_DEFAULT_HISTFILE )); then
-    PROJHIST_DEFAULT_HISTFILE=$1
+    typeset -g PROJHIST_DEFAULT_HISTFILE=$1
   else
     fc -AI 2>/dev/null | :
     local size=$HISTSIZE
-    HISTSIZE=0
-    HISTSIZE=$size
-    HISTFILE=$1
+    typeset -g HISTSIZE=0
+    typeset -g HISTSIZE=$size
+    typeset -g HISTFILE=$1
     fc -R
   fi
 }
