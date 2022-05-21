@@ -10,11 +10,7 @@
 # before using it, so we'll never source an out of date copy, even if the
 # compiled .zwc file is stale.
 
-# We use this file (pre.d/zcompile) as the time tracking cookie via `touch`.
-# Check if it's modified within the last day.
-if (( ! $+ZSHRC_FORCECOMPILE )) && [[ -n $0(#qNm-1) ]] return
-
-() {
+compile-zshrc() {
   setopt localoptions extended_glob
   local f REPLY
   local sources=(
@@ -22,11 +18,18 @@ if (( ! $+ZSHRC_FORCECOMPILE )) && [[ -n $0(#qNm-1) ]] return
   )
   local n=0
   for f in $sources; zcompile $f &>/dev/null && (( n += 1 ))
-  (( n )) &&
-    print -P "Compiled %B%F{cyan}$n%f%b Zsh source file${${n:#1}:+s}."
+  if (( n )) print -P "Compiled %B%F{cyan}$n%f%b Zsh source file${${n:#1}:+s}."
 }
 
-# Set modification time on this script as the time cookie
-# Also touch the compiled version if it exists, so we know it's in sync with 
-# our cookied script.
-touch $0 $0.zwc(N)
+() {
+  setopt localoptions extended_glob
+  # We use this file (pre.d/zcompile) as the time tracking cookie via `touch`.
+  # Check if it's modified within the last day.
+  if (( $+ZSHRC_FORCECOMPILE )) || [[ -n $0(#qNm+1) ]]; then
+    compile-zshrc
+    # Set modification time on this script as the time cookie
+    # Also touch the compiled version if it exists, so we know it's in sync  
+    # with our cookied script.
+    touch $0 $0.zwc(N)
+  fi
+}
