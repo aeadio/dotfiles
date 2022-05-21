@@ -2,7 +2,6 @@
 
 # At this point, $0 points to the ZSH binary
 : ${ZSH:=${${:-${ZDOTDIR:-$HOME}/.zshenv}:A:h}}
-export ZSH
 
 # env.d
 () {
