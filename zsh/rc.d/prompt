@@ -49,6 +49,7 @@
 
 # Info blocks
 prompt:basicinfo() {
+  emulate -L zsh
   unset PROMPT_INFOLEN
   local user host info
   # Username
@@ -69,6 +70,7 @@ prompt:basicinfo() {
 }
 
 prompt:directory() {
+  emulate -L zsh
   local maxwidth=$(( COLUMNS - PROMPT_INFOLEN ))
   if (( maxwidth < 0 )); then
     return
@@ -108,6 +110,7 @@ prompt:directory() {
 }
 
 prompt:git() {
+  emulate -L zsh
   local branch=$PS_GIT_HEAD commits=$PS_GIT_COMMITS changes=$PS_GIT_CHANGES
   if [[ -z $branch ]]; then
     return
@@ -143,6 +146,7 @@ prompt:git() {
 }
 
 prompt:promptception() {
+  emulate -L zsh
   # If ( SHLVL - RANGER_LEVEL ) is over 1, show as a number.
   # If inside ranger, show R, plus ( RANGER_LEVEL ) if > 1.
   local rlvl lvl=${${:-$(( SHLVL - ${RANGER_LEVEL:-0} ))}:#1}
@@ -155,6 +159,7 @@ prompt:promptception() {
 }
 
 prompt:aws() {
+  emulate -L zsh
   local token profile age
   if (( $+UTF8 )); then
     token="${(#):-16#1fbca}"
@@ -189,12 +194,14 @@ prompt:aws() {
 }
 
 prompt:bufstack() {
+  emulate -L zsh
   if (( BUFSTACK > 0 )); then
     print -n "${${UTF8:+${(#):-16#22ee}}:-S:}%(!,%{\e[2m%}%F{yellow},%F{yellow})$BUFSTACK%f%b "
   fi
 }
 
 prompt:caret() {
+  emulate -L zsh
   local caret
   if (( ! $+UTF8 )); then
     caret='>'
