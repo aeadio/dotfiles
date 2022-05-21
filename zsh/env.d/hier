@@ -18,4 +18,6 @@ path=(
   $path
 )
 
-export XDG_CONFIG_HOME=$CONF
+: ${XDG_CONFIG_HOME:=$HOME/.config}
+: ${XDG_CONFIG_HOME::=${XDG_CONFIG_HOME:A}}
+export XDG_CONFIG_HOME

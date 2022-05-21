@@ -1,48 +1,8 @@
 # vim: ft=sh ts=2 sw=2 et:
 
-# Some helper functions to make env.d and rc.d files more succinct.
-has() {
-  (( $+commands[$1] ))
-}
-
-isgnu() {
-  has $1 && [[ $($1 --version 2>/dev/null) =~ GNU ]]
-}
-
-# If we're a login shell, export some facts about the environment, which are
-# used throughout env.d and rc.d. Do this here, as .zshenv is sourced before
-# .zlogin.
-if [[ -o login ]]; then
-  export OS=${"$(uname -s)":l}
-  
-  : ${GUI:=${XDG_SESSION_TYPE:l}}
-  : ${GUI:=${WAYLAND_DISPLAY:+wayland}}
-  [[ -z $GUI && -n $DISPLAY && $(ps -fe) =~ xinit ]] && GUI=x11
-  [[ -z $GUI && $OS == darwin && $(ps -fe) =~ WindowServer ]] && GUI=aqua
-  export GUI
-  
-  : ${CONF:=$XDG_CONFIG_HOME}
-  : ${CONF:=$HOME/.config}
-  : ${CONF::=${CONF:A}}
-  [[ -e $CONF ]] || unset CONF
-  export CONF
-  
-  : ${ZSH:=$ZDOTDIR}
-  : ${ZSH:=$CONF/zsh}
-  [[ -e $ZSH ]] || unset ZSH
-  export ZSH
-  
-  () {
-    setopt localoptions no_case_match
-    [[ -o multibyte && $(locale charmap) =~ utf.8 ]] &&
-      export UTF8=1
-  }
-fi
-
-if [[ ! -d $ZSH ]]; then
-  print "Warning: zsh config directory not found: $ZSH"
-  return
-fi
+# At this point, $0 points to the ZSH binary
+: ${ZSH:=${${:-${ZDOTDIR:-$HOME}/.zshenv}:A:h}}
+export ZSH
 
 # env.d
 () {

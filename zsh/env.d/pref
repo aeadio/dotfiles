@@ -4,14 +4,12 @@
 
 # Basic utils
 export EDITOR='micro'
+export GEDITOR='code'
 export TERMINAL='alacritty'
 export LESSHISTFILE='-'
 export PAGER='less'
 
-if has bat; then
+if (( $+commands[bat] )); then
   export PAGER='bat'
   export MANPAGER="sh -c 'col -bx | bat -l man -p'"
 fi
-
-(( $+GUI )) &&
-  export GEDITOR='code'

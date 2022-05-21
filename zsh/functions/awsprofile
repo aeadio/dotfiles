@@ -14,8 +14,10 @@ fi
 local profname
 sed 's/[.[\*^()$+?{|]/\\&/g' <<< $1 | read profname
 
-[[ $(cat $CONF/aws/credentials) =~ \[$profname\] ]] ||
-[[ $(cat $CONF/aws/config)      =~ \[$profname\] ]] ||
+local conf=${XDG_CONFIG_HOME:-$HOME/.config}
+
+[[ $(cat $conf/aws/credentials) =~ \[$profname\] ]] ||
+[[ $(cat $conf/aws/config)      =~ \[$profname\] ]] ||
 {
   print "awsprofile: profile $1 not found in stored credentials" >&2
   return

@@ -2,7 +2,7 @@
 
 # functional aliases
 has curl   && alias sprunge="curl -F 'sprunge=<-' http://sprunge.us"
-has git    && alias conf="env GIT_DIR=$CONF/.git GIT_WORK_TREE=$CONF git"
+has git    && alias conf="env GIT_DIR=$XDG_CONFIG_HOME/.git GIT_WORK_TREE=$XDG_CONFIG_HOME git"
 has ranger && alias ranger='. ranger'
 
 has doas &&
@@ -31,8 +31,8 @@ has code-oss && alias E='code-oss'
 has code     && alias E='code'
 
 # platform specific
-case $OS in
-  darwin)
+case $OSTYPE in
+  darwin*)
     # x86 aliases
     [[ $(arch) == 'arm64' && -x /usr/local/Homebrew/bin/brew ]] &&
       alias briw='arch --x86_64 /usr/local/Homebrew/bin/brew'
@@ -52,9 +52,13 @@ case $OS in
         done
       done
     }
+    
+    # System utilities
+    alias c='pbcopy'
+    alias p='pbpaste'
     ;;
     
-  linux)
+  linux*|*bsd*)
     # Void tools
     if has xbps-query; then
       alias xr='xbps-remove -R'
@@ -71,30 +75,17 @@ case $OS in
     
     has vkpurge && alias vkp='vkpurge rm all'
     
-    ;;
-esac
-
-case $GUI in
-  aqua)
-    alias c='pbcopy'
-    alias p='pbpaste'
-    ;;
-    
-  x11)
+    # System utilities
     if has xsel; then
       alias c='xsel -ib'
       alias p='xsel -ob'
     elif has xclip; then
       alias c='xclip -in -selection clipboard'
       alias p='xclip -out -selection clipboard'
-    fi
-    ;;
-    
-  wayland)
-    if has wlcopy; then
+    elif has wl-copy; then
       alias c='wl-copy'
       alias p='wl-paste'
     fi
-    ;;
     
+    ;;
 esac

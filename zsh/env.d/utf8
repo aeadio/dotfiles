@@ -1,0 +1,9 @@
+# vim: ft=sh ts=2 sw=2 et:
+
+# Does our environment support UTF-8?
+
+() {
+  setopt localoptions no_case_match
+  [[ -o multibyte && $(locale charmap) =~ utf.8 ]] &&
+    export UTF8=1
+}
