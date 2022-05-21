@@ -5,5 +5,5 @@
 () {
   setopt localoptions no_case_match
   [[ -o multibyte && $(locale charmap) =~ utf.8 ]] &&
-    export UTF8=1
+    UTF8=1
 }

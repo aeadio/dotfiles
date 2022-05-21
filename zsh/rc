@@ -17,7 +17,7 @@
 : ${ZSHRC_DEBUG:=0}
 
 if [[ ! -d $ZSH ]]; then
-  # Exported by zsh/env
+  # Set by zsh/env
   print "Warning: zsh config directory not found: $ZSH"
   return
 fi
