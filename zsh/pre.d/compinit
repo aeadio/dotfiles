@@ -1,4 +1,3 @@
-#!/usr/bin/env zsh
 # vim: ft=sh ts=2 sw=2 et:
 
 # Add zsh-completions if it exists
@@ -6,7 +5,7 @@ fpath=( $ZSH/plugins/zsh-completions/src(N) $fpath )
 
 () {
   setopt localoptions extended_glob
-  local zcompfile=${ZCOMPDUMP:-$HOME/.zcompdump}
+  local zcompfile=${ZCOMPDUMP:-$ZSH/compdump}
   # NOTE: compinit must be initialized before fzf-tab
   # NOTE: Elide the compdump autocheck and do manually. The compdump check
   # always runs compaudit, but we'd like to skip that.
@@ -24,12 +23,5 @@ fpath=( $ZSH/plugins/zsh-completions/src(N) $fpath )
   fi
   
   autoload -Uz compinit &&
-  compinit -d $zcompfile -C &&
-  
-  if [[ ! -e $zcompfile.zwc || $zcompfile.zwc -ot $zcompfile ]]; then
-    # In profiling, this was the only file worth compiling. All others did not
-    # meaningfully change startup times.
-    # compinit will automatically use the .zwc file, if it exists
-    zcompile $zcompfile &> /dev/null
-  fi
+  compinit -d $zcompfile -C
 }

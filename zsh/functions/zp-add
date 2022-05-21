@@ -68,8 +68,6 @@ mkdir -p $plugindir
       [[ -e $name ]] && rm -i -r $name
       continue
     fi
-    print -P "%B%F{blue}Compiling sources for plugin $name%f%b"
-    for f in $name/**/^*.zwc(-.N); zcompile $f &> /dev/null
     changed+=( $name )
     print " "
   done

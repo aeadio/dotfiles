@@ -60,8 +60,6 @@ local plugindir=$ZSH/plugins
       print " "
       continue
     fi
-    print -P "%B%F{blue}Recompiling sources for plugin $name%f%b"
-    for f in $name/**/^*.zwc(-.); zcompile $f &> /dev/null
     changed+=( $name )
     print " "
   done

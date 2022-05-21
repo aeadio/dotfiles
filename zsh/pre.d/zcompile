@@ -1,0 +1,32 @@
+# vim: ft=sh ts=2 sw=2 et:
+
+# Automatically zcompile all sources regularly. While this has a miniscule 
+# effect on simple files (ie, most of rc.d -- within the margin of error for
+# timing), it can help out a lot on more heavyweight sources in third party
+# plugins, or on zcompcache.
+
+# Only attempts the recompilation check every day. This works because Zsh will
+# check if the .zwc file it's trying to load actually matches the sourced file 
+# before using it, so we'll never source an out of date copy, even if the
+# compiled .zwc file is stale.
+
+# We use this file (pre.d/zcompile) as the time tracking cookie via `touch`.
+# Check if it's modified within the last day.
+if (( ! $+ZSHRC_FORCECOMPILE )) && [[ -n $0(#qNm-1) ]] return
+
+() {
+  setopt localoptions extended_glob
+  local f REPLY
+  local sources=(
+    $ZSH/(*/)#(*.(z|)sh|^*.*)(-.e:'[[ ! -e $REPLY.zwc || $REPLY.zwc -ot $REPLY ]]':N)
+  )
+  local n=0
+  for f in $sources; zcompile $f &>/dev/null && (( n += 1 ))
+  (( n )) &&
+    print -P "Compiled %B%F{cyan}$n%f%b Zsh source file${${n:#1}:+s}."
+}
+
+# Set modification time on this script as the time cookie
+# Also touch the compiled version if it exists, so we know it's in sync with 
+# our cookied script.
+touch $0 $0.zwc(N)

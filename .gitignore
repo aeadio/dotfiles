@@ -20,6 +20,7 @@ zsh/history
 # machine-specific
 asciinema/install-id
 git/user
+zsh/compdump
 
 # uninteresting stuff
 ansible
