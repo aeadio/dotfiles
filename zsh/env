@@ -6,7 +6,7 @@ has() {
 }
 
 isgnu() {
-  has $1 && [[ $(quiet $1 --version) =~ GNU ]]
+  has $1 && [[ $($1 --version 2>/dev/null) =~ GNU ]]
 }
 
 # If we're a login shell, export some facts about the environment, which are
