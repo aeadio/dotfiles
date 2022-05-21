@@ -18,6 +18,5 @@ path=(
   $path
 )
 
-: ${XDG_CONFIG_HOME:=$HOME/.config}
-: ${XDG_CONFIG_HOME::=${XDG_CONFIG_HOME:A}}
+: ${XDG_CONFIG_HOME:=${ZSH:h}}
 export XDG_CONFIG_HOME
