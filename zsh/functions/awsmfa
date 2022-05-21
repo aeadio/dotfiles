@@ -27,8 +27,8 @@ aws sts get-session-token \
   --output json \
   --serial-number $MFA_ARN \
   --token-code $mfacode |
-  jq -r '.Credentials | [.AccessKeyId, .SecretAccessKey, .SessionToken] | @tsv'
-  | read -A key
+  jq -r '.Credentials | [.AccessKeyId, .SecretAccessKey, .SessionToken] | @tsv' |
+  read -A key
 
 if [[ -z $key[1] ]]; then
   print "$0: failed to get credentials" >&2
