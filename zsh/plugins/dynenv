@@ -22,44 +22,55 @@
 #   
 #   Unsets 'var', and removes it from the global store.
 
-: ${DYNENV_FILE:=$HOME/.dynenv}
-: ${DYNENV_FSWATCH:=1}
+typeset -g DYNENV_FILE=${DYNENV_FILE:-$HOME/.dynenv}
+typeset -g DYNENV_FSWATCH=${DYNENV_FSWATCH:-1}
 
-_dynenv_source() {
+dynenv:source() {
   [[ -r $DYNENV_FILE ]] && . $DYNENV_FILE
 }
+
+dynenv:precmd() {
+  dynenv:source
+  if (( $+DYNENV_REBIND && $+functions[dynenv:rebind-callback] )); then
+    dynenv:rebind-callback
+    unset DYNENV_REBIND
+  fi
+}
 autoload -Uz add-zsh-hook
-add-zsh-hook precmd _dynenv_source
+add-zsh-hook precmd dynenv:precmd
 
 if (( $DYNENV_FSWATCH && $+commands[fswatch] )); then
   # We do not handle the DYNENV_FILE changing if we're monitoring it.
   typeset -gr DYNENV_FILE
   
-  _dynenv_zle_callback() {
+  dynenv:zle-callback() {
     if ! read -r -u $1; then
       # If callback was triggered for an empty fd, an error occurred. Detach to
       # avoid busy loop.
       zle -F $1
       exec {1}<&-
+      typeset -g DYNENV_REBIND=1
       return
     fi
     # If we're not at the prompt, then don't invoke. Dynenv will be sourced
     # on next precmd.
     if zle && [[ $CONTEXT == 'start' ]]; then
-      _dynenv_source
+      dynenv:source
     fi
   }
-  zle -N _dynenv_zle_callback
+  zle -N dynenv:zle-callback
   
-  () {
+  dynenv:rebind-callback() {
     local fd
     exec {fd}< <( fswatch -o $DYNENV_FILE )
     command true  # https://www.zsh.org/mla/workers/2018/msg00966.html
-    zle -Fw $fd _dynenv_zle_callback
+    zle -Fw $fd dynenv:zle-callback
   }
+  
+  typeset -g DYNENV_REBIND=1
 fi
 
-_dynenv_delete() {
+dynenv:delete() {
   [[ -r $DYNENV_FILE && -w $DYNENV_FILE ]] || return
   # note: sed -i is not portable
   sed "/^unset $1;.*/d" <<EOF >$DYNENV_FILE
@@ -93,7 +104,7 @@ dynexport() {
         return
       fi
     fi
-    _dynenv_delete $var
+    dynenv:delete $var
     val=${(P)var}
     if [[ -z $val ]]; then
       continue
@@ -109,7 +120,7 @@ dynunset() {
   emulate -L zsh
   local var
   for var in $@; do
-    _dynenv_delete $var
+    dynenv:delete $var
     if [[ ${(tP)var} == *special* ]]; then
       continue
     fi
