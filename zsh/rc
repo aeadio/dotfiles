@@ -23,6 +23,8 @@ if [[ ! -d $ZSH ]]; then
 fi
 
 # Tracing entrypoint
+(( ZSHRC_DEBUG > 0 || ZSHRC_PROFILE )) &&
+  exec 2> >(tee "$HOME/zshrc-$(date +'%Y-%m-%dT%T').log")
 (( ZSHRC_DEBUG > 0 )) && setopt warn_create_global warn_nested_var
 (( ZSHRC_DEBUG > 1 )) && setopt source_trace
 (( ZSHRC_DEBUG > 2 )) && setopt verbose
