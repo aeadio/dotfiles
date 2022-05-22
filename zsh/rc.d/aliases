@@ -31,6 +31,7 @@ has code-oss && alias E='code-oss'
 has code     && alias E='code'
 
 alias c='copy'
+alias C='native-copy'
 alias p='paste'
 
 # platform specific

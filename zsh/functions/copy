@@ -1,0 +1,29 @@
+# vim: ft=zsh ts=2 sw=2 et:
+
+# Tries to use OSC52 to set the clipboard through the terminal. This has the
+# benefit of working over SSH. See:
+# https://invisible-island.net/xterm/ctlseqs/ctlseqs.html#h3-Operating-System-Commands
+
+# XXX: base64 not available everywhere, need a fallback shell-native impl
+
+emulate -L zsh -x
+
+local input=$(cat)
+
+if (( $+TMUX )); then
+  tmux set-buffer $input
+fi
+
+if (( $+commands[base64] )); then
+  local encoded=$(print -n $input | base64)
+  local osc52seq="\033]52;c;$encoded\a"
+  # NOTE: We need to check the raw byte length, so cannot use $#encoded
+  if (( $(print -n $encoded | wc -c) < 100000 )); then
+    print -n $osc52seq
+    return
+  fi
+fi
+
+if (( $+functions[native-copy] )); then
+  print -n $input | native-copy
+fi
