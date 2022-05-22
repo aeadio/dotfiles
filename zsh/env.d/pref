@@ -3,12 +3,14 @@
 # Sets basic user preferences that applications expect as env vars
 
 # Basic utils
-export EDITOR='micro'
-export GEDITOR='code'
+export VISUAL='micro'
+export EDITOR=$VISUAL
+export GEDITOR='code'  # Used in ranger's rifle.conf
 export TERMINAL='alacritty'
 export LESSHISTFILE='-'
 export PAGER='less'
 
+# NOTE: Implicit dependency on env.d/hier loading first in order to set PATH
 if (( $+commands[bat] )); then
   export PAGER='bat'
   export MANPAGER="sh -c 'col -bx | bat -l man -p'"

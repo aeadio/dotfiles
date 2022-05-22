@@ -6,18 +6,8 @@ fpath=( $ZSH/plugins/zsh-completions/src(N) $fpath )
 () {
   setopt localoptions extended_glob
   local zcompfile=${ZCOMPDUMP:-$ZSH/compdump}
-  # NOTE: compinit must be initialized before fzf-tab
-  # NOTE: Elide the compdump autocheck and do manually. The compdump check
-  # always runs compaudit, but we'd like to skip that.
-  #local bang files
-  #if [[ -f $zcompfile ]]; then
-  #  files=( ${^~fpath:/.}/^([^_]*|*~|*.zwc)(N) )
-  #  IFS=$' \t' read -rA bang < $zcompfile
-  #  if (( $bang[2] != ${#files} )) || [[ $ZSH_VERSION != $bang[4] ]]; then
-  #    rm -f $zcompfile $zcompfile.zwc
-  #  fi
-  #fi
-  # Delete if it's older than 1 day
+  # NOTE: compinit's auto check always runs compaudit, which is pretty hefty
+  # in startup time. So elide that, and use a basic daily recycle check.
   if [[ -f $zcompfile && -n $zcompfile(#qNm+1) ]]; then
     rm -f $zcompfile $zcompfile.zwc
   fi
