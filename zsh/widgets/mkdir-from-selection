@@ -2,8 +2,14 @@
 
 emulate -L zsh
 
+# TODO: Interpret / word split the selection and make all enclosed dirs?
+# Can we get access to Zsh completion's parsing and filter out, eg, option
+# flags, respect quotes, etc?
+
 local selection
 get-selection | read selection
+
+if [[ -z $selection ]] return
 
 local err=$(mkdir -p $selection 2>&1)
 if (( $? )); then
