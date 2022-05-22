@@ -30,9 +30,21 @@ Individual files can be enabled or disabled by toggling the execute permission -
 
 Primary bootstrap happens in `rc`, where each stage is wrapped in a named function to facilitate tracing and debugging. The variables `ZSHRC_PROFILE` and `ZSHRC_DEBUG` can be set to enable startup benchmarking, and print some information during start, respectively. Logs from either are also saved to the home directory.
 
+#### `ZSHRC_PROFILE`
+
+1. Trace startup time until the full rc is finished loading
+2. Trace startup time to just after the first prompt is drawn
+
+#### `ZSHRC_DEBUG` (inclusive)
+
+1. Warn when leaking globals
+2. Print each file that is sourced/invoked
+3. Print lines of shell as they are executed
+4. Turn on xtrace
+
 The variable `ZSH` is set to the location of the Zsh config directory. Some helper functions are set up in `pre.d/util` to make writing configuration a bit more concise.
 
-Finally, all files are automatically compiled with [zcompile](https://zsh.sourceforge.io/Doc/Release/Shell-Builtin-Commands.html#index-zcompile) once per day to speed up shell startup times (see `pre.d/zcompile`).
+Finally, all files are automatically compiled with [zcompile](https://zsh.sourceforge.io/Doc/Release/Shell-Builtin-Commands.html#index-zcompile) once per day to speed up shell startup times (see `pre.d/zcompile`). This can be invoked manually via `compile-zshrc`, or by setting `ZSHRC_FORCECOMPILE` when starting up Zsh.
 
 ### Components of interest
 
