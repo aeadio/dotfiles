@@ -29,7 +29,7 @@ zstyle -e ':completion:*:approximate:*' \
 
 # Ignore functions not intended to be user-facing
 zstyle ':completion:*:functions' ignored-patterns \
-  '((_|→|-|.)*|pre(cmd|exec)|chpwd|periodic|zsh(addhistory|exit))'
+  '((_|→|-|.|*:)*|pre(cmd|exec)|chpwd|periodic|zsh(addhistory|exit))'
 
 # Don't complete pwd during a 'cd ../'
 zstyle ':completion:*:cd:*' ignore-parents parent pwd
