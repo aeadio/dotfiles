@@ -1,6 +1,6 @@
 # vim: ft=sh ts=2 sw=2 et:
 
-emulate -L zsh
+emulate -L zsh -o prompt_subst
 
 local x y selection new=$1
 get-selection | read -r selection

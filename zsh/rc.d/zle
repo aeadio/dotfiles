@@ -38,18 +38,18 @@ bindkey '^[[B'    down-line-or-history               # down
 bindkey '^[[D'    backward-char                      # left
 bindkey '^[[C'    forward-char                       # right
 
-bindkey '^[[1;2A' select-up-line                     # shift-up
-bindkey '^[[1;2B' select-down-line                   # shift-down
-bindkey '^[[1;2D' select-left-char                   # shift-left
-bindkey '^[[1;2C' select-right-char                  # shift-right
+bindkey '^[[1;2A' select-direction                   # shift-up
+bindkey '^[[1;2B' select-direction                   # shift-down
+bindkey '^[[1;2D' select-direction                   # shift-left
+bindkey '^[[1;2C' select-direction                   # shift-right
 
-bindkey '^[[1;4A' select-beginning-of-buffer         # shift-alt-up
-bindkey '^[[1;4B' select-end-of-buffer               # shift-alt-down
-bindkey '^[[1;4D' select-beginning-of-line           # shift-alt-left
-bindkey '^[[1;4C' select-end-of-line                 # shift-alt-right
+bindkey '^[[1;4A' select-direction                   # shift-alt-up
+bindkey '^[[1;4B' select-direction                   # shift-alt-down
+bindkey '^[[1;4D' select-direction                   # shift-alt-left
+bindkey '^[[1;4C' select-direction                   # shift-alt-right
 
-bindkey '^[[1;6D' select-back-word                   # shift-ctrl-left
-bindkey '^[[1;6C' select-forward-word                # shift-ctrl-right
+bindkey '^[[1;6D' select-direction                   # shift-ctrl-left
+bindkey '^[[1;6C' select-direction                   # shift-ctrl-right
 
 bindkey '^[[1;3A' history-beginning-search-backward  # alt-up
 bindkey '^[[1;3B' history-beginning-search-forward   # alt-down
@@ -79,7 +79,7 @@ bindkey '^I'      fzf-tab-complete                   # tab
 bindkey '^J'      git-zfiles
 bindkey '^K'      copy-to-clipboard
 bindkey '^L'      fzf-select-files
-bindkey '^N'      mkdir-arg
+bindkey '^N'      push-line-and-mkdir
 bindkey '^P'      smart-push-line
 bindkey '^R'      run-elevated
 bindkey '^S'      spell-word
@@ -88,7 +88,7 @@ bindkey '^U'      autosuggest-toggle
 bindkey '^V'      paste-from-clipboard
 bindkey '^W'      quote-line
 bindkey '^Y'      redo
-bindkey '^X'      kill-to-clipboard
+bindkey '^X'      cut-to-clipboard
 bindkey '^Z'      undo
 
 # Perform history expansion during normal editing flow
@@ -102,26 +102,26 @@ bindkey -N shift-select
 # Insertable characters should replace the selection
 bindkey -M shift-select -R ' '-'~' replace-selection-from-input
 
-bindkey -M shift-select '^[[A'    clear-selection-and-up      # up
-bindkey -M shift-select '^[[B'    clear-selection-and-down    # down
-bindkey -M shift-select '^[[D'    clear-selection-and-left    # left
-bindkey -M shift-select '^[[C'    clear-selection-and-right   # right
+bindkey -M shift-select '^[[A'    clear-selection-and-move    # up
+bindkey -M shift-select '^[[B'    clear-selection-and-move    # down
+bindkey -M shift-select '^[[D'    clear-selection-and-move    # left
+bindkey -M shift-select '^[[C'    clear-selection-and-move    # right
 
-bindkey -M shift-select '^[[1;2A' select-up-line              # shift-up
-bindkey -M shift-select '^[[1;2B' select-down-line            # shift-down
-bindkey -M shift-select '^[[1;2D' select-left-char            # shift-left
-bindkey -M shift-select '^[[1;2C' select-right-char           # shift-right
+bindkey -M shift-select '^[[1;2A' select-direction            # shift-up
+bindkey -M shift-select '^[[1;2B' select-direction            # shift-down
+bindkey -M shift-select '^[[1;2D' select-direction            # shift-left
+bindkey -M shift-select '^[[1;2C' select-direction            # shift-right
 
-bindkey -M shift-select '^[[1;4A' select-beginning-of-buffer  # shift-alt-up
-bindkey -M shift-select '^[[1;4B' select-end-of-buffer        # shift-alt-down
-bindkey -M shift-select '^[[1;4D' select-beginning-of-line    # shift-alt-left
-bindkey -M shift-select '^[[1;4C' select-end-of-line          # shift-alt-right
+bindkey -M shift-select '^[[1;4A' select-direction            # shift-alt-up
+bindkey -M shift-select '^[[1;4B' select-direction            # shift-alt-down
+bindkey -M shift-select '^[[1;4D' select-direction            # shift-alt-left
+bindkey -M shift-select '^[[1;4C' select-direction            # shift-alt-right
 
-bindkey -M shift-select '^[[1;6D' select-back-word            # shift-ctrl-left
-bindkey -M shift-select '^[[1;6C' select-forward-word         # shift-ctrl-right
+bindkey -M shift-select '^[[1;6D' select-direction            # shift-ctrl-left
+bindkey -M shift-select '^[[1;6C' select-direction            # shift-ctrl-right
 
 bindkey -M shift-select '^[[1;7D' transpose-selection-left    # alt-ctrl-left
-bindkey -M shift-select '^[[1;7C' copy-selection-right        # alt-ctrl-right
+bindkey -M shift-select '^[[1;7C' clone-selection-right        # alt-ctrl-right
 
 bindkey -M shift-select '^[[3~'   delete-selection            # del
 bindkey -M shift-select '^?'      delete-selection            # backspace
@@ -133,10 +133,10 @@ bindkey -M shift-select '^I'      replace-selection-from-completion  # tab
 
 bindkey -M shift-select '^E'      edit-selection
 bindkey -M shift-select '^F'      fzf-history
-bindkey -M shift-select '^K'      copy-selection-to-clipboard
-bindkey -M shift-select '^L'      replace-selection-from-fzf-select-files
-bindkey -M shift-select '^N'      mkdir-from-selection
+bindkey -M shift-select '^K'      copy-to-clipboard
+bindkey -M shift-select '^L'      fzf-select-files
+bindkey -M shift-select '^N'      push-line-and-mkdir
 bindkey -M shift-select '^P'      smart-push-line
-bindkey -M shift-select '^V'      replace-selection-from-clipboard
+bindkey -M shift-select '^V'      paste-from-clipboard
 bindkey -M shift-select '^W'      quote-region
-bindkey -M shift-select '^X'      kill-selection-to-clipboard
+bindkey -M shift-select '^X'      cut-to-clipboard

@@ -1,9 +1,15 @@
 # vim: ft=zsh ts=2 sw=2 et:
 
-emulate -L zsh -o multios -o err_return -o prompt_subst
+emulate -L zsh -o multios -o prompt_subst
 
 if (( ! $+commands[fzf] )); then
   return
+fi
+
+local query
+if (( REGION_ACTIVE )); then
+  local x y
+  get-selection | read -r query
 fi
 
 local prev_opts
@@ -21,11 +27,11 @@ fi
 local ret
 local matches=$(
   find . | fzf \
-    --layout=reverse \
-    --filepath-word  \
-    --tiebreak=begin \
-    --query=$1       \
-    ${prev_opts}     \
+    --layout=reverse     \
+    --filepath-word      \
+    --tiebreak=begin     \
+    --query=${query:-$1} \
+    ${prev_opts}         \
     --multi
 ) || ret=$?
 matches=( ${(f)matches} )
@@ -36,7 +42,9 @@ if (( ret || ${#matches} == 0 )); then
   return $ret
 fi
 
-if zle; then
+if (( REGION_ACTIVE )); then
+  replace-selection $matches
+elif zle; then
   LBUFFER="$LBUFFER${${LBUFFER[-1]:#[[:space:]]}:+ }$matches "
 else
   print -n $matches

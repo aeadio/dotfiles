@@ -6,7 +6,7 @@
 
 # XXX: base64 not available everywhere, need a fallback shell-native impl
 
-emulate -L zsh -x
+emulate -L zsh
 
 local input=$(cat)
 

@@ -3,6 +3,12 @@
 
 emulate -L zsh -o ksh_glob
 
-if (( $+functions[paste] )); then
-  LBUFFER="$LBUFFER$(paste)"
+if (( ! $+functions[paste] )) return
+
+if (( REGION_ACTIVE )); then
+  # NOTE: don't use replace-selection; it would be unconventional and  
+  # unexpected if a pasted-in blob of text remained highlighted
+  zle delete-selection -w
 fi
+
+LBUFFER="$LBUFFER$(paste)"

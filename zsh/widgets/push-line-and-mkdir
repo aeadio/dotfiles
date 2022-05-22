@@ -3,9 +3,16 @@
 
 emulate -L zsh
 
-local dir=
-modify-current-argument '${dir:=$ARG}'
-zle push-line
+local dir
+if (( REGION_ACTIVE )); then
+  local x y
+  get-selection | read -r dir
+else
+  modify-current-argument '${dir:=$ARG}'
+fi
+
+zle smart-push-line -w
+
 if [[ $dir != */ ]]; then
   dir=${dir:h}
 fi

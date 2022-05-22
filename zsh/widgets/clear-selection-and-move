@@ -1,0 +1,13 @@
+# vim: ft=sh ts=2 sw=2 et:
+
+emulate -L zsh
+
+zle deactivate-region -w
+zle -K main
+
+case $KEYS in
+  $'\C-[[A') zle up-line-or-history -w ;;    # up
+  $'\C-[[B') zle down-line-or-history -w ;;  # down
+  $'\C-[[D') zle backward-char -w ;;         # left
+  $'\C-[[C') zle forward-char -w ;;          # right
+esac

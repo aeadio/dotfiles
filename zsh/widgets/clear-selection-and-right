@@ -1,6 +1,0 @@
-# vim: ft=sh ts=2 sw=2 et:
-
-emulate -L zsh
-
-zle clear-selection -w
-zle forward-char -w

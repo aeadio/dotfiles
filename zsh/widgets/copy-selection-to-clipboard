@@ -1,7 +1,0 @@
-# vim: ft=sh ts=2 sw=2 et:
-
-emulate -L zsh
-
-if (( $+functions[copy] )); then
-  get-selection | copy
-fi

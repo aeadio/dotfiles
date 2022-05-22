@@ -1,6 +1,10 @@
 # vim: ft=sh ts=2 sw=2 et:
 
-emulate -L zsh -o extended_glob
+emulate -L zsh -o extended_glob -o prompt_subst
+
+if (( REGION_ACTIVE )); then
+  zle clear-selection -w
+fi
 
 case $CONTEXT in
   start)

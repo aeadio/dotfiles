@@ -3,10 +3,16 @@
 
 emulate -L zsh -o ksh_glob
 
-if [[ -z $BUFFER || $BUFFER == *([[:space:]]) ]]; then
-  return
+if (( ! $+functions[copy] )) return
+
+local text
+if (( REGION_ACTIVE )); then
+  local x y
+  get-selection | read -r text
+else
+  text=$BUFFER
 fi
 
-if (( $+functions[copy] )); then
-  print -n $BUFFER | copy 
-fi
+if [[ -z $text || $text == *([[:space:]]) ]] return
+
+print -n $text | copy 

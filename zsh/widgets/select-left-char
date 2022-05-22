@@ -1,6 +1,0 @@
-# vim: ft=sh ts=2 sw=2 et:
-
-emulate -L zsh
-
-zle start-selection -w
-zle backward-char -w

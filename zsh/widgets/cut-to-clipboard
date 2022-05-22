@@ -1,0 +1,12 @@
+# vim: ft=sh ts=2 sw=2 et:
+# Credit: leah https://leahneukirchen.org/dotfiles/.zshrc
+
+emulate -L zsh -o ksh_glob
+
+zle copy-to-clipboard -w
+
+if (( REGION_ACTIVE )); then
+  zle delete-selection -w
+else
+  zle kill-whole-line -w
+fi
