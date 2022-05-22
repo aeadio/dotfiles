@@ -121,7 +121,7 @@ bindkey -M shift-select '^[[1;6D' select-direction            # shift-ctrl-left
 bindkey -M shift-select '^[[1;6C' select-direction            # shift-ctrl-right
 
 bindkey -M shift-select '^[[1;7D' transpose-selection-left    # alt-ctrl-left
-bindkey -M shift-select '^[[1;7C' clone-selection-right        # alt-ctrl-right
+bindkey -M shift-select '^[[1;7C' clone-selection-right       # alt-ctrl-right
 
 bindkey -M shift-select '^[[3~'   delete-selection            # del
 bindkey -M shift-select '^?'      delete-selection            # backspace
