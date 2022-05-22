@@ -1,0 +1,14 @@
+# vim: ft=sh ts=2 sw=2 et:
+
+emulate -L zsh
+
+local selection
+get-selection | read selection
+
+if [[ -z $selection ]] return
+
+() {
+  ${=VISUAL:-$EDITOR} $1 || return
+  zle delete-selection -w
+  LBUFFER="$LBUFFER$(cat $1)"
+} =(<<<$selection)

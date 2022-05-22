@@ -128,6 +128,7 @@ bindkey -M shift-select '^[^['    clear-selection             # esc + esc
 
 bindkey -M shift-select '^I'      replace-selection-from-completion  # tab
 
+bindkey -M shift-select '^E'      edit-selection
 bindkey -M shift-select '^F'      fzf-history
 bindkey -M shift-select '^K'      copy-selection-to-clipboard
 bindkey -M shift-select '^L'      replace-selection-from-fzf-select-files
