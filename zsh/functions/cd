@@ -8,7 +8,7 @@ local argn=$OPTIND
 
 if (( ARGC == argn )) && [[ $argv[$argn] == "@" ]]; then
   local gitroot
-  git rev-parse --show-toplevel 2>/dev/null | read gitroot
+  git rev-parse --show-toplevel 2>/dev/null | read -r gitroot
   if [[ -n $gitroot ]]; then
     argv[$argn]=$gitroot
   fi

@@ -12,7 +12,7 @@ if [[ $1 == $AWS_PROFILE ]]; then
 fi
 
 local profname
-sed 's/[.[\*^()$+?{|]/\\&/g' <<< $1 | read profname
+sed 's/[.[\*^()$+?{|]/\\&/g' <<< $1 | read -r profname
 
 local conf=${XDG_CONFIG_HOME:-$HOME/.config}
 
