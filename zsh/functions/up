@@ -1,0 +1,50 @@
+# vim: ft=sh ts=2 sw=2 et:
+
+emulate -L zsh -x
+
+local -A opts=(
+  [-u]=${UP_USER:-${(%):-%n}}
+  [-h]=${UP_HOST}
+  [-p]=${UP_PATH:-/var/www/html}
+)
+zparseopts -A opts -K -D u: h: p: n: N T
+
+local host=$opts[-h]
+local login="${opts[-u]}@$host"
+local webroot=${opts[-p]}
+local newname=$opts[-n]
+local genhash=${opts[-N]+1}
+local proto="http${opts[-T]-s}"
+
+local stdin
+local items=( $@ )
+if (( ${#items} == 0 )); then
+  items=( $(mktemp) )                                             || return 10
+  cat >| $items[1]                                                || return 11
+  stdin=1
+  if [[ -z $newname ]] genhash=1
+fi
+
+local hashname upid filename
+for item in $items; do
+  # XXX: Take a lock out on the upid while we're doing this?
+  if (( genhash )); then
+    upid=$(ssh -q $login "cat \"$webroot/.upid\"")                || return 20
+    (( upid += 1 ))                                               || return 21
+    ssh -q $login "cat > \"$webroot/.upid\"" <<< $upid            || return 22
+    hashname=${$(([##26]$upid)):l}
+    if (( ! stdin )) hashname="$hashname.${item%%*.}"
+  fi
+  
+  # Use hash, else given name, else fallback to original file name
+  filename=${hashname:-${newname:-${item:t}}}
+  
+  ssh -q $login "cat > \"$webroot/$filename\"" < $item            || return 30
+  
+  # If we're asked to generate filenames, and it's not stdin mode, print the
+  # original filename too, to distinguish which URL is which item.
+  if (( genhash && ! stdin )) print -n "$filename: "
+  print "$proto://$host/$filename"
+  
+  hashname=
+done

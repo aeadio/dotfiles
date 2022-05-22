@@ -1,0 +1,8 @@
+# vim: ft=sh ts=2 sw=2 et:
+
+# Until skhd is in Homebrew for M1 and we are using `brew services` to control.
+
+local skhd_plist="$HOME/Library/LaunchAgents/com.koekeishiya.skhd.plist"
+
+launchctl unload  $skhd_plist
+launchctl load -w $skhd_plist
