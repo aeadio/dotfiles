@@ -85,7 +85,14 @@ I've tried to display quite a bit of useful information in the prompt while keep
    `-- if inside a Ranger shell
 ```
 
-The prompt is always prepended by an empty line for visual padding between commands. The second line (just the part before ») is used for the continuation prompt (PS2).
+Because each of these components collapse when unused, a prompt in my home directory looks much less daunting:
+
+```
+~
+» 
+```
+
+The prompt is always prepended by an empty line for visual padding between commands. The second line alone is used for the continuation prompt (PS2).
 
 The color scheme is switched to a red, purple and yellow if running as root.
 
