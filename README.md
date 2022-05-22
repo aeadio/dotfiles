@@ -131,9 +131,21 @@ When entering a Git repo (sub)directory, pivots the shell's history to one that 
 
 Small helper functions to faciliate installing and removing third-party Zsh plugins as Git submodules. Of note is `zp-try`, which clones the plugin(s) to a temporary folder, and starts up a new Zsh shell where they can be demoed. This relies on `bin/zshi`.
 
-#### `widgets/*`
+#### `rc.d/zle`, `widgets/*`
 
-Widgets are undoubtedly the most powerful feature of Zsh. Essentially these are functions which are run when a keybind is pressed, and have access to modify the contents of the line editor (the command input space). I've created a handful of widgets for doing things interactively, in some cases with the help of `fzf`. Some of these were inspired by common Zsh plugins, but reimplemented using a cleaner approach.
+Keybindings are set up to mimic contemporary GUI applications. Actions such as undo/redo (ctrl-Z/Y), cut/copy/paste (ctrl-X/K/V) work as they would in desktop GUI apps.
+
+[fzf-tab](https://github.com/Aloxaf/fzf-tab) is used for the tab completion menu. Additionally, fzf-based menus are available for inserting files as arguments (ctrl-L) and searching history (ctrl-F). History can also be searched by entering the beginning of a command, then using alt-up/down to search for all lines beginning with that input.
+
+A shift-selection model is implemented that mimics how GUI applications allow selecting blocks of text. The mechanism is based on the [zsh-shift-select](https://github.com/jirutka/zsh-shift-select) plugin, but reimplemented and expanded with some additional capabilities. 
+
+Holding shift and striking the arrow keys will select characters or lines behind or ahead of the current cursor. Additionally, ctrl+shift allows for selecting words ahead/behind, and alt+shift allows selecting to the beginning/end of the line (left/right) or entire input buffer (up/down).
+
+The active selection will be replaced upon entering any other text, including pasting via ctrl-V. It can also be manipulated with some keybindings -- e.g., edited in-place with ctrl-E, quoted with ctrl-W, replaced by a list of files with ctrl-L, or replaced by tab completion with <tab>.
+
+See `rc.d/zle` for a full list of keybinds. Custom [widgets](https://zsh.sourceforge.io/Doc/Release/Zsh-Line-Editor.html#Zle-Widgets) (functions invoked by these keybinds) are implemented in `widgets/`. Keybindings specific to shift-select mode are found at the bottom.
+
+Note that modifier keybindings, especially multi-modifier ones, may not work in all terminals. Keybindings present in `rc.d/zle` are developed for Alacritty.
 
 ## Todo
 
