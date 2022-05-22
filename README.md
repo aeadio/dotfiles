@@ -14,21 +14,21 @@ I've placed a particular emphasis on being well-organized and easy to navigate. 
 
 ### Subfolder structure (in the order they are loaded):
 
-- `env.d` -- Static environment exports. Variables that need to be available to third party applications. This is the only portion that is sourced always, including in non-interactive script shells. Bootstrapped by the file `env`.
-- `pre.d` -- Early initialization, such as loading compinit, prior to other configuration.
-- `plugins` -- Self-contained feature packages.
+- `env.d`: Static environment exports. Variables that need to be available to third party applications. This is the only portion that is sourced always, including in non-interactive script shells. Bootstrapped by the file `env`.
+- `pre.d`: Early initialization, such as loading compinit, prior to other configuration.
+- `plugins`: Self-contained feature packages.
   - First-party plugins (mine) are installed as single files directly under `plugins/`.
   - Third-party plugins are installed as folders underneath `plugins/`. They are loaded if they contain a `.plugin.zsh` file. These are always loaded if present, even if not marked executable. Most of these are installed as Git submodules.
-- `functions` -- Utility functions used by the user, or by other portions of the configuration. These are [autoloaded](https://zsh.sourceforge.io/Doc/Release/Functions.html#Autoloading-Functions) as needed.
-- `widgets` -- Functions to be used as [ZLE widgets](https://zsh.sourceforge.io/Doc/Release/Zsh-Line-Editor.html#User_002dDefined-Widgets). These are autoloaded, and automatically initialized as ZLE widgets.
-- `rc.d` -- Primary Zsh configuration. Sets shell options, aliases, decorates the prompt, etc.
-- `incl.d` -- Miscellaneous non-Zsh configuration files that need to be included as input to other commands during initialization.
+- `functions`: Utility functions used by the user, or by other portions of the configuration. These are [autoloaded](https://zsh.sourceforge.io/Doc/Release/Functions.html#Autoloading-Functions) as needed.
+- `widgets`: Functions to be used as [ZLE widgets](https://zsh.sourceforge.io/Doc/Release/Zsh-Line-Editor.html#User_002dDefined-Widgets). These are autoloaded, and automatically initialized as ZLE widgets.
+- `rc.d`: Primary Zsh configuration. Sets shell options, aliases, decorates the prompt, etc.
+- `incl.d`: Miscellaneous non-Zsh configuration files that need to be included as input to other commands during initialization.
 
 Individual files can be enabled or disabled by toggling the execute permission -- most files are not sourced or autoloaded if they are not executable on startup.
 
 ### Bootstrapping
 
-Primary bootstrap happens in `rc`, where each stage is wrapped in a named function to facilitate tracing and debugging. The variables ZSHRC_PROFILE and ZSHRC_DEBUG can be set to enable startup benchmarking, and print some information during start, respectively. Logs from either are also saved to the home directory.
+Primary bootstrap happens in `rc`, where each stage is wrapped in a named function to facilitate tracing and debugging. The variables `ZSHRC_PROFILE` and `ZSHRC_DEBUG` can be set to enable startup benchmarking, and print some information during start, respectively. Logs from either are also saved to the home directory.
 
 The variable `ZSH` is set to the location of the Zsh config directory. Some helper functions are set up in `pre.d/util` to make writing configuration a bit more concise.
 
@@ -49,12 +49,12 @@ I've tried to display quite a bit of useful information in the prompt while keep
 ```
    .-- not shown unless it's different from my user or root
    |      .-- not shown unless connected over SSH
-   |      |        .-- responsively collapses if too long for the terminal
-   |      |        |                     .-- ahead/behind remote
-   |      |        |                     |             .-- (un)staged/
-   |      |        |                     |             |    unmerged/
-   |      |        |                     |             |    untracked
-   v      v        v                     v             v
+   |      |        .-----------+-- responsively collapses if too long for the terminal
+   |      |        |           |         .-- ahead/behind remote
+   |      |        |           |         |             .-- (un)staged/unmerged/untracked
+   |      |        |           |         |             |
+   |      |        |           |         |             |
+   v      v        v           v         v             v
 [[user][@host]:]directory [⨕gitbranch[:commits][ ⇄ localchanges]]
 [[R]⁑lvl ][🯊[⠶awsprofile] ][⋮stack]» 
   ^   ^    ^      ^            ^
@@ -122,4 +122,4 @@ Widgets are undoubtedly the most powerful feature of Zsh. Essentially these are 
   - Checking out files, including from a particular branch or commit
   - Diffing current work tree or current staging area against HEAD, remote, or arbitrary branches or commits
   - Fetching, pulling (w/ merge or rebase), (squash)merging, and bisecting
-- Differs from, eg, forgit in that it's intended to be menu-driven, only cover actions which are frequently used and conceptually simple, and invoked as a set of Zsh keybindings
+  - Differs from, eg, forgit in that it's intended to be menu-driven, only cover actions which are frequently used and conceptually simple, and invoked as a set of Zsh keybindings
