@@ -45,7 +45,7 @@ fi
 if (( REGION_ACTIVE )); then
   replace-selection $matches
 elif zle; then
-  LBUFFER="$LBUFFER${${LBUFFER[-1]:#[[:space:]]}:+ }$matches "
+  insert-with-space $matches
 else
   print -n $matches
 fi
