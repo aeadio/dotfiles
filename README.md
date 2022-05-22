@@ -26,25 +26,33 @@ I've placed a particular emphasis on being well-organized and easy to navigate. 
 
 Individual files can be enabled or disabled by toggling the execute permission -- most files are not sourced or autoloaded if they are not executable on startup.
 
-### Bootstrapping
+### Startup
 
-Primary bootstrap happens in `rc`, where each stage is wrapped in a named function to facilitate tracing and debugging. The variables `ZSHRC_PROFILE` and `ZSHRC_DEBUG` can be set to enable startup benchmarking, and print some information during start, respectively. Logs from either are also saved to the home directory.
+Primary bootstrap happens in `rc`, where each stage is wrapped in a named function to facilitate tracing and debugging. The variables `ZSHRC_PROFILE` and `ZSHRC_DEBUG` can be set to an integer (see below) to enable startup benchmarking, and print some information during start, respectively. Logs from either are also saved to the home directory.
 
+
+The variable `ZSH` is set to the location of the Zsh config directory. Some helper functions are set up in `pre.d/util` to make writing configuration a bit more concise.
+
+Finally, all files are automatically compiled with [zcompile](https://zsh.sourceforge.io/Doc/Release/Shell-Builtin-Commands.html#index-zcompile) once per day to speed up shell startup times (see `pre.d/zcompile`). This can be invoked manually via `compile-zshrc`, or by setting `ZSHRC_FORCECOMPILE` when starting up Zsh.
+
+### Parameters used by startup
 #### `ZSHRC_PROFILE`
 
 1. Trace startup time until the full rc is finished loading
 2. Trace startup time to just after the first prompt is drawn
 
-#### `ZSHRC_DEBUG` (inclusive)
+#### `ZSHRC_DEBUG`
 
-1. Warn when leaking globals
-2. Print each file that is sourced/invoked
-3. Print lines of shell as they are executed
-4. Turn on xtrace
+|   1   |   2   |   3   |   4   | Description                                |
+| :---: | :---: | :---: | :---: | :----------------------------------------- |
+|   x   |   x   |   x   |   x   | Warn when leaking globals                  |
+|       |   x   |   x   |       | Print each file that is sourced/invoked    |
+|       |       |   x   |       | Print lines of script as they are executed |
+|       |       |       |   x   | Turn on XTRACE (ie, `set -x`)              |
 
-The variable `ZSH` is set to the location of the Zsh config directory. Some helper functions are set up in `pre.d/util` to make writing configuration a bit more concise.
+#### `ZSHRC_FORCECOMPILE`
 
-Finally, all files are automatically compiled with [zcompile](https://zsh.sourceforge.io/Doc/Release/Shell-Builtin-Commands.html#index-zcompile) once per day to speed up shell startup times (see `pre.d/zcompile`). This can be invoked manually via `compile-zshrc`, or by setting `ZSHRC_FORCECOMPILE` when starting up Zsh.
+If set to any value, always recompiles all `zsh/` source files on startup.
 
 ### Components of interest
 

@@ -26,9 +26,10 @@ fi
 if (( ZSHRC_DEBUG > 0 || ZSHRC_PROFILE )) \
   exec 2> >(tee "$HOME/zshrc-$(date +'%Y-%m-%dT%T').log")
 case $ZSH_DEBUG in
-  4) setopt xtrace ;&
+  4) setopt xtrace ;|
   3) setopt verbose ;&
   2) setopt source_trace ;&
+  4) ;&  # Fallthrough for 4 jumps over 2/3, since they're redundant w/ xtrace
   1) setopt warn_create_global warn_nested_var ;;
 esac
 if (( ZSHRC_PROFILE )) zmodload zsh/zprof
