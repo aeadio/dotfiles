@@ -127,3 +127,8 @@ dynunset() {
     unset $var
   done
 }
+
+dynenv() {
+  if [[ ! -r $DYNENV_FILE ]] return
+  cat $DYNENV_FILE | sed 's/^unset [[:alnum:]_]*; export //'
+}
