@@ -1,0 +1,8 @@
+# vim: ft=sh ts=2 sw=2 et:
+
+emulate -L zsh
+
+if (( !REGION_ACTIVE )); then
+  zle set-mark-command -w
+  zle -K shift-select
+fi

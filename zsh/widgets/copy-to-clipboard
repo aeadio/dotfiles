@@ -1,0 +1,12 @@
+# vim: ft=sh ts=2 sw=2 et:
+# Credit: leah https://leahneukirchen.org/dotfiles/.zshrc
+
+emulate -L zsh -o ksh_glob
+
+if [[ -z $BUFFER || $BUFFER == *([[:space:]]) ]]; then
+  return
+fi
+
+if (( $+functions[copy] )); then
+  print -n $BUFFER | copy 
+fi

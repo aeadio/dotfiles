@@ -1,0 +1,15 @@
+# vim: ft=zsh ts=2 sw=2 et:
+
+emulate -L zsh -o prompt_subst
+
+local selection
+get-selection | read selection
+
+local matches
+fzf-select-files $selection | read matches
+zle reset-prompt
+
+if [[ -n $matches ]]; then
+  zle delete-selection -w
+  LBUFFER="$LBUFFER${${LBUFFER[-1]:#[[:space:]]}:+ }$matches "
+fi

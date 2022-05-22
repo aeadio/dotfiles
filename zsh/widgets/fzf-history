@@ -17,9 +17,15 @@ local line=$(
 
 # NOTE: Reset prompt immediately after fzf. If we back out or it fails, the
 # prompt is munged.
-zle reset-prompt
+zle && zle reset-prompt
 
-if (( ! ret )) && [[ -n $line ]]; then
+if (( ret )) || [[ -z $line ]]; then
+  return $ret
+fi
+
+if zle; then
   LBUFFER=$line
   RBUFFER=
+else
+  print -n $line
 fi

@@ -1,0 +1,13 @@
+# vim: ft=sh ts=2 sw=2 et:
+
+emulate -L zsh
+
+local x y
+if (( MARK > CURSOR )); then
+  x=$CURSOR
+  y=$MARK
+else
+  x=$MARK
+  y=$CURSOR
+fi
+print -n ${BUFFER[x+1,y]}

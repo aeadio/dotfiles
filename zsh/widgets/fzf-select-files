@@ -1,6 +1,6 @@
 # vim: ft=zsh ts=2 sw=2 et:
 
-emulate -L zsh -o multios -o err_return
+emulate -L zsh -o multios -o err_return -o prompt_subst
 
 if (( ! $+commands[fzf] )); then
   return
@@ -24,13 +24,20 @@ local matches=$(
     --layout=reverse \
     --filepath-word  \
     --tiebreak=begin \
-    ${prev_opts}    \
+    --query=$1       \
+    ${prev_opts}     \
     --multi
 ) || ret=$?
 matches=( ${(f)matches} )
 
-zle reset-prompt
+zle && zle reset-prompt
 
-if (( ! ret && ${#matches} > 0 )); then
+if (( ret || ${#matches} == 0 )); then
+  return $ret
+fi
+
+if zle; then
   LBUFFER="$LBUFFER${${LBUFFER[-1]:#[[:space:]]}:+ }$matches "
+else
+  print -n $matches
 fi

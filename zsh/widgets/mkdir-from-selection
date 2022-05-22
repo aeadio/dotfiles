@@ -1,0 +1,13 @@
+# vim: ft=sh ts=2 sw=2 et:
+
+emulate -L zsh
+
+local selection
+get-selection | read selection
+
+local err=$(mkdir -p $selection 2>&1)
+if (( $? )); then
+  zle -M "could not create directory '$selection': $err"
+else
+  zle -M "created directory '$selection'"
+fi
