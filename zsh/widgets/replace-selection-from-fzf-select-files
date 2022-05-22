@@ -2,14 +2,12 @@
 
 emulate -L zsh -o prompt_subst
 
-local selection
-get-selection | read selection
+local x y selection
+get-selection | read -r selection
 
 local matches
-fzf-select-files $selection | read matches
-zle reset-prompt
+fzf-select-files $selection | read -r matches
 
 if [[ -n $matches ]]; then
-  zle delete-selection -w
-  LBUFFER="$LBUFFER${${LBUFFER[-1]:#[[:space:]]}:+ }$matches "
+  replace-selection $matches
 fi

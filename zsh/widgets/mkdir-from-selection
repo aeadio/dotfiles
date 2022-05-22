@@ -6,8 +6,8 @@ emulate -L zsh
 # Can we get access to Zsh completion's parsing and filter out, eg, option
 # flags, respect quotes, etc?
 
-local selection
-get-selection | read selection
+local x y selection
+get-selection | read -r selection
 
 if [[ -z $selection ]] return
 

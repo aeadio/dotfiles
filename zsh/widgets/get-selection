@@ -2,7 +2,9 @@
 
 emulate -L zsh
 
-local x y
+if (( ! REGION_ACTIVE )) return
+
+typeset -g x y
 if (( MARK > CURSOR )); then
   x=$CURSOR
   y=$MARK

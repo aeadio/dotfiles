@@ -1,0 +1,17 @@
+# vim: ft=sh ts=2 sw=2 et:
+
+emulate -L zsh
+
+local x y selection
+get-selection | read -r selection
+
+if [[ -z $selection ]] return
+
+# The cursor may be on either side of the mark, so we cannot simply insert 
+# into the right buffer. The simplest solution is to delete the selection,
+# insert, then re-add the selection and re-select.
+
+local m=$MARK c=$CURSOR
+zle delete-selection -w
+BUFFER="$LBUFFER$selection $selection$RBUFFER"
+set-selection $c $m

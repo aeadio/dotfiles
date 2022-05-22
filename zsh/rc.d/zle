@@ -100,7 +100,7 @@ bindkey '^@'      autosuggest-accept                 # ctrl-space
 bindkey -N shift-select
 
 # Insertable characters should replace the selection
-bindkey -M shift-select -R ' '-'~' replace-selection
+bindkey -M shift-select -R ' '-'~' replace-selection-from-input
 
 bindkey -M shift-select '^[[A'    clear-selection-and-up      # up
 bindkey -M shift-select '^[[B'    clear-selection-and-down    # down
@@ -119,6 +119,9 @@ bindkey -M shift-select '^[[1;4C' select-end-of-line          # shift-alt-right
 
 bindkey -M shift-select '^[[1;6D' select-back-word            # shift-ctrl-left
 bindkey -M shift-select '^[[1;6C' select-forward-word         # shift-ctrl-right
+
+bindkey -M shift-select '^[[1;7D' transpose-selection-left    # alt-ctrl-left
+bindkey -M shift-select '^[[1;7C' copy-selection-right        # alt-ctrl-right
 
 bindkey -M shift-select '^[[3~'   delete-selection            # del
 bindkey -M shift-select '^?'      delete-selection            # backspace

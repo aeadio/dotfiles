@@ -3,16 +3,16 @@
 emulate -L zsh
 
 local m=$MARK c=$CURSOR b=$BUFFER
+local x y selection
+get-selection | read -r selection
+
 zle delete-selection -w
 
 zle fzf-tab-complete -w
-local ret=$?
-if (( ret == 1 )); then
+if (( $? == 1 )); then
   zle -K main
-else
-  BUFFER=$b
-  zle set-mark-command -w
-  MARK=$m
-  CURSOR=$c
-  zle reset-prompt -w
+  return
 fi
+
+BUFFER=$b
+set-selection $c $m

@@ -2,5 +2,19 @@
 
 emulate -L zsh
 
-zle delete-selection -w
-zle -U "$KEYS"
+local x y selection new=$1
+get-selection | read -r selection
+
+if [[ $selection == $new ]] return
+
+local direction=$(( CURSOR > MARK ))
+if [[ -n $selection ]] zle delete-selection -w
+x=${#LBUFFER}
+y=$(( x + ${#new} ))
+LBUFFER="$LBUFFER$new"
+if (( direction )); then
+  set-selection $y $x
+else
+  set-selection $x $y
+fi
+zle reset-prompt -w  # Necessary to invoke highlighting redraw
