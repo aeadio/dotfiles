@@ -30,6 +30,9 @@ has ranger   && alias f='ranger'
 has code-oss && alias E='code-oss'
 has code     && alias E='code'
 
+alias c='copy'
+alias p='paste'
+
 # platform specific
 case $OSTYPE in
   darwin*)
@@ -52,10 +55,6 @@ case $OSTYPE in
         done
       done
     }
-    
-    # System utilities
-    alias c='pbcopy'
-    alias p='pbpaste'
     ;;
     
   linux*|*bsd*)
@@ -74,18 +73,5 @@ case $OSTYPE in
     fi
     
     has vkpurge && alias vkp='vkpurge rm all'
-    
-    # System utilities
-    if has xsel; then
-      alias c='xsel -ib'
-      alias p='xsel -ob'
-    elif has xclip; then
-      alias c='xclip -in -selection clipboard'
-      alias p='xclip -out -selection clipboard'
-    elif has wl-copy; then
-      alias c='wl-copy'
-      alias p='wl-paste'
-    fi
-    
     ;;
 esac

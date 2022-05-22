@@ -1,0 +1,21 @@
+# vim: ft=sh ts=2 sw=2 et:
+
+# Clipboard interface
+case $OSTYPE in
+  darwin*)
+    copy()  pbcopy
+    paste() pbpaste
+    ;;
+  linux*|*bsd*)
+    if (( $+WAYLAND_DISPLAY )) && has wl-copy; then
+      copy()  wl-copy
+      paste() wl-paste
+    elif has xsel; then
+      copy()  xsel -ib
+      paste() xsel -ob
+    elif has xclip; then
+      copy()  xclip -in -selection clipboard
+      paste() xclip -out -selection clipboard
+    fi
+    ;;
+esac
