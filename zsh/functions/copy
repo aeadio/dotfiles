@@ -25,5 +25,5 @@ if (( $+commands[base64] )); then
 fi
 
 if (( $+functions[native-copy] )); then
-  print -n $input | native-copy
+  print -nr $input | native-copy
 fi
