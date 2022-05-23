@@ -80,6 +80,7 @@ prompt:directory() {
   local fullpath=${(%):-%~}
   local display=$fullpath
   local ellipses=${${UTF8:+${(#):-16#2026}}:-..}
+  local reply
   if (( ${#display} > maxwidth )); then
     # Favor the last components in the path
     # If the first component is '~', always display it
@@ -93,7 +94,8 @@ prompt:directory() {
     for (( i = n; i > 0; i-- )); do
       len=${#components[$i]}
       if (( rem - len - npre <= ${#ellipses} + 1 )); then
-        components[$i]=${(%):-%$(( rem - npre ))<$ellipses<$components[$i]%<<}
+        truncate $(( rem - npre )) $components[$i]
+        components[$i]=$reply
         break
       else
         (( rem -= len + 1 ))  # count one for the preceding /
@@ -124,6 +126,7 @@ prompt:git() {
   local lco=$(( ${#${(S%%)commits//$~invisible/}} + 1 ))
   local lch=$(( ${#${(S%%)changes//$~invisible/}} + 3 ))
   local bsize=$(( maxsize - lco - lch ))
+  local reply
   if (( lbr > bsize )); then
     # If we don't have enough space to show much, elide some portions
     if (( bsize < maxsize / 2 )); then
@@ -134,7 +137,8 @@ prompt:git() {
       commits=
       bsize=$maxsize
     fi
-    branch="%$bsize<${${UTF8:+${(#):-16#2026}}:-..}<$branch%<<"
+    truncate -l $bsize $branch
+    branch="$reply"
   fi
   print -n " ${UTF8:+${(#):-16#2a15}}%(!,%B%F{red},%B%F{cyan})$branch%f%b"
   if [[ -n $commits ]]; then
@@ -154,43 +158,31 @@ prompt:promptception() {
     rlvl="%F{green}R${RANGER_LEVEL:#1}%f"
   fi
   if [[ -n "$rlvl$lvl" ]]; then
-    print -n "$rlvl${${UTF8:+${(#):-16#2051}}:- }%(!,%B%F{red},%{\e[2m%}%F{cyan})$lvl%f%b "
+    print -n "$rlvl${${UTF8:+${(#):-16#2836}}:- }%(!,%B%F{red},%{\e[2m%}%F{cyan})$lvl%f%b "
   fi
 }
 
 prompt:aws() {
   emulate -L zsh
-  local token profile age
-  if (( $+UTF8 )); then
-    token="${(#):-16#1fbca}"
-  else
-    token='A'
+  if [[ -z $AWS_VAULT ]] return
+  local reply profile=${AWS_VAULT:#default}
+  if [[ -n $profile ]]; then
+    truncate 10 $profile &>/dev/null
+    profile="$reply"
+    profile="%(!,%F{yellow},%B%F{magenta})$profile%f%b"
+    profile=":$profile"
   fi
-  if (( $+MFA_ARN )); then
-    if [[ -z $AWS_SESSION_TOKEN ]]; then
+  local token="${${UTF8:+${(#):-16#1fbca}}:-A}"
+  if [[ -n $AWS_SESSION_EXPIRATION ]]; then
+    if [[ $(date -u +'%Y-%m-%dT%H:%M:%SZ') > $AWS_SESSION_EXPIRATION ]]; then
       token="%B%F{red}$token%f%b"
-    elif [[ -n $DYNENV_FILE ]]; then
-      age=$(sed -n 's/^unset AWS_SESSION_TOKEN.*# \([[:digit:]]*\)$/\1/p' \
-        $DYNENV_FILE 2>/dev/null)
-      if [[ -n $age ]]; then
-        if (( $(date +%s) - age > ${MFA_DURATION:-86400} )); then
-          token="%{\e[2m%}%F{yellow}$token%f%b"
-        else
-          token="%B%F{green}$token%f%b"
-        fi
-      else
-        token="%F{yellow}$token%f"
-      fi
+    else
+      token="%B%F{green}$token%f%b"
     fi
   else
-    token=
+    token="%F{yellow}$token%f"
   fi
-  if [[ -n ${AWS_PROFILE:#default} ]]; then
-    profile="${${UTF8:+${(#):-16#2836}}:-%}%(!,%F{yellow},%B%F{magenta})%10>${${UTF8:+${(#):-16#2026}}:-..}>$AWS_PROFILE%>>%f%b"
-  fi
-  if [[ -n "$token$profile" ]]; then
-    print -n "$token$profile "
-  fi
+  print -n "$token$profile "
 }
 
 prompt:bufstack() {

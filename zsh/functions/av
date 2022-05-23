@@ -1,0 +1,28 @@
+# vim: ft=zsh ts=2 sw=2 et:
+
+emulate -L zsh
+
+if (( ! $+commands[aws-vault] )); then
+  print "Requires aws-vault" >&2
+  return 1
+fi
+
+local p profile=default
+aws-vault list --profiles | while read -r p; do
+  if [[ $p == $1 ]]; then
+    profile=$1
+    shift
+    break
+  fi
+done
+
+case $1 in
+  add)    ;&
+  clear)  ;&
+  login)  ;&
+  remove) ;&
+  rotate) aws-vault $1 $profile ;;
+  
+  exec)   shift ;&
+  *)      aws-vault exec $profile -- "$@" ;;
+esac

@@ -1,0 +1,24 @@
+# vim: ft=sh ts=2 sw=2 et:
+
+emulate -L zsh
+
+local opts
+zparseopts -A opts -D l
+
+local d
+(( $+opts[-l] )) &&
+  d='<' ||
+  d='>'
+
+local amount
+if (( $# == 2 )); then
+  amount=$1
+  shift
+else
+  amount=$COLUMNS
+fi
+
+typeset -g reply="%${amount}$d${${UTF8:+${(#):-16#2026}}:-..}$d$1%$d$d"
+if [[ ! -t 1 ]]; then
+  print -rP $reply
+fi
