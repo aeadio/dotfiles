@@ -3,7 +3,7 @@
 emulate -L zsh
 
 local OPTIND=0 _
-while getopts ":qsLP" _; do :; done
+while getopts ":" _; do :; done
 local argn=$OPTIND
 
 if (( ARGC == argn )) && [[ $argv[$argn] == "@" ]]; then

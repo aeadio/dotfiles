@@ -24,9 +24,12 @@ typeset -Ag PROMPT_DANGEROUS=(
 
 # Note: this widget is auto-invoked by ZLE if present
 bad-input:zle-line-finish() {
-  emulate -L zsh -o extended_glob
-  local firstword=${${(z)BUFFER}[1]}
+  local firstword
+  [[ $options[interactivecomments] == on ]] &&
+    firstword=${${(Z+C+)BUFFER}[1]} ||
+    firstword=${${(z)BUFFER}[1]}
   if (( $+PROMPT_DANGEROUS[$firstword] )); then
+    setopt localoptions extended_glob
     BUFFER=${BUFFER/#${firstword}[[:space:]]#/}
     zle push-line
     BUFFER=
