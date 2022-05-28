@@ -10,7 +10,6 @@ window:
     x: 6
     y: 3
   dynamic_padding: true
-  dynamic_title: true
   decorations: buttonless
   opacity: 0.92
 
