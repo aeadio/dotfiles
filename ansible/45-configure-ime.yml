@@ -1,0 +1,8 @@
+
+        # NOTE: dict not supported in osx_defaults, see below
+        #- { key: 'AppleEnabledInputSources', add: true, value:
+        #    - { InputSourceKind: 'Keyboard Layout',       'KeyboardLayout ID': '0', 'KeyboardLayout Name': 'U.S.' }
+        #    - { InputSourceKind: 'Keyboard Input Method', 'Bundle ID': 'com.apple.inputmethod.TCIM' }
+        #    - { InputSourceKind: 'Input Mode',            'Bundle ID': 'com.apple.inputmethod.TCIM', 'Input Mode': 'com.apple.inputmethod.TCIM.Pinyin' }
+        #    - { InputSourceKind: 'Input Mode',            'Bundle ID': 'com.apple.inputmethod.TCIM', 'Input Mode': 'com.apple.inputmethod.TCIM.Zhuyin' }
+        #  }

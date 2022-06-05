@@ -1,0 +1,42 @@
+# NOTE: osx_defaults does not support inserting dicts, so build up manually
+- name: 'Setup home symlinks'
+  hosts: localhost
+  connection: local
+  vars:
+    amethyst_floating_apps:
+      'com.1password.1password':              []
+      'com.agilebits.onepassword7':           []
+      'com.amethyst.Amethyst':                []
+      'com.apple.ActivityMonitor':            []
+      'com.apple.AppStore':                   []
+      'com.apple.Automator':                  []
+      'com.apple.backup.launcher':            []
+      'com.apple.calculator':                 []
+      'com.apple.DigitalColorMeter':          []
+      'com.apple.FontBook':                   []
+      'com.apple.Preview':                    []
+      'com.apple.systempreferences':          []
+      'com.daisydiskapp.DaisyDiskStandAlone': []
+      'com.dmitrynikolaev.numi':              []
+      'com.lujjjh.LinearMouse':               []
+      'com.rogueamoeba.soundsource':          []
+      'com.runningwithcrayons.Alfred':        []
+      'com.titanium.OnyX':                    []
+      'io.alacritty':                         ['Floatty']
+      'net.freemacsoft.AppCleaner':           []
+  tasks:
+    - ansible.builtin.shell: |
+        defaults delete com.amethyst.Amethyst floating
+    - ansible.builtin.shell: |
+        defaults write com.amethyst.Amethyst floating -array-add '
+          <dict>
+            <key>id</key>
+            <string>{{ item.key }}</string>
+            <key>window-titles</key>
+            <array>
+              {% for window_title in item.value %}
+              <string>{{ window_title }}</string>
+              {% endfor %}
+            </array>
+          </dict>'
+      loop: "{{ amethyst_floating_apps | dict2items }}"

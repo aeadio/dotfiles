@@ -1,0 +1,27 @@
+- name: 'Configure power management'
+  hosts: localhost
+  connection: local
+  become: true
+  vars:
+    pmset_all:
+      acwake:                 0
+      destroyfvkeyonstandby:  1
+      displaysleep:           0
+      halfdim:                1
+      lidwake:                1
+      lowpowermode:           0
+      powernap:               0
+      proximitywake:          0
+      sleep:                  1
+      standby:                1
+      tcpkeepalive:           0
+      ttyskeepawake:          1
+      womp:                   0
+    pmset_battery:
+      displaysleep:          15
+      lessbright:             1
+  tasks:
+    - ansible.builtin.command: pmset -a {{ item.key }} {{ item.value }}
+      loop: "{{ pmset_all | dict2items }}"
+    - ansible.builtin.command: pmset -b {{ item.key }} {{ item.value }}
+      loop: "{{ pmset_battery | dict2items }}"

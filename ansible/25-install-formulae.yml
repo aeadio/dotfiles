@@ -1,0 +1,101 @@
+# XXX: How to deal with missing items? Ie, stuff not built for M1 Mac so not available
+- name: 'Install Homebrew formulae'
+  hosts: localhost
+  connection: local
+  vars:
+    brew_formulae:
+      - ansible
+      - atool
+      - aws-vault
+      - aws-sam-cli
+      - aws/tap/awscli
+      - bash
+      - bat
+      - chamber
+      - circleci
+      - clac
+      - coreutils
+      - dash
+      - exa
+      - exiftool
+      - fd
+      - ffmpeg
+      - ffmpegthumbnailer
+      - fswatch
+      - fzf
+      - gawk
+      - gh
+      - git
+      - gnu-sed
+      - go
+      - gopls
+      - graphicsmagick
+      - grep
+      - hexyl
+      - highlight
+      - jd
+      - jq
+      - k3d
+      - koekeishiya/formulae/skhd
+      - kubernetes-cli
+      - magic-wormhome
+      - mas
+      - media-info
+      - micro
+      - moreutils
+      - mosh
+      - odt2txt
+      - p7zip
+      - packer
+      - pandoc
+      - pastel
+      - postgresql
+      - pv
+      - pwgen
+      - ranger
+      - ripgrep-all
+      - rsync
+      - saulpw/vd/visidata
+      - shellcheck
+      - sqlite3
+      - telnet
+      - terraform
+      - w3m
+      - watch
+      - wget
+    # For Intel emulated Homebrew on M1 Macs:
+    brew_formulae_x86:
+      - terraform@0.11
+      - terraform@0.12
+      - terraform@0.13
+  tasks:
+    - community.general.homebrew:
+        path: |-
+          {{
+            {
+              'arm64':  '/opt/homebrew/bin',
+              'x86_64': '/usr/local/bin'
+            }[ansible_architecture]
+          }}
+        update_homebrew: yes
+    - community.general.homebrew:
+        path: |-
+          {{
+            {
+              'arm64':  '/opt/homebrew/bin',
+              'x86_64': '/usr/local/bin'
+            }[ansible_architecture]
+          }}
+        formula: "{{ item }}"
+        install_options: no-quarantine
+      loop: "{{ brew_formulae }}"
+    - community.general.homebrew:
+        path: '/usr/local/bin'
+        when: ansible_architecture == 'arm64'
+        update_homebrew: yes
+    - community.general.homebrew:
+        path: '/usr/local/bin'
+        when: ansible_architecture == 'arm64'
+        formula: "{{ item }}"
+        install_options: no-quarantine
+      loop: "{{ brew_formulae_x86 }}"

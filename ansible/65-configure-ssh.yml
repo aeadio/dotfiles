@@ -1,0 +1,11 @@
+- name: 'Configure SSH'
+  hosts: localhost
+  connection: local
+  tasks:
+    - ansible.builtin.copy:
+        dest: "{{ lookup('env', 'HOME') }}/Security/ssh/config"
+        content: |
+          AddKeysToAgent yes
+          VisualHostKey yes
+          Host *
+            IdentityAgent {{ lookup('env', 'HOME') }}/Library/Containers/com.maxgoedjen.Secretive.SecretAgent/Data/socket.ssh

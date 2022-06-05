@@ -1,0 +1,11 @@
+- name: 'Enable sudo Touch ID'
+  hosts: localhost
+  connection: local
+  become: true
+  tasks:
+    - ansible.builtin.lineinfile:
+        path: /etc/pam.d/sudo
+        state: present
+        regexp: '^auth\s+\w+\s+pam_tid.so$'
+        line: 'auth       sufficient     pam_tid.so'
+        insertafter: ^(\s|#)

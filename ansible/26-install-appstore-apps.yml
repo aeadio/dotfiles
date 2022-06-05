@@ -1,0 +1,13 @@
+# NOTE: Requires `mas`, installed in 21-install-formulae.yml
+# NOTE: Assumes AppStore is logged in
+- name: 'Install AppStore apps'
+  hosts: localhost
+  connection: local
+  vars:
+    appstore_app_ids:
+      - 539883307  # LINE
+      - 1475387142 # Tailscale
+  tasks:
+    - community.general.mas:
+        id: "{{ item }}"
+      loop: "{{ appstore_app_ids }}"

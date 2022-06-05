@@ -1,0 +1,35 @@
+- name: 'Install Xcode CLI tools'
+  hosts: localhost
+  connection: local
+  become: true
+  tasks:
+    - ansible.builtin.shell:
+        executable: /bin/zsh
+        cmd: |
+          {% raw %}
+          product='Command Line Tools for Xcode'
+          cookie=/tmp/.com.apple.dt.CommandLineTools.installondemand.in-progress
+          
+          if [[ $(softwareupdate --history) =~ $product ]] exit 0
+          
+          install() {
+            [[ -e $cookie ]] && return 2
+            trap '[[ -e $cookie ]] && rm -f $cookie' EXIT
+            touch $cookie               || return 2
+            softwareupdate --install $1 || return 2
+            return 1
+          }
+          
+          available=(
+            $(softwareupdate --list |
+              sed -n 's/^[[:space:]]*\*[[:space:]]*\('"$product"'.*\)/\1/p')
+          )
+          
+          if (( ! ${#available} )) exit 0
+          
+          install ${${(n)available}[-1]}
+          exit $?
+          {% endraw %}
+      register: result
+      changed_when: result.rc == 1
+      failed_when:  result.rc == 2

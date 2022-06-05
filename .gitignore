@@ -23,7 +23,6 @@ git/user
 zsh/compdump
 
 # uninteresting stuff
-ansible
 aws-sam
 docker
 kube

@@ -1,0 +1,16 @@
+- name: 'Unhide /Volumes folder'
+  hosts: localhost
+  connection: local
+  become: true
+  tasks:
+    - ansible.builtin.shell:
+        executable: /bin/zsh
+        cmd: |
+          {% raw %}
+          dir="/Volumes"
+          if [[ -z $(/usr/bin/find $dir -flags hidden -depth 0) ]] exit 0
+          chflags nohidden $dir && exit 1 || exit 2
+          {% endraw %}
+      register: result
+      changed_when: result.rc == 1
+      failed_when:  result.rc == 2

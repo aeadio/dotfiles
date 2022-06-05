@@ -1,0 +1,11 @@
+- name: 'Install Homebrew'
+  hosts: localhost
+  connection: local
+  tasks:
+    - ansible.builtin.include_role:
+        name: roles/install-homebrew
+    - ansible.builtin.include_role:
+        name: roles/install-homebrew
+      vars:
+        homebrew_arch: 'x86_64'
+      when: ansible_machine == 'arm64'

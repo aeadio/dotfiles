@@ -1,0 +1,46 @@
+# NOTE: Ordered after install-formula because homebrew_cask module does not
+# allow a naked "update_homebrew" directive, and we don't want to re-update
+# on every invocation
+- name: 'Install Homebrew casks'
+  hosts: localhost
+  connection: local
+  vars:
+    brew_casks:
+      - 1password
+      - alacritty
+      - alfred
+      - amethyst
+      - appcleaner
+      - bettertouchtool
+      - cursorsense
+      - daisydisk
+      - discord
+      - font-iosevka
+      - font-iosevka-aile
+      - font-iosevka-etoile
+      - keycastr
+      - linearmouse
+      - onyx
+      - rar
+      - secretive
+      - session-manager-plugin
+      - soundsource
+      - spotify
+      - textual
+      - the-unarchiver
+      - tunnelblick
+      - visual-studio-code
+      - vivaldi
+  tasks:
+    - community.general.homebrew_cask:
+        path: |-
+          {{
+            {
+              'arm64':  '/opt/homebrew/bin',
+              'x86_64': '/usr/local/bin'
+            }[ansible_architecture]
+          }}
+        cask: "{{ item }}"
+        install_options: no-quarantine
+        sudo_password: "{{ ansible_become_password }}"  # XXX
+      loop: "{{ brew_casks }}"

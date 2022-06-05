@@ -1,10 +1,10 @@
 # dotfiles
 
-My dotfiles. I use a combination of MacOS, and Void Linux. Most of the Linux configuration has not yet been merged into main.
+My dotfiles. I use MacOS as a daily driver, and the main branch holds that configuration. Void Linux config is kept in a separate branch that is occasionally rebased on main.
 
-Most of it is fairly run-of-the-mill. I've put particular effort into Zsh, as well as rewriting Ranger's `rifle.conf` to be more terminal-centric.
+Most of the config is fairly run-of-the-mill. I've put particular effort into Zsh, rewriting Ranger's `rifle.conf` to be more terminal-centric, and into Ansible bootstrapping.
 
-As usual, symlinks are set up from the home folder into the relevant files/directories as needed. The current set of symlinks is described in `hier.conf`. This is input into an unfinished bespoke tool for symlink management. This is going away in favor of Ansible playbooks.
+As usual, symlinks are set up from the home folder into the relevant files/directories as needed. Symlinks are set up by Ansible.
 
 ## Zsh
 
@@ -147,14 +147,39 @@ See `rc.d/zle` for a full list of keybinds. Custom [widgets](https://zsh.sourcef
 
 Note that modifier keybindings, especially multi-modifier ones, may not work in all terminals. Keybindings present in `rc.d/zle` are developed for Alacritty.
 
+## Ansible
+
+I've written a series of playbooks with a goal to get any computer in my care up to date with my preferences. The goal is that I should be able to clone the Ansible startup scripts on a fresh laptop (or one that's far out of sync with my preferences) and have a fully-furnished environment afterwards.
+
+I've seen several users leverage Ansible in their dotfiles, but often just to handle setting up a few symlinks or installing one or two packages. I wanted my setup to be much more comprehensive.
+
+Notably, the Ansible playbooks handle obvious things like setting up symlinks to dotfiles, but also:
+- Ensure baseline components in the OS are bootstrapped, like Xcode utilities and Rosetta 2
+- Apply system-wide configuration for the OS
+  - MacOS `defaults`
+  - `/etc` config
+  - Locales, input methods, etc
+  - Any special one-offs that need to be configured through shell commands, or specific config file locations
+- Install Homebrew (and any other package managers)
+- Ensure all preferred packages are installed (formulae/casks)
+- Configure all third party packages where reasonable -- ie, applications that do not handle their own settings sync
+- Configure desktop workspaces, screen settings, wallpapers, etc
+- Ensure common folders I use are set up and have the correct permissions
+
+The goal is that the, upon receiving a fresh laptop, I can:
+- Run these playbooks locally
+- Log into associated cloud accounts
+- Generate ephemeral machine-specific keys (ie, SSH keys via Secretive)
+- Reboot
+
+This should leave me in a completely familiar environment, virtually indistuishable from any other computer I own.
+
+Playbooks are broken out by purpose, so I can apply only the changes I need to update some aspect of the system -- ie, run `install-formulae.yml` to pull in some new tools I'm using across all machines.
+
+There is a simple bootstrap script for running the playbooks that _does not require_ Ansible to be pre-installed. It will check for the existence of Ansible (and of an up to date Python), and if not found, will temporarily fetch a build of each into a temporary directory. This works without Homebrew, and should work out of the box on a fresh copy of MacOS.
+
 ## Todo
 
-- Ansible playbooks to bootstrap new machine setup, and keeping existing machines in sync
-  - Set up home directory subfolders and symlinks
-  - Install commonly used packages
-  - Set global system settings, ie via /etc and MacOS `defaults write`
-  - Set user local settings such as default shell
-  - Goal is to be able to run on a fresh laptop and get to an essentially fully-configured state, or run on a laptop I have not used in a while to pull it up to my latest preferences
 - (WIP) fzf-powered Git commands (invokable as ZLE widgets) for common tasks
   - Switching branches
   - Staging/unstaging files

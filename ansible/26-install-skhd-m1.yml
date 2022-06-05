@@ -1,0 +1,18 @@
+# NOTE: skhd builds aren't available for M1 Mac in Homebrew, so build master
+- name: 'Built and install skhd (M1)'
+  hosts: localhost
+  connection: local
+  tasks:
+    - ansible.builtin.tempfile:
+        state: directory
+      register: tempfile_skhd_build
+      when: ansible_architecture == 'arm64'
+    - ansible.builtin.git:
+        repo: 'https://github.com/koekeishiya/skhd.git'
+        dest: "{{ tempfile_skhd_build.path }}"
+        depth: 1
+      when: ansible_architecture == 'arm64'
+    - community.general.make:
+        chdir: "{{ tempfile_skhd_build.path }}"
+        target: install
+      when: ansible_architecture == 'arm64'
