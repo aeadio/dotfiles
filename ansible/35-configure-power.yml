@@ -1,6 +1,6 @@
+#!run
 - name: 'Configure power management'
-  hosts: localhost
-  connection: local
+  hosts: 'localhost'
   become: true
   vars:
     pmset_all:

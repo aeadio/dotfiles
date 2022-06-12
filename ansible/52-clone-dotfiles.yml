@@ -1,0 +1,11 @@
+#!run
+# NOTE: On new machine setup, we're likely running these Ansible playbooks from
+# a tarballed copy of the dotfiles, so make sure it's cloned locally.
+- name: 'Clone dotfiles'
+  hosts: 'localhost'
+  tasks:
+    - ansible.builtin.git:
+        repo: 'https://github.com/aeadio/dotfiles.git'
+        dest: "{{ lookup('env', 'HOME') }}/Config"
+        remote: 'github-https'
+        update: false

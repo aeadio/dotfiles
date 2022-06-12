@@ -1,6 +1,6 @@
+#!run
 - name: 'Set MacOS settings'
-  hosts: localhost
-  connection: local
+  hosts: 'localhost'
   vars:
     macos_defaults:
       # Theming
@@ -201,38 +201,6 @@
       - { key: 'location',                    value: "{{ lookup('env', 'HOME') }}/Pictures/Screenshots", domain: 'com.apple.screencapture' }  # XXX
       - { key: 'type',                        value: 'png',      domain: 'com.apple.screencapture' }
       - { key: 'DoNotOfferNewDisksForBackup', value: true,       domain: 'com.apple.TimeMachine' }
-      # Third-party applications
-      - { key: 'enables-layout-hud',                 value: true,      domain: 'com.amethyst.Amethyst' }
-      - { key: 'enables-layout-hud-on-space-change', value: false,     domain: 'com.amethyst.Amethyst' }
-      - { key: 'float-small-windows',                value: true,      domain: 'com.amethyst.Amethyst' }
-      - { key: 'floating-is-blacklist',              value: true,      domain: 'com.amethyst.Amethyst' }
-      - { key: 'focus-follows-mouse',                value: false,     domain: 'com.amethyst.Amethyst' }
-      - { key: 'follow-space-thrown-windows',        value: false,     domain: 'com.amethyst.Amethyst' }
-      - { key: 'ignore-menu-bar',                    value: false,     domain: 'com.amethyst.Amethyst' }
-      - { key: 'layouts',                            value: ['floating', 'widescreen-tall', 'column'], domain: 'com.amethyst.Amethyst' }
-      - { key: 'mod1',                               value: ['option', 'shift'],                       domain: 'com.amethyst.Amethyst' }
-      - { key: 'mod2',                               value: ['option', 'shift', 'control'],            domain: 'com.amethyst.Amethyst' }
-      - { key: 'mouse-follows-focus',                value: false,     domain: 'com.amethyst.Amethyst' }
-      - { key: 'mouse-resizes-windows',              value: true,      domain: 'com.amethyst.Amethyst' }
-      - { key: 'new-windows-to-main',                value: false,     domain: 'com.amethyst.Amethyst' }
-      - { key: 'restore-layouts-on-launch',          value: true,      domain: 'com.amethyst.Amethyst' }
-      - { key: 'screen-padding-bottom',              value: 0,         domain: 'com.amethyst.Amethyst' }
-      - { key: 'screen-padding-left',                value: 0,         domain: 'com.amethyst.Amethyst' }
-      - { key: 'screen-padding-right',               value: 0,         domain: 'com.amethyst.Amethyst' }
-      - { key: 'screen-padding-top',                 value: 0,         domain: 'com.amethyst.Amethyst' }
-      - { key: 'smart-window-margins',               value: false,     domain: 'com.amethyst.Amethyst' }
-      - { key: 'window-margin-size',                 value: 28,        domain: 'com.amethyst.Amethyst' }
-      - { key: 'window-margins',                     value: true,      domain: 'com.amethyst.Amethyst' }
-      - { key: 'disable-expose-fix',                 value: 'YES',     domain: 'com.blizzard.worldofwarcraft' }
-      - { key: 'default.commandKeysOnly',            value: true,      domain: 'io.github.keycastr' }
-      - { key: 'default.fontSize',                   value: 30,        domain: 'io.github.keycastr' }
-      - { key: 'displayIcon',                        value: true,      domain: 'io.github.keycastr' }
-      - { key: 'mouse.displayOption',                value: false,     domain: 'io.github.keycastr' }
-      - { key: 'selectedVisualizer',                 value: 'Default', domain: 'io.github.keycastr' }
-      - { key: 'linearMovementOn',                   value: true,      domain: 'com.lujjjh.LinearMouse' }
-      - { key: 'linearScrollingOn',                  value: true,      domain: 'com.lujjjh.LinearMouse' }
-      - { key: 'reverseScrollingOn',                 value: true,      domain: 'com.lujjjh.LinearMouse' }
-      - { key: 'universalBackForwardOn',             value: true,      domain: 'com.lujjjh.LinearMouse' }
   tasks:
     - include_role: 
         name: roles/macos-defaults

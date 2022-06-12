@@ -1,6 +1,6 @@
+#!run
 - name: 'Setup home symlinks'
-  hosts: localhost
-  connection: local
+  hosts: 'localhost'
   vars:
     home_symlinks:
       # - set `target` for link target absolute path

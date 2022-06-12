@@ -176,7 +176,7 @@ This should leave me in a completely familiar environment, virtually indistuisha
 
 Playbooks are broken out by purpose, so I can apply only the changes I need to update some aspect of the system -- ie, run `install-formulae.yml` to pull in some new tools I'm using across all machines.
 
-There is a simple bootstrap script for running the playbooks that _does not require_ Ansible to be pre-installed. It will check for the existence of Ansible (and of an up to date Python), and if not found, will temporarily fetch a build of each into a temporary directory. This works without Homebrew, and should work out of the box on a fresh copy of MacOS.
+There is a simple bootstrap script for running the playbooks that _does not require_ Ansible to be pre-installed. It will install the Xcode CLI tools, then install Ansible into a temporary virtuelenv. This works without Homebrew, and should work out of the box on a reasonably-recent fresh copy of MacOS.
 
 ## Todo
 

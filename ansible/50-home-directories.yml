@@ -1,6 +1,6 @@
+#!run
 - name: 'Setup home directories'
-  hosts: localhost
-  connection: local
+  hosts: 'localhost'
   vars:
     home_directories:
       - { dirname: 'Pictures/Screenshots' }

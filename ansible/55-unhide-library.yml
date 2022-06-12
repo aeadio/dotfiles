@@ -1,6 +1,6 @@
+#!run
 - name: 'Unhide ~/Library folder'
-  hosts: localhost
-  connection: local
+  hosts: 'localhost'
   tasks:
     - ansible.builtin.shell:
         executable: /bin/zsh

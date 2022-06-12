@@ -1,6 +1,6 @@
+#!run
 - name: 'Enable sudo Touch ID'
-  hosts: localhost
-  connection: local
+  hosts: 'localhost'
   become: true
   tasks:
     - ansible.builtin.lineinfile:

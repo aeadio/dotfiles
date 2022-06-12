@@ -1,0 +1,50 @@
+#!run
+# Is it just me, or is it insane that this setting is sitting in plist in 
+# root's Library?
+- name: 'Configure screen color'
+  hosts: 'localhost'
+  become: true
+  tasks:
+    - ansible.builtin.shell:
+        executable: /bin/zsh
+        cmd: |
+          user='{{ ansible_user_id }}'
+          {% raw %}
+          userpath=$(eval print "~$user")
+          domain='/var/root/Library/Preferences/com.apple.CoreBrightness.plist'
+          
+          dscl . -read $userpath GeneratedUID |
+            sed 's/GeneratedUID: //' |
+            read -r useruid
+          
+          if [[ -z $useruid ]] exit 2
+          
+          cbkey="CBUser-$useruid"
+          
+          if [[ $(defaults read $domain $cbkey) =~ "BlueReductionEnabled = 1" ]] exit 0
+          
+          defaults write $domain $cbkey '
+            {
+              CBBlueReductionStatus = {
+                AutoBlueReductionEnabled = 1;
+                BlueLightReductionDisableScheduleAlertCounter = 3;
+                BlueLightReductionSchedule = {
+                  DayStartHour = 7;
+                  DayStartMinute = 0;
+                  NightStartHour = 22;
+                  NightStartMinute = 0;
+                };
+                BlueReductionMode = 1;
+                BlueReductionSunScheduleAllowed = 1;
+                Version = 1;
+              };
+              CBColorAdaptationEnabled = 1;
+            }'
+          
+          if (( $? )) exit 2
+          
+          exit 1
+          {% endraw %}
+      register: result
+      changed_when: result.rc == 1
+      failed_when:  result.rc == 2

@@ -1,6 +1,6 @@
+#!run
 - name: 'Install Homebrew'
-  hosts: localhost
-  connection: local
+  hosts: 'localhost'
   tasks:
     - ansible.builtin.include_role:
         name: roles/install-homebrew
