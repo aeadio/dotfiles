@@ -4,6 +4,8 @@ shift+cmd-0x2C: alacritty -t Floatty
       cmd-0x2B: code -n                                                     # ,
       cmd-0x29: open -n $HOME                                               # ;
 shift+cmd-0x29: alacritty -t Floatty --working-directory "$HOME" -e ranger
-      cmd-0x27: open -gna /Applications/Vivaldi.app --args                  # '
-shift+cmd-0x27: open -gna /Applications/Vivaldi.app --args --incognito
+#      cmd-0x27: open -gna /Applications/Vivaldi.app --args                 # '
+#shift+cmd-0x27: open -gna /Applications/Vivaldi.app --args --incognito
+      cmd-0x27: open -gna "/Applications/Firefox Developer Edition.app"     # '
+shift+cmd-0x27: open -gna "/Applications/Firefox Developer Edition.app" --args -private-window
       cmd-0x2F: alacritty -t Floatty -e clac                                # .
