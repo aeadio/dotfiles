@@ -6,6 +6,12 @@
 
 # Configure fzf-tab
 zstyle ':fzf-tab:*' fzf-flags '--height=40%' '--no-sort'
+zstyle ':fzf-tab:complete:*' fzf-bindings \
+  'ctrl-a:toggle-all'           \
+  'tab:toggle'                  \
+  'backward-eof:abort'          \
+  'pgup:preview-half-page-up'   \
+  'pgdn:preview-half-page-down'
 
 # Auto rehash
 zstyle ":completion:*:commands" rehash true
