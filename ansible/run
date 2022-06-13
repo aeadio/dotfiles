@@ -1,0 +1,154 @@
+#!/bin/zsh -o extended_glob
+
+typeset -a verbose
+typeset -a check
+zparseopts -E -check=check C=check -verbose=verbose v+=verbose
+
+# Options may come after the playbook name if run via shebang, so remove them
+# position-independently.
+argv=( ${argv:#--(check|verbose)} )
+argv=( ${argv:#-([Cv])##} )
+
+verbosity=${#verbose}
+if (( verbosity == 3 )) setopt verbose
+if (( verbosity >= 4 )) setopt xtrace
+
+TMP_ANSIBLE_DIR='/tmp/dotfiles_portable_ansible'
+XCODE_CLT_DIR='/Library/Developer/CommandLineTools'
+
+abort() {
+  print "$1" >&2
+  exit 1
+}
+
+# Dependency setup
+install_xcode_clt() {
+  print "Xcode command line tools needed. Launching installer..."
+  xcode-select --install || return 1
+  print -n "Press <Return> when finished."
+  read -s
+  [[ -d $XCODE_CLT_DIR ]]
+}
+
+install_ansible() {
+  print "Ansible not found, installing into temporary virtualenv..."
+  setopt localoptions err_return
+  
+  local pyenv=$TMP_ANSIBLE_DIR
+  mkdir -p $pyenv/{venv-module,venv}
+  
+  # Virtualenv is not present in the Xcode CLI tools, so we must install it
+  # before we can set up the venv. Install to a temporary location to avoid
+  # conflict with any other existing Python packages on the system.
+  /usr/bin/python3 -m pip install --target $pyenv/venv-module virtualenv
+  
+  # Bootstrap a virtualenv for the Ansible install
+  env PYTHONPATH="$pyenv/venv-module" $pyenv/venv-module/bin/virtualenv $pyenv/venv
+  # NOTE: Implicit dependency on `path` being set first. See below.
+  source $pyenv/venv/bin/activate
+  
+  # Ansible will require an updated setuptools and pip to build/install, so 
+  # install upgraded copies of those one-by-one first.
+  local p
+  for p in pip setuptools ansible;
+    pip install --upgrade $p
+}
+
+need_become_pass() {
+  local p f
+  for p in "$@";
+    [[ $(cat $p) =~ "(become:[[:space:]]*([Yy]|[Tt]|[Oo][Nn])|ansible_become_password)" ]] &&
+      return 0
+  return 1
+}
+
+get_sudo_pass() {
+  print -n "Enter your password for sudo: "
+  read -rs sudo_password
+}
+
+# Set up environment
+# Ensure our PATH is sane, and includes Homebrew + our temporary bin 
+# directories, as Ansible modules will attempt to search these for things we 
+# need like 'brew' and 'mas' and our portable Ansible.
+path=(
+  /opt/homebrew/bin
+  /usr/local/bin
+  /tmp/dotfiles_portable_ansible/venv/bin(N)
+  /usr/bin
+  /bin
+  /usr/sbin
+  /sbin
+)
+
+# Check pre-requisites
+if [[ ! -d $XCODE_CLT_DIR ]]; then
+  install_xcode_clt ||
+    abort "failed to install Xcode Command Line Tools"
+fi
+
+if (( ! $+commands[ansible-playbook] )); then
+  install_ansible ||
+    abort "failed to install Ansible"
+fi
+
+# Run playbooks
+# Searches in order:
+# - Path to Yaml file.
+# - Name of a stage (ie 01-system), with or without leading digit+hyphen,
+#   matching all executable Yaml files inside.
+# - Name of a target (ie 10-install-rosetta), with or without leading
+#   digit+hyphen, without trailing Yaml extension, searching all stages for a 
+#   single matching Yaml file.
+# - Defaults to all Yaml files in all stages, in lexographical order, if none
+#   is given.
+# Removes duplicate playbooks.
+typeset -a playbooks
+() {
+  local basedir=${0:h}
+  local targets=( "$@" )
+  if (( ! ${#targets} )) targets=( [[:digit:]][[:digit:]]-*(-/N) )
+  if (( ! ${#targets} )) abort "no playbooks to run"
+  
+  local item try
+  for item in $targets; do
+    if [[ $item == *.((#i)y(a|)ml) && -e $item ]]; then
+      playbooks+=( $item )
+      continue
+    fi
+    
+    if [[ $item == ([[:digit:]][[:digit:]]-|)(*) ]]; then
+      # Is it a stage name? Ie, 01-system
+      if [[ -d $basedir/([[:digit:]][[:digit:]]-|)$item(#q-N) ]]; then
+        playbooks+=( $basedir/([[:digit:]][[:digit:]]-|)$item/(*)((#i).y(a|)ml)(-.Ne:'[[ -x $REPLY ]]':) )
+        continue
+      fi
+      
+      # Is it a target name we need to search for inside a stage?
+      try=( $basedir/[[:digit:]][[:digit:]]-*/([[:digit:]][[:digit:]]-|)$item((#i).y(a|)ml)(-.N) )
+      if (( ${#try} > 1 )) abort "ambiguous target name: $item"
+      if [[ -e $try ]]; then
+        playbooks+=( $try )
+        continue
+      fi
+    fi
+    
+    abort "could not locate target: $item"
+  done
+  
+  playbooks=( ${(u)playbooks} )
+} "$@"
+
+# Need become pass?
+need_become_pass $playbooks &&
+  get_sudo_pass
+
+env ANSIBLE_FORCE_COLOR=1 ansible-playbook -i 'localhost' -c 'local' \
+  ${verbose:+-${(pl[$verbosity][v])}} \
+  ${check:+--check} \
+  ${=sudo_password:+"-e ansible_become_password=$sudo_password"} \
+  $playbooks |& {
+    (( verbosity >= 5 )) &&
+      tee "${0:h}/log/$(date +%s).log" ||
+      cat
+  }

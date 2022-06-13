@@ -1,4 +1,3 @@
-#!run
 # XXX: How to deal with missing items? Ie, stuff not built for M1 Mac so not available
 - name: 'Install Homebrew formulae'
   hosts: 'localhost'
@@ -42,7 +41,6 @@
           - jd
           - jq
           - k3d
-          - koekeishiya/formulae/skhd
           - kubernetes-cli
           - magic-wormhole
           - mas
@@ -71,15 +69,22 @@
           - wget
         install_options: no-quarantine
         path: "{{ brew_path }}"
-    - community.general.homebrew:
-        path: '/usr/local/bin'
-        update_homebrew: yes
-      when: ansible_architecture == 'arm64'
-    - community.general.homebrew:
-        formula:
+    - when: ansible_architecture == 'x86_64'
+      community.general.homebrew:
+        formulae:
+          - koekeishiya/formulae/skhd
           - terraform@0.11
           - terraform@0.12
           - terraform@0.13
         install_options: no-quarantine
-        path: '/usr/local/bin'
-      when: ansible_architecture == 'arm64'
+        path: "{{ brew_path }}"
+    - when: ansible_architecture == 'arm64'
+      ansible.builtin.command: |
+        arch -x86_64 {{ brew_path }}/brew update
+    - when: ansible_architecture == 'arm64'
+      ansible.builtin.command: |
+        arch -x86_64 {{ brew_path }}/brew install --no-quarantine {{ item }}
+      loop:
+        - terraform@0.11
+        - terraform@0.12
+        - terraform@0.13

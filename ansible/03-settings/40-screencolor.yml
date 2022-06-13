@@ -1,4 +1,3 @@
-#!run
 # Is it just me, or is it insane that this setting is sitting in plist in 
 # root's Library?
 - name: 'Configure screen color'

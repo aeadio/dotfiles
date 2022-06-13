@@ -1,4 +1,3 @@
-#!run
 - name: 'Set MacOS settings'
   hosts: 'localhost'
   vars:
@@ -203,5 +202,5 @@
       - { key: 'DoNotOfferNewDisksForBackup', value: true,       domain: 'com.apple.TimeMachine' }
   tasks:
     - include_role: 
-        name: roles/macos-defaults
+        name: ../roles/macos-defaults
       loop: "{{ macos_defaults }}"

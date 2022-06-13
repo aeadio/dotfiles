@@ -1,0 +1,9 @@
+- name: 'Configure World of Warcraft'
+  hosts: 'localhost'
+  vars:
+    amethyst_settings:
+  tasks:
+    - include_role: 
+        name: ../roles/macos-defaults
+      loop:
+        - { key: 'disable-expose-fix', value: 'YES', domain: 'com.blizzard.worldofwarcraft' }

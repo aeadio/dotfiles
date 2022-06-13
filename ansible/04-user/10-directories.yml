@@ -1,4 +1,3 @@
-#!run
 - name: 'Setup home directories'
   hosts: 'localhost'
   vars:

@@ -1,4 +1,3 @@
-#!run
 - name: 'Install Rosetta (M1)'
   hosts: 'localhost'
   become: true

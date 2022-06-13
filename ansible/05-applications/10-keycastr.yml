@@ -1,0 +1,13 @@
+- name: 'Configure Keycastr'
+  hosts: 'localhost'
+  vars:
+    settings:
+      - { key: 'default.commandKeysOnly', value: true,      domain: 'io.github.keycastr' }
+      - { key: 'default.fontSize',        value: 30,        domain: 'io.github.keycastr' }
+      - { key: 'displayIcon',             value: true,      domain: 'io.github.keycastr' }
+      - { key: 'mouse.displayOption',     value: false,     domain: 'io.github.keycastr' }
+      - { key: 'selectedVisualizer',      value: 'Default', domain: 'io.github.keycastr' }
+  tasks:
+    - include_role: 
+        name: ../roles/macos-defaults
+      loop: "{{ settings }}"

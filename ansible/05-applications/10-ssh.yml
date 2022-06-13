@@ -1,6 +1,5 @@
 - name: 'Configure SSH'
-  hosts: localhost
-  connection: local
+  hosts: 'localhost'
   tasks:
     - ansible.builtin.copy:
         dest: "{{ lookup('env', 'HOME') }}/Security/ssh/config"

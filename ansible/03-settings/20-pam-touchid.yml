@@ -1,4 +1,3 @@
-#!run
 - name: 'Enable sudo Touch ID'
   hosts: 'localhost'
   become: true

@@ -1,4 +1,3 @@
-#!run
 - name: 'Unhide ~/Library folder'
   hosts: 'localhost'
   tasks:

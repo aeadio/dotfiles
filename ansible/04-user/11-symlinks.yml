@@ -1,4 +1,3 @@
-#!run
 - name: 'Setup home symlinks'
   hosts: 'localhost'
   vars:

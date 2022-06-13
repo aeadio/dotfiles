@@ -1,4 +1,3 @@
-#!run
 # NOTE: On new machine setup, we're likely running these Ansible playbooks from
 # a tarballed copy of the dotfiles, so make sure it's cloned locally.
 - name: 'Clone dotfiles'

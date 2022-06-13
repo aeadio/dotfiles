@@ -1,4 +1,3 @@
-#!run
 # NOTE: Requires `mas`, installed in 21-install-formulae.yml
 # NOTE: Assumes AppStore is logged in
 - name: 'Install AppStore apps'

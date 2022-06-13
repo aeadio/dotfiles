@@ -1,4 +1,3 @@
-#!run
 - name: 'Unhide /Volumes folder'
   hosts: 'localhost'
   become: true

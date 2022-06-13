@@ -1,0 +1,13 @@
+# TODO: Enable autostart
+- name: 'Configure LinearMouse'
+  hosts: 'localhost'
+  vars:
+    settings:
+      - { key: 'linearMovementOn',       value: true, domain: 'com.lujjjh.LinearMouse' }
+      - { key: 'linearScrollingOn',      value: true, domain: 'com.lujjjh.LinearMouse' }
+      - { key: 'reverseScrollingOn',     value: true, domain: 'com.lujjjh.LinearMouse' }
+      - { key: 'universalBackForwardOn', value: true, domain: 'com.lujjjh.LinearMouse' }
+  tasks:
+    - include_role: 
+        name: ../roles/macos-defaults
+      loop: "{{ settings }}"

@@ -1,4 +1,3 @@
-#!run
 - name: 'Configure power management'
   hosts: 'localhost'
   become: true
