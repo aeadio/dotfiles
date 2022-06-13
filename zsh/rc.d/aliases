@@ -15,9 +15,9 @@ alias lf='noglob lf'
 # shorthands
 if has exa; then
   alias l='exa -lbF --group-directories-first --no-time --git --no-icons'
-  alias L='exa -lbF --group-directories-first --no-time --git --no-icons --all'
+  alias L='exa -lbF --group-directories-first --no-time --git --no-icons -aa'
   alias ll='exa -lbFgm --group-directories-first --git --no-icons'
-  alias LL='exa -lbFgm --group-directories-first --git --no-icons --all'
+  alias LL='exa -lbFgm --group-directories-first --git --no-icons -aa'
 elif isgnu ls; then
   alias l='ls -lFkh --quoting-style=literal --color=auto --group-directories-first'
   alias L='ls -lFkh --quoting-style=literal --color=auto --group-directories-first -A'
