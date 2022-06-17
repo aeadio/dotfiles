@@ -1,90 +1,72 @@
-# XXX: How to deal with missing items? Ie, stuff not built for M1 Mac so not available
 - name: 'Install Homebrew formulae'
   hosts: 'localhost'
   vars:
-    brew_path: "{{ {'arm64': '/opt/homebrew/bin', 'x86_64': '/usr/local/bin'}[ansible_architecture] }}"
+    formulae: 
+      - ansible
+      - atool
+      - aws-vault
+      - aws/tap/aws-sam-cli
+      - awscli
+      - bash
+      - bat
+      - chamber
+      - circleci
+      - clac
+      - coreutils
+      - dash
+      - exa
+      - exiftool
+      - fd
+      - ffmpeg
+      - ffmpegthumbnailer
+      - fswatch
+      - fzf
+      - gawk
+      - gh
+      - git
+      - gnu-sed
+      - go
+      - gopls
+      - graphicsmagick
+      - grep
+      - hammerspoon
+      - hexyl
+      - highlight
+      - jd
+      - jq
+      - k3d
+      - kubernetes-cli
+      - luarocks
+      - magic-wormhole
+      - mas
+      - media-info
+      - micro
+      - moreutils
+      - mosh
+      - odt2txt
+      - p7zip
+      - packer
+      - pandoc
+      - pastel
+      - postgresql
+      - pv
+      - pwgen
+      - ranger
+      - ripgrep-all
+      - rsync
+      - saulpw/vd/visidata
+      - shellcheck
+      - sqlite3
+      - telnet
+      - terraform
+      - w3m
+      - watch
+      - wget
   tasks:
     - community.general.homebrew:
         update_homebrew: yes
-        path: "{{ brew_path }}"
+        path: "{{ {'arm64': '/opt/homebrew/bin', 'x86_64': '/usr/local/bin'}[ansible_architecture] }}"
     - community.general.homebrew:
-        formula:
-          - ansible
-          - atool
-          - aws-vault
-          - aws/tap/aws-sam-cli
-          - awscli
-          - bash
-          - bat
-          - chamber
-          - circleci
-          - clac
-          - coreutils
-          - dash
-          - exa
-          - exiftool
-          - fd
-          - ffmpeg
-          - ffmpegthumbnailer
-          - fswatch
-          - fzf
-          - gawk
-          - gh
-          - git
-          - gnu-sed
-          - go
-          - gopls
-          - graphicsmagick
-          - grep
-          - hexyl
-          - highlight
-          - jd
-          - jq
-          - k3d
-          - kubernetes-cli
-          - magic-wormhole
-          - mas
-          - media-info
-          - micro
-          - moreutils
-          - mosh
-          - odt2txt
-          - p7zip
-          - packer
-          - pandoc
-          - pastel
-          - postgresql
-          - pv
-          - pwgen
-          - ranger
-          - ripgrep-all
-          - rsync
-          - saulpw/vd/visidata
-          - shellcheck
-          - sqlite3
-          - telnet
-          - terraform
-          - w3m
-          - watch
-          - wget
+        formula: "{{ formulae }}"
         install_options: no-quarantine
-        path: "{{ brew_path }}"
-    - when: ansible_architecture == 'x86_64'
-      community.general.homebrew:
-        formulae:
-          - koekeishiya/formulae/skhd
-          - terraform@0.11
-          - terraform@0.12
-          - terraform@0.13
-        install_options: no-quarantine
-        path: "{{ brew_path }}"
-    - when: ansible_architecture == 'arm64'
-      ansible.builtin.command: |
-        arch -x86_64 {{ brew_path }}/brew update
-    - when: ansible_architecture == 'arm64'
-      ansible.builtin.command: |
-        arch -x86_64 {{ brew_path }}/brew install --no-quarantine {{ item }}
-      loop:
-        - terraform@0.11
-        - terraform@0.12
-        - terraform@0.13
+        path: "{{ {'arm64': '/opt/homebrew/bin', 'x86_64': '/usr/local/bin'}[ansible_architecture] }}"

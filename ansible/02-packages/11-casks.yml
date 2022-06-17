@@ -3,37 +3,39 @@
 # on every invocation
 - name: 'Install Homebrew casks'
   hosts: 'localhost'
+  vars:
+    casks:
+      - 1password
+      - alacritty
+      - alfred
+      - amethyst
+      - appcleaner
+      - bettertouchtool
+      - homebrew/cask-versions/firefox-developer-edition
+      - cursorsense
+      - daisydisk
+      - discord
+      - font-iosevka
+      - font-iosevka-aile
+      - font-iosevka-etoile
+      - keycastr
+      - linearmouse
+      - onyx
+      - rar
+      - secretive
+      - session-manager-plugin
+      - soundsource
+      - spotify
+      - textual
+      - the-unarchiver
+      - tunnelblick
+      - visual-studio-code
+      - vivaldi
   tasks:
     - community.general.homebrew_tap:
         tap: homebrew/cask-fonts
     - community.general.homebrew_cask:
-        cask:
-          - 1password
-          - alacritty
-          - alfred
-          - amethyst
-          - appcleaner
-          - bettertouchtool
-          - homebrew/cask-versions/firefox-developer-edition
-          - cursorsense
-          - daisydisk
-          - discord
-          - font-iosevka
-          - font-iosevka-aile
-          - font-iosevka-etoile
-          - keycastr
-          - linearmouse
-          - onyx
-          - rar
-          - secretive
-          - session-manager-plugin
-          - soundsource
-          - spotify
-          - textual
-          - the-unarchiver
-          - tunnelblick
-          - visual-studio-code
-          - vivaldi
+        cask: "{{ casks }}"
         install_options: no-quarantine
         path: "{{ {'arm64': '/opt/homebrew/bin', 'x86_64': '/usr/local/bin'}[ansible_architecture] }}"
         sudo_password: "{{ ansible_become_password }}"

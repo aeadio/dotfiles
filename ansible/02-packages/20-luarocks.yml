@@ -1,0 +1,8 @@
+- name: 'Install Lua libraries'
+  hosts: 'localhost'
+  vars:
+    rocks:
+      - luafilesystem
+      - lunix
+  tasks:
+    - 

@@ -2,9 +2,11 @@
 # NOTE: Assumes AppStore is logged in
 - name: 'Install AppStore apps'
   hosts: 'localhost'
+  vars:
+    apps:
+      - 539883307  # LINE
+      - 1475387142 # Tailscale
   tasks:
     - community.general.mas:
-        id:
-          - 539883307  # LINE
-          - 1475387142 # Tailscale
+        id: "{{ apps }}"
       ignore_errors: true

@@ -1,6 +1,10 @@
 # BUG: Inserting just the TCIM IMEs breaks the IME settings completely
 - name: 'Enable TCIM IMEs'
   hosts: 'localhost'
+  vars:
+    imes:
+      - Pinyin
+      - Zhuyin
   tasks:
     - ansible.builtin.shell:
         executable: /bin/zsh
@@ -29,6 +33,4 @@
       register: result
       changed_when: result.rc == 1
       failed_when:  result.rc == 2
-      loop:
-        - Pinyin
-        - Zhuyin
+      loop: "{{ imes }}"

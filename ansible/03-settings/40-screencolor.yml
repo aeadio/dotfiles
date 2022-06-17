@@ -3,11 +3,30 @@
 - name: 'Configure screen color'
   hosts: 'localhost'
   become: true
+  vars:
+    cb_settings: |
+      {
+        CBBlueReductionStatus = {
+          AutoBlueReductionEnabled = 1;
+          BlueLightReductionDisableScheduleAlertCounter = 3;
+          BlueLightReductionSchedule = {
+            DayStartHour = 7;
+            DayStartMinute = 0;
+            NightStartHour = 22;
+            NightStartMinute = 0;
+          };
+          BlueReductionMode = 1;
+          BlueReductionSunScheduleAllowed = 1;
+          Version = 1;
+        };
+        CBColorAdaptationEnabled = 1;
+      }
   tasks:
     - ansible.builtin.shell:
         executable: /bin/zsh
         cmd: |
           user='{{ ansible_user_id }}'
+          cb_settings='{{ cb_settings }}'
           {% raw %}
           userpath=$(eval print "~$user")
           domain='/var/root/Library/Preferences/com.apple.CoreBrightness.plist'
@@ -22,23 +41,7 @@
           
           if [[ $(defaults read $domain $cbkey) =~ "BlueReductionEnabled = 1" ]] exit 0
           
-          defaults write $domain $cbkey '
-            {
-              CBBlueReductionStatus = {
-                AutoBlueReductionEnabled = 1;
-                BlueLightReductionDisableScheduleAlertCounter = 3;
-                BlueLightReductionSchedule = {
-                  DayStartHour = 7;
-                  DayStartMinute = 0;
-                  NightStartHour = 22;
-                  NightStartMinute = 0;
-                };
-                BlueReductionMode = 1;
-                BlueReductionSunScheduleAllowed = 1;
-                Version = 1;
-              };
-              CBColorAdaptationEnabled = 1;
-            }'
+          defaults write $domain $cbkey "$cb_settings"
           
           if (( $? )) exit 2
           
