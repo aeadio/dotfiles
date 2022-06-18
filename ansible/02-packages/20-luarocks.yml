@@ -5,4 +5,16 @@
       - luafilesystem
       - lunix
   tasks:
-    - 
+    - ansible.builtin.shell:
+        executable: /bin/zsh
+        cmd: |
+          pkg="{{ item }}"
+          {% raw %}
+          luarocks show $pkg &>/dev/null && exit 0
+          luarocks install $pkg || exit 2
+          exit 1
+          {% endraw %}
+      loop: "{{ rocks }}"
+      register: result
+      changed_when: result.rc == 1
+      failed_when:  result.rc == 2

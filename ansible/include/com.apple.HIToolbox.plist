@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>AppleCapsLockPressAndHoldToggleOff</key>
+	<false/>
+	<key>AppleCurrentKeyboardLayoutInputSourceID</key>
+	<string>com.apple.keylayout.US</string>
+	<key>AppleDictationAutoEnable</key>
+	<integer>0</integer>
+	<key>AppleEnabledInputSources</key>
+	<array>
+		<dict>
+			<key>InputSourceKind</key>
+			<string>Keyboard Layout</string>
+			<key>KeyboardLayout ID</key>
+			<integer>0</integer>
+			<key>KeyboardLayout Name</key>
+			<string>U.S.</string>
+		</dict>
+		<dict>
+			<key>Bundle ID</key>
+			<string>com.apple.CharacterPaletteIM</string>
+			<key>InputSourceKind</key>
+			<string>Non Keyboard Input Method</string>
+		</dict>
+		<dict>
+			<key>Bundle ID</key>
+			<string>com.apple.inputmethod.TCIM</string>
+			<key>InputSourceKind</key>
+			<string>Keyboard Input Method</string>
+		</dict>
+		<dict>
+			<key>Bundle ID</key>
+			<string>com.apple.inputmethod.TCIM</string>
+			<key>Input Mode</key>
+			<string>com.apple.inputmethod.TCIM.Zhuyin</string>
+			<key>InputSourceKind</key>
+			<string>Input Mode</string>
+		</dict>
+		<dict>
+			<key>Bundle ID</key>
+			<string>com.apple.inputmethod.ironwood</string>
+			<key>InputSourceKind</key>
+			<string>Non Keyboard Input Method</string>
+		</dict>
+		<dict>
+			<key>Bundle ID</key>
+			<string>com.apple.PressAndHold</string>
+			<key>InputSourceKind</key>
+			<string>Non Keyboard Input Method</string>
+		</dict>
+		<dict>
+			<key>Bundle ID</key>
+			<string>com.apple.inputmethod.TCIM</string>
+			<key>Input Mode</key>
+			<string>com.apple.inputmethod.TCIM.Pinyin</string>
+			<key>InputSourceKind</key>
+			<string>Input Mode</string>
+		</dict>
+		<dict>
+			<key>Bundle ID</key>
+			<string>com.apple.inputmethod.EmojiFunctionRowItem</string>
+			<key>InputSourceKind</key>
+			<string>Non Keyboard Input Method</string>
+		</dict>
+	</array>
+	<key>AppleInputSourceHistory</key>
+	<array>
+	</array>
+	<key>AppleSelectedInputSources</key>
+	<array>
+		<dict>
+			<key>Bundle ID</key>
+			<string>com.apple.PressAndHold</string>
+			<key>InputSourceKind</key>
+			<string>Non Keyboard Input Method</string>
+		</dict>
+		<dict>
+			<key>Bundle ID</key>
+			<string>com.apple.inputmethod.EmojiFunctionRowItem</string>
+			<key>InputSourceKind</key>
+			<string>Non Keyboard Input Method</string>
+		</dict>
+		<dict>
+			<key>InputSourceKind</key>
+			<string>Keyboard Layout</string>
+			<key>KeyboardLayout ID</key>
+			<integer>0</integer>
+			<key>KeyboardLayout Name</key>
+			<string>U.S.</string>
+		</dict>
+	</array>
+</dict>
+</plist>

@@ -1,0 +1,5 @@
+- name: 'Configure MacOS kotkeys'
+  hosts: 'localhost'
+  tasks:
+    - ansible.builtin.command: |
+        defaults import com.apple.symbolichotkeys "{{ playbook_dir }}/../include/com.apple.symbolichotkeys.plist"
