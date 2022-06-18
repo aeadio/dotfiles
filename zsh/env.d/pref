@@ -2,16 +2,21 @@
 
 # Sets basic user preferences that applications expect as env vars
 
-# Basic utils
+# Common exports
+# Standard variables used by many tools
 export VISUAL='micro'
 export EDITOR=$VISUAL
 export GEDITOR='code'  # Used in ranger's rifle.conf
-export TERMINAL='alacritty'
-export LESSHISTFILE='-'
 export PAGER='less'
+export TERMINAL='alacritty'
 
 # NOTE: Implicit dependency on env.d/hier loading first in order to set PATH
 if (( $+commands[bat] )); then
-  export PAGER='bat'
   export MANPAGER="sh -c 'col -bx | bat -l man -p'"
+  export PAGER='bat'
 fi
+
+# App exports
+# Per-app configuration overrides
+export HOMEBREW_CASK_OPTS='--no-quarantine'
+export LESSHISTFILE='-'

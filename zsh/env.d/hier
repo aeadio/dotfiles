@@ -15,8 +15,10 @@ path=(
   /usr/local/opt/coreutils/libexec/gnubin(N)
   /opt/homebrew/bin(N)
   /opt/bin(N)
+  /usr/local/bin(N)
   $path
 )
+path=( ${(u)path} )
 
 : ${XDG_CONFIG_HOME:=${ZSH:h}}
 export XDG_CONFIG_HOME
