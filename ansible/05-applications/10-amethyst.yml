@@ -49,9 +49,7 @@
   tasks:
     - include_role: 
         name: ../roles/macos-defaults
-      vars:
-        _settings: "{{ settings }}"
-        domain: 'com.amethyst.Amethyst'
+      loop: "{{ settings }}"
     - ansible.builtin.shell: |
         # NOTE: `defaults delete` seems to be broken on newer versions of
         # MacOS, never finding the domain, even if it exists. Write empty array 

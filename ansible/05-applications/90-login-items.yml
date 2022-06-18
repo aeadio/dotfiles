@@ -1,7 +1,7 @@
 - name: 'Enable autostart items'
   hosts: 'localhost'
   vars:
-    settings:
+    login_items:
       # appname          start hidden?
       '1Password 7':     true
       'Amethyst':        false
@@ -12,10 +12,10 @@
   tasks:
     - ansible.builtin.shell: |
         appname="{{ item.key }}"
-        hidden="{{ item.value }}"
+        apphidden="{{ item.value }}"
         {% raw %}
-        if [ ! -e "/Applications/$appname ]; then
-          exit 1
+        if [ ! -e "/Applications/$appname" ]; then
+          exit 0
         fi
         case val in "$hidden"
           true)  ;;
@@ -30,7 +30,7 @@
             if loginitems contains appname then
               tell application "System Events" to delete login item appname
             end if
-            tell application "System Events" to make login item at end with properties { name: appname, path: "/Applications/" & appname & ".app", hidden: hidden }
-          end tell
-        {% endraw %}'
+            tell application "System Events" to make login item at end with properties { name: appname, path: "/Applications/" & appname & ".app", hidden: apphidden }
+          end tell'
+        {% endraw %}
       loop: "{{ login_items | dict2items }}"

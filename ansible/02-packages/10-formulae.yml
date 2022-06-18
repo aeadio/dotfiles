@@ -29,7 +29,6 @@
       - gopls
       - graphicsmagick
       - grep
-      - hammerspoon
       - hexyl
       - highlight
       - jd
@@ -68,5 +67,4 @@
         path: "{{ {'arm64': '/opt/homebrew/bin', 'x86_64': '/usr/local/bin'}[ansible_architecture] }}"
     - community.general.homebrew:
         formula: "{{ formulae }}"
-        install_options: no-quarantine
         path: "{{ {'arm64': '/opt/homebrew/bin', 'x86_64': '/usr/local/bin'}[ansible_architecture] }}"

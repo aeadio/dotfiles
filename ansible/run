@@ -143,12 +143,12 @@ typeset -a playbooks
 need_become_pass $playbooks &&
   get_sudo_pass
 
-env ANSIBLE_FORCE_COLOR=1 ansible-playbook -i 'localhost' -c 'local' \
+env ANSIBLE_FORCE_COLOR=1 ansible-playbook \
   ${verbose:+-${(pl[$verbosity][v])}} \
   ${check:+--check} \
   ${=sudo_password:+"-e ansible_become_password=$sudo_password"} \
   $playbooks |& {
-    (( verbosity >= 5 )) &&
+    (( verbosity > 0 )) &&
       tee "${0:h}/log/$(date +%s).log" ||
       cat
   }

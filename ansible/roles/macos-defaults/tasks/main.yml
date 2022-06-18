@@ -10,6 +10,7 @@
           {{
             {
               'list': 'array',
+              'str': 'string',
               'AnsibleUnicode': 'string',
               'AnsibleUnsafeText': 'string'
             }[(item.value | type_debug)] | default(item.value | type_debug)

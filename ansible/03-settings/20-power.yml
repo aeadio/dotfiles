@@ -22,5 +22,7 @@
   tasks:
     - ansible.builtin.command: pmset -a {{ item.key }} {{ item.value }}
       loop: "{{ pmset_all | dict2items }}"
+      ignore_errors: true  # Not all platforms/versions may support all options
     - ansible.builtin.command: pmset -b {{ item.key }} {{ item.value }}
       loop: "{{ pmset_battery | dict2items }}"
+      ignore_errors: true  # Not all platforms/versions may support all options

@@ -2,7 +2,7 @@
   hosts: 'localhost'
   vars:
     settings:
-      - { key: 'disable-expose-fix', value: 'YES', domain: 'com.blizzard.worldofwarcraft' }
+      - { key: 'disable-expose-fix', value: true, domain: 'com.blizzard.worldofwarcraft' }
   tasks:
     - include_role: 
         name: ../roles/macos-defaults
