@@ -1,0 +1,8 @@
+# Ephemeral
+*.zwc
+compdump
+history
+
+# Machine-specific
+env.d/hosts
+env.d/work

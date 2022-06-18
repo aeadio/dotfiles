@@ -1,9 +1,6 @@
-# local-only
-*.user
-
-# junk
+# Ephemeral
 .DS_Store
 Thumbs.db
-__pycache__
-__init__.py
-*.zwc
+
+# User files
+*.user

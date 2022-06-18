@@ -1,6 +1,7 @@
 # vim: ft=yaml ts=2 sw=2 et:
 shell:
-  program: zsh
+  # Load zsh explicitly so we can avoid sourcing /etc/zsh*
+  program: /bin/zsh
   args:
     - -li
     - --no-global-rcs

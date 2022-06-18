@@ -1,34 +1,16 @@
-# junk
+# Ephemeral
+*.user
 .DS_Store
 Thumbs.db
-*.user
-__pycache__
-__init__.py
-*.zwc
 
-# sensitive
+# Machine-specific
 aws
-circleci
-gh
-micro/buffers
-msmtp
-terraform
-zsh/env.d/hosts
-zsh/env.d/work
-zsh/history
-
-# machine-specific
-asciinema/install-id
-git/user
-zsh/compdump
-
-# uninteresting stuff
-ansible
 aws-sam
+circleci
 docker
+gh
 kube
-micro/*
-!micro/bindings.json
-!micro/settings.json
+msmtp
 packer
+terraform
 vscode
