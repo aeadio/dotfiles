@@ -26,7 +26,6 @@
     "savehistory": false,
     "statusformatl": "$(filename)$(modified) $(status.paste)",
     "statusformatr": "$(opt:encoding) | $(opt:fileformat) | $(opt:filetype) | $(line),$(col)",
-    "sucmd": "doas",
     "tabsize": 2,
     "tabstospaces": true,
     "template": {
