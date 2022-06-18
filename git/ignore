@@ -1,4 +1,5 @@
 # Ephemeral
+*.zwc
 .DS_Store
 Thumbs.db
 
