@@ -1,52 +1,8 @@
-# TODO: broken
-- name: 'Configure pinned Dock items'
+- name: 'Configure dock'
   hosts: 'localhost'
-  vars:
-    pinned_apps:
-      - Launchpad
-      - Firefox Developer Edition
-      - Vivaldi
-      - Discord
-      - Textual
-      - LINE
-      - Messages
-      - Visual Studio Code
-      - Secretive
-      - 1Password 7
-      - Reminders
-      - Notes
-      - Calendar
-      - Spotify
-      - TV
   tasks:
-    - ansible.builtin.shell: |
-        # NOTE: `defaults delete` seems to be broken on newer versions of
-        # MacOS, never finding the domain, even if it exists. Write empty array 
-        # instead.
-        defaults write com.apple.dock persistent-apps -array
-    - ansible.builtin.shell: |
-        appname="{{ item | urlencode }}"
-        {% raw %}
-        if [ ! -e "/Applications/$appname.app" ]; then
-          exit 0
-        fi
-        defaults write com.apple.dock persistent-apps -array-add '
-          <dict>
-            <key>tile-data</key>
-            <dict>
-              <key>file-data</key>
-              <dict>
-                <key>_CFURLString</key>
-                <string>file:///Applications/'"$appname"'.app/</string>
-                <key>_CFURLStringType</key>
-                <integer>0</integer>
-              </dict>
-            </dict>
-          </dict>'
-        {% endraw %}
-      loop: "{{ pinned_apps }}"
-    - ansible.builtin.shell: |
-        # We're racing with Dock overwriting the array, so don't let the 
-        # process linger too long.
+    - ansible.builtin.command: |
+        defaults import com.apple.dock "{{ playbook_dir }}/../include/com.apple.dock.plist"
+    - ansible.builtin.command: |
         killall Dock
       ignore_errors: true

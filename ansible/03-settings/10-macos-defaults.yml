@@ -15,22 +15,23 @@
       - { key: 'com.apple.springing.enabled', value: true }
       - { key: 'DSDontWriteNetworkStores',    value: true,  domain: 'com.apple.desktopservices' }
       - { key: 'DSDontWriteUSBStores',        value: true,  domain: 'com.apple.desktopservices' }
-      - { key: 'autohide',                    value: true,  domain: 'com.apple.dock' }
-      - { key: 'expose-animation-duration',   value: 0.1,   domain: 'com.apple.dock' }
-      - { key: 'largesize',                   value: 96,    domain: 'com.apple.dock' }
-      - { key: 'mru-spaces',                  value: false, domain: 'com.apple.dock' }
-      - { key: 'show-recents',                value: false, domain: 'com.apple.dock' }
-      - { key: 'showDesktopGestureEnabled',   value: 0,     domain: 'com.apple.dock' }
-      - { key: 'showLaunchpadGestureEnabled', value: 0,     domain: 'com.apple.dock' }
-      - { key: 'tilesize',                    value: 48,    domain: 'com.apple.dock' }
-      - { key: 'wvous-bl-corner',             value: 0,     domain: 'com.apple.dock' }
-      - { key: 'wvous-bl-modifier',           value: 0,     domain: 'com.apple.dock' }
-      - { key: 'wvous-br-corner',             value: 0,     domain: 'com.apple.dock' }
-      - { key: 'wvous-br-modifier',           value: 0,     domain: 'com.apple.dock' }
-      - { key: 'wvous-tl-corner',             value: 0,     domain: 'com.apple.dock' }
-      - { key: 'wvous-tl-modifier',           value: 0,     domain: 'com.apple.dock' }
-      - { key: 'wvous-tr-corner',             value: 0,     domain: 'com.apple.dock' }
-      - { key: 'wvous-tr-modifier',           value: 0,     domain: 'com.apple.dock' }
+      # Pinned items involves unknown binary data so we import these later
+      #- { key: 'autohide',                    value: true,  domain: 'com.apple.dock' }
+      #- { key: 'expose-animation-duration',   value: 0.1,   domain: 'com.apple.dock' }
+      #- { key: 'largesize',                   value: 96,    domain: 'com.apple.dock' }
+      #- { key: 'mru-spaces',                  value: false, domain: 'com.apple.dock' }
+      #- { key: 'show-recents',                value: false, domain: 'com.apple.dock' }
+      #- { key: 'showDesktopGestureEnabled',   value: 0,     domain: 'com.apple.dock' }
+      #- { key: 'showLaunchpadGestureEnabled', value: 0,     domain: 'com.apple.dock' }
+      #- { key: 'tilesize',                    value: 48,    domain: 'com.apple.dock' }
+      #- { key: 'wvous-bl-corner',             value: 0,     domain: 'com.apple.dock' }
+      #- { key: 'wvous-bl-modifier',           value: 0,     domain: 'com.apple.dock' }
+      #- { key: 'wvous-br-corner',             value: 0,     domain: 'com.apple.dock' }
+      #- { key: 'wvous-br-modifier',           value: 0,     domain: 'com.apple.dock' }
+      #- { key: 'wvous-tl-corner',             value: 0,     domain: 'com.apple.dock' }
+      #- { key: 'wvous-tl-modifier',           value: 0,     domain: 'com.apple.dock' }
+      #- { key: 'wvous-tr-corner',             value: 0,     domain: 'com.apple.dock' }
+      #- { key: 'wvous-tr-modifier',           value: 0,     domain: 'com.apple.dock' }
       # Menu bar
       - { key: 'DateFormat',                                 value: 'EEE MMM d  j:mm a', domain: 'com.apple.menuextra.clock' }
       - { key: 'AirDrop',                                    value: 8,    domain: "{{ home }}/Library/Preferences/ByHost/com.apple.controlcenter.plist" }
