@@ -1,6 +1,7 @@
 - name: 'Set MacOS settings'
   hosts: 'localhost'
   vars:
+    home: "{{ lookup('env', 'HOME') }}"
     macos_defaults:
       # Theming
       - { key: 'AppleAccentColor',           value: -1 }
@@ -30,7 +31,44 @@
       - { key: 'wvous-tl-modifier',           value: 0,     domain: 'com.apple.dock' }
       - { key: 'wvous-tr-corner',             value: 0,     domain: 'com.apple.dock' }
       - { key: 'wvous-tr-modifier',           value: 0,     domain: 'com.apple.dock' }
-      - { key: 'DateFormat',                  value: 'EEE MMM d  j:mm a', domain: 'com.apple.menuextra.clock' }
+      # Menu bar
+      - { key: 'DateFormat',                                 value: 'EEE MMM d  j:mm a', domain: 'com.apple.menuextra.clock' }
+      - { key: 'AirDrop',                                    value: 8,    domain: "{{ home }}/Library/Preferences/ByHost/com.apple.controlcenter.plist" }
+      - { key: 'BatteryShowPercentage',                      value: 1,    domain: "{{ home }}/Library/Preferences/ByHost/com.apple.controlcenter.plist" }
+      - { key: 'Bluetooth',                                  value: 18,   domain: "{{ home }}/Library/Preferences/ByHost/com.apple.controlcenter.plist" }
+      - { key: 'FocusModes',                                 value: 0,    domain: "{{ home }}/Library/Preferences/ByHost/com.apple.controlcenter.plist" }
+      - { key: 'NowPlaying',                                 value: 18,   domain: "{{ home }}/Library/Preferences/ByHost/com.apple.controlcenter.plist" }
+      - { key: 'ScreenMirroring',                            value: 8,    domain: "{{ home }}/Library/Preferences/ByHost/com.apple.controlcenter.plist" }
+      - { key: 'Sound',                                      value: 16,   domain: "{{ home }}/Library/Preferences/ByHost/com.apple.controlcenter.plist" }
+      - { key: 'MenuItemHidden',                             value: true, domain: "{{ home }}/Library/Preferences/ByHost/com.apple.Spotlight.plist" }
+      - { key: 'NSStatusItem Preferred Position AirDrop',    value: 395,  domain: 'com.apple.controlcenter' }
+      - { key: 'NSStatusItem Preferred Position Battery',    value: 266,  domain: 'com.apple.controlcenter' }
+      - { key: 'NSStatusItem Preferred Position BentoBox',   value: 160,  domain: 'com.apple.controlcenter' }
+      - { key: 'NSStatusItem Preferred Position Bluetooth',  value: 342,  domain: 'com.apple.controlcenter' }
+      - { key: 'NSStatusItem Preferred Position FocusModes', value: 437,  domain: 'com.apple.controlcenter' }
+      - { key: 'NSStatusItem Preferred Position NowPlaying', value: 700,  domain: 'com.apple.controlcenter' }
+      - { key: 'NSStatusItem Preferred Position Sound',      value: 374,  domain: 'com.apple.controlcenter' }
+      - { key: 'NSStatusItem Preferred Position WiFi',       value: 230,  domain: 'com.apple.controlcenter' }
+      - { key: 'NSStatusItem Visible AirDrop',               value: 0,    domain: 'com.apple.controlcenter' }
+      - { key: 'NSStatusItem Visible Battery',               value: 1,    domain: 'com.apple.controlcenter' }
+      - { key: 'NSStatusItem Visible BentoBox',              value: 1,    domain: 'com.apple.controlcenter' }
+      - { key: 'NSStatusItem Visible Bluetooth',             value: 1,    domain: 'com.apple.controlcenter' }
+      - { key: 'NSStatusItem Visible Clock',                 value: 1,    domain: 'com.apple.controlcenter' }
+      - { key: 'NSStatusItem Visible DoNotDisturb',          value: 0,    domain: 'com.apple.controlcenter' }
+      - { key: 'NSStatusItem Visible FocusModes',            value: 0,    domain: 'com.apple.controlcenter' }
+      - { key: 'NSStatusItem Visible Item-0',                value: 0,    domain: 'com.apple.controlcenter' }
+      - { key: 'NSStatusItem Visible Item-1',                value: 0,    domain: 'com.apple.controlcenter' }
+      - { key: 'NSStatusItem Visible Item-2',                value: 0,    domain: 'com.apple.controlcenter' }
+      - { key: 'NSStatusItem Visible Item-3',                value: 0,    domain: 'com.apple.controlcenter' }
+      - { key: 'NSStatusItem Visible Item-4',                value: 0,    domain: 'com.apple.controlcenter' }
+      - { key: 'NSStatusItem Visible Item-5',                value: 0,    domain: 'com.apple.controlcenter' }
+      - { key: 'NSStatusItem Visible Item-6',                value: 0,    domain: 'com.apple.controlcenter' }
+      - { key: 'NSStatusItem Visible Item-7',                value: 0,    domain: 'com.apple.controlcenter' }
+      - { key: 'NSStatusItem Visible Item-8',                value: 0,    domain: 'com.apple.controlcenter' }
+      - { key: 'NSStatusItem Visible Item-9',                value: 0,    domain: 'com.apple.controlcenter' }
+      - { key: 'NSStatusItem Visible NowPlaying',            value: 1,    domain: 'com.apple.controlcenter' }
+      - { key: 'NSStatusItem Visible Sound',                 value: 1,    domain: 'com.apple.controlcenter' }
+      - { key: 'NSStatusItem Visible WiFi',                  value: 1,    domain: 'com.apple.controlcenter' }
       # Window behavior
       - { key: 'AppleMiniaturizeOnDoubleClick',       value: false }
       - { key: 'NSNavPanelExpandedStateForSaveMode',  value: true }
@@ -197,7 +235,7 @@
       - { key: 'DUDebugMenuEnabled',          value: true,       domain: 'com.apple.DiskUtility' }
       - { key: 'disableHotPlug',              value: true,       domain: 'com.apple.ImageCapture' }
       - { key: 'Quit When Finished',          value: true,       domain: 'com.apple.print.PrintingPrefs' }
-      - { key: 'location',                    value: "{{ lookup('env', 'HOME') }}/Pictures/Screenshots", domain: 'com.apple.screencapture' }  # XXX
+      - { key: 'location',                    value: "{{ home }}/Pictures/Screenshots", domain: 'com.apple.screencapture' }  # XXX
       - { key: 'type',                        value: 'png',      domain: 'com.apple.screencapture' }
       - { key: 'DoNotOfferNewDisksForBackup', value: true,       domain: 'com.apple.TimeMachine' }
   tasks:

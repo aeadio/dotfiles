@@ -1,4 +1,3 @@
-# TODO: Enable autostart
 - name: 'Configure LinearMouse'
   hosts: 'localhost'
   vars:
