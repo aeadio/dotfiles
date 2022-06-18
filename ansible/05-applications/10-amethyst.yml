@@ -1,3 +1,4 @@
+# TODO: shortcuts
 - name: 'Configure Amethyst'
   hosts: 'localhost'
   vars:
@@ -47,6 +48,12 @@
       'org.mozilla.firefox':                  ['Library']
       'org.mozilla.firefoxdeveloperedition':  ['Library']
   tasks:
+    - ansible.builtin.command: killall Amethyst
+      ignore_errors: true
+    - ansible.builtin.shell: |
+        # Contains just the keybindings. Easiest to write this way, since they
+        # are binary blobs.
+        defaults import com.amethyst.Amethyst "{{ playbook_dir }}/../include/com.amethyst.Amethyst.plist"
     - include_role: 
         name: ../roles/macos-defaults
       loop: "{{ settings }}"

@@ -1,3 +1,4 @@
+# AppleScript is an abomination and Apple should be embarassed.
 - name: 'Enable autostart items'
   hosts: 'localhost'
   vars:
@@ -12,25 +13,25 @@
   tasks:
     - ansible.builtin.shell: |
         appname="{{ item.key }}"
-        apphidden="{{ item.value }}"
+        apphidden="{{ item.value | lower }}"
         {% raw %}
-        if [ ! -e "/Applications/$appname" ]; then
+        if [ ! -e "/Applications/$appname.app" ]; then
           exit 0
         fi
-        case val in "$hidden"
+        case "$apphidden" in
           true)  ;;
           false) ;;
           *) exit 1 ;;
         esac
-        osascript -e '
-          set appname to "'"$appname"'"
-          set hidden to '"$hidden"'
+        osascript <<-EOF
+          set appname to "$appname"
           tell application "System Events"
             set loginitems to the name of every login item
             if loginitems contains appname then
-              tell application "System Events" to delete login item appname
+              delete login item appname
             end if
-            tell application "System Events" to make login item at end with properties { name: appname, path: "/Applications/" & appname & ".app", hidden: apphidden }
-          end tell'
+            make login item at end with properties { name: appname, path: "/Applications/" & appname & ".app", hidden: $apphidden }
+          end tell
+        EOF
         {% endraw %}
       loop: "{{ login_items | dict2items }}"

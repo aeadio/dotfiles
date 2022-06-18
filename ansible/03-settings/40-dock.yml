@@ -1,3 +1,4 @@
+# TODO: broken
 - name: 'Configure pinned Dock items'
   hosts: 'localhost'
   vars:
@@ -48,3 +49,4 @@
         # We're racing with Dock overwriting the array, so don't let the 
         # process linger too long.
         killall Dock
+      ignore_errors: true
