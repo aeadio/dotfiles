@@ -6,6 +6,12 @@ Most of the config is fairly run-of-the-mill. I've put particular effort into Zs
 
 As usual, symlinks are set up from the home folder into the relevant files/directories as needed. Symlinks are set up by Ansible.
 
+## How do I use them?
+
+These are my personal dotfiles. If you find something useful here, you are free to use any or all of it under the terms of [0BSD](https://opensource.org/licenses/0BSD) (excepting, of course, any files that attribute credit to another author, and any Git submodules).
+
+Feel free to fork, but make it your own. I make no effort to generalize my setup for consumption and/or remove any assumptions or personal choices.
+
 ## Zsh
 
 The most interesting part is `zsh/`. I do not use any configuration frameworks with Zsh, and I only use a handful of third-party plugins. The rest is bespoke. Since Zsh is one of my most heavily used tools, I put a good deal of effort into creating a configuration that is powerful, but still user friendly, and fast.
