@@ -31,11 +31,11 @@
   # Indent by 2 spaces for each execution depth
   local ps4=(
     $'\n'
-    '${(pl[${(%):-%e}+1][  ])}'
-    '%N:%i @ %x:%I'
+    '%B%F{blue}%2x%f%b:%B%F{magenta}%I%f%b'
+    ' in %B%F{cyan}%N%f%b'
     $'\n'
-    '${(pl[${(%):-%e}+1][  ])}'
-    "${${UTF8:+${(#):-16#2192} }:->}"
+    '${(pl[${(%):-%e}][  ])}'
+    "%F{cyan}${${UTF8:+${(#):-16#2192} }:->}%f"
   )
   
   # Build prompts from arrays
