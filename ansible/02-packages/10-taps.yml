@@ -1,0 +1,16 @@
+- name: 'Setup Homebrew taps'
+  hosts: 'localhost'
+  vars:
+    taps:
+      - aws/tap
+      - homebrew/cask
+      - homebrew/cask-fonts
+      - homebrew/cask-versions
+      - saulpw/vd
+  tasks:
+    - community.general.homebrew_tap:
+        tap: "{{ item }}"
+      loop: "{{ taps }}"
+    - community.general.homebrew:
+        update_homebrew: yes
+        path: "{{ {'arm64': '/opt/homebrew/bin', 'x86_64': '/usr/local/bin'}[ansible_architecture] }}"

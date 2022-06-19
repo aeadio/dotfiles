@@ -8,10 +8,6 @@
 	<real>0.10000000149011612</real>
 	<key>largesize</key>
 	<integer>96</integer>
-	<key>last-analytics-stamp</key>
-	<array>
-		<real>677020913.69200003</real>
-	</array>
 	<key>loc</key>
 	<string>en_US:US</string>
 	<key>mod-count</key>
@@ -860,9 +856,9 @@
 	<key>wvous-bl-modifier</key>
 	<integer>0</integer>
 	<key>wvous-br-corner</key>
-	<integer>1</integer>
+	<integer>0</integer>
 	<key>wvous-br-modifier</key>
-	<integer>1048576</integer>
+	<integer>0</integer>
 	<key>wvous-tl-corner</key>
 	<integer>0</integer>
 	<key>wvous-tl-modifier</key>

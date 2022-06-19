@@ -93,7 +93,6 @@
       - { key: 'AppleMeasurementUnits',              value: 'Inches' }
       - { key: 'AppleMetricUnits',                   value: false }
       - { key: 'AppleTemperatureUnit',               value: 'Fahrenheit' }
-      - { key: 'AppleCapsLockPressAndHoldToggleOff', value: false, domain: 'com.apple.HIToolbox' }
       # Trackpad input
       - { key: 'com.apple.mouse.tapBehavior',   value: 0 }
       - { key: 'com.apple.trackpad.forceClick', value: true }

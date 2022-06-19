@@ -9,4 +9,5 @@
   tasks:
     - community.general.mas:
         id: "{{ apps }}"
+      # Skip errors because we never log into AppStore on work machines
       ignore_errors: true

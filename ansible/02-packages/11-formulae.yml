@@ -5,7 +5,7 @@
       - ansible
       - atool
       - aws-vault
-      - aws/tap/aws-sam-cli
+      - aws-sam-cli
       - awscli
       - bash
       - bat
@@ -53,7 +53,7 @@
       - ranger
       - ripgrep-all
       - rsync
-      - saulpw/vd/visidata
+      - visidata
       - shellcheck
       - sqlite3
       - telnet
@@ -62,9 +62,6 @@
       - watch
       - wget
   tasks:
-    - community.general.homebrew:
-        update_homebrew: yes
-        path: "{{ {'arm64': '/opt/homebrew/bin', 'x86_64': '/usr/local/bin'}[ansible_architecture] }}"
     - community.general.homebrew:
         formula: "{{ formulae }}"
         path: "{{ {'arm64': '/opt/homebrew/bin', 'x86_64': '/usr/local/bin'}[ansible_architecture] }}"

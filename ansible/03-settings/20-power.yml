@@ -5,7 +5,7 @@
     pmset_all:
       acwake:                 0
       destroyfvkeyonstandby:  1
-      displaysleep:           0
+      displaysleep:          15
       halfdim:                1
       lidwake:                1
       lowpowermode:           0

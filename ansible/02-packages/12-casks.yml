@@ -10,7 +10,7 @@
       - amethyst
       - appcleaner
       - bettertouchtool
-      - homebrew/cask-versions/firefox-developer-edition
+      - firefox-developer-edition
       - daisydisk
       - discord
       - font-iosevka
@@ -31,8 +31,6 @@
       - visual-studio-code
       - vivaldi
   tasks:
-    - community.general.homebrew_tap:
-        tap: homebrew/cask-fonts
     - community.general.homebrew_cask:
         cask: "{{ casks }}"
         install_options: no-quarantine

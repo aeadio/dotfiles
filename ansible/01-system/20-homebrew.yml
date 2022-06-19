@@ -3,6 +3,7 @@
   tasks:
     - ansible.builtin.include_role:
         name: ../roles/install-homebrew
+    # Set up as alias "briw" (Intel brew) in Zsh/rc.d/aliases
     - ansible.builtin.include_role:
         name: ../roles/install-homebrew
       vars:
