@@ -30,7 +30,6 @@ Individual files can be enabled or disabled by toggling the execute permission -
 
 Primary bootstrap happens in `rc`, where each stage is wrapped in a named function to facilitate tracing and debugging. The variables `ZSHRC_PROFILE` and `ZSHRC_DEBUG` can be set to an integer (see below) to enable startup benchmarking, and print some information during start, respectively. Logs from either are also saved to the home directory.
 
-
 The variable `ZSH` is set to the location of the Zsh config directory. Some helper functions are set up in `pre.d/util` to make writing configuration a bit more concise.
 
 Finally, all files are automatically compiled with [zcompile](https://zsh.sourceforge.io/Doc/Release/Shell-Builtin-Commands.html#index-zcompile) once per day to speed up shell startup times (see `pre.d/zcompile`). This can be invoked manually via `compile-zshrc`, or by setting `ZSHRC_FORCECOMPILE` when starting up Zsh.
@@ -69,20 +68,20 @@ I've tried to display quite a bit of useful information in the prompt while keep
 ```
    .-- not shown unless it's different from my user or root
    |      .-- not shown unless connected over SSH
-   |      |        .-----------+-- responsively collapses if too long for the terminal
-   |      |        |           |         .-- ahead/behind remote
-   |      |        |           |         |             .-- (un)staged/unmerged/untracked
-   |      |        |           |         |             |
-   |      |        |           |         |             |
-   v      v        v           v         v             v
-[[user][@host]:]directory [⨕gitbranch[:commits][ ⇄ localchanges]]
-[[R]⁑lvl ][🯊[⠶awsprofile] ][⋮stack]» 
-  ^   ^    ^      ^            ^
-  |   |    |      |             `-- displays the ZLE stack size (ie push-line)
-  |   |    |       `-- displays AWS_PROFILE if set and not 'default'
-  |   |     `-- AWS MFA; red=unset, orange=expired, green=ok, yellow=unknown
-  |    `-- (SHLVL - RANGER_LEVEL) if above 1
-   `-- if inside a Ranger shell
+   |      |         .----------+-- responsively collapses if too long --------.
+   |      |         |          |         .-- ahead/behind remote              |
+   |      |         |          |         |       .- un/staged/merged/tracked  |
+   |      |         |          |         |       `---.                        |
+   |      |         |          |         |            \                       |
+   v      v         v          v         v             v                      |
+[[user][@host]:]directory [⨕gitbranch[:commits][ ⇄ localchanges]]             |
+[R⠶shlvl ][🯊[:awsprofile] ][⋮stack]»     ^-------------^---------------------'
+ ^   ^     ^      ^            ^
+ |   |     |      |             `-- displays the ZLE stack size (ie push-line)
+ |   |     |       `-- AWS profile from Vault if not 'default'
+ |   |      `-- MFA set by AWS Vault; red=expired, green=ok, yellow=unknown
+ |    `-- (SHLVL - RANGER_LEVEL) if above 1
+  `-- if inside a Ranger shell
 ```
 
 Because each of these components collapse when unused, a prompt in my home directory looks much less daunting:
@@ -98,7 +97,7 @@ The color scheme is switched to a red, purple and yellow if running as root.
 
 Git information is fetched asynchronously. See `functions/prompt:git-async` to see how the information is collected. The async plumbing is found at the end of `rc.d/prompt` and relies on backgrounding a task which sends the information back via [a new fd](https://zsh.sourceforge.io/Doc/Release/Redirection.html#Opening-file-descriptors-using-parameters), and a listener which waits for the response via [zle -Fw](https://zsh.sourceforge.io/Doc/Release/Zsh-Line-Editor.html#index-zle).
 
-Additionally, the XTRACE prompt is set:
+Additionally, the XTRACE prompt (PS4) is set:
 
 ```
 function:linenum @ file:linenum
@@ -163,27 +162,42 @@ Notably, the Ansible playbooks handle obvious things like setting up symlinks to
 - Install Homebrew (and any other package managers)
 - Ensure all preferred packages are installed (formulae/casks)
 - Configure all third party packages where reasonable -- ie, applications that do not handle their own settings sync
-- Configure desktop workspaces, screen settings, wallpapers, etc
+- Pin dock items, enable autostart for applications
 - Ensure common folders I use are set up and have the correct permissions
 
-The goal is that the, upon receiving a fresh laptop, I can:
-- Run these playbooks locally
-- Log into associated cloud accounts
-- Generate ephemeral machine-specific keys (ie, SSH keys via Secretive)
-- Reboot
+The goal is that, should my computer die and need to be replaced, I should be able to:
+1. Fetch a tarball of my dotfiles
+2. Run these playbooks
+3. Log into associated cloud accounts
+4. Generate ephemeral machine-specific keys (ie, SSH keys via Secretive)
+5. Reboot
 
 This should leave me in a completely familiar environment, virtually indistuishable from any other computer I own.
 
-Playbooks are broken out by purpose, so I can apply only the changes I need to update some aspect of the system -- ie, run `install-formulae.yml` to pull in some new tools I'm using across all machines.
+Playbooks are broken out by purpose and scope, and a helper script (`ansible/run`) assists in running and logging output, making it easy to bootstrap just some aspect (ie, re-sync installed applications, or application config, but don't try to do base system setup).
 
-There is a simple bootstrap script for running the playbooks that _does not require_ Ansible to be pre-installed. It will install the Xcode CLI tools, then install Ansible into a temporary virtuelenv. This works without Homebrew, and should work out of the box on a reasonably-recent fresh copy of MacOS.
+Some usage examples:
 
-## Todo
+```
+# By itself, runs all playbooks in order. Add -v (or -vvv, -vvvv, etc) for 
+# logging and increasing verbosity,
+~/Config/ansible
+» ./run -vvv
 
-- (WIP) fzf-powered Git commands (invokable as ZLE widgets) for common tasks
-  - Switching branches
-  - Staging/unstaging files
-  - Checking out files, including from a particular branch or commit
-  - Diffing current work tree or current staging area against HEAD, remote, or arbitrary branches or commits
-  - Fetching, pulling (w/ merge or rebase), (squash)merging, and bisecting
-  - Differs from, eg, forgit in that it's intended to be menu-driven, only cover actions which are frequently used and conceptually simple, and invoked as a set of Zsh keybindings
+# Give it the name of a stage (with or without leading NN-) to run all 
+# playbooks in that stage,
+~/Config/ansible
+» ./run system
+
+# Give it the name of a playbook (with or without leading NN-) to locate and 
+# run that playbook regardless of which stage it's in,
+~/Config/ansible
+» ./run formulae
+
+# The above fails if the playbook is ambiguously named, in which case give it 
+# a path to the playbook,
+~/Config/ansible
+» ./run 04-user/10-directories.yml
+```
+
+Additionally, the helper script _does not require_ Ansible to be pre-installed. If not found, it will install the Xcode CLI tools, then install Ansible into a temporary virtuelenv. This works without Homebrew, and should work out of the box on a reasonably-recent fresh copy of MacOS.
