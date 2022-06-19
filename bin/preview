@@ -7,7 +7,7 @@ if (( ! $# )); then
   return
 fi
 
-local color=
+color=
 if [[ -t 1 ]] && (( $terminfo[colors] || $termcap[Co] )); then
   color=1
 fi
@@ -99,6 +99,3 @@ case $mime in
 esac
 
 file $1
-#try exa -lbF --no-time --git --no-icons ${color:+--color=always} -- $1
-#try ls -oFkh --time-style='+' --quoting-style=literal ${color:+--color=always} -- $1
-#ls -l $1

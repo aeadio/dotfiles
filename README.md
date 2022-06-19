@@ -2,7 +2,7 @@
 
 My dotfiles. I use MacOS as a daily driver, and the main branch holds that configuration. Void Linux config is kept in a separate branch that is occasionally rebased on main.
 
-Most of the config is fairly run-of-the-mill. I've put particular effort into Zsh, rewriting Ranger's `rifle.conf` to be more terminal-centric, and into Ansible bootstrapping.
+Most of the config is fairly run-of-the-mill. I've put particular effort into Zsh, Ansible bootstrapping, and rewriting Ranger's `rifle.conf` to be more terminal-centric.
 
 As usual, symlinks are set up from the home folder into the relevant files/directories as needed. Symlinks are set up by Ansible.
 
@@ -81,7 +81,7 @@ I've tried to display quite a bit of useful information in the prompt while keep
    |      |         |          |         |            \                       |
    v      v         v          v         v             v                      |
 [[user][@host]:]directory [⨕gitbranch[:commits][ ⇄ localchanges]]             |
-[R⠶shlvl ][🯊[:awsprofile] ][⋮stack]»     ^-------------^---------------------'
+[[R]⠶shlvl ][🯊[:awsprofile] ][⋮stack]»   ^-------------^---------------------'
  ^   ^     ^      ^            ^
  |   |     |      |             `-- displays the ZLE stack size (ie push-line)
  |   |     |       `-- AWS profile from Vault if not 'default'
@@ -106,11 +106,11 @@ Git information is fetched asynchronously. See `functions/prompt:git-async` to s
 Additionally, the XTRACE prompt (PS4) is set:
 
 ```
-function:linenum @ file:linenum
+filename:linenum in funcname
 → ...
 ```
 
-Each block is indented based on the execution depth of the traced line.
+Each line is indented based on execution depth.
 
 #### `plugins/bad-input`
 

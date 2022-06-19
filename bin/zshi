@@ -1,5 +1,7 @@
 #!/usr/bin/env zsh
 
+# Source: https://github.com/romkatv/zshi
+
 emulate -L zsh -o no_unset
 
 if (( ARGC == 0 )); then

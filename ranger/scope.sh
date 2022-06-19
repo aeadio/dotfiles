@@ -1,5 +1,8 @@
 #!/usr/bin/env bash
 
+# Verbatim copy of ranger's embedded scope.sh. Ranger complains if other config
+# files are present in dotfiles, but this isn't. License theirs.
+
 set -o noclobber -o noglob -o nounset -o pipefail
 IFS=$'\n'
 
