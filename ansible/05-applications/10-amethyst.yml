@@ -35,6 +35,7 @@
       'com.apple.calculator':                 []
       'com.apple.DigitalColorMeter':          []
       'com.apple.FontBook':                   []
+      'com.apple.installer':                  []
       'com.apple.Preview':                    []
       'com.apple.systempreferences':          []
       'com.daisydiskapp.DaisyDiskStandAlone': []
