@@ -1,4 +1,7 @@
-# AppleScript is an abomination and Apple should be embarassed.
+# There's no good CLI-native interface for this. We could try and interact with 
+# the backing store directly, but it's changed several times over the past few 
+# years. On the other hand, interacting with System Events has been pretty 
+# stable. I don't love writing AppleScript, but it works.
 - name: 'Enable autostart items'
   hosts: 'localhost'
   vars:

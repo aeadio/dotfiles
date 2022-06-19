@@ -1,6 +1,3 @@
-# NOTE: Ordered after install-formula because homebrew_cask module does not
-# allow a naked "update_homebrew" directive, and we don't want to re-update
-# on every invocation
 - name: 'Install Homebrew casks'
   hosts: 'localhost'
   vars:
@@ -34,5 +31,6 @@
     - community.general.homebrew_cask:
         cask: "{{ casks }}"
         install_options: no-quarantine
+        # Default 'path' picks up Intel brew when both are installed on M1
         path: "{{ {'arm64': '/opt/homebrew/bin', 'x86_64': '/usr/local/bin'}[ansible_architecture] }}"
         sudo_password: "{{ ansible_become_password }}"

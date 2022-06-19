@@ -2,15 +2,16 @@
   hosts: 'localhost'
   vars:
     taps:
-      - aws/tap
+      - aws/tap                 # AWS sam-cli
       - homebrew/cask
       - homebrew/cask-fonts
-      - homebrew/cask-versions
-      - saulpw/vd
+      - homebrew/cask-versions  # Firefox update channels
+      - saulpw/vd               # Visidata
   tasks:
     - community.general.homebrew_tap:
         tap: "{{ item }}"
       loop: "{{ taps }}"
     - community.general.homebrew:
         update_homebrew: yes
+        # Default 'path' picks up Intel brew when both are installed on M1
         path: "{{ {'arm64': '/opt/homebrew/bin', 'x86_64': '/usr/local/bin'}[ansible_architecture] }}"

@@ -4,8 +4,8 @@
   hosts: 'localhost'
   vars:
     apps:
-      - 539883307  # LINE
-      - 1475387142 # Tailscale
+      - 539883307   # LINE
+      - 1475387142  # Tailscale
   tasks:
     - community.general.mas:
         id: "{{ apps }}"

@@ -92,7 +92,7 @@ if (( ! $+commands[ansible-playbook] )); then
     abort "failed to install Ansible"
 fi
 
-# Run playbooks
+# Search for playbooks to run based on arguments
 # Searches in order:
 # - Path to Yaml file.
 # - Name of a stage (ie 01-system), with or without leading digit+hyphen,
@@ -107,7 +107,9 @@ typeset -a playbooks
 () {
   local basedir=${0:h}
   local targets=( "$@" )
+  # If no arguments given, then search for all stage folders,
   if (( ! ${#targets} )) targets=( [[:digit:]][[:digit:]]-*(-/N) )
+  # No stage folders found?,
   if (( ! ${#targets} )) abort "no playbooks to run"
   
   local item try
@@ -126,6 +128,7 @@ typeset -a playbooks
       
       # Is it a target name we need to search for inside a stage?
       try=( $basedir/[[:digit:]][[:digit:]]-*/([[:digit:]][[:digit:]]-|)$item((#i).y(a|)ml)(-.N) )
+      # Does a target by this name exists in more than one place?,
       if (( ${#try} > 1 )) abort "ambiguous target name: $item"
       if [[ -e $try ]]; then
         playbooks+=( $try )
@@ -136,10 +139,11 @@ typeset -a playbooks
     abort "could not locate target: $item"
   done
   
+  # Remove duplicates
   playbooks=( ${(u)playbooks} )
 } "$@"
 
-# Need become pass?
+# Do we need a sudo password for the playbooks we're running?
 need_become_pass $playbooks &&
   get_sudo_pass
 

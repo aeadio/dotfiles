@@ -1,5 +1,7 @@
-# Is it just me, or is it insane that this setting is sitting in plist in 
-# root's Library?
+# This configures Night Shift, which is a bit unusual -- it's apparently run 
+# as root, and configured by a plist in root's Library, even though the 
+# configuration is user-specific. Moreover, the settings are keyed by the 
+# user's dscl GUID.
 - name: 'Configure screen color'
   hosts: 'localhost'
   become: true
@@ -28,22 +30,23 @@
           user='{{ ansible_user_id }}'
           cb_settings='{{ cb_settings }}'
           {% raw %}
-          userpath=$(eval print "~$user")
           domain='/var/root/Library/Preferences/com.apple.CoreBrightness.plist'
+          
+          userpath=$(eval print "~$user")
+          if [[ ! -d $userpath ]] exit 2
           
           dscl . -read $userpath GeneratedUID |
             sed 's/GeneratedUID: //' |
             read -r useruid
-          
           if [[ -z $useruid ]] exit 2
           
           cbkey="CBUser-$useruid"
           
-          if [[ $(defaults read $domain $cbkey) =~ "BlueReductionEnabled = 1" ]] exit 0
+          [[ $(defaults read $domain $cbkey) =~ "BlueReductionEnabled = 1" ]] &&
+            exit 0
           
-          defaults write $domain $cbkey "$cb_settings"
-          
-          if (( $? )) exit 2
+          defaults write $domain $cbkey "$cb_settings" ||
+            exit 2
           
           exit 1
           {% endraw %}

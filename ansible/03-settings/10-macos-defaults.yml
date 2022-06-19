@@ -15,7 +15,7 @@
       - { key: 'com.apple.springing.enabled', value: true }
       - { key: 'DSDontWriteNetworkStores',    value: true,  domain: 'com.apple.desktopservices' }
       - { key: 'DSDontWriteUSBStores',        value: true,  domain: 'com.apple.desktopservices' }
-      # Pinned items involves unknown binary data so we import these later
+      # Now imported wholesale (see include/) because pinned items is binary blobs
       #- { key: 'autohide',                    value: true,  domain: 'com.apple.dock' }
       #- { key: 'expose-animation-duration',   value: 0.1,   domain: 'com.apple.dock' }
       #- { key: 'largesize',                   value: 96,    domain: 'com.apple.dock' }

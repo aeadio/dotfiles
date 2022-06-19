@@ -64,4 +64,5 @@
   tasks:
     - community.general.homebrew:
         formula: "{{ formulae }}"
+        # Default 'path' picks up Intel brew when both are installed on M1
         path: "{{ {'arm64': '/opt/homebrew/bin', 'x86_64': '/usr/local/bin'}[ansible_architecture] }}"

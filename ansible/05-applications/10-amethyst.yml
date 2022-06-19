@@ -1,4 +1,3 @@
-# TODO: shortcuts
 - name: 'Configure Amethyst'
   hosts: 'localhost'
   vars:
@@ -51,9 +50,10 @@
   tasks:
     - ansible.builtin.command: killall Amethyst
       ignore_errors: true
+    # Keybindings involve binary blobs, so we import from include/. This will
+    # overwrite all other settings as well, so do it first, and then import 
+    # other settings declaratively on top of it.
     - ansible.builtin.shell: |
-        # Contains just the keybindings. Easiest to write this way, since they
-        # are binary blobs.
         defaults import com.amethyst.Amethyst "{{ playbook_dir }}/../include/com.amethyst.Amethyst.plist"
     - include_role: 
         name: ../roles/macos-defaults

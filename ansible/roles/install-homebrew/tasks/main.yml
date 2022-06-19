@@ -41,8 +41,3 @@
       {{ ('arch -arch ' + homebrew_arch) if homebrew_arch != ansible_machine }} \
         {{ brew_prefix }}/bin/brew tap homebrew/core
   when: homebrew_git_result.before is none
-#- ansible.builtin.shell:
-#    cmd: |
-#      {{ ('arch -arch ' + homebrew_arch) if homebrew_arch != ansible_machine }} \
-#        {{ brew_prefix }}/bin/brew tap homebrew/cask
-#  when: homebrew_git_result.before is none
