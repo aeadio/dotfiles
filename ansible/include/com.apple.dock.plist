@@ -11,7 +11,7 @@
 	<key>loc</key>
 	<string>en_US:US</string>
 	<key>mod-count</key>
-	<integer>83</integer>
+	<integer>86</integer>
 	<key>mru-spaces</key>
 	<false/>
 	<key>persistent-apps</key>
@@ -107,13 +107,13 @@
 				<key>file-label</key>
 				<string>Firefox Developer Edition</string>
 				<key>file-mod-date</key>
-				<integer>245151881305363</integer>
+				<integer>210976827240072</integer>
 				<key>file-type</key>
 				<integer>41</integer>
 				<key>is-beta</key>
 				<false/>
 				<key>parent-mod-date</key>
-				<integer>279000518731329</integer>
+				<integer>154059921134337</integer>
 			</dict>
 			<key>tile-type</key>
 			<string>file-tile</string>
@@ -735,8 +735,8 @@
 				AAABAQAAU3lzdGVtAAAMAAAAAQEAAEFwcGxpY2F0aW9u
 				cwYAAAABAQAAVFYuYXBwAAAMAAAAAQYAABAAAAAgAAAA
 				NAAAAAgAAAAEAwAAFQAAAP///w8IAAAABAMAABcAAAD/
-				//8PCAAAAAQDAAASKwEA////DwwAAAABBgAAWAAAAGgA
-				AAB4AAAACAAAAAAEAABBw+UEUYAAABgAAAABAgAAAgAA
+				//8PCAAAAAQDAAAUKwEA////DwwAAAABBgAAWAAAAGgA
+				AAB4AAAACAAAAAAEAABBxBTfxAAAABgAAAABAgAAAgAA
 				AAAAAAAPAAAAAAAAAAAAAAAAAAAACAAAAAEJAABmaWxl
 				Oi8vLwwAAAABAQAATWFjaW50b3NoIEhECAAAAAQDAAAA
 				4AHj6AAAACQAAAABAQAAODg0NTBBQTUtMDg1Mi00QzlB
@@ -763,13 +763,61 @@
 				<key>file-label</key>
 				<string>TV</string>
 				<key>file-mod-date</key>
-				<integer>3660710400</integer>
+				<integer>3734976648</integer>
 				<key>file-type</key>
 				<integer>41</integer>
 				<key>is-beta</key>
 				<false/>
 				<key>parent-mod-date</key>
-				<integer>3660710400</integer>
+				<integer>3734976648</integer>
+			</dict>
+			<key>tile-type</key>
+			<string>file-tile</string>
+		</dict>
+		<dict>
+			<key>tile-data</key>
+			<dict>
+				<key>book</key>
+				<data>
+				Ym9vazACAAAAAAQQMAAAAAAAAAAAAAAAAAAAAAAAAAAA
+				AAAAAAAAAAAAAAAAAAAAUAEAAAQAAAADAwAAAAAAIAwA
+				AAABAQAAQXBwbGljYXRpb25zDgAAAAEBAABCYXR0bGUu
+				bmV0LmFwcAAACAAAAAEGAAAQAAAAJAAAAAgAAAAEAwAA
+				CWp/AAAAAAAIAAAABAMAAEsbyQAAAAAACAAAAAEGAABM
+				AAAAXAAAAAgAAAAABAAAQcQ1zAFEkgYYAAAAAQIAAAIA
+				AAAAAAAADwAAAAAAAAAAAAAAAAAAAAgAAAABCQAAZmls
+				ZTovLy8MAAAAAQEAAE1hY2ludG9zaCBIRAgAAAAEAwAA
+				AOAB4+gAAAAIAAAAAAQAAEHEFN/EAAAAJAAAAAEBAAA4
+				ODQ1MEFBNS0wODUyLTRDOUEtOTBERS1FNDQyRjU0M0I2
+				MjEYAAAAAQIAAIEAAAABAAAA7xMAAAEAAAAAAAAAAAAA
+				AAEAAAABAQAALwAAAAAAAAABBQAAqAAAAP7///8BAAAA
+				AAAAAA0AAAAEEAAAPAAAAAAAAAAFEAAAbAAAAAAAAAAQ
+				EAAAjAAAAAAAAABAEAAAfAAAAAAAAAACIAAAPAEAAAAA
+				AAAFIAAArAAAAAAAAAAQIAAAvAAAAAAAAAARIAAA8AAA
+				AAAAAAASIAAA0AAAAAAAAAATIAAA4AAAAAAAAAAgIAAA
+				HAEAAAAAAAAwIAAASAEAAAAAAAAQ0AAABAAAAAAAAAA=
+				</data>
+				<key>bundle-identifier</key>
+				<string>net.battle.app</string>
+				<key>dock-extra</key>
+				<false/>
+				<key>file-data</key>
+				<dict>
+					<key>_CFURLString</key>
+					<string>file:///Applications/Battle.net.app/</string>
+					<key>_CFURLStringType</key>
+					<integer>15</integer>
+				</dict>
+				<key>file-label</key>
+				<string>Battle.net</string>
+				<key>file-mod-date</key>
+				<integer>0</integer>
+				<key>file-type</key>
+				<integer>1</integer>
+				<key>is-beta</key>
+				<false/>
+				<key>parent-mod-date</key>
+				<integer>0</integer>
 			</dict>
 			<key>tile-type</key>
 			<string>file-tile</string>

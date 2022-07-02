@@ -1,0 +1,33 @@
+- name: 'Configure iStat Menus'
+  hosts: 'localhost'
+  vars:
+    settings:
+      - { key: 'CPU_CombineLogicalCores',         value: 1,                     domain: 'com.bjango.istatmenus6.extras' }
+      - { key: 'CPU_DropdownOrderDisabled',       value: '',                    domain: 'com.bjango.istatmenus6.extras' }
+      - { key: 'CPU_MenubarCombineCores',         value: 1,                     domain: 'com.bjango.istatmenus6.extras' }
+      - { key: 'CPU_MenubarGraphBreakdowns',      value: 0,                     domain: 'com.bjango.istatmenus6.extras' }
+      - { key: 'CPU_MenubarGroupItems',           value: 1,                     domain: 'com.bjango.istatmenus6.extras' }
+      - { key: 'CPU_ProcessCount',                value: 10,                    domain: 'com.bjango.istatmenus6.extras' }
+      - { key: 'DropdownTheme-Dark',              value: 3,                     domain: 'com.bjango.istatmenus6.extras' }
+      - { key: 'DropdownTheme-Light',             value: 3,                     domain: 'com.bjango.istatmenus6.extras' }
+      - { key: 'DropdownTheme-SectionHeaders',    value: '1.00 1.00 1.00 1.00', domain: 'com.bjango.istatmenus6.extras' }
+      - { key: 'Memory_DropdownOrderDisabled',    value: '',                    domain: 'com.bjango.istatmenus6.extras' }
+      - { key: 'Memory_MenubarGraphBreakdowns',   value: 0,                     domain: 'com.bjango.istatmenus6.extras' }
+      - { key: 'Memory_MenubarGraphWidth',        value: 25,                    domain: 'com.bjango.istatmenus6.extras' }
+      - { key: 'Memory_ProcessCount',             value: 10,                    domain: 'com.bjango.istatmenus6.extras' }
+      - { key: 'Memory_UFShowLabel',              value: 0,                     domain: 'com.bjango.istatmenus6.extras' }
+      - { key: 'MenubarGraphOpacity-Dark-Modern', value: 0.4564651,             domain: 'com.bjango.istatmenus6.extras' }
+      - { key: 'MenubarGraphOpacity-Modern',      value: 0.3415599,             domain: 'com.bjango.istatmenus6.extras' }
+      - { key: 'MenubarGraphSize',                value: 0,                     domain: 'com.bjango.istatmenus6.extras' }
+      - { key: 'MenubarSkinColor-Dark',           value: 8,                     domain: 'com.bjango.istatmenus6.extras' }
+      - { key: 'MenubarSkinColor-Light',          value: 7,                     domain: 'com.bjango.istatmenus6.extras' }
+      - { key: 'MenubarTheme',                    value: 0,                     domain: 'com.bjango.istatmenus6.extras' }
+      - { key: 'Notifications-Enabled',           value: 0,                     domain: 'com.bjango.istatmenus6.extras' }
+      - { key: 'SensorsDropdownOrderDisabled',    value: '',                    domain: 'com.bjango.istatmenus6.extras' }
+      - { key: 'SensorsTemperatureMode',          value: 0,                     domain: 'com.bjango.istatmenus6.extras' }
+      - { key: 'StatusItems-Order',               value: ['1', '2', '5'],       domain: 'com.bjango.istatmenus6.extras' }
+      - { key: 'Theme-SeparateStyles',            value: 1,                     domain: 'com.bjango.istatmenus6.extras' }
+  tasks:
+    - include_role: 
+        name: ../roles/macos-defaults
+      loop: "{{ settings }}"

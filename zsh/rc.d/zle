@@ -70,13 +70,10 @@ bindkey '^M'      accept-line                        # enter
 bindkey '^?'      backward-delete-char               # backspace
 
 bindkey '^A'      after-first-word
-bindkey '^B'      git-zbranch
 bindkey '^E'      edit-command-line
 bindkey '^F'      fzf-history
-bindkey '^G'      git-zlog
 bindkey '^H'      run-help
 bindkey '^I'      fzf-tab-complete                   # tab
-bindkey '^J'      git-zfiles
 bindkey '^K'      copy-to-clipboard
 bindkey '^L'      fzf-select-files
 bindkey '^N'      push-line-and-mkdir

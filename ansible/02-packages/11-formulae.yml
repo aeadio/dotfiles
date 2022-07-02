@@ -4,8 +4,8 @@
     formulae: 
       - ansible
       - atool
-      - aws-vault
       - aws-sam-cli
+      - aws-vault
       - awscli
       - bash
       - bat
@@ -53,11 +53,12 @@
       - ranger
       - ripgrep-all
       - rsync
-      - visidata
       - shellcheck
       - sqlite3
       - telnet
       - terraform
+      - tig
+      - visidata
       - w3m
       - watch
       - wget
