@@ -9,6 +9,7 @@
       - awscli
       - bash
       - bat
+      - bitwarden-cli
       - chamber
       - circleci
       - clac

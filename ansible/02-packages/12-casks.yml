@@ -7,9 +7,11 @@
       - amethyst
       - appcleaner
       - bettertouchtool
+      - bitwarden
       - firefox-developer-edition
       - daisydisk
       - discord
+      - docker
       - font-iosevka
       - font-iosevka-aile
       - font-iosevka-etoile
@@ -21,6 +23,7 @@
       - rar
       - secretive
       - session-manager-plugin
+      - slack
       - soundsource
       - spotify
       - textual
