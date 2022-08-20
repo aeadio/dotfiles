@@ -82,12 +82,12 @@ I've tried to display quite a bit of useful information in the prompt while keep
    v      v         v          v         v             v                      |
 [[user][@host]:]directory [⨕gitbranch[:commits][ ⇄ localchanges]]             |
 [[R]⠶shlvl ][🯊[:awsprofile] ][⋮stack]»   ^-------------^---------------------'
- ^   ^     ^      ^            ^
- |   |     |      |             `-- displays the ZLE stack size (ie push-line)
- |   |     |       `-- AWS profile from Vault if not 'default'
- |   |      `-- MFA set by AWS Vault; red=expired, green=ok, yellow=unknown
- |    `-- (SHLVL - RANGER_LEVEL) if above 1
-  `-- if inside a Ranger shell
+  ^    ^     ^      ^            ^
+  |    |     |      |             `- displays the ZLE stack size (ie push-line)
+  |    |     |       `-- AWS profile from Vault if not 'default'
+  |    |      `-- MFA set by AWS Vault; red=expired, green=ok, yellow=unknown
+  |     `-- (SHLVL - RANGER_LEVEL) if above 1
+   `-- if inside a Ranger shell
 ```
 
 Because each of these components collapse when unused, a prompt in my home directory looks much less daunting:
