@@ -33,6 +33,8 @@ local mime=$(file -b --mime-type $1)
 local ext=${1:e}
 
 case $ext in
+  md)
+    try mdcat -- $1 ;;
   ?htm?)
     try pandoc -s -t markdown -- $1 ;;
   json)
