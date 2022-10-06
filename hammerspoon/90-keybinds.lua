@@ -4,10 +4,10 @@ local binds = {
   { ',', 'cmd',       cmd    = 'code -n' },
   { ';', 'cmd',       open   = '"$HOME"' },
   { ';', 'cmd shift', launch = 'Alacritty', args = '-t Floatty --working-directory "$HOME" -e ranger' },
---{ "'", 'cmd',       cmd    = '"/Applications/Firefox Developer Edition.app/Contents/MacOS/firefox" -new-window' },
---{ "'", 'cmd shift', cmd    = '"/Applications/Firefox Developer Edition.app/Contents/MacOS/firefox" -private-window' },
-  { "'", 'cmd',       launch = 'Vivaldi' },
-  { "'", 'cmd shift', launch = 'Vivaldi', args = '--incognito' },
+  { "'", 'cmd',       cmd    = '"/Applications/Firefox Developer Edition.app/Contents/MacOS/firefox" -new-window' },
+  { "'", 'cmd shift', cmd    = '"/Applications/Firefox Developer Edition.app/Contents/MacOS/firefox" -private-window' },
+--{ "'", 'cmd',       launch = 'Vivaldi' },
+--{ "'", 'cmd shift', launch = 'Vivaldi', args = '--incognito' },
   { '.', 'cmd',       launch = 'Alacritty', args = '-t Floatty -e clac' },
 }
 
