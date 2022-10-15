@@ -1,8 +1,0 @@
-- name: 'Install Rosetta (M1)'
-  hosts: 'localhost'
-  become: true
-  tasks:
-    - ansible.builtin.command:
-        cmd: softwareupdate -install-rosetta -agree-to-license
-        creates: /Library/Apple/usr/libexec/oah/libRosettaRuntime
-      when: ansible_architecture == 'arm64'
