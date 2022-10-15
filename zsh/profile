@@ -1,0 +1,12 @@
+# vim: ft=sh ts=2 sw=2 et:
+
+() {
+  case $OSTYPE in
+    linux*|*bsd*)
+      # Start a graphical session if we're on a configured TTY
+      if [[ $TTY != /dev/(tty1|ttyv0) ]] return
+      if (( $+commands[sway] ))   pgrep sway  &> /dev/null || exec sway --unsupported-gpu
+      if (( $+commands[startx] )) pgrep xinit &> /dev/null || exec startx
+      ;;
+  esac
+}

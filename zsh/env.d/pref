@@ -10,17 +10,24 @@ typeset -gx GEDITOR='code'  # Used in ranger's rifle.conf
 typeset -gx PAGER='less'
 typeset -gx TERMINAL='iterm2'
 
-# NOTE: Implicit dependency on env.d/hier loading first in order to set PATH
-if (( $+commands[bat] )); then
-  typeset -gx MANPAGER="sh -c 'col -bx | bat -l man -p'"
-  typeset -gx PAGER='bat'
-fi
-
 # App exports
 # Per-app configuration overrides
 typeset -gx LESSHISTFILE='-'
 
 case $OSTYPE in
+  linux*|*bsd*)
+    typeset -gx BROWSER="vivaldi-stable"
+    typeset -gx QT_STYLE_OVERRIDE="GTK+"
+    typeset -gx QT_QPA_PLATFORMTHEME="gtk2"
+    typeset -gx FREETYPE_PROPERTIES="      \
+      truetype:interpreter-version=40 \
+      cff:no-stem-darkening=0         \
+      cff:hinting-engine=adobe        \
+      autofitter:no-stem-darkening=0  \
+    "
+    typeset -gx CHROME_FLAGS="--enable-features=VaapiVideoDecoder"
+    typeset -gx WINEPREFIX="win64"
+    ;;
   darwin*)
     typeset -gx HOMEBREW_CASK_OPTS='--no-quarantine'
     ;;

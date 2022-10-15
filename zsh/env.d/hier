@@ -24,3 +24,8 @@ typeset -g path=( ${(u)path} )
 
 : ${XDG_CONFIG_HOME:=${ZSH:h}}
 typeset -gx XDG_CONFIG_HOME
+
+typeset -gx XDG_CACHE_HOME=$HOME/var/cache
+typeset -gx XDG_DATA_HOME=$HOME/var
+
+typeset -gx WINEPREFIX=$XDG_DATA_HOME/wine
