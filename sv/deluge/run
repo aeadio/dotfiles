@@ -1,0 +1,7 @@
+#!/bin/sh
+
+: ${HOME:="$(eval print "~$(id -un)")"}
+: ${XDG_CONFIG_HOME:="$HOME"/.config}
+
+exec 2>&1
+exec deluged -c "$XDG_CONFIG_HOME/deluge" -d

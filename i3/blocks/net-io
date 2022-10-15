@@ -1,0 +1,76 @@
+#!/usr/bin/env luajit
+
+local LABEL = "<span font='FontAwesome'>\239\133\181\239\133\182</span>"
+local REPEAT_RATE = 2
+local WARN_THRESHOLD = 150
+local WARN_COLOR = '#bf616a'
+
+local SYSFS_ROOT   = '/sys/class/net'
+local SYSFS_RXRATE = '/statistics/rx_bytes'  -- in total bytes
+local SYSFS_TXRATE = '/statistics/tx_bytes'  -- in total bytes
+
+local ustd = require('posix.unistd')
+local time = require('posix.sys.time')
+local dirent = require('posix.dirent')
+
+local devices = {}
+for i, dev in ipairs(dirent.dir(SYSFS_ROOT)) do
+  if dev:find('wlp', 1, true) or dev:find('enp', 1, true) then
+    table.insert(devices, SYSFS_ROOT .. '/' .. dev)
+  end
+end
+
+local function readonce(file, mode)
+  local f = assert(io.open(file, 'r'))
+  local result = f:read('*a')
+  f:close()
+  if result:sub(-1) == '\n' then
+    result = result:sub(1, -2)
+  end
+  return result
+end
+
+local function utime()
+  local posixtime = time.gettimeofday()
+  local sec = posixtime.tv_sec
+  local usec = posixtime.tv_usec
+  return sec + (usec / 1000000)
+end
+
+local function netrate()
+  local rx_total, tx_total = 0, 0
+  for i, device in ipairs(devices) do
+    local rx = tonumber(readonce(device .. SYSFS_RXRATE)) or 0
+    local tx = tonumber(readonce(device .. SYSFS_TXRATE)) or 0
+    rx_total = rx_total + rx
+    tx_total = tx_total + tx
+  end
+  return rx_total, tx_total
+end
+
+local rx_last, tx_last = netrate()
+local since = utime()
+local function printblock()
+  local rx_now, tx_now = netrate()
+  local now = utime()  -- sleep() is not exact, calculate down to usec
+  local rx_delta = rx_now - rx_last
+  local tx_delta = tx_now - tx_last
+  local rate = (rx_delta + tx_delta) / (now - since) -- in bytes / second
+  local rate_MiB = rate / 1000000                -- in Mebibytes / second
+  rx_last, tx_last, since = rx_now, tx_now, now
+  local output
+  if rate_MiB >= WARN_THRESHOLD then
+    output = ("%s <span color='%s'>%.1f MiB/s</span>"):format(
+      LABEL, WARN_COLOR, rate_MiB
+    )
+  else
+    output = ('%s %.1f MiB/s'):format(LABEL, rate_MiB)
+  end
+  io.stdout:write(output, '\n')
+  io.stdout:flush()
+end
+
+while true do
+  printblock()
+  ustd.sleep(REPEAT_RATE)
+end

@@ -1,0 +1,171 @@
+# Behavior
+focus_follows_mouse        no
+focus_on_window_activation none
+force_focus_wrapping       no
+
+# Appearance
+font pango:Iosevka Term 0
+hide_edge_borders none
+for_window [class="^.*"] border pixel 0
+gaps inner  40
+gaps outer   0
+#                        border   bg       text     ind.     chborder
+client.focused           #323845  #8fbcbb  #c0c5ce  #c0c5ce  #8f7e8c
+client.unfocused         #323845  #566176  #25272b  #25272b  #323845
+client.focused_inactive  #323845  #5e81ac  #c0c5ce  #c0c5ce  #534851
+client.urgent            #bf616a  #bf616a  #bf737a  #bf737a  #bf737a
+client.background                 #323845
+bar {
+  i3bar_command     i3bar -t
+  status_command    i3blocks -c $XDG_CONFIG_HOME/i3/i3blocks.conf
+  position          top
+  workspace_buttons yes
+  tray_output       none
+  font              pango:Iosevka Term 10
+  height            28
+  strip_workspace_numbers yes
+  colors {
+    background                     #323845cc
+    separator                      #323845cc
+    statusline                     #d8dee9ff
+    focused_workspace   #323845cc  #323845cc  #d8dee9ff
+    active_workspace    #323845cc  #323845cc  #77829cff
+    inactive_workspace  #323845cc  #323845cc  #566176ff
+    urgent_workspace    #323845cc  #323845cc  #bf616aff
+  }
+  #bindsym button4 nop
+  #bindsym button5 nop
+}
+
+# Layout
+for_window [window_role="pop-up" class="^((!Chromium).)*$"]    floating enable
+for_window [window_role="task_dialog"]                         floating enable
+for_window [class="^Steam$" title="^Friends$"]                 floating enable
+for_window [class="^Firefox$" title="^Library$"]               floating enable
+for_window [class="^Firefox$" title="^Classic Theme Restorer"] floating enable
+for_window [class="^Firefox$" title="^Page Info"]              floating enable
+for_window [class="^alacritty$" instance="^floating$"]         floating enable
+for_window [class="^Steam$" title="^Settings$"]                floating enable
+for_window [class="^Steam$" title="^Steam Library Folders$"]   floating enable
+for_window [class="^Steam$" title="^Create"]                   floating enable
+for_window [class="^feh$" title="^feh-float$"]                 floating enable
+for_window [class="^1Password$"]                               floating enable
+
+# Give half the workspaces to each screen; fall back to laptop display if no
+# screens are attached.
+workspace "1:一"  output DP-1 eDP-1
+workspace "2:二"  output DP-1 eDP-1
+workspace "3:三"  output DP-1 eDP-1
+workspace "4:四"  output DP-1 eDP-1
+workspace "5:五"  output DP-1 eDP-1
+workspace "6:六"  output DP-2 DP-1 eDP-1
+workspace "7:七"  output DP-2 DP-1 eDP-1
+workspace "8:八"  output DP-2 DP-1 eDP-1
+workspace "9:九"  output DP-2 DP-1 eDP-1
+workspace "10:十" output DP-2 DP-1 eDP-1
+
+# Keybinds
+set $mod Mod4
+floating_modifier $mod
+
+bindsym $mod+Shift+Left         move left
+bindsym $mod+Shift+Right        move right
+bindsym $mod+Shift+Up           move up
+bindsym $mod+Shift+Down         move down
+bindsym $mod+Shift+1            move container to workspace "1:一"
+bindsym $mod+Shift+2            move container to workspace "2:二"
+bindsym $mod+Shift+3            move container to workspace "3:三"
+bindsym $mod+Shift+4            move container to workspace "4:四"
+bindsym $mod+Shift+5            move container to workspace "5:五"
+bindsym $mod+Shift+6            move container to workspace "6:六"
+bindsym $mod+Shift+7            move container to workspace "7:七"
+bindsym $mod+Shift+8            move container to workspace "8:八"
+bindsym $mod+Shift+9            move container to workspace "9:九"
+bindsym $mod+Shift+0            move container to workspace "10:十"
+bindsym $mod+Shift+Tab          floating toggle
+bindsym $mod+Ctrl+Left          move workspace to output left
+bindsym $mod+Ctrl+Right         move workspace to output right
+bindsym $mod+Ctrl+Up            move workspace to output up
+bindsym $mod+Ctrl+Down          move workspace to output down
+
+bindsym $mod+Left               focus left
+bindsym $mod+Right              focus right
+bindsym $mod+Up                 focus up
+bindsym $mod+Down               focus down
+bindsym $mod+1                  workspace "1:一"
+bindsym $mod+2                  workspace "2:二"
+bindsym $mod+3                  workspace "3:三"
+bindsym $mod+4                  workspace "4:四"
+bindsym $mod+5                  workspace "5:五"
+bindsym $mod+6                  workspace "6:六"
+bindsym $mod+7                  workspace "7:七"
+bindsym $mod+8                  workspace "8:八"
+bindsym $mod+9                  workspace "9:九"
+bindsym $mod+0                  workspace "10:十"
+bindsym $mod+Tab                focus mode_toggle
+bindsym $mod+a                  focus parent
+bindsym $mod+d                  focus child
+
+bindsym $mod+q                  kill
+bindsym $mod+h                  split h
+bindsym $mod+v                  split v
+bindsym $mod+f                  fullscreen toggle
+bindsym $mod+w                  layout tabbed
+bindsym $mod+e                  layout toggle split
+
+bindsym $mod+equal              resize grow   width 10 px or 1 ppt
+bindsym $mod+minus              resize shrink width 10 px or 1 ppt
+bindsym $mod+bracketleft        resize set    width 2805 px
+bindsym $mod+bracketright       resize set    width 960 px
+bindsym $mod+backslash          resize set    width 1845 px
+
+bindsym $mod+Shift+equal        resize grow   height 10 px or 1 ppt
+bindsym $mod+Shift+minus        resize shrink height 10 px or 1 ppt
+bindsym $mod+Shift+bracketleft  resize set    height 1347 px
+bindsym $mod+Shift+bracketright resize set    height 636 px
+bindsym $mod+Shift+backslash    resize set    height 991 px
+
+bindsym $mod+F5                 restart
+bindsym $mod+Escape             exec --no-startup-id --no-startup-id stopx
+
+# Keybinds: external apps
+bindsym           $mod+z                exec --no-startup-id vivaldi-stable
+bindsym           $mod+Shift+z          exec --no-startup-id vivaldi-stable --incognito
+bindsym           $mod+x                exec --no-startup-id i3-sensible-terminal
+bindsym           $mod+Shift+x          exec --no-startup-id floatterm
+bindsym           $mod+c                exec --no-startup-id code-oss -n
+bindsym           $mod+n                exec --no-startup-id Discord
+bindsym           $mod+b                exec --no-startup-id slack
+bindsym           $mod+m                exec --no-startup-id irc
+bindsym           $mod+BackSpace        exec --no-startup-id 1password
+
+bindsym           $mod+Return           exec --no-startup-id launch
+bindsym           $mod+slash            exec --no-startup-id switch
+bindsym           $mod+apostrophe       exec --no-startup-id 1passmenu --type
+bindsym           $mod+Shift+apostrophe exec --no-startup-id 1passmenu
+bindsym           $mod+Insert           exec --no-startup-id bluetoothmenu
+bindsym           $mod+Prior            exec --no-startup-id bluetoothmenu
+bindsym           $mod+period           exec --no-startup-id floatterm-clac
+bindsym           $mod+Next             exec --no-startup-id floatterm-vol
+bindsym           $mod+comma            exec --no-startup-id floatterm-filemgr
+
+bindsym --release $mod+F8               exec --no-startup-id lock
+bindsym --release $mod+Scroll_Lock      exec --no-startup-id lock
+bindsym --release $mod+Delete           exec --no-startup-id lock
+
+bindsym           $mod+Print            exec --no-startup-id maim -u --format png         ~/img/screen/$(date -u +%Y-%m-%dT%H:%M:%S).png
+bindsym --release $mod+Shift+Print      exec --no-startup-id maim -u --format png -s -b 1 ~/img/screen/$(date -u +%Y-%m-%dT%H:%M:%S).png
+bindsym --release $mod+Ctrl+Print       exec --no-startup-id maim -u --format png -s -b 1 -t 9999999 | convert - \( +clone -background black -shadow 80x10-1-1 \) +swap -background none -layers merge +repage ~/img/screen/$(date -u +%Y-%m-%dT%H:%M:%S).png
+
+bindsym           $mod+F7               exec --no-startup-id sh -c "SVDIR=/home/a/sv sv restart wallpaper"
+bindsym           $mod+F11              exec --no-startup-id sh -c "SVDIR=/home/a/sv sv restart wallpaper"
+bindsym           $mod+F12              exec --no-startup-id sh -c "SVDIR=/home/a/sv sv restart picom"
+
+bindsym           XF86AudioMute         exec --no-startup-id vol toggle-mute
+bindsym           XF86AudioLowerVolume  exec --no-startup-id vol -3%
+bindsym           XF86AudioRaiseVolume  exec --no-startup-id vol +3%
+bindsym           XF86MonBrightnessUp   exec --no-startup-id xbacklight -inc 5
+bindsym           XF86MonBrightnessDown exec --no-startup-id xbacklight -dec 5
+bindsym --release XF86Sleep             exec --no-startup-id doas zzz
+bindsym --release XF86PowerOff          exec --no-startup-id doas zzz
+bindsym --release XF86ScreenSaver       exec --no-startup-id lock

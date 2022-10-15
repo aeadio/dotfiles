@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+
+. blocks/common
+
+buttons=('floatterm-cal')
+
+render() {
+  date +'%a %b %-d, %-I:%M %p   '
+}
+
+repeat 4

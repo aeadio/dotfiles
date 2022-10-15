@@ -1,0 +1,52 @@
+#!/usr/bin/env bash
+
+. blocks/common
+
+buttons=('floatterm-vol #c' '' 'vol toggle-mute' 'vol +3%' 'vol -3%')
+
+declare -A labels
+labels[full]=f028
+labels[low]=f027
+labels[muted]=f026
+labels[bluetooth]=f025
+
+render() {
+  local vol="$(vol get)"
+  local dev="$(vol get-device)"
+  local label color
+  
+  if [[ $vol = "muted" ]] || (( $vol == 0 )); then
+    label="${labels[muted]}"
+    color="dim"
+  elif (( $vol > 100 )); then
+    label="${labels[full]}"
+    color="bad"
+  elif (( $vol > 50 )); then
+    label="${labels[full]}"
+    color=""
+  else
+    label="${labels[low]}"
+    color=""
+  fi
+  
+  if [[ $dev =~ ^bluez ]]; then
+    label="${labels[bluetooth]}"
+  fi
+  
+  [[ $vol != "muted" ]] && vol="$vol%"
+  
+  printf '%s\n' "$(icon $label) $(color $color "$vol")"
+}
+
+# When i3 first starts, there's a race condition between this block
+# coming up, and pulseaudio starting, which is also started from
+# the runit instance that starts i3. Rather than introduce a
+# dependency in i3's bringup, let's wait a while before we try to
+# start reading the volume.
+sleep 2 
+
+# Passing this through grep is importat, as pactl may generate a substantial
+# amount of events. It's been observed constantly spamming at a rate of
+# >10 MiB/s. Unfortunately, pactl has no way to specify which events we care
+# about.
+listen <(pactl subscribe | grep --line-buffered change)

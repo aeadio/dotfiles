@@ -1,0 +1,22 @@
+#!/usr/bin/env bash
+
+. blocks/common
+
+label=f2c9
+warn_threshold=85
+
+maxtemp() {
+  local maxtemp="$(sysfs_max /sys/devices/platform/coretemp.*/hwmon/hwmon*/temp*_input)"
+  printf '%s' "$((maxtemp / 1000))"
+}
+
+render() {
+  local temp="$(maxtemp)"
+  local color
+  
+  (( $temp > $warn_threshold )) && color=bad
+  
+  printf '%s\n' "$(icon $label) $(color $color "$temp°C")"
+}
+
+repeat

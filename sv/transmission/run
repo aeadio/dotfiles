@@ -1,0 +1,4 @@
+#!/bin/sh
+
+exec 2>&1
+exec transmission-daemon -f --log-info -e /dev/stdout 

@@ -1,0 +1,95 @@
+#!/usr/bin/env luajit
+
+local LABEL = "<span font='Font Awesome 6 Free'>\239\148\184</span>"
+local REPEAT_RATE = 4
+local COLOR_HALF = '#ebcb8b'
+local COLOR_WARN = '#dca493'
+local COLOR_FULL = '#bf616a'
+local COLOR_SWAP = '#9cb5ce'
+
+local PROC_MEM = '/proc/meminfo'
+local PROC_ARC = '/proc/spl/kstat/zfs/arcstats'
+
+local ustd = require('posix.unistd')
+local time = require('posix.sys.time')
+
+local mt = { __index = function() return 0 end }
+
+local function meminfo()
+  local f = assert(io.open(PROC_MEM, 'r'))
+  local mem = setmetatable({}, mt)
+  for line in f:lines() do
+    local stat, amount = line:match('^(%S+):%s+(%d+) kB$')
+    if stat and amount then
+      mem[stat] = tonumber(amount)
+    end
+  end
+  f:close()
+  return mem
+end
+
+local function arcinfo()
+  local f = io.open(PROC_ARC, 'r')
+  if not f then
+    return nil  -- ZFS not in use
+  end
+  local arc = setmetatable({}, mt)
+  for line in f:lines() do
+    local stat, amount = line:match('^(%S+)%s+%d+%s+(%d+)$')
+    if stat and amount then
+      arc[stat] = tonumber(amount)
+    end
+  end
+  f:close()
+  return arc
+end
+
+local function getmemusage()
+  local mem = meminfo()
+  local totalMem = mem.MemTotal
+  local usedMem
+  local usedDiff = mem.MemFree + mem.Cached + mem.SReclaimable + mem.Buffers
+  if totalMem >= usedDiff then
+    usedMem = totalMem - usedDiff
+  else
+    usedMem = totalMem - mem.MemFree
+  end
+  local totalSwap = mem.SwapTotal
+  local usedSwap = totalSwap - mem.SwapFree
+  
+  local arc = arcinfo()
+  if arc and arc.size and arc.c_min then
+    usedMem = usedMem - math.max(0, math.floor(arc.size / 1024 - arc.c_min / 1024))
+  end
+  
+  return usedMem, totalMem, usedSwap, totalSwap
+end
+
+local function render()
+  local used, total, swused, swtotal = getmemusage()
+  local perc = used / total
+  local color
+  if perc > 0.9 then
+    color = COLOR_FULL
+  elseif perc > 0.66 then
+    color = COLOR_WARN
+  elseif perc > 0.5 then
+    color = COLOR_HALF
+  end
+  local output
+  if color then
+    output = ("%s <span color='%s'>%.1f GiB</span>"):format(LABEL, color, used / (1024 ^ 2))
+  else
+    output = ("%s %.1f GiB"):format(LABEL, used / (1024 ^ 2))
+  end
+  if swtotal > 0 and swused > 0 then
+    output = output .. (" [+<span color='%s'>%.1f GiB</span>]"):format(COLOR_SWAP, swused / (1024 ^ 2))
+  end
+  io.stdout:write(output, '\n')
+  io.stdout:flush()
+end
+
+while true do
+  render()
+  ustd.sleep(REPEAT_RATE)
+end

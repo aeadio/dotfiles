@@ -1,0 +1,6 @@
+#!/bin/sh
+
+exec 2>&1
+SVDIR="$HOME/sv" "$HOME/bin/svwaitup" pipewire-pulse || (sleep 60; exit 1)
+exec pulseeffects --gapplication-service
+

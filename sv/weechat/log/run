@@ -1,0 +1,15 @@
+#!/bin/sh
+
+: ${HOME:="$(eval print "~$(id -un)")"}
+: ${SVDIR:="$HOME"/sv}
+: ${XDG_DATA_HOME:="$HOME"/.local}
+
+# According to runsv(8), PWD should be <service>/log
+svname="$(basename "$(dirname "$PWD")")"
+if [ -z "$svname" ] || [ ! -d "$SVDIR/$svname" ]; then
+  printf '%s\n' "Unable to locate service directory." >&2
+  exec pause
+fi
+
+mkdir -p "$XDG_DATA_HOME/log/$svname" &&
+exec svlogd -tt "$XDG_DATA_HOME/log/$svname"

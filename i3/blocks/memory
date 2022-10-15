@@ -1,0 +1,126 @@
+#!/usr/bin/env bash
+
+if [[ "$(uname -s)" != "Linux" ]]; then
+  pause
+fi
+
+. blocks/common
+
+label=f538
+
+meminfo() {
+  local field="$1"
+  cat /proc/meminfo | 
+    sed -n "s/$field:[[:space:]]*\([[:digit:]]*\).*/\1/p"
+}
+
+# htop/linux/LinuxProcessList.c:
+# static inline void LinuxProcessList_scanMemoryInfo(ProcessList* this) {
+#    memory_t availableMem = 0;
+#    memory_t freeMem = 0;
+#    memory_t totalMem = 0;
+#    memory_t buffersMem = 0;
+#    memory_t cachedMem = 0;
+#    memory_t sharedMem = 0;
+#    memory_t swapTotalMem = 0;
+#    memory_t swapCacheMem = 0;
+#    memory_t swapFreeMem = 0;
+#    memory_t sreclaimableMem = 0;
+# 
+#    FILE* file = fopen(PROCMEMINFOFILE, "r");
+#    if (!file)
+#       CRT_fatalError("Cannot open " PROCMEMINFOFILE);
+# 
+#    char buffer[128];
+#    while (fgets(buffer, sizeof(buffer), file)) {
+# 
+#       #define tryRead(label, variable)                                       \
+#          if (String_startsWith(buffer, label)) {                             \
+#             memory_t parsed_;                                                \
+#             if (sscanf(buffer + strlen(label), "%llu kB", &parsed_) == 1) {  \
+#                (variable) = parsed_;                                         \
+#             }                                                                \
+#             break;                                                           \
+#          } else (void) 0 /* Require a ";" after the macro use. */
+# 
+#       switch (buffer[0]) {
+#       case 'M':
+#          tryRead("MemAvailable:", availableMem);
+#          tryRead("MemFree:", freeMem);
+#          tryRead("MemTotal:", totalMem);
+#          break;
+#       case 'B':
+#          tryRead("Buffers:", buffersMem);
+#          break;
+#       case 'C':
+#          tryRead("Cached:", cachedMem);
+#          break;
+#       case 'S':
+#          switch (buffer[1]) {
+#          case 'h':
+#             tryRead("Shmem:", sharedMem);
+#             break;
+#          case 'w':
+#             tryRead("SwapTotal:", swapTotalMem);
+#             tryRead("SwapCached:", swapCacheMem);
+#             tryRead("SwapFree:", swapFreeMem);
+#             break;
+#          case 'R':
+#             tryRead("SReclaimable:", sreclaimableMem);
+#             break;
+#          }
+#          break;
+#       }
+# 
+#       #undef tryRead
+#    }
+# 
+#    fclose(file);
+# 
+#    /*
+#     * Compute memory partition like procps(free)
+#     *  https://gitlab.com/procps-ng/procps/-/blob/master/proc/sysinfo.c
+#     *
+#     * Adjustments:
+#     *  - Shmem in part of Cached (see https://lore.kernel.org/patchwork/patch/648763/),
+#     *    do not show twice by subtracting from Cached and do not subtract twice from used.
+#     */
+#    this->totalMem = totalMem;
+#    this->cachedMem = cachedMem + sreclaimableMem - sharedMem;
+#    this->sharedMem = sharedMem;
+#    const memory_t usedDiff = freeMem + cachedMem + sreclaimableMem + buffersMem;
+#    this->usedMem = (totalMem >= usedDiff) ? totalMem - usedDiff : totalMem - freeMem;
+#    this->buffersMem = buffersMem;
+#    this->availableMem = availableMem != 0 ? MINIMUM(availableMem, totalMem) : freeMem;
+#    this->totalSwap = swapTotalMem;
+#    this->usedSwap = swapTotalMem - swapFreeMem - swapCacheMem;
+#    this->cachedSwap = swapCacheMem;
+# }
+
+render() {
+  set -x
+  local totalMem="$(meminfo MemTotal)"
+  local freeMem="$(meminfo MemFree)"
+  local cachedMem="$(meminfo Cached)"
+  local sreclaimableMem="$(meminfo SReclaimable)"
+  local buffersMem="$(meminfo Buffers)"
+  local usedDiff="$(clac "$freeMem $cachedMem $sreclaimableMem $buffersMem sum")"
+  local usedMem
+  if [[ $totalMem -ge $usedDiff ]]; then
+    usedMem="$(clac "$totalMem $usedDiff -")"
+  else
+    usedMem="$(clac "$totalMem $freeMem -")"
+  fi
+  local usedPerc="$(clac "$usedMem $totalMem / 100 * round")"
+  local usedMemGiB="$(clac "$usedMem 1024 2 ^ /")"
+  
+  local color
+  if   [[ $usedPerc -gt 90 ]]; then color=red
+  elif [[ $usedPerc -gt 67 ]]; then color=orange
+  elif [[ $usedPerc -gt 50 ]]; then color=yellow
+  fi
+  
+  printf "%s $(color $color "%.1f GiB")\n" "$(icon6 $label)" "$usedMemGiB"
+}
+render
+#repeat 10

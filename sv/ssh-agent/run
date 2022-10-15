@@ -1,0 +1,8 @@
+#!/bin/sh
+
+: ${HOME:="$(eval print "~$(id -un)")"}
+: ${XDG_DATA_HOME:="$HOME"/.local}
+: ${SSH_AGENT_INFO_FILE:="$XDG_DATA_HOME"/ssh-agent-info}
+
+exec 2>&1
+exec ssh-agent -D > "$SSH_AGENT_INFO_FILE"

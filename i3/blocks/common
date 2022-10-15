@@ -1,0 +1,163 @@
+#!/usr/bin/env bash
+
+declare -A colors
+
+colors[red]='#bf616a'
+colors[orange]='#dca493'
+colors[yellow]='#ebcb8b'
+colors[green]='#a3be8c'
+colors[cyan]='#88c0d0'
+colors[blue]='#81a1c1'
+colors[pink]='#c4a6be'
+colors[grey]='#77829c'
+colors[white]='#d8dee9'
+
+colors[ok]=${colors[green]}
+colors[warn]=${colors[orange]}
+colors[bad]=${colors[red]}
+colors[accent]='#8fbcbb'
+colors[foreground]=${colors[white]}
+colors[dim]=${colors[grey]}
+
+color() {
+  local hex
+  if (( $# > 1 )); then
+    hex="$1"
+    shift
+  fi
+  if [[ -n $hex ]]; then
+    printf '%s' "<span color='${colors[$hex]:-$hex}'>$*</span>"
+  else
+    printf '%s' "$*"
+  fi
+}
+
+icon() {
+  printf '%s' "<span font='FontAwesome'>$(echo -e "\u$1")</span>"
+}
+
+icon6() {
+  printf '%s' "<span font='Font Awesome 6 Free'>$(echo -e "\u$1")</span>"
+}
+
+sysfs_max() {
+  local max=0 val
+  for src in "$@"; do
+    read val < "$src"
+    if [[ -n $val ]] && (( $val > $max )); then
+      max="$val"
+    fi
+  done
+  printf '%s' "$max"
+}
+
+sysfs_min() {
+  local min val
+  for src in "$@"; do
+    read val < "$src"
+    if [[ -z $min ]] || (( $val < $min )); then
+      min="$val"
+    fi
+  done
+  printf '%s' "$min"
+}
+
+sysfs_sum() {
+  local res=0 val
+  for src in "$@"; do
+    read val < "$src"
+    [[ -n $val ]] && res=$(( $res + $val ))
+  done
+  printf '%s' "$res"
+}
+
+sysfs_avg() {
+  local cum=0 n=0 val
+  for src in "$@"; do
+    read val < "$src"
+    if [[ -n $val ]]; then
+      cum=$(( $cum + $val ))
+      n=$(( $n + 1 ))
+    fi
+  done
+  printf '%s' $(clac "$cum $n /")
+}
+
+clear_stdin() {
+  read -n 1000000 -t 1
+}
+
+retry() {
+  local n="$1" cmd="$2"
+  shift 2
+  for ((; n>0; n--)); do
+    "$cmd" "$@" && break
+  done
+}
+
+button_loop() {
+  local run
+  while read btn; do
+    if [[ "$(declare -p buttons)" =~ "declare -a" ]]; then
+      run="${buttons[$(( $btn - 1 ))]}"
+    else
+      run="$buttons"
+    fi
+    [[ -n "$run" ]] && eval "$run"
+    [[ $run =~ '#c'$ ]] && clear_stdin
+  done
+}
+
+# Use one of the below as the main event loop for your block. `listen` takes a
+# file descriptor, and invokes `render` on each new line received on that fd.
+# `repeat` simply repeats monotonously, invoking `render` every $1 seconds
+# (default 2).
+# 
+# If `buttons` is set to an array or a non-empty string, then also starts up a
+# loop to listen for button clicks from i3blocks. The command executed on each
+# button press is determined by the value of `buttons`.
+# 
+# If buttons is an array, the command is the string at `${buttons[n-1]}`,
+# where n is the button ID received from i3blocks. Therefore, the first
+# element of the array is invoked if the block is left-clicked.
+# 
+# If `buttons` is a string, it is taken as the command directly.
+# 
+# In both cases, the command is passed to eval to be invoked, and may include
+# any Bash shell commands.
+# 
+# In either case, if the command string to invoke ends in a '#c', all button
+# clicks that occurred while the supplied command(s) were executing are
+# discarded after the command exits. That means, for instance, if the user
+# mistakenly presses the block two or three times, the command will not invoke
+# multiple time back-to-back.
+# 
+# Note from i3blocks, button IDs are as follows:
+# 1=left, 2=middle, 3=right, 4=scrollup, 5=scrolldown, ...(?)
+
+listen() {
+  (
+    render
+    while read; do
+      render
+    done < "$1"
+  ) &
+  if [[ -n ${buttons+x} ]]; then
+    button_loop
+  fi
+  wait
+}
+
+repeat() {
+  (
+    render
+    while true; do
+      sleep ${1:-2}
+      render
+    done
+  ) &
+  if [[ -n ${buttons+x} ]]; then
+    button_loop
+  fi
+  wait
+}

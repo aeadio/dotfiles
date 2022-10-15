@@ -1,0 +1,48 @@
+#!/usr/bin/env bash
+
+. blocks/common
+
+icon_bat=(f244 f243 f242 f241 f240)  # empty .. full
+icon_pwr=f1e6
+
+charge() {
+  local cur=$(cat /sys/class/power_supply/BAT0/charge_now)
+  local max=$(cat /sys/class/power_supply/BAT0/charge_full)
+  printf '%.0f' $(clac "$cur $max / 100 *")
+}
+
+chargerate() {
+  local uV=$(cat /sys/class/power_supply/BAT0/voltage_now)
+  local uA=$(cat /sys/class/power_supply/BAT0/current_now)
+  printf '%4.1f' $(clac "$uV 1000000 / $uA 1000000 / *")
+}
+
+status() {
+  cat /sys/class/power_supply/BAT0/status
+}
+
+render() {
+  local charge=$(charge)
+  local rate=$(chargerate)
+  local status=$(status)
+  local label charge_color rate_color polarity
+  
+  if [[ $status = "Charging" ]]; then
+    label=$icon_pwr
+  else
+    if   (( $charge < 13 )); then label=${icon_bat[0]}; charge_color=warn
+    elif (( $charge < 38 )); then label=${icon_bat[1]}
+    elif (( $charge < 63 )); then label=${icon_bat[2]}
+    elif (( $charge < 88 )); then label=${icon_bat[3]}
+    else label=${icon_bat[4]};
+    fi
+  fi
+  
+  if   [[ $status = "Charging" ]]; then rate_color=ok; polarity="+"
+  elif (( ${rate%.*} > 30 ));      then rate_color=warn
+  fi
+  
+  printf '%s\n' "$(icon $label) $(color $charge_color "$charge%") ($(color $rate_color "${polarity:--}${rate}W"))"
+}
+
+repeat

@@ -1,0 +1,4 @@
+# Set DPI to 96
+xrandr --dpi 120
+export WINIT_HIDPI_FACTOR=1
+export WINIT_X11_SCALE_FACTOR=1

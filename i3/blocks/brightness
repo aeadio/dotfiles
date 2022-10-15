@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+
+. blocks/common
+
+label=f26c
+
+render() {
+  printf '%s\n' "$(icon $label) $(xbacklight -get)%"
+}
+
+listen <(inotifywait -qme modify --format '' /sys/class/backlight/intel_backlight/brightness)

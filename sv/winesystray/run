@@ -1,0 +1,8 @@
+#!/bin/sh
+
+# Waits for the Wine system tray floating dialogue to appear, then kills it.
+
+exec 2>&1
+exec chpst -b winesystray \
+  wmctrl -i -c \
+  "$(xdotool search --sync --all --onlyvisible --name "Wine System Tray")"

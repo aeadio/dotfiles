@@ -1,0 +1,22 @@
+#!/usr/bin/env bash
+
+. blocks/common
+
+label=f2db
+
+render() {
+  local freq="$(sysfs_max /sys/devices/system/cpu/cpu*/cpufreq/scaling_cur_freq)"
+  local color
+  
+  if (( $freq < 2000000 )); then
+    color="cyan"  # cyan looks cold
+  elif (( $freq > 4000000 )); then
+    color="ok"
+  fi
+  
+  freq="$(printf '%.1f' "$(clac "$freq 1000000 /")") GHz"
+  
+  printf '%s\n' "$(icon $label) $(color $color "$freq")"
+}
+
+repeat 1

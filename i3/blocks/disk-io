@@ -1,0 +1,66 @@
+#!/usr/bin/env luajit
+
+local LABEL = "<span font='FontAwesome'>\239\130\160</span>"
+local REPEAT_RATE = 2
+local WARN_THRESHOLD = 150
+local WARN_COLOR = '#bf616a'
+
+local SYSFS_DISK = '/sys/class/block/nvme0n1'
+local SYSFS_STAT = SYSFS_DISK .. '/stat'
+local SECTOR_SIZE = 512
+
+local ustd = require('posix.unistd')
+local time = require('posix.sys.time')
+
+local function read(file, mode)
+  if not mode then mode = '*a' end
+  local f = assert(io.open(file, 'r'))
+  local result = f:read(mode)
+  f:close()
+  if mode == '*a' and result:sub(-1) == '\n' then
+    result = result:sub(1, -2)
+  end
+  return result
+end
+
+local function utime()
+  local posixtime = time.gettimeofday()
+  local sec = posixtime.tv_sec
+  local usec = posixtime.tv_usec
+  return sec + (usec / 1000000)
+end
+
+local function diskrate()
+  local stat = read(SYSFS_STAT, '*l')
+  local rx, tx = stat:match('^%s*%d+%s*%d+%s*(%d+)%s*%d+%s*%d+%s*%d+%s*(%d+)')
+  local rx = (tonumber(rx) or 0) * SECTOR_SIZE
+  local tx = (tonumber(tx) or 0) * SECTOR_SIZE
+  return rx, tx
+end
+
+local rx_last, tx_last = diskrate()
+local since = utime()
+local function printblock()
+  local rx_now, tx_now = diskrate()
+  local now = utime()  -- sleep() is not exact, calculate down to usec
+  local rx_delta = rx_now - rx_last
+  local tx_delta = tx_now - tx_last
+  local rate = (rx_delta + tx_delta) / (now - since) -- in bytes / second
+  local rate_MiB = rate / 1000000                -- in Mebibytes / second
+  rx_last, tx_last, since = rx_now, tx_now, now
+  local output
+  if rate_MiB >= WARN_THRESHOLD then
+    output = ("%s <span color='%s'>%.1f MiB/s</span>"):format(
+      LABEL, WARN_COLOR, rate_MiB
+    )
+  else
+    output = ('%s %.1f MiB/s'):format(LABEL, rate_MiB)
+  end
+  io.stdout:write(output, '\n')
+  io.stdout:flush()
+end
+
+while true do
+  printblock()
+  ustd.sleep(REPEAT_RATE)
+end

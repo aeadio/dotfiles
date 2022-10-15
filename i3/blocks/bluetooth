@@ -1,0 +1,44 @@
+#!/usr/bin/env bash
+
+. blocks/common
+
+buttons=('bluetoothmenu #c')
+
+label=f294
+
+get_paired_devices() {
+  bluetoothctl paired-devices | cut -d ' ' -f 2
+}
+
+num_connected_devices() {
+  local uuid n
+  while read uuid; do
+    if bluetoothctl info "$uuid" | grep -q "Connected: yes"; then
+      n=$(( n + 1 ))
+    fi
+  done < <(get_paired_devices)
+  printf '%s' "$n"
+}
+
+bt_powered() {
+  rfkill -n -r -o type,soft | grep -q "bluetooth unblocked" &&
+  bluetoothctl show | grep -q "Powered: yes"
+}
+
+render() {
+  local num_devices
+  
+  if ! bt_powered; then
+    printf '%s\n' "$(icon $label) $(color dim "(off)")"
+    return
+  fi
+  
+  num_devices="$(num_connected_devices)"
+  if [[ -n $num_devices ]]; then
+    printf '%s\n' "$(icon $label) $(color ok "on") ($num_devices)"
+  else
+    printf '%s\n' "$(icon $label) $(color ok "on")"
+  fi
+}
+
+listen <(udevadm monitor -s bluetooth -u)

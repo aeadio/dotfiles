@@ -1,0 +1,24 @@
+#!/usr/bin/env zsh
+
+: ${XDG_CONFIG_HOME:=$HOME/.config}
+
+# Load Xresources
+() {
+  if (( ! $+commands[xrdb] )) return
+  local f REPLY
+  for f in $XDG_CONFIG_HOME/x11/xresources.d/*(e:'[[ -x $REPLY ]]':onN);
+    xrdb -merge $f
+}
+
+# Load X user rc
+() {
+  local f REPLY
+  for f in $XDG_CONFIG_HOME/x11/xinitrc.d/*(e:'[[ -x $REPLY ]]':onN);
+    source $f
+}
+
+# Start our runit instance
+# We start our window manager and other programs via services
+if [[ -d $HOME/sv ]] exec dbus-launch --exit-with-x11 runsvdir $HOME/sv
+
+print "Nothing to do: ~/sv not found."

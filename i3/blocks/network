@@ -1,0 +1,64 @@
+#!/usr/bin/env bash
+
+. blocks/common
+
+declare -A labels
+labels[enet]=f0e8
+labels[wifi]=f1eb
+
+test_addr="1.1.1.1"
+
+wifi_disabled() {
+  nmcli radio wifi | grep -q "disabled" ||
+  nmcli -t general status | cut -d ':' -f 3 | grep -q "disabled" ||
+  nmcli -t general status | cut -d ':' -f 4 | grep -q "disabled"
+}
+
+getdevice() {
+  #ip route get to "$test_addr" 2>/dev/null |
+  #  sed -n 's/^.*dev\s*\(\S*\).*$/\1/p'
+  # Above breaks when on VPN, which overwrites routes to 0.0.0.0/0
+  # Parse device metrics instead
+  local dev active_dev metric min_metric
+  while read dev metric; do
+    if [[ $dev = tun* ]]; then continue; fi
+    if [[ -z $min_metric ]] || (( $metric < $min_metric )); then
+      min_metric="$metric"
+      active_dev="$dev"
+    fi
+  done < <(ip route list |
+    sed -n 's/^default via.*\dev\s*\(\S*\).*metric\(\d*\)/\1 \2/p')
+  printf '%s' "$active_dev"
+}
+
+getssid() {
+  # iw hands back SSID with unicode codepoints escaped as multiple \xXX
+  # characters.
+  #iw dev "$1" info 2>/dev/null | sed -n 's/^.*ssid\s*\(.*\)$/\1/p' |
+  #  lua -e '
+  #    print((io.stdin:read("*a"):gsub("\\x%x%x",
+  #      function(c)
+  #        return string.char(tonumber(c:sub(3,-1), 16))
+  #      end
+  #    )))
+  #  '
+  iwgetid -r "$1"
+}
+
+render() {
+  local dev="$(getdevice)"
+  case "$dev" in
+    wlp*) printf '%s\n' "$(icon ${labels[wifi]}) $(getssid "$dev")" ;;
+    enp*) printf '%s\n' "$(icon ${labels[enet]}) Ethernet" ;;
+    '')
+      if wifi_disabled; then
+        printf '%s\n' "$(icon ${labels[enet]}) $(color warn "WiFi off")"
+      else
+        printf '%s\n' "$(icon ${labels[enet]}) $(color warn "down")"
+      fi
+      ;;
+    *) printf '%s\n' "$(icon ${labels[enet]}) $(color dim "$dev")" ;;
+  esac
+}
+set -x
+listen <(ip monitor)

@@ -1,0 +1,26 @@
+#!/usr/bin/env bash
+
+if [[ "$(uname -s)" != "Linux" ]]; then
+  pause
+fi
+
+. blocks/common
+
+label=f0ae
+
+ncpu=$(grep -c ^processor /proc/cpuinfo)
+
+load() {
+  cat /proc/loadavg | cut -d ' ' -f 1
+}
+
+render() {
+  local load=$(load)
+  local color
+  
+  (( ${load%.*} > $ncpu )) && color=warn
+  
+  printf '%s\n' "$(icon $label) $(color $color "$load")"
+}
+
+repeat

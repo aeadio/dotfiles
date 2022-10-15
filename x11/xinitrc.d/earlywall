@@ -1,0 +1,4 @@
+# Set the wallpaper initially before service kicks in on rotation.
+if [[ -x $XDG_CONFIG_HOME/setroot/.setroot-restore ]]; then
+  $XDG_CONFIG_HOME/setroot/.setroot-restore
+fi
