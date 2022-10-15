@@ -1,0 +1,56 @@
+#!/bin/mksh
+
+# The real "default" sync may be a virtual sink that sits in front of our
+# output device for post-processing effects. We want that device to be
+# default so that applications parent to it automatically. But we want to
+# control the volume on the real output behind it. So manually scan devices
+# based on user-provided priority list.
+
+preferred_sinks=(
+  bluez_output.E0_49_ED_00_85_D3.a2dp-sink
+  alsa_output.pci-0000_00_1f.3.hdmi-stereo-extra2
+  alsa_output.pci-0000_00_1f.3.analog-stereo
+)
+
+getsink() {
+  for sink in "${preferred_sinks[@]}"; do
+    if pactl get-sink-volume "$sink" >/dev/null 2>/dev/null; then
+      printf '%s' "$sink"
+      return
+    fi
+  done
+  printf '%s' "@DEFAULT_SINK@"
+}
+
+getvol() {
+  if pactl get-sink-mute "$(getsink)" | grep -q "yes"; then
+    printf '%s\n' "muted"
+  else
+    vol="$(pactl get-sink-volume "$(getsink)" | grep -o '[[:digit:]]*%' | head -n 1)"
+    printf '%s\n' "${vol%\%}"
+  fi
+}
+
+notify() {
+  vol="$(getvol)"
+  if [[ "$vol" == "muted" ]] || (( $vol == 0 )); then
+    dunstify -a "vol" -r "443202" -u low -i audio-volume-muted \
+      "Volume muted" 
+  else
+    dunstify -a "vol" -r "443202" -u low -i audio-volume-high \
+      -h "int:value:$vol" "Volume: $vol%"
+  fi
+}
+
+case "$1" in
+  get)         getvol ;;
+  get-device)  getsink ;;
+  toggle-mute) pactl set-sink-mute   "$(getsink)" toggle; notify ;;
+  mute)        pactl set-sink-mute   "$(getsink)" 1;      notify ;;
+  unmute)      pactl set-sink-mute   "$(getsink)" 0;      notify ;;
+  *)
+    pactl set-sink-mute   "$(getsink)" 0
+    pactl set-sink-volume "$(getsink)" "$1"
+    notify
+  ;;
+esac

@@ -1,0 +1,18 @@
+#!/bin/sh
+
+# Sets screen blank (dpms) time depending on the following priority list:
+# - Screen is locked: 20 seconds
+# - AC adapter is plugged in: 0 (infinite)
+# - Else, 1200 seconds
+
+xset s off
+
+if pgrep slock >/dev/null 2>/dev/null; then
+  xset +dpms
+  xset dpms 0 0 20
+elif cat /sys/class/power_supply/AC*/online 2>/dev/null | grep -q 1; then
+  xset -dpms
+else
+  xset +dpms
+  xset dpms 0 0 1200
+fi

@@ -1,0 +1,74 @@
+#!/bin/sh
+
+exec  >/dev/null
+exec 2>/dev/null
+
+browser() {
+	url=
+	case "$1" in
+		http://* | https://* | file://*)
+			url="$1"
+			;;
+		*)
+			url="http://$1"
+			;;
+	esac
+	xdg-open "$url"
+}
+
+terminal() {
+	cmd="$1"
+	shift
+	alacritty \
+	  --class floating,alacritty \
+	  -o window.dimensions.columns=100 \
+	  -o window.dimensions.lines=28 \
+	  -e "$cmd" "$@"
+}
+
+editor() {
+	terminal micro "$1"
+}
+
+filemanager() {
+	terminal ranger "$1"
+}
+
+imageviewer() {
+	img --title "feh-float" -g "1920x1080" "$1"
+}
+
+dmenu_path | nmenu | while read selection; do
+	case "$selection" in
+		\:* | http://* | https://*) # URL
+			browser "${selection#:}" &
+			;;
+		\?*) # web search
+			browser "https://www.google.com/search?q=${selection#?}" &
+			;;
+		\$*) # terminal
+			terminal "${selection#$}" &
+			;;
+		*)   # launch binary or handle as file
+			if command -v "$selection"; then
+				"${SHELL:-/bin/sh}" -c "$selection" &
+			else
+			  case "$selection" in \~/* | \~) selection="$HOME${selection#'~'}" ;; esac
+				case "$(file -Lb --mime-type "$selection")" in
+					application/pdf)
+						browser "file://$selection"
+						;;
+					text/* | inode/x-empty | message/rfc822)
+						editor "$selection"
+						;;
+					inode/directory)
+						filemanager "$selection"
+						;;
+					image/*)
+						imageviewer "$selection"
+						;;
+				esac
+			fi
+			;;
+	esac
+done

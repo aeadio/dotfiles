@@ -1,0 +1,67 @@
+#!/bin/sh
+
+wait_duration=2
+errors=0
+target_sleep=0
+
+isnatural() {
+  case "$1" in
+    *[!0123456789]*) return 1 ;;
+    '')              return 1 ;;
+    *)               return 0 ;;
+  esac
+}
+
+usage() {
+  printf '%s\n' "usage: $(basename "$0") [-s seconds] service [service...]"
+  exit 111
+}
+
+while getopts "s:" opt; do
+  case "$opt" in
+    s) isnatural "$OPTARG" && wait_duration=$OPTARG || usage ;;
+    *) usage ;;
+  esac
+done
+
+request_sleep() {
+  if [ $1 -gt $target_sleep ]; then
+    target_sleep=$1
+  fi
+}
+
+for service in "$@"; do
+  info="$(sv status "$service")"
+  state="${info%%:*}"
+  duration="${info#*) }"
+  duration="${duration%%s*}"
+  case "$state" in
+    run)
+      if ! isnatural "$duration"; then
+        printf '%s\n' "warn: cannot determine run duration for service $service"
+        continue
+      fi
+      if [ $duration -lt $wait_duration ]; then
+        request_sleep $(( wait_duration - duration ))
+      fi
+      ;;
+    down)
+      sv up "$service" || errors=$(( $errors + 1 ))
+      request_sleep $wait_duration
+      ;;
+    finish)
+      ;;
+    *)
+      errors=$(( $errors + 1 ))
+      ;;
+  esac
+done
+
+if [ $target_sleep -gt 0 ]; then
+  sleep $target_sleep
+fi
+
+if [ $errors -gt 100 ]; then
+  errors=100
+fi
+exit $errors

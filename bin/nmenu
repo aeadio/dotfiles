@@ -1,0 +1,36 @@
+#!/usr/bin/env bash
+
+screenwidth=3840
+screenheight=2160
+lineheight=28
+
+extraopts=
+width=400
+lines=20
+
+while getopts "W:l:m:p:w:" opt; do
+	case "$opt" in
+		W)
+			width="$OPTARG"
+			;;
+		l)
+			lines="$OPTARG"
+			;;
+		*)
+			extraopts="$extraopts -$opt $OPTARG"
+			;;
+	esac
+done
+
+height=$(( $lines * $lineheight ))
+x=$(( $screenwidth / 2 - $width / 2 ))
+y=$(( $screenheight / 2 - $height / 2 ))
+
+dmenu -i \
+  -fn "Iosevka Term Medium:size=10" \
+  -nb "#323845" \
+  -nf "#d8dee9" \
+  -sb "#323845" \
+  -sf "#8fbcbb" \
+  -x "$x" -y "$y" -z "$width" -l "$lines" \
+  ${extraopts} <&0

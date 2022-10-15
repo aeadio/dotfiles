@@ -1,0 +1,123 @@
+#!/bin/mksh
+
+dmenu="nmenu"
+
+is_powered() {
+  bluetoothctl show | grep -q "Powered: yes"
+}
+
+toggle_power() {
+  if is_powered; then
+    bluetoothctl power off
+  else
+    doas rfkill unblock bluetooth
+    bluetoothctl power on
+  fi
+}
+
+is_scanning() {
+  bluetoothctl show | grep -q "Discovering: yes"
+}
+
+enable_scanning() {
+  bluetoothctl scan on &
+}
+
+get_paired_devices() {
+  bluetoothctl paired-devices | sed -n 's/^Device \(.*\)/\1/p'
+}
+
+get_all_devices() {
+  bluetoothctl devices | sed -n 's/^Device \(.*\)/\1/p'
+}
+
+is_connected() {
+  bluetoothctl info "$1" | grep -q "Connected: yes"
+}
+
+toggle_connected() {
+  if is_connected "$1"; then
+    bluetoothctl disconnect "$1"
+  else
+    bluetoothctl connect "$1"
+  fi
+}
+
+pair() {
+  bluetoothctl pair "$1"
+}
+
+pairing_menu() {
+  menu_fields+=("Refresh...")
+  while read dev_mac dev_name; do
+    status=" "
+    is_connected "$dev_mac" && status="✓"
+    menu_fields+=("$status $dev_name;$dev_mac")
+  done <<< "$(get_all_devices)"
+  
+  selected="$(printf '%s\n' "${menu_fields[@]}" |
+    column -s ';' -t |
+    $dmenu)"
+  unset menu_fields
+  
+  case "$selected" in
+    '') ;;
+    'Refresh...')
+      sleep 0.5
+      pairing_menu
+      ;;
+    *)
+      dev_mac="$(printf '%s' "$selected" | grep -o '\([A-F0-9:]*\)$')" &&
+      pair "$dev_mac"
+      ;;
+  esac
+}
+
+main_menu() {
+  if is_powered; then
+    menu_fields+=("Bluetooth: on")
+    while read dev_mac dev_name; do
+      status=" "
+      is_connected "$dev_mac" && status="✓"
+      menu_fields+=("$status $dev_name;$dev_mac")
+    done <<< "$(get_paired_devices)"
+    menu_fields+=("More devices... >")
+  else
+    menu_fields+=("Bluetooth: off")
+  fi
+  menu_fields+=("Refresh...")
+  
+  selected="$(printf '%s\n' "${menu_fields[@]}" |
+    column -s ';' -t |
+    $dmenu)"
+  unset menu_fields
+  
+  case "$selected" in
+    '') ;;
+    'Bluetooth: on')
+      toggle_power
+      ;;
+    'Bluetooth: off')
+      toggle_power
+      main_menu
+      ;;
+    'More devices...'*)
+      enable_scanning
+      sleep 0.5
+      pairing_menu
+      ;;
+    'Refresh...')
+      sleep 0.5
+      main_menu
+      ;;
+    *)
+      dev_mac="$(printf '%s' "$selected" | grep -o '\([A-F0-9:]*\)$')" &&
+      toggle_connected "$dev_mac"
+      ;;
+  esac
+}
+
+main_menu
+
+kill $(pgrep -f "bluetoothctl scan on")
+bluetoothctl scan off

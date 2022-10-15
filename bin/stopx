@@ -1,0 +1,7 @@
+#!/bin/sh
+
+: ${SVDIR:="$HOME"/sv}
+
+sv force-stop "$HOME"/sv/*
+sv exit "$HOME"/sv/*
+pkill runsvdir

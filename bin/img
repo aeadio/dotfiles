@@ -1,0 +1,21 @@
+#!/bin/sh
+
+random=1
+[ "$1" = '-R' ] && {
+  random=0
+  shift
+}
+
+[ "$1" = '--' ] && shift
+
+# give  0 items: open current folder
+# give  1 items: open containing folder starting at item
+# give >1 items: open all items
+
+opts="-Zd."  # fit to window size, show filename
+[ "${random}" -eq 1 ] && opts="${opts}z"
+
+[ $# -eq 0 ] && set -- "${PWD}"
+[ $# -eq 1 ] && [ ! -d "$1" ] && opts="${opts} -|"
+
+feh ${opts} "$@"

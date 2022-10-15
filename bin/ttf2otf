@@ -1,0 +1,75 @@
+#!/bin/sh
+
+fail() {
+  printf '%s\n' "$(basename "$0"): $*"
+  exit 1
+}
+
+quiet() {
+  cmd=$1
+  shift
+  "${cmd}" "$@" >/dev/null 2>/dev/null
+}
+
+requires() {
+  quiet which "$1" || fail "dependency $1 not found"
+}
+
+requires fc-cache
+requires fontforge
+
+# Make sure font cache is up to date
+printf '%s' "Performing initial scan of fonts... "
+quiet fc-cache -f
+printf '%s\n' "done."
+
+# Build a temp directory to house TTF files waiting to be converted
+tmpdir="$(mktemp -d)" || fail "unable to create temporary directory"
+cleanup() {
+  rm -r "${tmpdir}"
+  trap - EXIT
+  exit
+}
+trap cleanup EXIT INT TERM HUP
+
+# Fontforge doesn't support saving into arbitrary directories. Copy TTFs to
+# temporary directory.
+printf '%s' "Finding system-wide TTF files... "
+for f in $(fc-list : file | sed -n '/[Tt][Tt][Ff]:/p'); do
+  f="${f%:}"
+  [ -f "$f" ] && cp "$f" "${tmpdir}/"
+done
+printf '%s\n' "done."
+
+# Convert all TTF copies to OTF
+printf '%s' "Converting TTF fonts to OTF"
+(
+  cd "${tmpdir}"
+  export FONTFORGE_LANGUAGE=ff
+  find ./ -iname \*.ttf | (
+    while read f; do
+      printf '%s' "."
+      quiet fontforge -c 'Open($1); Generate($1:r + ".otf"); Print(".")' "$f" &
+    done
+    wait
+  )
+)
+printf '%s\n' " done."
+
+# Move all new OTF copies to ~/.fonts
+printf '%s' "Building user font directory with new OTFs... "
+[ ! -e "${HOME}/.fonts" ] && mkdir "${HOME}/.fonts"
+find "${tmpdir}/" -iname \*.otf | while read f; do
+  mv "$f" "${HOME}/.fonts/"
+done
+find "${HOME}/.fonts/" -iname \*.ttf | while read f; do
+  rm "$f"
+done
+printf '%s\n' "done."
+
+# Rebuild the font cache for the new OTF copies
+printf '%s' "Rebuilding font cache... "
+quiet fc-cache -r -f
+printf '%s\n' "done."
+
+cleanup
