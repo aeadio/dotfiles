@@ -18,5 +18,10 @@ fi
 
 # App exports
 # Per-app configuration overrides
-export HOMEBREW_CASK_OPTS='--no-quarantine'
 export LESSHISTFILE='-'
+
+case $OSTYPE in
+  darwin*)
+    export HOMEBREW_CASK_OPTS='--no-quarantine'
+    ;;
+esac
