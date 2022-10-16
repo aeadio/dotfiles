@@ -1,8 +1,8 @@
 # Ephemeral
 *.zwc
-compdump
-history
+/compdump
+/history
 
 # Machine-specific
-env.d/hosts
-env.d/work
+/env.d/hosts
+/env.d/work

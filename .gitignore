@@ -4,13 +4,13 @@
 Thumbs.db
 
 # Machine-specific
-aws
-aws-sam
-circleci
-docker
-gh
-kube
-msmtp
-packer
-terraform
-vscode
+/aws
+/aws-sam
+/circleci
+/docker
+/gh
+/kube
+/msmtp
+/packer
+/terraform
+/vscode
