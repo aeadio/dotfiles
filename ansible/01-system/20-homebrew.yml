@@ -5,8 +5,8 @@
         name: ../roles/install-homebrew
     # Install emulated x86 brew when on M* Macs.
     # Set up as alias "briw" (Intel brew) in Zsh/rc.d/aliases
-    - ansible.builtin.include_role:
-        name: ../roles/install-homebrew
-      vars:
-        homebrew_arch: 'x86_64'
-      when: ansible_machine == 'arm64'
+    #- ansible.builtin.include_role:
+    #    name: ../roles/install-homebrew
+    #  vars:
+    #    homebrew_arch: 'x86_64'
+    #  when: ansible_machine == 'arm64'
