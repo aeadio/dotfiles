@@ -9,7 +9,8 @@
     '$(prompt:basicinfo)'
     '$(prompt:directory; prompt:git)'
     $'\n'
-    '$(prompt:promptception)'
+    #'$(prompt:promptception)'
+    '$(prompt:ranger)'
     '$(prompt:aws)'
     '$(prompt:bufstack)'
     '$(prompt:caret) '
@@ -17,7 +18,8 @@
   
   # [R⠶shlvl ][🯊[:awsprofile] ][⋮stack]» 
   local ps2=(
-    '$(prompt:promptception)'
+    #'$(prompt:promptception)'
+    '$(prompt:ranger)'
     '$(prompt:aws)'
     '$(prompt:bufstack)'
     '$(prompt:caret) '
@@ -146,6 +148,12 @@ prompt:git() {
   fi
   if [[ -n $changes ]]; then
     print -n "${UTF8:+ ${(#):-16#21c4}} $changes"
+  fi
+}
+
+prompt:ranger() {
+  if (( $+RANGER_LEVEL )); then
+    print -n "%F{green}R${RANGER_LEVEL:#1}%f "
   fi
 }
 
