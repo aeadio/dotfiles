@@ -7,7 +7,6 @@
       - amethyst
       - appcleaner
       - daisydisk
-      - docker
       - font-iosevka
       - font-iosevka-aile
       - font-iosevka-etoile
@@ -18,13 +17,10 @@
       - onyx
       - rar
       - secretive
-      - session-manager-plugin
       - slack
-      - soundsource
       - spotify
       - textual
       - the-unarchiver
-      - tunnelblick
       - visual-studio-code
       - vivaldi
   tasks:

@@ -9,10 +9,8 @@
       # appname          start hidden?
       '1Password 7':     true
       'Amethyst':        false
-      'BetterTouchTool': false
       'Hammerspoon':     false
       'LinearMouse':     false
-      'SoundSource':     false
   tasks:
     - ansible.builtin.shell: |
         appname="{{ item.key }}"

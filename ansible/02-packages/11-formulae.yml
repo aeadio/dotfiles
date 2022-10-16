@@ -4,12 +4,9 @@
     formulae: 
       - ansible
       - atool
-      - aws-sam-cli
-      - aws-vault
       - awscli
       - bash
       - bat
-      - chamber
       - circleci
       - clac
       - coreutils
@@ -33,8 +30,6 @@
       - highlight
       - jd
       - jq
-      - k3d
-      - kubernetes-cli
       - luarocks
       - magic-wormhole
       - mas
@@ -44,10 +39,8 @@
       - mosh
       - odt2txt
       - p7zip
-      - packer
       - pandoc
       - pastel
-      - postgresql
       - pv
       - pwgen
       - ranger
@@ -58,7 +51,6 @@
       - telnet
       - terraform
       - tig
-      - visidata
       - w3m
       - watch
       - wget
