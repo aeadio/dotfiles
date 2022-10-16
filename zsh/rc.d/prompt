@@ -245,4 +245,86 @@ if has git; then
     unset PROMPT_GITINFO
   }
   add-zsh-hook chpwd prompt:git-clear
+  
+  prompt:git-async() {
+    emulate -L zsh -o err_return -o pipefail
+
+    exec 2>/dev/null
+
+    env GIT_OPTIONAL_LOCKS=0 git status --branch --porcelain=v2 \
+      | awk -v utf8=$UTF8 '
+        BEGIN {
+          if (utf8) {
+            fmt_behind    = "%%B%%F{red}\\u2193%d%%f%%b"
+            fmt_ahead     = "%%B%%F{green}\\u2191%d%%f%%b"
+            fmt_unmerged  = "%%{\\e[2m%%}%%F{yellow}\\u21af%d%%f%%b"
+            fmt_staged    = "%%F{yellow}\\u25b2%d%%f"
+            fmt_unstaged  = "%%F{yellow}\\u25b3%d%%f"
+            fmt_untracked = "%%F{blue}\\u2298%d%%f"
+          } else {
+            fmt_behind    = "%%B%%F{red}b%d%%f%%b"
+            fmt_ahead     = "%%B%%F{green}a%d%%f%%b"
+            fmt_unmerged  = "%%{\\e[2m%%}%%F{yellow}m%d%%f%%b"
+            fmt_staged    = "%%F{yellow}s%d%%f"
+            fmt_unstaged  = "%%F{yellow}u%d%%f"
+            fmt_untracked = "%%F{blue}n%d%%f"
+          }
+        }
+        
+        $2 == "branch.oid" {
+          oid = $3;
+        }
+        $2 == "branch.head" {
+          head = $3;
+        }
+        $2 == "branch.ab" {
+          ahead = $3;
+          behind = $4;
+        }
+        $1 == "?" {
+          ++untracked;
+        }
+        $1 == "u" {
+          ++unmerged;
+        }
+        $1 == "1" || $1 == "2" {
+          split($2, arr, "");
+          if (arr[1] != ".") {
+            ++staged;
+          }
+          if (arr[2] != ".") {
+            ++unstaged;
+          }
+        }
+        
+        END {
+          if (! head)
+            exit
+          
+          if (head == "(detached)")
+            head = substr(oid, 0, 7)
+          print(head)
+          
+          if (ahead || behind) {
+            if (behind < 0)
+              commits = commits sprintf(fmt_behind, behind * -1)
+            if (ahead > 0)
+              commits = commits sprintf(fmt_ahead, ahead)
+          }
+          print(commits)
+          
+          if (unmerged || staged || unstaged || untracked) {
+            if (unmerged > 0)
+              changes = changes sprintf(fmt_unmerged, unmerged)
+            if (staged > 0)
+              changes = changes sprintf(fmt_staged, staged)
+            if (unstaged > 0)
+              changes = changes sprintf(fmt_unstaged, unstaged)
+            if (untracked > 0)
+              changes = changes sprintf(fmt_untracked, untracked)
+          }
+          print(changes)
+        }
+      '
+  }
 fi
