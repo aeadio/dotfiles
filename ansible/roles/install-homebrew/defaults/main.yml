@@ -1,3 +1,0 @@
-homebrew_arch:    "{{ ansible_machine }}"
-homebrew_prefix:  "{{ (homebrew_arch == 'arm64') | ternary('/opt/homebrew', '/usr/local') }}"
-homebrew_install: "{{ homebrew_prefix + ((homebrew_arch == 'arm64') | ternary('', '/Homebrew')) }}"
