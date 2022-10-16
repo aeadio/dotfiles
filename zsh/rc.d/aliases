@@ -4,7 +4,6 @@
 has curl      && alias sprunge="curl -F 'sprunge=<-' http://sprunge.us"
 has git       && alias conf="env GIT_DIR=$XDG_CONFIG_HOME/.git GIT_WORK_TREE=$XDG_CONFIG_HOME git"
 has ranger    && alias ranger='. ranger'
-has aws-vault && alias aws='aws-vault exec default -- aws'
 
 has doas &&
   alias root='doas -s' ||
