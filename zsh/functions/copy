@@ -15,15 +15,15 @@ if (( $+TMUX )); then
 fi
 
 if (( $+commands[base64] )); then
-  local encoded=$(print -n $input | base64)
+  local encoded=$(print -n -- $input | base64)
   local osc52seq="\033]52;c;$encoded\a"
   # NOTE: We need to check the raw byte length, so cannot use $#encoded
-  if (( $(print -n $encoded | wc -c) < 100000 )); then
-    print -n $osc52seq
+  if (( $(print -n -- $encoded | wc -c) < 100000 )); then
+    print -n -- $osc52seq
     return
   fi
 fi
 
 if (( $+functions[native-copy] )); then
-  print -nr $input | native-copy
+  print -nr -- $input | native-copy
 fi

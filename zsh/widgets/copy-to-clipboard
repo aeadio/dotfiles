@@ -15,4 +15,4 @@ fi
 
 if [[ -z $text || $text == *([[:space:]]) ]] return
 
-print -nr $text | copy 
+print -nr -- $text | copy 

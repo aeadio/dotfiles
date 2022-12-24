@@ -43,7 +43,7 @@ for item in $items; do
   
   # If we're asked to generate filenames, and it's not stdin mode, print the
   # original filename too, to distinguish which URL is which item.
-  if (( genhash && ! stdin )) print -n "${item:t}: "
+  if (( genhash && ! stdin )) print -n -- "${item:t}: "
   print "$proto://$host/$filename"  # XXX: URL encode filename
   
   hashname=

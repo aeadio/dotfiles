@@ -67,7 +67,7 @@ prompt:basicinfo() {
   if [[ -n "$user$host" ]]; then
     info="$user$host:"
     typeset -g PROMPT_INFOLEN=$(( ${#info} + 1 ))
-    print -n $info
+    print -n -- $info
   fi
 }
 

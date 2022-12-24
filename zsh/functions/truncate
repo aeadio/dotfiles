@@ -20,5 +20,5 @@ fi
 
 typeset -g reply="%${amount}$d${${UTF8:+${(#):-16#2026}}:-..}$d$1%$d$d"
 if [[ ! -t 1 ]]; then
-  print -rP $reply
+  print -rP -- $reply
 fi

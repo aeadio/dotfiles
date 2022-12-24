@@ -47,5 +47,5 @@ if (( REGION_ACTIVE )); then
 elif zle; then
   insert-with-space $matches
 else
-  print -nr $matches
+  print -nr -- $matches
 fi
