@@ -1,12 +1,11 @@
-# NOTE: Requires `mas`, installed in 21-install-formulae.yml
+# NOTE: Requires `mas`, installed in 11-install-formulae.yml
 # NOTE: Assumes AppStore is logged in
 - name: 'Install AppStore apps'
   hosts: 'localhost'
-  vars:
-    apps:
-      - 1475387142  # Tailscale
   tasks:
     - community.general.mas:
-        id: "{{ apps }}"
+        id:
+          - 539883307   # LINE
+          - 1475387142  # Tailscale
       # Skip errors because we never log into AppStore on work machines
       ignore_errors: true

@@ -1,32 +1,26 @@
 - name: 'Install Homebrew casks'
   hosts: 'localhost'
-  vars:
-    casks:
-      - 1password
-      - alacritty
-      - amethyst
-      - appcleaner
-      - daisydisk
-      - font-iosevka
-      - font-iosevka-aile
-      - font-iosevka-etoile
-      - hammerspoon
-      - istat-menus
-      - keycastr
-      - linearmouse
-      - onyx
-      - rar
-      - secretive
-      - slack
-      - spotify
-      - textual
-      - the-unarchiver
-      - visual-studio-code
-      - vivaldi
   tasks:
     - community.general.homebrew_cask:
-        cask: "{{ casks }}"
+        cask:
+          - 1password
+          - alacritty
+          - amethyst
+          - appcleaner
+          - daisydisk
+          - font-iosevka
+          - font-iosevka-aile
+          - font-iosevka-etoile
+          - hammerspoon
+          - istat-menus
+          - keycastr
+          - linearmouse
+          - onyx
+          - rar
+          - secretive
+          - spotify
+          - the-unarchiver
+          - visual-studio-code
+          - vivaldi
         install_options: 'no-quarantine,force'
-        # Default 'path' picks up Intel brew when both are installed on M1
-        path: "{{ {'arm64': '/opt/homebrew/bin', 'x86_64': '/usr/local/bin'}[ansible_architecture] }}"
         sudo_password: "{{ ansible_become_password }}"

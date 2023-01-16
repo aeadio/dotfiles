@@ -1,61 +1,57 @@
 - name: 'Install Homebrew formulae'
   hosts: 'localhost'
-  vars:
-    formulae: 
-      - ansible
-      - atool
-      - awscli
-      - bash
-      - bat
-      - circleci
-      - clac
-      - coreutils
-      - dash
-      - exa
-      - exiftool
-      - fd
-      - ffmpeg
-      - ffmpegthumbnailer
-      - fswatch
-      - fzf
-      - gawk
-      - gh
-      - git
-      - gnu-sed
-      - go
-      - gopls
-      - graphicsmagick
-      - grep
-      - hexyl
-      - highlight
-      - jd
-      - jq
-      - luarocks
-      - magic-wormhole
-      - mas
-      - media-info
-      - micro
-      - moreutils
-      - mosh
-      - odt2txt
-      - p7zip
-      - pandoc
-      - pastel
-      - pv
-      - pwgen
-      - ranger
-      - ripgrep-all
-      - rsync
-      - shellcheck
-      - sqlite3
-      - telnet
-      - terraform
-      - tig
-      - w3m
-      - watch
-      - wget
   tasks:
     - community.general.homebrew:
-        formula: "{{ formulae }}"
-        # Default 'path' picks up Intel brew when both are installed on M1
-        path: "{{ {'arm64': '/opt/homebrew/bin', 'x86_64': '/usr/local/bin'}[ansible_architecture] }}"
+        formula:
+          - ansible
+          - atool
+          - awscli
+          - bash
+          - bat
+          - circleci
+          - clac
+          - coreutils
+          - dash
+          - exa
+          - exiftool
+          - fd
+          - ffmpeg
+          - ffmpegthumbnailer
+          - fswatch
+          - fzf
+          - gawk
+          - gh
+          - git
+          - gnu-sed
+          - go
+          - gopls
+          - graphicsmagick
+          - grep
+          - hexyl
+          - highlight
+          - jd
+          - jq
+          - luarocks
+          - magic-wormhole
+          - mas
+          - media-info
+          - micro
+          - moreutils
+          - mosh
+          - odt2txt
+          - p7zip
+          - pandoc
+          - pastel
+          - pv
+          - pwgen
+          - ranger
+          - ripgrep-all
+          - rsync
+          - shellcheck
+          - sqlite3
+          - telnet
+          - terraform
+          - tig
+          - w3m
+          - watch
+          - wget

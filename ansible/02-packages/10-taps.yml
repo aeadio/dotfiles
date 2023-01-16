@@ -1,17 +1,10 @@
 - name: 'Setup Homebrew taps'
   hosts: 'localhost'
-  vars:
-    taps:
-      - homebrew/cask
-      - homebrew/cask-fonts
-      - homebrew/cask-versions  # Firefox update channels
   tasks:
     - community.general.homebrew_tap:
-        tap: "{{ item }}"
-        # Default 'path' picks up Intel brew when both are installed on M1
-        path: "{{ {'arm64': '/opt/homebrew/bin', 'x86_64': '/usr/local/bin'}[ansible_architecture] }}"
-      loop: "{{ taps }}"
+        tap:
+          - homebrew/cask
+          - homebrew/cask-fonts
+          - homebrew/cask-versions  # Firefox update channels
     - community.general.homebrew:
         update_homebrew: yes
-        # Default 'path' picks up Intel brew when both are installed on M1
-        path: "{{ {'arm64': '/opt/homebrew/bin', 'x86_64': '/usr/local/bin'}[ansible_architecture] }}"
