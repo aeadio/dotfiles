@@ -5,7 +5,7 @@
     pmset_all:
       acwake:                 0
       destroyfvkeyonstandby:  1
-      displaysleep:          15
+      displaysleep:           0
       halfdim:                1
       lidwake:                1
       lowpowermode:           0
@@ -17,7 +17,7 @@
       ttyskeepawake:          1
       womp:                   0
     pmset_battery:
-      displaysleep:          15
+      displaysleep:          10
       lessbright:             1
   tasks:
     - ansible.builtin.command: pmset -a {{ item.key }} {{ item.value }}

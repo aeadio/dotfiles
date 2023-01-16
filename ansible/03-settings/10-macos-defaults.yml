@@ -3,73 +3,25 @@
   vars:
     home: "{{ lookup('env', 'HOME') }}"
     macos_defaults:
-      # Theming
-      - { key: 'AppleAccentColor',           value: -1 }
-      - { key: 'AppleAquaColorVariant',      value:  6 }
-      - { key: 'AppleHighlightColor',        value: '0.533333 0.752941 0.815686 Other' }
-      - { key: 'AppleInterfaceStyle',        value: 'Dark' }
-      - { key: 'AppleOtherHighlightColor',   value: '0.533333 0.752941 0.815686', domain: 'com.apple.systempreferences' }
-      - { key: 'AppleReduceDesktopTinting',  value: false }
-      - { key: 'NSTableViewDefaultSizeMode', value:  1 }
-      # Desktop shell
-      - { key: 'com.apple.springing.enabled', value: true }
-      - { key: 'DSDontWriteNetworkStores',    value: true,  domain: 'com.apple.desktopservices' }
-      - { key: 'DSDontWriteUSBStores',        value: true,  domain: 'com.apple.desktopservices' }
-      # Now imported wholesale (see include/) because pinned items is binary blobs
-      #- { key: 'autohide',                    value: true,  domain: 'com.apple.dock' }
-      #- { key: 'expose-animation-duration',   value: 0.1,   domain: 'com.apple.dock' }
-      #- { key: 'largesize',                   value: 96,    domain: 'com.apple.dock' }
-      #- { key: 'mru-spaces',                  value: false, domain: 'com.apple.dock' }
-      #- { key: 'show-recents',                value: false, domain: 'com.apple.dock' }
-      #- { key: 'showDesktopGestureEnabled',   value: 0,     domain: 'com.apple.dock' }
-      #- { key: 'showLaunchpadGestureEnabled', value: 0,     domain: 'com.apple.dock' }
-      #- { key: 'tilesize',                    value: 48,    domain: 'com.apple.dock' }
-      #- { key: 'wvous-bl-corner',             value: 0,     domain: 'com.apple.dock' }
-      #- { key: 'wvous-bl-modifier',           value: 0,     domain: 'com.apple.dock' }
-      #- { key: 'wvous-br-corner',             value: 0,     domain: 'com.apple.dock' }
-      #- { key: 'wvous-br-modifier',           value: 0,     domain: 'com.apple.dock' }
-      #- { key: 'wvous-tl-corner',             value: 0,     domain: 'com.apple.dock' }
-      #- { key: 'wvous-tl-modifier',           value: 0,     domain: 'com.apple.dock' }
-      #- { key: 'wvous-tr-corner',             value: 0,     domain: 'com.apple.dock' }
-      #- { key: 'wvous-tr-modifier',           value: 0,     domain: 'com.apple.dock' }
+      # Desktop
+      - { key: 'autohide',                    value: true,  domain: 'com.apple.dock' }
+      - { key: 'expose-animation-duration',   value: 0.1,   domain: 'com.apple.dock' }
+      - { key: 'largesize',                   value: 96,    domain: 'com.apple.dock' }
+      - { key: 'mru-spaces',                  value: false, domain: 'com.apple.dock' }
+      - { key: 'show-recents',                value: false, domain: 'com.apple.dock' }
+      - { key: 'showDesktopGestureEnabled',   value: 0,     domain: 'com.apple.dock' }
+      - { key: 'showLaunchpadGestureEnabled', value: 0,     domain: 'com.apple.dock' }
+      - { key: 'tilesize',                    value: 48,    domain: 'com.apple.dock' }
+      - { key: 'wvous-bl-corner',             value: 0,     domain: 'com.apple.dock' }
+      - { key: 'wvous-bl-modifier',           value: 0,     domain: 'com.apple.dock' }
+      - { key: 'wvous-br-corner',             value: 0,     domain: 'com.apple.dock' }
+      - { key: 'wvous-br-modifier',           value: 0,     domain: 'com.apple.dock' }
+      - { key: 'wvous-tl-corner',             value: 0,     domain: 'com.apple.dock' }
+      - { key: 'wvous-tl-modifier',           value: 0,     domain: 'com.apple.dock' }
+      - { key: 'wvous-tr-corner',             value: 0,     domain: 'com.apple.dock' }
+      - { key: 'wvous-tr-modifier',           value: 0,     domain: 'com.apple.dock' }
       # Menu bar
-      - { key: 'DateFormat',                                 value: 'EEE MMM d  j:mm a', domain: 'com.apple.menuextra.clock' }
-      - { key: 'AirDrop',                                    value: 8,    domain: "{{ home }}/Library/Preferences/ByHost/com.apple.controlcenter.plist" }
-      - { key: 'BatteryShowPercentage',                      value: 1,    domain: "{{ home }}/Library/Preferences/ByHost/com.apple.controlcenter.plist" }
-      - { key: 'Bluetooth',                                  value: 18,   domain: "{{ home }}/Library/Preferences/ByHost/com.apple.controlcenter.plist" }
-      - { key: 'FocusModes',                                 value: 0,    domain: "{{ home }}/Library/Preferences/ByHost/com.apple.controlcenter.plist" }
-      - { key: 'NowPlaying',                                 value: 18,   domain: "{{ home }}/Library/Preferences/ByHost/com.apple.controlcenter.plist" }
-      - { key: 'ScreenMirroring',                            value: 8,    domain: "{{ home }}/Library/Preferences/ByHost/com.apple.controlcenter.plist" }
-      - { key: 'Sound',                                      value: 16,   domain: "{{ home }}/Library/Preferences/ByHost/com.apple.controlcenter.plist" }
-      - { key: 'MenuItemHidden',                             value: true, domain: "{{ home }}/Library/Preferences/ByHost/com.apple.Spotlight.plist" }
-      - { key: 'NSStatusItem Preferred Position AirDrop',    value: 395,  domain: 'com.apple.controlcenter' }
-      - { key: 'NSStatusItem Preferred Position Battery',    value: 266,  domain: 'com.apple.controlcenter' }
-      - { key: 'NSStatusItem Preferred Position BentoBox',   value: 160,  domain: 'com.apple.controlcenter' }
-      - { key: 'NSStatusItem Preferred Position Bluetooth',  value: 342,  domain: 'com.apple.controlcenter' }
-      - { key: 'NSStatusItem Preferred Position FocusModes', value: 437,  domain: 'com.apple.controlcenter' }
-      - { key: 'NSStatusItem Preferred Position NowPlaying', value: 700,  domain: 'com.apple.controlcenter' }
-      - { key: 'NSStatusItem Preferred Position Sound',      value: 374,  domain: 'com.apple.controlcenter' }
-      - { key: 'NSStatusItem Preferred Position WiFi',       value: 230,  domain: 'com.apple.controlcenter' }
-      - { key: 'NSStatusItem Visible AirDrop',               value: 0,    domain: 'com.apple.controlcenter' }
-      - { key: 'NSStatusItem Visible Battery',               value: 1,    domain: 'com.apple.controlcenter' }
-      - { key: 'NSStatusItem Visible BentoBox',              value: 1,    domain: 'com.apple.controlcenter' }
-      - { key: 'NSStatusItem Visible Bluetooth',             value: 1,    domain: 'com.apple.controlcenter' }
-      - { key: 'NSStatusItem Visible Clock',                 value: 1,    domain: 'com.apple.controlcenter' }
-      - { key: 'NSStatusItem Visible DoNotDisturb',          value: 0,    domain: 'com.apple.controlcenter' }
-      - { key: 'NSStatusItem Visible FocusModes',            value: 0,    domain: 'com.apple.controlcenter' }
-      - { key: 'NSStatusItem Visible Item-0',                value: 0,    domain: 'com.apple.controlcenter' }
-      - { key: 'NSStatusItem Visible Item-1',                value: 0,    domain: 'com.apple.controlcenter' }
-      - { key: 'NSStatusItem Visible Item-2',                value: 0,    domain: 'com.apple.controlcenter' }
-      - { key: 'NSStatusItem Visible Item-3',                value: 0,    domain: 'com.apple.controlcenter' }
-      - { key: 'NSStatusItem Visible Item-4',                value: 0,    domain: 'com.apple.controlcenter' }
-      - { key: 'NSStatusItem Visible Item-5',                value: 0,    domain: 'com.apple.controlcenter' }
-      - { key: 'NSStatusItem Visible Item-6',                value: 0,    domain: 'com.apple.controlcenter' }
-      - { key: 'NSStatusItem Visible Item-7',                value: 0,    domain: 'com.apple.controlcenter' }
-      - { key: 'NSStatusItem Visible Item-8',                value: 0,    domain: 'com.apple.controlcenter' }
-      - { key: 'NSStatusItem Visible Item-9',                value: 0,    domain: 'com.apple.controlcenter' }
-      - { key: 'NSStatusItem Visible NowPlaying',            value: 1,    domain: 'com.apple.controlcenter' }
-      - { key: 'NSStatusItem Visible Sound',                 value: 1,    domain: 'com.apple.controlcenter' }
-      - { key: 'NSStatusItem Visible WiFi',                  value: 1,    domain: 'com.apple.controlcenter' }
+      - { key: 'DateFormat',                  value: 'EEE MMM d  j:mm a', domain: 'com.apple.menuextra.clock' }
       # Window behavior
       - { key: 'AppleMiniaturizeOnDoubleClick',       value: false }
       - { key: 'NSNavPanelExpandedStateForSaveMode',  value: true }
@@ -171,7 +123,6 @@
       - { key: 'FXICloudDriveDocuments',          value: true,   domain: 'com.apple.finder' }
       - { key: 'FXICloudDriveEnabled',            value: true,   domain: 'com.apple.finder' }
       - { key: 'FXDefaultSearchScope',            value: 'SCcf', domain: 'com.apple.finder' }
-      - { key: 'FXEnableExtensionChangeWarning',  value: true,   domain: 'com.apple.finder' }
       - { key: 'FXPreferredViewStyle',            value: 'Nlsv', domain: 'com.apple.finder' }
       - { key: 'OpenWindowForNewRemovableDisk',   value: false,  domain: 'com.apple.finder' }
       - { key: 'ShowExternalHardDrivesOnDesktop', value: false,  domain: 'com.apple.finder' }
@@ -193,34 +144,7 @@
       - { key: 'AutoFillPasswords',                           value: false, domain: 'com.apple.Safari' }
       - { key: 'AutoOpenSafeDownloads',                       value: false, domain: 'com.apple.Safari' }
       - { key: 'CanPromptForPushNotifications',               value: false, domain: 'com.apple.Safari' }
-      - { key: 'com.apple.Safari.ContentPageGroupIdentifier.WebKit2TabsToLinks',            value: true, domain: 'com.apple.Safari' }
-      - { key: 'com.apple.Safari.ContentPageGroupIdentifier.WebKit2DeveloperExtrasEnabled', value: true, domain: 'com.apple.Safari' }
-      - { key: 'Command1Through9SwitchesTabs',                value: false, domain: 'com.apple.Safari' }
-      - { key: 'EnableNarrowTabs',                            value: true,  domain: 'com.apple.Safari' }
-      - { key: 'ExtensionsEnabled',                           value: true,  domain: 'com.apple.Safari' }
-      - { key: 'FindOnPageMatchesWordStartsOnly',             value: true,  domain: 'com.apple.Safari' }
-      - { key: 'HideHighlightsEmptyItemViewPreferenceKey',    value: true,  domain: 'com.apple.Safari' }
-      - { key: 'HideStartPageFrecentsEmptyItemView',          value: true,  domain: 'com.apple.Safari' }
-      - { key: 'HideStartPageSiriSuggestionsEmptyItemView',   value: true,  domain: 'com.apple.Safari' }
-      - { key: 'IncludeDevelopMenu',                          value: true,  domain: 'com.apple.Safari' }
-      - { key: 'InstallExtensionUpdatesAutomatically',        value: true,  domain: 'com.apple.Safari' }
-      - { key: 'ReadingListSaveArticlesOfflineAutomatically', value: true,  domain: 'com.apple.Safari' }
-      - { key: 'SendDoNotTrackHTTPHeader',                    value: true,  domain: 'com.apple.Safari' }
-      - { key: 'ShowFavoritesBar',                            value: false, domain: 'com.apple.Safari' }
-      - { key: 'ShowFavoritesBar-v2',                         value: false, domain: 'com.apple.Safari' }
-      - { key: 'ShowFullURLInSmartSearchField',               value: true,  domain: 'com.apple.Safari' }
-      - { key: 'ShowSidebarInNewWindows',                     value: false, domain: 'com.apple.Safari' }
-      - { key: 'ShowSidebarInTopSites',                       value: false, domain: 'com.apple.Safari' }
-      - { key: 'ShowStandaloneTabBar',                        value: false, domain: 'com.apple.Safari' }
-      - { key: 'SuppressSearchSuggestions',                   value: true,  domain: 'com.apple.Safari' }
-      - { key: 'UniversalSearchEnabled',                      value: false, domain: 'com.apple.Safari' }
-      - { key: 'WarnAboutFraudulentWebsites',                 value: true,  domain: 'com.apple.Safari' }
-      - { key: 'WebAutomaticSpellingCorrectionEnabled',       value: false, domain: 'com.apple.Safari' }
-      - { key: 'WebContinuousSpellCheckingEnabled',           value: true,  domain: 'com.apple.Safari' }
-      - { key: 'WebKitDeveloperExtras',                       value: true,  domain: 'com.apple.Safari' }
-      - { key: 'WebKitDeveloperExtrasEnabledPreferenceKey',   value: true,  domain: 'com.apple.Safari' }
-      - { key: 'WebKitTabToLinksPreferenceKey',               value: true,  domain: 'com.apple.Safari' }
-      # Siri / assistant
+      # Siri
       - { key: 'Assistant Enabled', value: false, domain: 'com.apple.assistant.support' }
       - { key: 'Dictation Enabled', value: false, domain: 'com.apple.assistant.support' }
       - { key: 'StatusMenuVisible', value: false, domain: 'com.apple.Siri' }
@@ -230,12 +154,9 @@
       - { key: 'ShowCategory',                value: 0,          domain: 'com.apple.ActivityMonitor' }
       - { key: 'SortColumn',                  value: 'CPUUsage', domain: 'com.apple.ActivityMonitor' }
       - { key: 'SortDirection',               value: 0,          domain: 'com.apple.ActivityMonitor' }
-      - { key: 'showInMenuBarIfPresent',      value: false,      domain: 'com.apple.airplay' }
       - { key: 'advanced-image-options',      value: true,       domain: 'com.apple.DiskUtility' }
-      - { key: 'DUDebugMenuEnabled',          value: true,       domain: 'com.apple.DiskUtility' }
-      - { key: 'disableHotPlug',              value: true,       domain: 'com.apple.ImageCapture' }
       - { key: 'Quit When Finished',          value: true,       domain: 'com.apple.print.PrintingPrefs' }
-      - { key: 'location',                    value: "{{ home }}/Pictures/Screenshots", domain: 'com.apple.screencapture' }  # XXX
+      - { key: 'location',                    value: "{{ home }}/Pictures/Screenshots", domain: 'com.apple.screencapture' }
       - { key: 'type',                        value: 'png',      domain: 'com.apple.screencapture' }
       - { key: 'DoNotOfferNewDisksForBackup', value: true,       domain: 'com.apple.TimeMachine' }
   tasks:
