@@ -21,7 +21,7 @@ for _, b in ipairs(binds) do
   if b.launch then
     cmd = ('/usr/bin/open -gna "%s" --args %s'):format(b.launch, b.args or '')
   elseif b.open then
-    cmd = ('/usr/bin/open -gn "%s"'):format(b.open)
+    cmd = ('/usr/bin/open "%s"'):format(b.open)
   elseif b.cmd then
     cmd = b.cmd
   end
