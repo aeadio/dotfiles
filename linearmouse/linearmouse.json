@@ -1,9 +1,9 @@
 {
-  "$schema" : "https:\/\/app.linearmouse.org\/schema\/0.7.3",
+  "$schema" : "https:\/\/app.linearmouse.org\/schema\/0.7.5",
   "schemes" : [
     {
       "buttons" : {
-        "universalBackForward" : false
+        "universalBackForward" : true
       },
       "if" : {
         "device" : {
@@ -23,7 +23,7 @@
     },
     {
       "buttons" : {
-        "universalBackForward" : false
+        "universalBackForward" : true
       },
       "if" : {
         "device" : {
