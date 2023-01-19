@@ -4,8 +4,6 @@
     - community.general.homebrew_cask:
         cask:
           - 1password
-          - alacritty
-          - amethyst
           - appcleaner
           - bettertouchtool
           - daisydisk
@@ -13,6 +11,7 @@
           - font-iosevka-aile
           - font-iosevka-etoile
           - iterm2
+          - karabiner-elements
           - keycastr
           - linearmouse
           - onyx

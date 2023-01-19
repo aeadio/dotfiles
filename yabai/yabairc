@@ -1,0 +1,75 @@
+#!/usr/bin/env zsh
+
+() {
+  local padding=28
+  
+  # Load SA
+  yabai -m signal --add event=dock_did_restart action="sudo yabai --load-sa"
+  sudo yabai --load-sa
+  
+  # Tiling
+  yabai -m config layout                      bsp
+  
+  # Window behavior
+  yabai -m config window_origin_display       focused
+  yabai -m config window_placement            second_child
+  yabai -m config window_topmost              on      # SA
+  yabai -m config auto_balance                off
+  yabai -m config split_type                  auto
+  yabai -m config split_ratio                 0.70
+  
+  # Input behavior
+  yabai -m config mouse_follows_focus         off
+  yabai -m config focus_follows_mouse         off
+  
+  yabai -m config mouse_drop_action           swap
+  
+  yabai -m config mouse_modifier              cmd
+  yabai -m config mouse_action1               move
+  yabai -m config mouse_action2               resize
+  
+  # Appearance
+  yabai -m config top_padding                 $padding
+  yabai -m config bottom_padding              $padding
+  yabai -m config left_padding                $padding
+  yabai -m config right_padding               $padding
+  yabai -m config window_gap                  $padding
+  
+  yabai -m config window_opacity              on      # SA
+  yabai -m config active_window_opacity       1.0     # SA
+  yabai -m config normal_window_opacity       0.90    # SA
+  yabai -m config window_opacity_duration     0.1     # SA
+  
+  yabai -m config window_animation_duration   0.1     # SA
+  
+  yabai -m config window_shadow               on      # SA
+  
+  yabai -m config window_border               off
+  yabai -m config window_border_width         1
+  yabai -m config window_border_radius        1
+  yabai -m config window_border_blur          on
+  yabai -m config active_window_border_color  ''
+  yabai -m config normal_window_border_color  ''
+  yabai -m config insert_feedback_color       ''
+  
+  # Rules
+  # System dialogues
+  yabai -m rule --add label="Finder" app="^Finder$" title="(Co(py|nnect)|Move|Info|Pref)" manage=off
+  yabai -m rule --add label="Safari" app="^Safari$" title="^(General|(Tab|Password|Website|Extension)s|AutoFill|Se(arch|curity)|Privacy|Advance)$" manage=off
+  yabai -m rule --add label="System Preferences" app="^System (Preferences|Settings)$" title=".*" manage=off
+  yabai -m rule --add label="App Store" app="^App Store$" manage=off
+  yabai -m rule --add label="Activity Monitor" app="^Activity Monitor$" manage=off
+  yabai -m rule --add label="Calculator" app="^Calculator$" manage=off
+  yabai -m rule --add label="Dictionary" app="^Dictionary$" manage=off
+  yabai -m rule --add label="Software Update" title="Software Update" manage=off
+  yabai -m rule --add label="About This Mac" app="System Information" title="About This Mac" manage=off
+  
+  # Apps
+  yabai -m rule --add label="1Password" app="^1Password" manage=off
+  yabai -m rule --add label="Alfred" app="^Alfred$" manage=off
+  yabai -m rule --add label="AppCleaner" app="^AppCleaner$" manage=off
+  yabai -m rule --add label="DaisyDisk" app="^DaisyDisk$" manage=off
+  yabai -m rule --add label="LinearMouse" app="^LinearMouse$" manage=off
+  yabai -m rule --add label="Numi" app="^Numi$" manage=off
+  yabai -m rule --add label="OnyX" app="^OnyX$" manage=off
+}
