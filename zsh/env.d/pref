@@ -8,7 +8,7 @@ export VISUAL='micro'
 export EDITOR=$VISUAL
 export GEDITOR='code'  # Used in ranger's rifle.conf
 export PAGER='less'
-export TERMINAL='alacritty'
+export TERMINAL='iterm2'
 
 # NOTE: Implicit dependency on env.d/hier loading first in order to set PATH
 if (( $+commands[bat] )); then
