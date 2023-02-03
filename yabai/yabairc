@@ -54,22 +54,25 @@
   
   # Rules
   # System dialogues
-  yabai -m rule --add label="Finder" app="^Finder$" title="(Co(py|nnect)|Move|Info|Pref)" manage=off
-  yabai -m rule --add label="Safari" app="^Safari$" title="^(General|(Tab|Password|Website|Extension)s|AutoFill|Se(arch|curity)|Privacy|Advance)$" manage=off
-  yabai -m rule --add label="System Preferences" app="^System (Preferences|Settings)$" title=".*" manage=off
-  yabai -m rule --add label="App Store" app="^App Store$" manage=off
+  yabai -m rule --add label="About This Mac" app="System Information" title="About This Mac" manage=off
   yabai -m rule --add label="Activity Monitor" app="^Activity Monitor$" manage=off
+  yabai -m rule --add label="App Store" app="^App Store$" manage=off
+  yabai -m rule --add label="Archive Utility" title="Archive Utility" manage=off
+  yabai -m rule --add label="Finder" app="^Finder$" title="(Co(py|nnect)|Move|Info|Pref)" manage=off
   yabai -m rule --add label="Calculator" app="^Calculator$" manage=off
   yabai -m rule --add label="Dictionary" app="^Dictionary$" manage=off
+  yabai -m rule --add label="Preview" app="^Preview$" manage=off
+  yabai -m rule --add label="Safari" app="^Safari$" title="^(General|(Tab|Password|Website|Extension)s|AutoFill|Se(arch|curity)|Privacy|Advance)$" manage=off
   yabai -m rule --add label="Software Update" title="Software Update" manage=off
-  yabai -m rule --add label="About This Mac" app="System Information" title="About This Mac" manage=off
+  yabai -m rule --add label="System Preferences" app="^System (Preferences|Settings)$" title=".*" manage=off
   
   # Apps
   yabai -m rule --add label="1Password" app="^1Password" manage=off
-  yabai -m rule --add label="Alfred" app="^Alfred$" manage=off
+  yabai -m rule --add label="Alfred" app="^Alfred" manage=off
   yabai -m rule --add label="AppCleaner" app="^AppCleaner$" manage=off
   yabai -m rule --add label="DaisyDisk" app="^DaisyDisk$" manage=off
   yabai -m rule --add label="LinearMouse" app="^LinearMouse$" manage=off
   yabai -m rule --add label="Numi" app="^Numi$" manage=off
   yabai -m rule --add label="OnyX" app="^OnyX$" manage=off
+  yabai -m rule --add label="Zoom" app="^zoom.us$" manage=off
 }
