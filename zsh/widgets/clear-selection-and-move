@@ -6,8 +6,10 @@ zle deactivate-region -w
 zle -K main
 
 case $KEYS in
-  $'\C-[[A') zle up-line-or-history -w ;;    # up
-  $'\C-[[B') zle down-line-or-history -w ;;  # down
-  $'\C-[[D') zle backward-char -w ;;         # left
-  $'\C-[[C') zle forward-char -w ;;          # right
+  $'\C-[[A')    zle up-line-or-history -w ;;    # up
+  $'\C-[[B')    zle down-line-or-history -w ;;  # down
+  $'\C-[[D')    zle backward-char -w ;;         # left
+  $'\C-[[C')    zle forward-char -w ;;          # right
+  $'\C-[[1;5D') zle backward-word -w ;;         # ctrl-left
+  $'\C-[[1;5C') zle forward-word -w ;;          # ctrl-right
 esac

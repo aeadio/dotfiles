@@ -104,6 +104,9 @@ bindkey -M shift-select '^[[B'    clear-selection-and-move    # down
 bindkey -M shift-select '^[[D'    clear-selection-and-move    # left
 bindkey -M shift-select '^[[C'    clear-selection-and-move    # right
 
+bindkey -M shift-select '^[[1;5D' clear-selection-and-move    # ctrl-left
+bindkey -M shift-select '^[[1;5C' clear-selection-and-move    # ctrl-right
+
 bindkey -M shift-select '^[[1;2A' select-direction            # shift-up
 bindkey -M shift-select '^[[1;2B' select-direction            # shift-down
 bindkey -M shift-select '^[[1;2D' select-direction            # shift-left
