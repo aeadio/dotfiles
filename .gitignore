@@ -6,6 +6,7 @@ Thumbs.db
 # Machine-specific
 /aws
 /aws-sam
+/AWSVPNClient
 /circleci
 /docker
 /gh
