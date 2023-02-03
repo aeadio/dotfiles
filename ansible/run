@@ -62,7 +62,7 @@ path=(
 )
 
 if (( ! $+commands[ansible-playbook] )); then
-  brew "ansible" || abort "unable to install Ansible"
+  brew install "ansible" || abort "unable to install Ansible"
 fi
 
 get_sudo_pass "$@"
