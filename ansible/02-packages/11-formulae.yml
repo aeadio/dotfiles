@@ -48,6 +48,7 @@
           - ripgrep-all
           - rsync
           - shellcheck
+          - skhd
           - sqlite3
           - telnet
           - terraform
@@ -55,3 +56,4 @@
           - w3m
           - watch
           - wget
+          - yabai

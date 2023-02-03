@@ -5,7 +5,7 @@
   tasks:
     - community.general.mas:
         id:
+          - 1091189122  # Bear
           - 539883307   # LINE
-          - 1475387142  # Tailscale
       # Skip errors because we never log into AppStore on work machines
       ignore_errors: true

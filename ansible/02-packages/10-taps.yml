@@ -6,5 +6,6 @@
           - homebrew/cask
           - homebrew/cask-fonts
           - homebrew/cask-versions  # Firefox update channels
+          - koekeishiya/formulae
     - community.general.homebrew:
         update_homebrew: yes

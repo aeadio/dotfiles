@@ -4,9 +4,10 @@
     - community.general.homebrew_cask:
         cask:
           - 1password
+          - alfred4
           - appcleaner
-          - bettertouchtool
           - daisydisk
+          - discord
           - font-iosevka
           - font-iosevka-aile
           - font-iosevka-etoile
@@ -14,9 +15,11 @@
           - karabiner-elements
           - keycastr
           - linearmouse
+          - numi
           - onyx
           - rar
           - secretive
+          - slack
           - spotify
           - the-unarchiver
           - visual-studio-code
