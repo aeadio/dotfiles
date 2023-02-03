@@ -49,6 +49,7 @@ ralt + rcmd + rctrl + rshift + lshift - 9     : yabai -m window --space 9
 
 ralt + rcmd + rctrl + rshift          - f     : yabai -m window --toggle float
 ralt + rcmd + rctrl + rshift          - s     : yabai -m window --toggle sticky
+ralt + rcmd + rctrl + rshift          - t     : yabai -m window --toggle topmost
 
 ralt + rcmd + rctrl + rshift          - w     : yabai -m window --close
 
@@ -58,12 +59,14 @@ ralt + rcmd + rctrl + rshift + lalt   - b     : yabai -m space --layout bsp
 ralt + rcmd + rctrl + rshift + lalt   - f     : yabai -m space --layout float
 
 # Yabai control
-ralt + rcmd + rctrl + rshift          - f4    : /usr/local/bin/brew services restart skhd
-ralt + rcmd + rctrl + rshift          - f5    : /usr/local/bin/brew services restart yabai
+ralt + rcmd + rctrl + rshift          - f4    : brew services restart skhd
+ralt + rcmd + rctrl + rshift          - f5    : brew services restart yabai
+ralt + rcmd + rctrl + rshift          - f6    : brew services stop yabai
+ralt + rcmd + rctrl + rshift          - f7    : brew services start yabai
 
 # Launch apps
 ralt + rcmd + rctrl + rshift          - z     : open -gna /Applications/Vivaldi.app
 ralt + rcmd + rctrl + rshift + lshift - z     : open -gna /Applications/Vivaldi.app --args --incognito
 ralt + rcmd + rctrl + rshift          - x     : "$HOME"/bin/iterm2
-ralt + rcmd + rctrl + rshift          - c     : /usr/local/bin/code -n
+ralt + rcmd + rctrl + rshift          - e     : code -n
 ralt + rcmd + rctrl + rshift          - h     : open "$HOME"
