@@ -1,7 +1,11 @@
 # vim: ft=sh ts=2 sw=2 et:
 
 # Add zsh-completions if it exists
-fpath=( $ZSH/plugins/zsh-completions/src(N) $fpath )
+fpath=(
+  $ZSH/plugins/zsh-completions/src(N)
+  /opt/homebrew/share/zsh/site-functions(N)
+  $fpath
+)
 
 () {
   setopt localoptions extended_glob
