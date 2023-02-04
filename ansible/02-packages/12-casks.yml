@@ -5,6 +5,7 @@
         cask:
           - 1password
           - alfred4
+          - app-tamer
           - appcleaner
           - daisydisk
           - discord
