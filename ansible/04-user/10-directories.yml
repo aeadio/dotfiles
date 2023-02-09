@@ -2,11 +2,11 @@
   hosts: 'localhost'
   vars:
     home_directories:
+      - { dirname: 'Developer' }
       - { dirname: 'Pictures/Screenshots' }
       - { dirname: 'Pictures/Wallpapers' }
       - { dirname: 'Security',     mode: 700 }
       - { dirname: 'Security/ssh', mode: 700 }
-      - { dirname: 'Source' }
       - { dirname: 'Temp' }
   tasks:
     - ansible.builtin.file:

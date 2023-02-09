@@ -38,9 +38,6 @@ alias p='paste'
 case $OSTYPE in
   darwin*)
     # x86 aliases
-    [[ $(arch) == 'arm64' && -x /usr/local/Homebrew/bin/brew ]] &&
-      alias briw='arch -x86_64 /usr/local/Homebrew/bin/brew'
-    
     () {
       # Search for all alternative/pinned versions of Homebrew packages, and
       # sets up <name><ver> aliases for each of that package's binaries.

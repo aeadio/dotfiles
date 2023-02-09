@@ -3,7 +3,7 @@
 # Informs as to the directory hierarchy of ~
 
 gopath=(
-  $HOME/Source/go(N)
+  $HOME/Developer/go(N)
   $HOME/src/go(N)
 )
 export GOPATH=${(j,:,)gopath}
