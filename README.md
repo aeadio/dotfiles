@@ -2,8 +2,6 @@
 
 My dotfiles. I use MacOS as a daily driver, and the main branch holds that configuration. Void Linux config is kept in a separate branch that is occasionally rebased on main.
 
-Most of the config is fairly run-of-the-mill. I've put particular effort into Zsh, Ansible bootstrapping, and rewriting Ranger's `rifle.conf` to be more terminal-centric.
-
 As usual, symlinks are set up from the home folder into the relevant files/directories as needed. Symlinks are set up by Ansible.
 
 ## How do I use them?
@@ -81,12 +79,11 @@ I've tried to display quite a bit of useful information in the prompt while keep
    |      |         |          |         |            \                       |
    v      v         v          v         v             v                      |
 [[user][@host]:]directory [⨕gitbranch[:commits][ ⇄ localchanges]]             |
-[[R]⠶shlvl ][🯊[:awsprofile] ][⋮stack]»   ^-------------^---------------------'
-  ^    ^     ^      ^            ^
-  |    |     |      |             `- displays the ZLE stack size (ie push-line)
-  |    |     |       `-- AWS profile from Vault if not 'default'
-  |    |      `-- MFA set by AWS Vault; red=expired, green=ok, yellow=unknown
-  |     `-- (SHLVL - RANGER_LEVEL) if above 1
+[[R] ][🯊[:awsprofile] ][⋮stack]»   ^-------------^---------------------------'
+  ^    ^      ^            ^
+  |    |      |             `- displays the ZLE stack size (ie push-line)
+  |    |       `-- AWS profile from Vault if not 'default'
+  |     `-- MFA set by AWS Vault; red=expired, green=ok, yellow=unknown
    `-- if inside a Ranger shell
 ```
 
@@ -151,59 +148,3 @@ The active selection will be replaced upon entering any other text, including pa
 See `rc.d/zle` for a full list of keybinds. Custom [widgets](https://zsh.sourceforge.io/Doc/Release/Zsh-Line-Editor.html#Zle-Widgets) (functions invoked by these keybinds) are implemented in `widgets/`. Keybindings specific to shift-select mode are found at the bottom.
 
 Note that modifier keybindings, especially multi-modifier ones, may not work in all terminals. Keybindings present in `rc.d/zle` are developed for Alacritty.
-
-## Ansible
-
-I've written a series of playbooks with a goal to get any computer in my care up to date with my preferences. The goal is that I should be able to clone the Ansible startup scripts on a fresh laptop (or one that's far out of sync with my preferences) and have a fully-furnished environment afterwards.
-
-I've seen several users leverage Ansible in their dotfiles, but often just to handle setting up a few symlinks or installing one or two packages. I wanted my setup to be much more comprehensive.
-
-Notably, the Ansible playbooks handle obvious things like setting up symlinks to dotfiles, but also:
-- Ensure baseline components in the OS are bootstrapped, like Xcode utilities and Rosetta 2
-- Apply system-wide configuration for the OS
-  - MacOS `defaults`
-  - `/etc` config
-  - Locales, input methods, etc
-  - Any special one-offs that need to be configured through shell commands, or specific config file locations
-- Install Homebrew (and any other package managers)
-- Ensure all preferred packages are installed (formulae/casks)
-- Configure all third party packages where reasonable -- ie, applications that do not handle their own settings sync
-- Pin dock items, enable autostart for applications
-- Ensure common folders I use are set up and have the correct permissions
-
-The goal is that, should my computer die and need to be replaced, I should be able to:
-1. Fetch a tarball of my dotfiles
-2. Run these playbooks
-3. Log into associated cloud accounts
-4. Generate ephemeral machine-specific keys (ie, SSH keys via Secretive)
-5. Reboot
-
-This should leave me in a completely familiar environment, virtually indistuishable from any other computer I own.
-
-Playbooks are broken out by purpose and scope, and a helper script (`ansible/run`) assists in running and logging output, making it easy to bootstrap just some aspect (ie, re-sync installed applications, or application config, but don't try to do base system setup).
-
-Some usage examples:
-
-```
-# By itself, runs all playbooks in order. Add -v (or -vvv, -vvvv, etc) for 
-# logging and increasing verbosity,
-~/Config/ansible
-» ./run -vvv
-
-# Give it the name of a stage (with or without leading NN-) to run all 
-# playbooks in that stage,
-~/Config/ansible
-» ./run system
-
-# Give it the name of a playbook (with or without leading NN-) to locate and 
-# run that playbook regardless of which stage it's in,
-~/Config/ansible
-» ./run formulae
-
-# The above fails if the playbook is ambiguously named, in which case give it 
-# a path to the playbook,
-~/Config/ansible
-» ./run 04-user/10-directories.yml
-```
-
-Additionally, the helper script _does not require_ Ansible to be pre-installed. If not found, it will install the Xcode CLI tools, then install Ansible into a temporary virtuelenv. This works without Homebrew, and should work out of the box on a reasonably-recent fresh copy of MacOS.
