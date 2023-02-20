@@ -25,11 +25,11 @@ compile-zshrc() {
   setopt localoptions extended_glob
   # We use this file (pre.d/zcompile) as the time tracking cookie via `touch`.
   # Check if it's modified within the last day.
-  if (( $+ZSHRC_FORCECOMPILE )) || [[ -n $0(#qNm+1) ]]; then
+  if (( $+ZSHRC_FORCECOMPILE )) || [[ -n $1(#qNm+1) ]]; then
     compile-zshrc
     # Set modification time on this script as the time cookie
     # Also touch the compiled version if it exists, so we know it's in sync  
     # with our cookied script.
-    touch $0 $0.zwc(N)
+    touch $1 $1.zwc(N)
   fi
-}
+} $0
