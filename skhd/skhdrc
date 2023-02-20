@@ -69,4 +69,4 @@ ralt + rcmd + rctrl + rshift          - z     : open -gna /Applications/Vivaldi.
 ralt + rcmd + rctrl + rshift + lshift - z     : open -gna /Applications/Vivaldi.app --args --incognito
 ralt + rcmd + rctrl + rshift          - x     : "$HOME"/bin/iterm2
 ralt + rcmd + rctrl + rshift          - e     : code -n
-ralt + rcmd + rctrl + rshift          - h     : open "$HOME"
+ralt + rcmd + rctrl + rshift          - h     : open -n "$HOME"
