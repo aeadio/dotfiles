@@ -63,7 +63,7 @@ If set to any value, always recompiles all `zsh/` source files on startup.
 
 Sets up common aliases. You won't find a ton of two- and three-letter aliases for all conceivable tasks. I use aliases mostly for the most frequently leveraged actions (viewing directory contents, opening an editor, etc), and rely on zsh-autosuggestions and smart completion for most other things.
 
-On MacOS, Homebrew is automatically searched for any packages which are verion-pinned (i.e., installed as "package@version"), and aliases are automatically set up for all of that package version's binaries. This includes an emulated x86 instance of Homebrew on Apple ARM Macs, if present. (`briw` is also set to invoke the emulated x86 brew command.)
+On MacOS, Homebrew is automatically searched for any packages which are verion-pinned (i.e., installed as "package@version"), and aliases are automatically set up for all of that package version's binaries. This includes an emulated x86 instance of Homebrew on Apple ARM Macs, if present.
 
 #### `rc.d/prompt`
 
