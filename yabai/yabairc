@@ -86,6 +86,7 @@
   yabai -m rule --add app="^AppCleaner$" manage=of
   yabai -m rule --add app="^AppTamer$" manage=offf
   yabai -m rule --add app="^AWS VPN Client$" manage=off
+  yabai -m rule --add app="^CleanShot" manage=off
   yabai -m rule --add app="^DaisyDisk$" manage=off
   yabai -m rule --add app="^Karabiner" manage=off
   yabai -m rule --add app="^KeyCastr$" manage=off
