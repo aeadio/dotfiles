@@ -64,6 +64,9 @@ ralt + rcmd + rctrl + rshift          - f5    : brew services restart yabai
 ralt + rcmd + rctrl + rshift          - f6    : brew services stop yabai
 ralt + rcmd + rctrl + rshift          - f7    : brew services start yabai
 
+# Settins toggles
+ralt + rcmd + rctrl + rshift          - o     : yabai -m config window_opacity ${${${$(yabai -m config window_opacity):#on}:/off/on}:-off}
+
 # Launch apps
 ralt + rcmd + rctrl + rshift          - z     : open -gna /Applications/Vivaldi.app
 ralt + rcmd + rctrl + rshift + lshift - z     : open -gna /Applications/Vivaldi.app --args --incognito
