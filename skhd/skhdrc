@@ -68,8 +68,8 @@ ralt + rcmd + rctrl + rshift          - f7    : brew services start yabai
 ralt + rcmd + rctrl + rshift          - o     : yabai -m config window_opacity ${${${$(yabai -m config window_opacity):#on}:/off/on}:-off}
 
 # Launch apps
-ralt + rcmd + rctrl + rshift          - z     : open -gna /Applications/Vivaldi.app
-ralt + rcmd + rctrl + rshift + lshift - z     : open -gna /Applications/Vivaldi.app --args --incognito
+ralt + rcmd + rctrl + rshift          - z     : open -gna "/Applications/Firefox Developer Edition.app"
+ralt + rcmd + rctrl + rshift + lshift - z     : open -gna "/Applications/Firefox Developer Edition.app" --args --private-window
 ralt + rcmd + rctrl + rshift          - x     : "$HOME"/bin/iterm2
 ralt + rcmd + rctrl + rshift          - e     : code -n
 ralt + rcmd + rctrl + rshift          - h     : open -n "$HOME"
