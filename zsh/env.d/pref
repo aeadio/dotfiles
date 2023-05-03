@@ -6,9 +6,9 @@
 # Standard variables used by many tools
 typeset -gx VISUAL='micro'
 typeset -gx EDITOR=$VISUAL
-typeset -gx GEDITOR='code'  # Used in ranger's rifle.conf
+typeset -gx GEDITOR='code-oss'  # Used in ranger's rifle.conf
 typeset -gx PAGER='less'
-typeset -gx TERMINAL='iterm2'
+typeset -gx TERMINAL='alacritty'
 
 # App exports
 # Per-app configuration overrides

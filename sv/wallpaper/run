@@ -3,5 +3,5 @@
 #exec 2>&1
 #exec snooze -H* -M/5 ${HOME}/bin/wallpaper
 
-"$HOME/bin/wallpaper" "$HOME/img/wall"
+"$HOME/bin/wallpaper" "$HOME/pictures/wallpapers"
 exec chpst -b wallpaper sleep 300

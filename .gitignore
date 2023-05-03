@@ -11,6 +11,8 @@ circleci
 docker
 gh
 kube
+menus
+mimeapps.list
 msmtp
 packer
 pulse

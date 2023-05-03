@@ -4,4 +4,4 @@
 : ${XDG_CONFIG_HOME:="$HOME"/.config}
 
 exec 2>&1
-exec picom --config "$XDG_CONFIG_HOME/picom/picom.conf" --experimental-backends
+exec picom --config "$XDG_CONFIG_HOME/picom/picom.conf" #--experimental-backends

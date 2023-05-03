@@ -1,4 +1,0 @@
-#!/bin/sh
-
-cd "$HOME/game/World of Warcraft/_classic_era" &&
-wine "WowClassic.exe"

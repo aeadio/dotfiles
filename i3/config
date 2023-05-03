@@ -7,7 +7,7 @@ force_focus_wrapping       no
 font pango:Iosevka Term 0
 hide_edge_borders none
 for_window [class="^.*"] border pixel 0
-gaps inner  40
+gaps inner  28
 gaps outer   0
 #                        border   bg       text     ind.     chborder
 client.focused           #323845  #8fbcbb  #c0c5ce  #c0c5ce  #8f7e8c
@@ -22,15 +22,15 @@ bar {
   workspace_buttons yes
   tray_output       none
   font              pango:Iosevka Term 10
-  height            28
+  height            24
   strip_workspace_numbers yes
   colors {
     background                     #323845cc
     separator                      #323845cc
     statusline                     #d8dee9ff
-    focused_workspace   #323845cc  #323845cc  #d8dee9ff
-    active_workspace    #323845cc  #323845cc  #77829cff
-    inactive_workspace  #323845cc  #323845cc  #566176ff
+    focused_workspace   #323845cc  #323845cc  #8fbcbbff
+    active_workspace    #323845cc  #323845cc  #81a1c1ff
+    inactive_workspace  #323845cc  #323845cc  #d8dee9ff
     urgent_workspace    #323845cc  #323845cc  #bf616aff
   }
   #bindsym button4 nop
@@ -51,18 +51,18 @@ for_window [class="^Steam$" title="^Create"]                   floating enable
 for_window [class="^feh$" title="^feh-float$"]                 floating enable
 for_window [class="^1Password$"]                               floating enable
 
-# Give half the workspaces to each screen; fall back to laptop display if no
+# Give 4 workspaces to each desktop screen; fall back to laptop display if no
 # screens are attached.
-workspace "1:一"  output DP-1 eDP-1
-workspace "2:二"  output DP-1 eDP-1
-workspace "3:三"  output DP-1 eDP-1
-workspace "4:四"  output DP-1 eDP-1
-workspace "5:五"  output DP-1 eDP-1
-workspace "6:六"  output DP-2 DP-1 eDP-1
-workspace "7:七"  output DP-2 DP-1 eDP-1
-workspace "8:八"  output DP-2 DP-1 eDP-1
-workspace "9:九"  output DP-2 DP-1 eDP-1
-workspace "10:十" output DP-2 DP-1 eDP-1
+workspace "1:一"  output DP-2 eDP-1
+workspace "2:二"  output DP-2 eDP-1
+workspace "3:三"  output DP-2 eDP-1
+workspace "4:四"  output DP-2 eDP-1
+workspace "5:五"  output DP-1 DP-2 eDP-1
+workspace "6:六"  output DP-1 DP-2 eDP-1
+workspace "7:七"  output DP-1 DP-2 eDP-1
+workspace "8:八"  output DP-1 DP-2 eDP-1
+workspace "9:九"  output eDP-1
+workspace "10:十" output eDP-1
 
 # Keybinds
 set $mod Mod4
@@ -115,15 +115,15 @@ bindsym $mod+e                  layout toggle split
 
 bindsym $mod+equal              resize grow   width 10 px or 1 ppt
 bindsym $mod+minus              resize shrink width 10 px or 1 ppt
-bindsym $mod+bracketleft        resize set    width 2805 px
-bindsym $mod+bracketright       resize set    width 960 px
-bindsym $mod+backslash          resize set    width 1845 px
+bindsym $mod+bracketleft        resize set    width 2838 px
+bindsym $mod+bracketright       resize set    width 918 px
+bindsym $mod+backslash          resize set    width 1878 px
 
 bindsym $mod+Shift+equal        resize grow   height 10 px or 1 ppt
 bindsym $mod+Shift+minus        resize shrink height 10 px or 1 ppt
-bindsym $mod+Shift+bracketleft  resize set    height 1347 px
-bindsym $mod+Shift+bracketright resize set    height 636 px
-bindsym $mod+Shift+backslash    resize set    height 991 px
+bindsym $mod+Shift+bracketleft  resize set    height 1382 px
+bindsym $mod+Shift+bracketright resize set    height 670 px
+bindsym $mod+Shift+backslash    resize set    height 1026 px
 
 bindsym $mod+F5                 restart
 bindsym $mod+Escape             exec --no-startup-id --no-startup-id stopx
@@ -131,18 +131,20 @@ bindsym $mod+Escape             exec --no-startup-id --no-startup-id stopx
 # Keybinds: external apps
 bindsym           $mod+z                exec --no-startup-id vivaldi-stable
 bindsym           $mod+Shift+z          exec --no-startup-id vivaldi-stable --incognito
-bindsym           $mod+x                exec --no-startup-id i3-sensible-terminal
+#bindsym          $mod+z                exec --no-startup-id firefox -new-window
+#bindsym          $mod+Shift+z          exec --no-startup-id firefox -private-window
+bindsym           $mod+x                exec --no-startup-id alacritty
 bindsym           $mod+Shift+x          exec --no-startup-id floatterm
 bindsym           $mod+c                exec --no-startup-id code-oss -n
 bindsym           $mod+n                exec --no-startup-id Discord
 bindsym           $mod+b                exec --no-startup-id slack
-bindsym           $mod+m                exec --no-startup-id irc
+#bindsym          $mod+m                exec --no-startup-id irc
 bindsym           $mod+BackSpace        exec --no-startup-id 1password
 
 bindsym           $mod+Return           exec --no-startup-id launch
 bindsym           $mod+slash            exec --no-startup-id switch
-bindsym           $mod+apostrophe       exec --no-startup-id 1passmenu --type
-bindsym           $mod+Shift+apostrophe exec --no-startup-id 1passmenu
+#bindsym          $mod+apostrophe       exec --no-startup-id 1passmenu --type
+#bindsym          $mod+Shift+apostrophe exec --no-startup-id 1passmenu
 bindsym           $mod+Insert           exec --no-startup-id bluetoothmenu
 bindsym           $mod+Prior            exec --no-startup-id bluetoothmenu
 bindsym           $mod+period           exec --no-startup-id floatterm-clac
@@ -153,13 +155,13 @@ bindsym --release $mod+F8               exec --no-startup-id lock
 bindsym --release $mod+Scroll_Lock      exec --no-startup-id lock
 bindsym --release $mod+Delete           exec --no-startup-id lock
 
-bindsym           $mod+Print            exec --no-startup-id maim -u --format png         ~/img/screen/$(date -u +%Y-%m-%dT%H:%M:%S).png
-bindsym --release $mod+Shift+Print      exec --no-startup-id maim -u --format png -s -b 1 ~/img/screen/$(date -u +%Y-%m-%dT%H:%M:%S).png
-bindsym --release $mod+Ctrl+Print       exec --no-startup-id maim -u --format png -s -b 1 -t 9999999 | convert - \( +clone -background black -shadow 80x10-1-1 \) +swap -background none -layers merge +repage ~/img/screen/$(date -u +%Y-%m-%dT%H:%M:%S).png
+bindsym           $mod+Print            exec --no-startup-id maim -u --format png         ~/pictures/screenshots/$(date -u +%Y-%m-%dT%H:%M:%S).png
+bindsym --release $mod+Shift+Print      exec --no-startup-id maim -u --format png -s -b 1 ~/pictures/screenshots/$(date -u +%Y-%m-%dT%H:%M:%S).png
+bindsym --release $mod+Ctrl+Print       exec --no-startup-id maim -u --format png -s -b 1 -t 9999999 | convert - \( +clone -background black -shadow 80x10-1-1 \) +swap -background none -layers merge +repage ~/pictures/screenshots/$(date -u +%Y-%m-%dT%H:%M:%S).png
 
-bindsym           $mod+F7               exec --no-startup-id sh -c "SVDIR=/home/a/sv sv restart wallpaper"
-bindsym           $mod+F11              exec --no-startup-id sh -c "SVDIR=/home/a/sv sv restart wallpaper"
-bindsym           $mod+F12              exec --no-startup-id sh -c "SVDIR=/home/a/sv sv restart picom"
+bindsym           $mod+F7               exec --no-startup-id sh -c "SVDIR=$HOME/sv sv restart wallpaper"
+bindsym           $mod+F11              exec --no-startup-id sh -c "SVDIR=$HOME/sv sv restart wallpaper"
+bindsym           $mod+F12              exec --no-startup-id sh -c "SVDIR=$HOME/sv sv restart picom"
 
 bindsym           XF86AudioMute         exec --no-startup-id vol toggle-mute
 bindsym           XF86AudioLowerVolume  exec --no-startup-id vol -3%

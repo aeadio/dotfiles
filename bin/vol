@@ -7,8 +7,8 @@
 # based on user-provided priority list.
 
 preferred_sinks=(
-  bluez_output.E0_49_ED_00_85_D3.a2dp-sink
-  alsa_output.pci-0000_00_1f.3.hdmi-stereo-extra2
+  #bluez_output.E0_49_ED_00_85_D3.a2dp-sink
+  #alsa_output.pci-0000_00_1f.3.hdmi-stereo-extra2
   alsa_output.pci-0000_00_1f.3.analog-stereo
 )
 

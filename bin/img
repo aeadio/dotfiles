@@ -1,8 +1,8 @@
 #!/bin/sh
 
-random=1
+random=0
 [ "$1" = '-R' ] && {
-  random=0
+  random=1
   shift
 }
 
