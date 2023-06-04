@@ -2,7 +2,7 @@
   hosts: 'localhost'
   vars:
     home_directories:
-      - { dirname: 'Developer' }
+      - { dirname: 'Source' }
       - { dirname: 'Pictures/Screenshots' }
       - { dirname: 'Pictures/Wallpapers' }
       - { dirname: 'Security',     mode: 700 }
