@@ -1,0 +1,16 @@
+# vim: ft=sh ts=2 sw=2 et:
+
+emulate -L zsh
+
+# Trigger the builtin method for clearing the screen. This is not aware of the
+# enclosing terminal emulator's ability to retain scrollback history, but it
+# should always work.
+zle clear-screen
+
+# Clear's iTerm2's scrollback history
+# https://iterm2.com/3.3/documentation-escape-codes.html
+print -n -- '\033]1337;ClearScrollback\a'
+
+# Clearing the iTerm buffer via OSC races with Zsh's prompt drawing so may
+# be munged at this point
+zle reset-prompt

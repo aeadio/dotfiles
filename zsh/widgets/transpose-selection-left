@@ -1,8 +1,0 @@
-# vim: ft=sh ts=2 sw=2 et:
-
-emulate -L zsh
-
-# XXX: Todo
-# This is tricky to implement as we need to essentially reimplement
-# match-words-by-style to account for the full selection, not just the
-# position of CURSOR

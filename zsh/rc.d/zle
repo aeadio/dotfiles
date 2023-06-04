@@ -64,7 +64,7 @@ bindkey '^[[1;7B' accept-line-and-down-history       # alt-ctrl-down
 bindkey '^[[1;7D' transpose-words                    # alt-ctrl-left
 bindkey '^[[1;7C' copy-prev-word                     # alt-ctrl-right
 
-bindkey '^[^['    clear-screen                       # esc + esc
+bindkey '^[^['    osc-clear-screen                   # esc + esc
 
 bindkey '^M'      accept-line                        # enter
 bindkey '^?'      backward-delete-char               # backspace
@@ -120,7 +120,7 @@ bindkey -M shift-select '^[[1;4C' select-direction            # shift-alt-right
 bindkey -M shift-select '^[[1;6D' select-direction            # shift-ctrl-left
 bindkey -M shift-select '^[[1;6C' select-direction            # shift-ctrl-right
 
-bindkey -M shift-select '^[[1;7D' transpose-selection-left    # alt-ctrl-left
+#bindkey -M shift-select '^[[1;7D'                            # alt-ctrl-left
 bindkey -M shift-select '^[[1;7C' clone-selection-right       # alt-ctrl-right
 
 bindkey -M shift-select '^[[3~'   delete-selection            # del
