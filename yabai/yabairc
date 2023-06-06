@@ -89,6 +89,7 @@
   yabai -m rule --add app="^CleanShot"            manage=off
   yabai -m rule --add app="^DaisyDisk$"           manage=off
   yabai -m rule --add app="^Firefox" title="^Library$" manage=off
+  yabai -m rule --add app="^Google Drive$"        manage=off
   yabai -m rule --add app="^Karabiner"            manage=off
   yabai -m rule --add app="^KeyCastr$"            manage=off
   yabai -m rule --add app="^LinearMouse$"         manage=off
