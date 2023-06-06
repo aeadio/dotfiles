@@ -136,7 +136,7 @@ bindsym           $mod+Shift+z          exec --no-startup-id vivaldi-stable --in
 bindsym           $mod+x                exec --no-startup-id alacritty
 bindsym           $mod+Shift+x          exec --no-startup-id floatterm
 bindsym           $mod+c                exec --no-startup-id code-oss -n
-bindsym           $mod+n                exec --no-startup-id Discord
+bindsym           $mod+n                exec --no-startup-id discord
 bindsym           $mod+b                exec --no-startup-id slack
 #bindsym          $mod+m                exec --no-startup-id irc
 bindsym           $mod+BackSpace        exec --no-startup-id 1password
