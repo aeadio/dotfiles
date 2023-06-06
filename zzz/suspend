@@ -11,4 +11,4 @@
 #xbacklight -get > "${XDG_DATA_HOME:-$HOME/.local/share}/brightness"
 
 # Wait a brief while for Bluetooth to come down, and the screen to lock
-sleep 4
+#sleep 4
