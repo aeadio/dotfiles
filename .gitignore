@@ -20,7 +20,8 @@ terraform
 vscode
 
 # Uninteresting stuff
-fontforge
-glib-2.0
-w3m
-pavucontrol.ini
+/cef_user_data
+/fontforge
+/glib-2.0
+/w3m
+/pavucontrol.ini
