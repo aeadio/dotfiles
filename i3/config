@@ -168,6 +168,6 @@ bindsym           XF86AudioLowerVolume  exec --no-startup-id vol -3%
 bindsym           XF86AudioRaiseVolume  exec --no-startup-id vol +3%
 bindsym           XF86MonBrightnessUp   exec --no-startup-id xbacklight -inc 5
 bindsym           XF86MonBrightnessDown exec --no-startup-id xbacklight -dec 5
-bindsym --release XF86Sleep             exec --no-startup-id doas zzz
-bindsym --release XF86PowerOff          exec --no-startup-id doas zzz
+#bindsym --release XF86Sleep            exec --no-startup-id doas zzz
+#bindsym --release XF86PowerOff         exec --no-startup-id doas zzz
 bindsym --release XF86ScreenSaver       exec --no-startup-id lock
