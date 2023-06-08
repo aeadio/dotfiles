@@ -126,7 +126,7 @@ bindsym $mod+Shift+bracketright resize set    height 670 px
 bindsym $mod+Shift+backslash    resize set    height 1026 px
 
 bindsym $mod+F5                 restart
-bindsym $mod+Escape             exec --no-startup-id --no-startup-id stopx
+bindsym $mod+Escape             exec --no-startup-id quitmenu
 
 # Keybinds: external apps
 bindsym           $mod+z                exec --no-startup-id vivaldi-stable

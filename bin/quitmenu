@@ -1,0 +1,13 @@
+#!/usr/bin/env zsh
+
+dmenu='nmenu'
+
+fields=(lock logout sleep reboot shutdown)
+
+case $(print -f '%s\n' $fields | ${dmenu:-dmenu}) in
+  lock)     lock ;;
+  logout)   loginctl kill-session self || stopx ;;
+  sleep)    loginctl suspend ;;
+  reboot)   loginctl reboot ;;
+  shutdown) loginctl poweroff ;;
+esac
