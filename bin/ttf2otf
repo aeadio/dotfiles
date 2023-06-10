@@ -35,7 +35,7 @@ trap cleanup EXIT INT TERM HUP
 # Fontforge doesn't support saving into arbitrary directories. Copy TTFs to
 # temporary directory.
 printf '%s' "Finding system-wide TTF files... "
-for f in $(fc-list : file | sed -n '/[Tt][Tt][Ff]:/p'); do
+for f in $(fc-list : file | sed -n '/[Tt][Tt][FfCc]:/p'); do
   f="${f%:}"
   [ -f "$f" ] && cp "$f" "${tmpdir}/"
 done
@@ -46,7 +46,7 @@ printf '%s' "Converting TTF fonts to OTF"
 (
   cd "${tmpdir}"
   export FONTFORGE_LANGUAGE=ff
-  find ./ -iname \*.ttf | (
+  find ./ -iname \*.ttf -o -iname \*.ttc | (
     while read f; do
       printf '%s' "."
       quiet fontforge -c 'Open($1); Generate($1:r + ".otf"); Print(".")' "$f" &
@@ -62,7 +62,7 @@ printf '%s' "Building user font directory with new OTFs... "
 find "${tmpdir}/" -iname \*.otf | while read f; do
   mv "$f" "${HOME}/.fonts/"
 done
-find "${HOME}/.fonts/" -iname \*.ttf | while read f; do
+find "${HOME}/.fonts/" -iname \*.ttf -o -iname \*.ttc | while read f; do
   rm "$f"
 done
 printf '%s\n' "done."
