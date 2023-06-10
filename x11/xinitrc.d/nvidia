@@ -1,0 +1,8 @@
+# Use Nvidia card as primary desktop GPU
+# Passes the framebuffer back to the Intel card ("modesetting" driver) to 
+# display via its wired outputs (incl eDP-1).
+xrandr --setprovideroutputsource modesetting NVIDIA-G0
+xrandr --auto
+
+# Default mode is sluggish
+nvidia-settings -a "[GPU:0]/GPUPowerMizerMode=1"

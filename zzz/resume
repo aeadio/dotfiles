@@ -3,21 +3,16 @@
 # Force up the Bluetooth chip
 #(sleep 1; "${HOME}"/bin/btup >/dev/null 2>/dev/null) &
 
+# Rescan monitors in case an external was plugged/unplugged while sleeping.
+autorandr --change --force
+
 # Xorg's OLED brightness logic munges up the display's gamma ramps. Restore
 # them, and then kick redshift to (1) correctly set them and (2) account for
 # any time passed during sleep.
 #xrandr --output DP-3  --gamma 1:1:1 --brightness 1.0
 #xrandr --output eDP-1 --gamma 1:1:1 --brightness 1.0
 #SVDIR="$HOME/sv" sv restart redshift
-
-# Remember the backlight brightness
-#[ -r "${XDG_DATA_HOME:-$HOME/.local/share}/brightness" ] && (
-#  sleep 6
-#  doas xbacklight -set "$(cat "${XDG_DATA_HOME:-$HOME/.local/share}/brightness")"
-#) &
-
-# Rescan monitors in case an external was plugged/unplugged while sleeping.
-autorandr --change --force
+xbacklight -set 60
 
 # Reset screen blanking in case we missed an event during sleep
 "$HOME"/bin/setscreenblank
