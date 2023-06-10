@@ -150,6 +150,7 @@ bindsym           $mod+Prior            exec --no-startup-id bluetoothmenu
 bindsym           $mod+period           exec --no-startup-id floatterm-clac
 bindsym           $mod+Next             exec --no-startup-id floatterm-vol
 bindsym           $mod+comma            exec --no-startup-id floatterm-filemgr
+bindsym           $mod+s                exec --no-startup-id pw
 
 bindsym --release $mod+F8               exec --no-startup-id lock
 bindsym --release $mod+Scroll_Lock      exec --no-startup-id lock
