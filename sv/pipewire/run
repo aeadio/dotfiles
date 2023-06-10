@@ -5,4 +5,4 @@ exec 2>&1
 {
   which pulseaudio && pulseaudio --kill
 } >/dev/null 2>/dev/null
-exec pipewire
+exec pipewire -v
