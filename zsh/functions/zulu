@@ -2,4 +2,21 @@
 
 emulate -L zsh
 
-date -u +'%Y-%02m-%02dT%02H:%02M:%02SZ'
+local -A opts
+zparseopts -A opts -D d -dash s -short
+
+local dashes short
+(( $+opts[-d] || $+opts[--dash]  )) && dashes=1
+(( $+opts[-s] || $+opts[--short] )) && short=1
+
+local fmt=('%Y-%02m-%02d')
+
+if (( ! short )); then
+  fmt+=('T')
+  (( dashes )) &&
+    fmt+=('%02H-%02M-%02S') ||
+    fmt+=('%02H:%02M:%02S')
+  fmt+=('Z')
+fi
+
+date -u +${(j::)fmt}
