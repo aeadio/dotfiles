@@ -7,7 +7,7 @@
 	<key>AppleCurrentKeyboardLayoutInputSourceID</key>
 	<string>com.apple.keylayout.US</string>
 	<key>AppleDictationAutoEnable</key>
-	<integer>0</integer>
+	<integer>1</integer>
 	<key>AppleEnabledInputSources</key>
 	<array>
 		<dict>
@@ -40,12 +40,6 @@
 		</dict>
 		<dict>
 			<key>Bundle ID</key>
-			<string>com.apple.inputmethod.ironwood</string>
-			<key>InputSourceKind</key>
-			<string>Non Keyboard Input Method</string>
-		</dict>
-		<dict>
-			<key>Bundle ID</key>
 			<string>com.apple.PressAndHold</string>
 			<key>InputSourceKind</key>
 			<string>Non Keyboard Input Method</string>
@@ -58,27 +52,41 @@
 			<key>InputSourceKind</key>
 			<string>Input Mode</string>
 		</dict>
-		<dict>
-			<key>Bundle ID</key>
-			<string>com.apple.inputmethod.EmojiFunctionRowItem</string>
-			<key>InputSourceKind</key>
-			<string>Non Keyboard Input Method</string>
-		</dict>
 	</array>
+	<key>AppleFnUsageType</key>
+	<integer>3</integer>
 	<key>AppleInputSourceHistory</key>
 	<array>
+		<dict>
+			<key>InputSourceKind</key>
+			<string>Keyboard Layout</string>
+			<key>KeyboardLayout ID</key>
+			<integer>0</integer>
+			<key>KeyboardLayout Name</key>
+			<string>U.S.</string>
+		</dict>
+		<dict>
+			<key>Bundle ID</key>
+			<string>com.apple.inputmethod.TCIM</string>
+			<key>Input Mode</key>
+			<string>com.apple.inputmethod.TCIM.Pinyin</string>
+			<key>InputSourceKind</key>
+			<string>Input Mode</string>
+		</dict>
+		<dict>
+			<key>Bundle ID</key>
+			<string>com.apple.inputmethod.TCIM</string>
+			<key>Input Mode</key>
+			<string>com.apple.inputmethod.TCIM.Zhuyin</string>
+			<key>InputSourceKind</key>
+			<string>Input Mode</string>
+		</dict>
 	</array>
 	<key>AppleSelectedInputSources</key>
 	<array>
 		<dict>
 			<key>Bundle ID</key>
 			<string>com.apple.PressAndHold</string>
-			<key>InputSourceKind</key>
-			<string>Non Keyboard Input Method</string>
-		</dict>
-		<dict>
-			<key>Bundle ID</key>
-			<string>com.apple.inputmethod.EmojiFunctionRowItem</string>
 			<key>InputSourceKind</key>
 			<string>Non Keyboard Input Method</string>
 		</dict>

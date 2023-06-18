@@ -1,0 +1,18 @@
+{
+    "com.dmitrynikolaev.numi" =     {
+        SUAutomaticallyUpdate = 1;
+        SUEnableAutomaticChecks = 1;
+        SUHasLaunchedBefore = 1;
+        activationOnUpdate = 0;
+        alfredIntegration = 1;
+        alwaysOnTop = 0;
+        correctFinish = 0;
+        menuBarMode = 1;
+        shortcutObject =         {
+            characters = "\003";
+            charactersIgnoringModifiers = C;
+            keyCode = 8;
+            modifierFlags = 1966080;
+        };
+    };
+}

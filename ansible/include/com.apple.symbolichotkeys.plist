@@ -241,16 +241,17 @@
 		<key>164</key>
 		<dict>
 			<key>enabled</key>
-			<true/>
+			<false/>
 			<key>value</key>
 			<dict>
 				<key>parameters</key>
 				<array>
-					<integer>8388608</integer>
-					<integer>4286578687</integer>
+					<integer>65535</integer>
+					<integer>65535</integer>
+					<integer>0</integer>
 				</array>
 				<key>type</key>
-				<string>modifier</string>
+				<string>standard</string>
 			</dict>
 		</dict>
 		<key>17</key>
@@ -289,7 +290,7 @@
 				<array>
 					<integer>65535</integer>
 					<integer>105</integer>
-					<integer>8388608</integer>
+					<integer>9437184</integer>
 				</array>
 				<key>type</key>
 				<string>standard</string>

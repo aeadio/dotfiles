@@ -4,161 +4,165 @@
     home: "{{ lookup('env', 'HOME') }}"
     macos_defaults:
       # Desktop
-      - { key: 'autohide',                    value: true,  domain: 'com.apple.dock' }
-      - { key: 'expose-animation-duration',   value: 0.1,   domain: 'com.apple.dock' }
-      - { key: 'largesize',                   value: 96,    domain: 'com.apple.dock' }
-      - { key: 'mru-spaces',                  value: false, domain: 'com.apple.dock' }
-      - { key: 'show-recents',                value: false, domain: 'com.apple.dock' }
-      - { key: 'showDesktopGestureEnabled',   value: 0,     domain: 'com.apple.dock' }
-      - { key: 'showLaunchpadGestureEnabled', value: 0,     domain: 'com.apple.dock' }
-      - { key: 'tilesize',                    value: 48,    domain: 'com.apple.dock' }
-      - { key: 'wvous-bl-corner',             value: 0,     domain: 'com.apple.dock' }
-      - { key: 'wvous-bl-modifier',           value: 0,     domain: 'com.apple.dock' }
-      - { key: 'wvous-br-corner',             value: 0,     domain: 'com.apple.dock' }
-      - { key: 'wvous-br-modifier',           value: 0,     domain: 'com.apple.dock' }
-      - { key: 'wvous-tl-corner',             value: 0,     domain: 'com.apple.dock' }
-      - { key: 'wvous-tl-modifier',           value: 0,     domain: 'com.apple.dock' }
-      - { key: 'wvous-tr-corner',             value: 0,     domain: 'com.apple.dock' }
-      - { key: 'wvous-tr-modifier',           value: 0,     domain: 'com.apple.dock' }
+      - { key: 'autohide',                                   value: 1,               domain: 'com.apple.dock' }
+      - { key: 'expose-animation-duration',                  value: 0.1,             domain: 'com.apple.dock' }
+      - { key: 'largesize',                                  value: 96,              domain: 'com.apple.dock' }
+      - { key: 'mru-spaces',                                 value: 0,               domain: 'com.apple.dock' }
+      - { key: 'show-recents',                               value: 0,               domain: 'com.apple.dock' }
+      - { key: 'showDesktopGestureEnabled',                  value: 0,               domain: 'com.apple.dock' }
+      - { key: 'showLaunchpadGestureEnabled',                value: 0,               domain: 'com.apple.dock' }
+      - { key: 'tilesize',                                   value: 48,              domain: 'com.apple.dock' }
+      - { key: 'wvous-bl-corner',                            value: 0,               domain: 'com.apple.dock' }
+      - { key: 'wvous-bl-modifier',                          value: 0,               domain: 'com.apple.dock' }
+      - { key: 'wvous-br-corner',                            value: 0,               domain: 'com.apple.dock' }
+      - { key: 'wvous-br-modifier',                          value: 0,               domain: 'com.apple.dock' }
+      - { key: 'wvous-tl-corner',                            value: 0,               domain: 'com.apple.dock' }
+      - { key: 'wvous-tl-modifier',                          value: 0,               domain: 'com.apple.dock' }
+      - { key: 'wvous-tr-corner',                            value: 0,               domain: 'com.apple.dock' }
+      - { key: 'wvous-tr-modifier',                          value: 0,               domain: 'com.apple.dock' }
       # Menu bar
-      - { key: 'DateFormat',                  value: 'EEE MMM d  j:mm a', domain: 'com.apple.menuextra.clock' }
+      - { key: 'ShowAMPM',                                   value: 1,               domain: 'com.apple.menuextra.clock' }
+      - { key: 'ShowDate',                                   value: 0,               domain: 'com.apple.menuextra.clock' }
+      - { key: 'ShowDayOfWeek',                              value: 1,               domain: 'com.apple.menuextra.clock' }
       # Window behavior
-      - { key: 'AppleMiniaturizeOnDoubleClick',       value: false }
-      - { key: 'NSNavPanelExpandedStateForSaveMode',  value: true }
-      - { key: 'NSNavPanelExpandedStateForSaveMode2', value: true }
-      - { key: 'PMPrintingExpandedStateForPrint',     value: true }
-      - { key: 'PMPrintingExpandedStateForPrint2',    value: true }
-      - { key: 'NSWindowResizeTime',                  value: 0.1 }
-      - { key: 'NSWindowShouldDragOnGesture',         value: true }
-      # Keyboard input
-      - { key: 'InitialKeyRepeat',                      value: 15 }
-      - { key: 'KeyRepeat',                             value: 2 }
-      - { key: 'NSAutomaticCapitalizationEnabled',      value: false }
-      - { key: 'NSAutomaticDashSubstitutionEnabled',    value: false }
-      - { key: 'NSAutomaticPeriodSubstitutionEnabled',  value: false }
-      - { key: 'NSAutomaticQuoteSubstitutionEnabled',   value: false }
-      - { key: 'NSAutomaticSpellingCorrectionEnabled',  value: false }
-      - { key: 'NSAutomaticTextCompletionEnabled',      value: false }
+      - { key: 'AppleMiniaturizeOnDoubleClick',              value: 0 }
+      - { key: 'NSNavPanelExpandedStateForSaveMode',         value: 1 }
+      - { key: 'NSNavPanelExpandedStateForSaveMode2',        value: 1 }
+      - { key: 'PMPrintingExpandedStateForPrint',            value: 1 }
+      - { key: 'PMPrintingExpandedStateForPrint2',           value: 1 }
+      - { key: 'NSWindowResizeTime',                         value: 0.1 }
+      - { key: 'NSWindowShouldDragOnGesture',                value: 1 }
+      # Appearance
+      - { key: 'AppleAquaColorVariant',                      value: 1 }
+      - { key: 'AppleInterfaceStyle',                        value: 'Dark' }
+      - { key: 'AppleShowScrollBars',                        value: 'Automatic' }
       # Localization
-      - { key: 'AppleLanguages',                     value: ['en-US', 'zh-Hant-US'] }
-      - { key: 'AppleLocale',                        value: 'en_US' }
-      - { key: 'AppleMeasurementUnits',              value: 'Inches' }
-      - { key: 'AppleMetricUnits',                   value: false }
-      - { key: 'AppleTemperatureUnit',               value: 'Fahrenheit' }
-      # Trackpad input
-      - { key: 'com.apple.mouse.tapBehavior',   value: 0 }
-      - { key: 'com.apple.trackpad.forceClick', value: true }
-      - { key: 'ActuateDetents',                value: false, domain: 'com.apple.AppleMultitouchTrackpad' }
-      - { key: 'Clicking',                      value: false, domain: 'com.apple.AppleMultitouchTrackpad' }
-      - { key: 'Dragging',                      value: 0,     domain: 'com.apple.AppleMultitouchTrackpad' }
-      - { key: 'DragLock',                      value: false, domain: 'com.apple.AppleMultitouchTrackpad' }
-      - { key: 'ForceSuppressed',               value: true,  domain: 'com.apple.AppleMultitouchTrackpad' }
-      - { key: 'FirstClickThreshold',           value: 1,     domain: 'com.apple.AppleMultitouchTrackpad' }
-      - { key: 'SecondClickThreshold',          value: 1,     domain: 'com.apple.AppleMultitouchTrackpad' }
-      - { key: 'USBMouseStopsTrackpad',         value: 0,     domain: 'com.apple.AppleMultitouchTrackpad' }
-      - { key: 'Clicking',                      value: false, domain: 'com.apple.driver.AppleBluetoothMultitouch.trackpad' }
-      - { key: 'Dragging',                      value: 0,     domain: 'com.apple.driver.AppleBluetoothMultitouch.trackpad' }
-      - { key: 'DragLock',                      value: false, domain: 'com.apple.driver.AppleBluetoothMultitouch.trackpad' }
-      - { key: 'USBMouseStopsTrackpad',         value: 0,     domain: 'com.apple.driver.AppleBluetoothMultitouch.trackpad' }
-      # Trackpad gestures
-      - { key: 'AppleEnableSwipeNavigateWithScrolls',        value: false }
-      - { key: 'TrackpadCornerSecondaryClick',               value: 0, domain: 'com.apple.AppleMultitouchTrackpad' }
-      - { key: 'TrackpadFiveFingerPinchGesture',             value: 0, domain: 'com.apple.AppleMultitouchTrackpad' }
-      - { key: 'TrackpadFourFingerHorizSwipeGesture',        value: 2, domain: 'com.apple.AppleMultitouchTrackpad' }
-      - { key: 'TrackpadFourFingerPinchGesture',             value: 0, domain: 'com.apple.AppleMultitouchTrackpad' }
-      - { key: 'TrackpadFourFingerVertSwipeGesture',         value: 2, domain: 'com.apple.AppleMultitouchTrackpad' }
-      - { key: 'TrackpadHandResting',                        value: 1, domain: 'com.apple.AppleMultitouchTrackpad' }
-      - { key: 'TrackpadHorizScroll',                        value: 1, domain: 'com.apple.AppleMultitouchTrackpad' }
-      - { key: 'TrackpadMomentumScroll',                     value: 1, domain: 'com.apple.AppleMultitouchTrackpad' }
-      - { key: 'TrackpadPinch',                              value: 1, domain: 'com.apple.AppleMultitouchTrackpad' }
-      - { key: 'TrackpadRightClick',                         value: 1, domain: 'com.apple.AppleMultitouchTrackpad' }
-      - { key: 'TrackpadRotate',                             value: 1, domain: 'com.apple.AppleMultitouchTrackpad' }
-      - { key: 'TrackpadScroll',                             value: 1, domain: 'com.apple.AppleMultitouchTrackpad' }
-      - { key: 'TrackpadThreeFingerDrag',                    value: 0, domain: 'com.apple.AppleMultitouchTrackpad' }
-      - { key: 'TrackpadThreeFingerHorizSwipeGesture',       value: 2, domain: 'com.apple.AppleMultitouchTrackpad' }
-      - { key: 'TrackpadThreeFingerTapGesture',              value: 0, domain: 'com.apple.AppleMultitouchTrackpad' }
-      - { key: 'TrackpadThreeFingerVertSwipeGesture',        value: 2, domain: 'com.apple.AppleMultitouchTrackpad' }
-      - { key: 'TrackpadTwoFingerDoubleTapGesture',          value: 1, domain: 'com.apple.AppleMultitouchTrackpad' }
-      - { key: 'TrackpadTwoFingerFromRightEdgeSwipeGesture', value: 3, domain: 'com.apple.AppleMultitouchTrackpad' }
-      - { key: 'TrackpadCornerSecondaryClick',               value: 0, domain: 'com.apple.driver.AppleBluetoothMultitouch.trackpad' }
-      - { key: 'TrackpadFiveFingerPinchGesture',             value: 0, domain: 'com.apple.driver.AppleBluetoothMultitouch.trackpad' }
-      - { key: 'TrackpadFourFingerHorizSwipeGesture',        value: 2, domain: 'com.apple.driver.AppleBluetoothMultitouch.trackpad' }
-      - { key: 'TrackpadFourFingerPinchGesture',             value: 0, domain: 'com.apple.driver.AppleBluetoothMultitouch.trackpad' }
-      - { key: 'TrackpadFourFingerVertSwipeGesture',         value: 2, domain: 'com.apple.driver.AppleBluetoothMultitouch.trackpad' }
-      - { key: 'TrackpadHandResting',                        value: 1, domain: 'com.apple.driver.AppleBluetoothMultitouch.trackpad' }
-      - { key: 'TrackpadHorizScroll',                        value: 1, domain: 'com.apple.driver.AppleBluetoothMultitouch.trackpad' }
-      - { key: 'TrackpadMomentumScroll',                     value: 1, domain: 'com.apple.driver.AppleBluetoothMultitouch.trackpad' }
-      - { key: 'TrackpadPinch',                              value: 1, domain: 'com.apple.driver.AppleBluetoothMultitouch.trackpad' }
-      - { key: 'TrackpadRightClick',                         value: 1, domain: 'com.apple.driver.AppleBluetoothMultitouch.trackpad' }
-      - { key: 'TrackpadRotate',                             value: 1, domain: 'com.apple.driver.AppleBluetoothMultitouch.trackpad' }
-      - { key: 'TrackpadScroll',                             value: 1, domain: 'com.apple.driver.AppleBluetoothMultitouch.trackpad' }
-      - { key: 'TrackpadThreeFingerDrag',                    value: 0, domain: 'com.apple.driver.AppleBluetoothMultitouch.trackpad' }
-      - { key: 'TrackpadThreeFingerHorizSwipeGesture',       value: 2, domain: 'com.apple.driver.AppleBluetoothMultitouch.trackpad' }
-      - { key: 'TrackpadThreeFingerTapGesture',              value: 0, domain: 'com.apple.driver.AppleBluetoothMultitouch.trackpad' }
-      - { key: 'TrackpadThreeFingerVertSwipeGesture',        value: 2, domain: 'com.apple.driver.AppleBluetoothMultitouch.trackpad' }
-      - { key: 'TrackpadTwoFingerDoubleTapGesture',          value: 1, domain: 'com.apple.driver.AppleBluetoothMultitouch.trackpad' }
-      - { key: 'TrackpadTwoFingerFromRightEdgeSwipeGesture', value: 3, domain: 'com.apple.driver.AppleBluetoothMultitouch.trackpad' }
-      # Touch bar
-      - { key: 'MiniCustomized', value: ['com.apple.system.screencapture', 'com.apple.system.brightness', 'com.apple.system.volume', 'com.apple.system.mute'], domain: 'com.apple.controlstrip' }
+      - { key: 'AppleLanguages',                             value: ['en-US', 'zh-Hant-US'] }
+      - { key: 'AppleLocale',                                value: 'en_US' }
+      - { key: 'AppleMeasurementUnits',                      value: 'Inches' }
+      - { key: 'AppleMetricUnits',                           value: 0 }
+      - { key: 'AppleTemperatureUnit',                       value: 'Fahrenheit' }
+      # Keyboard
+      - { key: 'InitialKeyRepeat',                           value: 15 }
+      - { key: 'KeyRepeat',                                  value: 2 }
+      - { key: 'NSAutomaticCapitalizationEnabled',           value: 0 }
+      - { key: 'NSAutomaticDashSubstitutionEnabled',         value: 0 }
+      - { key: 'NSAutomaticPeriodSubstitutionEnabled',       value: 0 }
+      - { key: 'NSAutomaticQuoteSubstitutionEnabled',        value: 0 }
+      - { key: 'NSAutomaticSpellingCorrectionEnabled',       value: 0 }
+      - { key: 'NSAutomaticTextCompletionEnabled',           value: 0 }
+      # Trackpad
+      - { key: 'AppleEnableSwipeNavigateWithScrolls',        value: 0 }
+      - { key: 'com.apple.mouse.tapBehavior',                value: 0 }
+      - { key: 'com.apple.trackpad.forceClick',              value: 1 }
+      - { key: 'ActuateDetents',                             value: 0,               domain: 'com.apple.AppleMultitouchTrackpad' }
+      - { key: 'Clicking',                                   value: 0,               domain: 'com.apple.AppleMultitouchTrackpad' }
+      - { key: 'Dragging',                                   value: 0,               domain: 'com.apple.AppleMultitouchTrackpad' }
+      - { key: 'DragLock',                                   value: 0,               domain: 'com.apple.AppleMultitouchTrackpad' }
+      - { key: 'ForceSuppressed',                            value: 1,               domain: 'com.apple.AppleMultitouchTrackpad' }
+      - { key: 'FirstClickThreshold',                        value: 1,               domain: 'com.apple.AppleMultitouchTrackpad' }
+      - { key: 'SecondClickThreshold',                       value: 1,               domain: 'com.apple.AppleMultitouchTrackpad' }
+      - { key: 'USBMouseStopsTrackpad',                      value: 0,               domain: 'com.apple.AppleMultitouchTrackpad' }
+      - { key: 'TrackpadCornerSecondaryClick',               value: 0,               domain: 'com.apple.AppleMultitouchTrackpad' }
+      - { key: 'TrackpadFiveFingerPinchGesture',             value: 0,               domain: 'com.apple.AppleMultitouchTrackpad' }
+      - { key: 'TrackpadFourFingerHorizSwipeGesture',        value: 2,               domain: 'com.apple.AppleMultitouchTrackpad' }
+      - { key: 'TrackpadFourFingerPinchGesture',             value: 0,               domain: 'com.apple.AppleMultitouchTrackpad' }
+      - { key: 'TrackpadFourFingerVertSwipeGesture',         value: 2,               domain: 'com.apple.AppleMultitouchTrackpad' }
+      - { key: 'TrackpadHandResting',                        value: 1,               domain: 'com.apple.AppleMultitouchTrackpad' }
+      - { key: 'TrackpadHorizScroll',                        value: 1,               domain: 'com.apple.AppleMultitouchTrackpad' }
+      - { key: 'TrackpadMomentumScroll',                     value: 1,               domain: 'com.apple.AppleMultitouchTrackpad' }
+      - { key: 'TrackpadPinch',                              value: 1,               domain: 'com.apple.AppleMultitouchTrackpad' }
+      - { key: 'TrackpadRightClick',                         value: 1,               domain: 'com.apple.AppleMultitouchTrackpad' }
+      - { key: 'TrackpadRotate',                             value: 1,               domain: 'com.apple.AppleMultitouchTrackpad' }
+      - { key: 'TrackpadScroll',                             value: 1,               domain: 'com.apple.AppleMultitouchTrackpad' }
+      - { key: 'TrackpadThreeFingerDrag',                    value: 0,               domain: 'com.apple.AppleMultitouchTrackpad' }
+      - { key: 'TrackpadThreeFingerHorizSwipeGesture',       value: 2,               domain: 'com.apple.AppleMultitouchTrackpad' }
+      - { key: 'TrackpadThreeFingerTapGesture',              value: 0,               domain: 'com.apple.AppleMultitouchTrackpad' }
+      - { key: 'TrackpadThreeFingerVertSwipeGesture',        value: 2,               domain: 'com.apple.AppleMultitouchTrackpad' }
+      - { key: 'TrackpadTwoFingerDoubleTapGesture',          value: 1,               domain: 'com.apple.AppleMultitouchTrackpad' }
+      - { key: 'TrackpadTwoFingerFromRightEdgeSwipeGesture', value: 3,               domain: 'com.apple.AppleMultitouchTrackpad' }
+      - { key: 'Clicking',                                   value: 0,               domain: 'com.apple.driver.AppleBluetoothMultitouch.trackpad' }
+      - { key: 'Dragging',                                   value: 0,               domain: 'com.apple.driver.AppleBluetoothMultitouch.trackpad' }
+      - { key: 'DragLock',                                   value: 0,               domain: 'com.apple.driver.AppleBluetoothMultitouch.trackpad' }
+      - { key: 'USBMouseStopsTrackpad',                      value: 0,               domain: 'com.apple.driver.AppleBluetoothMultitouch.trackpad' }
+      - { key: 'TrackpadCornerSecondaryClick',               value: 0,               domain: 'com.apple.driver.AppleBluetoothMultitouch.trackpad' }
+      - { key: 'TrackpadFiveFingerPinchGesture',             value: 0,               domain: 'com.apple.driver.AppleBluetoothMultitouch.trackpad' }
+      - { key: 'TrackpadFourFingerHorizSwipeGesture',        value: 2,               domain: 'com.apple.driver.AppleBluetoothMultitouch.trackpad' }
+      - { key: 'TrackpadFourFingerPinchGesture',             value: 0,               domain: 'com.apple.driver.AppleBluetoothMultitouch.trackpad' }
+      - { key: 'TrackpadFourFingerVertSwipeGesture',         value: 2,               domain: 'com.apple.driver.AppleBluetoothMultitouch.trackpad' }
+      - { key: 'TrackpadHandResting',                        value: 1,               domain: 'com.apple.driver.AppleBluetoothMultitouch.trackpad' }
+      - { key: 'TrackpadHorizScroll',                        value: 1,               domain: 'com.apple.driver.AppleBluetoothMultitouch.trackpad' }
+      - { key: 'TrackpadMomentumScroll',                     value: 1,               domain: 'com.apple.driver.AppleBluetoothMultitouch.trackpad' }
+      - { key: 'TrackpadPinch',                              value: 1,               domain: 'com.apple.driver.AppleBluetoothMultitouch.trackpad' }
+      - { key: 'TrackpadRightClick',                         value: 1,               domain: 'com.apple.driver.AppleBluetoothMultitouch.trackpad' }
+      - { key: 'TrackpadRotate',                             value: 1,               domain: 'com.apple.driver.AppleBluetoothMultitouch.trackpad' }
+      - { key: 'TrackpadScroll',                             value: 1,               domain: 'com.apple.driver.AppleBluetoothMultitouch.trackpad' }
+      - { key: 'TrackpadThreeFingerDrag',                    value: 0,               domain: 'com.apple.driver.AppleBluetoothMultitouch.trackpad' }
+      - { key: 'TrackpadThreeFingerHorizSwipeGesture',       value: 2,               domain: 'com.apple.driver.AppleBluetoothMultitouch.trackpad' }
+      - { key: 'TrackpadThreeFingerTapGesture',              value: 0,               domain: 'com.apple.driver.AppleBluetoothMultitouch.trackpad' }
+      - { key: 'TrackpadThreeFingerVertSwipeGesture',        value: 2,               domain: 'com.apple.driver.AppleBluetoothMultitouch.trackpad' }
+      - { key: 'TrackpadTwoFingerDoubleTapGesture',          value: 1,               domain: 'com.apple.driver.AppleBluetoothMultitouch.trackpad' }
+      - { key: 'TrackpadTwoFingerFromRightEdgeSwipeGesture', value: 3,               domain: 'com.apple.driver.AppleBluetoothMultitouch.trackpad' }
       # System updates
-      - { key: 'AutoUpdate',                value: true, domain: 'com.apple.commerce' }
-      - { key: 'AutoUpdateRestartRequired', value: true, domain: 'com.apple.commerce' }
-      - { key: 'AutomaticCheckEnabled',     value: true, domain: 'com.apple.SoftwareUpdate' }
-      - { key: 'AutomaticDownload',         value: true, domain: 'com.apple.SoftwareUpdate' }
-      - { key: 'CriticalUpdateInstall',     value: true, domain: 'com.apple.SoftwareUpdate' }
-      - { key: 'ScheduleFrequency',         value: 1,    domain: 'com.apple.SoftwareUpdate' }
+      - { key: 'AutoUpdate',                                 value: 1,               domain: 'com.apple.commerce' }
+      - { key: 'AutoUpdateRestartRequired',                  value: 1,               domain: 'com.apple.commerce' }
+      - { key: 'AutomaticCheckEnabled',                      value: 1,               domain: 'com.apple.SoftwareUpdate' }
+      - { key: 'AutomaticDownload',                          value: 1,               domain: 'com.apple.SoftwareUpdate' }
+      - { key: 'CriticalUpdateInstall',                      value: 1,               domain: 'com.apple.SoftwareUpdate' }
+      - { key: 'ScheduleFrequency',                          value: 1,               domain: 'com.apple.SoftwareUpdate' }
       # Security
-      - { key: 'LSQuarantine',        value: false,           domain: 'com.apple.LaunchServices' }
-      - { key: 'askForPassword',      value: true,            domain: 'com.apple.screensaver' }
-      - { key: 'askForPasswordDelay', value: 0,               domain: 'com.apple.screensaver' }
-      - { key: 'DiscoverableMode',    value: 'Contacts Only', domain: 'com.apple.sharingd' }
+      - { key: 'LSQuarantine',                               value: 0,               domain: 'com.apple.LaunchServices' }
+      - { key: 'askForPassword',                             value: 1,               domain: 'com.apple.screensaver' }
+      - { key: 'askForPasswordDelay',                        value: 0,               domain: 'com.apple.screensaver' }
+      - { key: 'DiscoverableMode',                           value: 'Contacts Only', domain: 'com.apple.sharingd' }
       # Privacy
-      - { key: 'allowApplePersonalizedAdvertising', value: false, domain: 'com.apple.AdLib' }
-      - { key: 'allowIdentifierForAdvertising',     value: false, domain: 'com.apple.AdLib' }
+      - { key: 'allowApplePersonalizedAdvertising',          value: 0,               domain: 'com.apple.AdLib' }
+      - { key: 'allowIdentifierForAdvertising',              value: 0,               domain: 'com.apple.AdLib' }
       # Global application behavior
-      - { key: 'NSDisableAutomaticTermination', value: true }
+      - { key: 'NSDisableAutomaticTermination',              value: 1 }
       # Finder
-      - { key: '_FXSortFoldersFirst',             value: true,   domain: 'com.apple.finder' }
-      - { key: 'FXICloudDriveDesktop',            value: true,   domain: 'com.apple.finder' }
-      - { key: 'FXICloudDriveDocuments',          value: true,   domain: 'com.apple.finder' }
-      - { key: 'FXICloudDriveEnabled',            value: true,   domain: 'com.apple.finder' }
-      - { key: 'FXDefaultSearchScope',            value: 'SCcf', domain: 'com.apple.finder' }
-      - { key: 'FXPreferredViewStyle',            value: 'Nlsv', domain: 'com.apple.finder' }
-      - { key: 'OpenWindowForNewRemovableDisk',   value: false,  domain: 'com.apple.finder' }
-      - { key: 'ShowExternalHardDrivesOnDesktop', value: false,  domain: 'com.apple.finder' }
-      - { key: 'ShowHardDrivesOnDesktop',         value: false,  domain: 'com.apple.finder' }
-      - { key: 'ShowMountedServersOnDesktop',     value: false,  domain: 'com.apple.finder' }
-      - { key: 'ShowPathbar',                     value: true,   domain: 'com.apple.finder' }
-      - { key: 'ShowRemovableMediaOnDesktop',     value: false,  domain: 'com.apple.finder' }
-      - { key: 'ShowSidebar',                     value: true,   domain: 'com.apple.finder' }
-      - { key: 'ShowStatusBar',                   value: true,   domain: 'com.apple.finder' }
-      - { key: 'WarnOnEmptyTrash',                value: true,   domain: 'com.apple.finder' }
-      - { key: 'auto-open-ro-root',               value: false,  domain: 'com.apple.frameworks.diskimages' }
-      - { key: 'auto-open-rw-root',               value: false,  domain: 'com.apple.frameworks.diskimages' }
-      - { key: 'BrowseAllInterfaces',             value: true,   domain: 'com.apple.NetworkBrowser' }
+      - { key: '_FXSortFoldersFirst',                        value: 1,               domain: 'com.apple.finder' }
+      - { key: 'FXICloudDriveDesktop',                       value: 1,               domain: 'com.apple.finder' }
+      - { key: 'FXICloudDriveDocuments',                     value: 1,               domain: 'com.apple.finder' }
+      - { key: 'FXICloudDriveEnabled',                       value: 1,               domain: 'com.apple.finder' }
+      - { key: 'FXDefaultSearchScope',                       value: 'SCcf',          domain: 'com.apple.finder' }
+      - { key: 'FXPreferredViewStyle',                       value: 'Nlsv',          domain: 'com.apple.finder' }
+      - { key: 'OpenWindowForNewRemovableDisk',              value: 0,               domain: 'com.apple.finder' }
+      - { key: 'ShowExternalHardDrivesOnDesktop',            value: 0,               domain: 'com.apple.finder' }
+      - { key: 'ShowHardDrivesOnDesktop',                    value: 0,               domain: 'com.apple.finder' }
+      - { key: 'ShowMountedServersOnDesktop',                value: 0,               domain: 'com.apple.finder' }
+      - { key: 'ShowPathbar',                                value: 1,               domain: 'com.apple.finder' }
+      - { key: 'ShowRemovableMediaOnDesktop',                value: 0,               domain: 'com.apple.finder' }
+      - { key: 'ShowSidebar',                                value: 1,               domain: 'com.apple.finder' }
+      - { key: 'ShowStatusBar',                              value: 1,               domain: 'com.apple.finder' }
+      - { key: 'WarnOnEmptyTrash',                           value: 1,               domain: 'com.apple.finder' }
+      - { key: 'auto-open-ro-root',                          value: 0,               domain: 'com.apple.frameworks.diskimages' }
+      - { key: 'auto-open-rw-root',                          value: 0,               domain: 'com.apple.frameworks.diskimages' }
+      - { key: 'BrowseAllInterfaces',                        value: 1,               domain: 'com.apple.NetworkBrowser' }
       # Safari/webkit
-      - { key: 'AlwaysRestoreSessionAtLaunch',                value: false, domain: 'com.apple.Safari' }
-      - { key: 'AutoFillCreditCardData',                      value: false, domain: 'com.apple.Safari' }
-      - { key: 'AutoFillFromAddressBook',                     value: false, domain: 'com.apple.Safari' }
-      - { key: 'AutoFillMiscellaneousForms',                  value: false, domain: 'com.apple.Safari' }
-      - { key: 'AutoFillPasswords',                           value: false, domain: 'com.apple.Safari' }
-      - { key: 'AutoOpenSafeDownloads',                       value: false, domain: 'com.apple.Safari' }
-      - { key: 'CanPromptForPushNotifications',               value: false, domain: 'com.apple.Safari' }
+      - { key: 'AlwaysRestoreSessionAtLaunch',               value: 0,               domain: 'com.apple.Safari' }
+      - { key: 'AutoFillCreditCardData',                     value: 0,               domain: 'com.apple.Safari' }
+      - { key: 'AutoFillFromAddressBook',                    value: 0,               domain: 'com.apple.Safari' }
+      - { key: 'AutoFillMiscellaneousForms',                 value: 0,               domain: 'com.apple.Safari' }
+      - { key: 'AutoFillPasswords',                          value: 0,               domain: 'com.apple.Safari' }
+      - { key: 'AutoOpenSafeDownloads',                      value: 0,               domain: 'com.apple.Safari' }
+      - { key: 'CanPromptForPushNotifications',              value: 0,               domain: 'com.apple.Safari' }
       # Siri
-      - { key: 'Assistant Enabled', value: false, domain: 'com.apple.assistant.support' }
-      - { key: 'Dictation Enabled', value: false, domain: 'com.apple.assistant.support' }
-      - { key: 'StatusMenuVisible', value: false, domain: 'com.apple.Siri' }
+      - { key: 'Assistant Enabled',                          value: 0,               domain: 'com.apple.assistant.support' }
+      - { key: 'Dictation Enabled',                          value: 0,               domain: 'com.apple.assistant.support' }
+      - { key: 'StatusMenuVisible',                          value: 0,               domain: 'com.apple.Siri' }
       # Other first-party applications
-      - { key: 'IconType',                    value: 5,          domain: 'com.apple.ActivityMonitor' }
-      - { key: 'OpenMainWindow',              value: true,       domain: 'com.apple.ActivityMonitor' }
-      - { key: 'ShowCategory',                value: 0,          domain: 'com.apple.ActivityMonitor' }
-      - { key: 'SortColumn',                  value: 'CPUUsage', domain: 'com.apple.ActivityMonitor' }
-      - { key: 'SortDirection',               value: 0,          domain: 'com.apple.ActivityMonitor' }
-      - { key: 'advanced-image-options',      value: true,       domain: 'com.apple.DiskUtility' }
-      - { key: 'Quit When Finished',          value: true,       domain: 'com.apple.print.PrintingPrefs' }
-      - { key: 'location',                    value: "{{ home }}/Pictures/Screenshots", domain: 'com.apple.screencapture' }
-      - { key: 'type',                        value: 'png',      domain: 'com.apple.screencapture' }
-      - { key: 'DoNotOfferNewDisksForBackup', value: true,       domain: 'com.apple.TimeMachine' }
+      - { key: 'IconType',                                   value: 5,               domain: 'com.apple.ActivityMonitor' }
+      - { key: 'OpenMainWindow',                             value: 1,               domain: 'com.apple.ActivityMonitor' }
+      - { key: 'ShowCategory',                               value: 0,               domain: 'com.apple.ActivityMonitor' }
+      - { key: 'SortColumn',                                 value: 'CPUUsage',      domain: 'com.apple.ActivityMonitor' }
+      - { key: 'SortDirection',                              value: 0,               domain: 'com.apple.ActivityMonitor' }
+      - { key: 'advanced-image-options',                     value: 1,               domain: 'com.apple.DiskUtility' }
+      - { key: 'Quit When Finished',                         value: 1,               domain: 'com.apple.print.PrintingPrefs' }
+      - { key: 'sidebarShown',                               value: 0,               domain: 'com.apple.sidecar.display' }
+      - { key: 'location',                                   value: "{{ home }}/Pictures/Screenshots", domain: 'com.apple.screencapture' }
+      - { key: 'type',                                       value: 'png',           domain: 'com.apple.screencapture' }
+      - { key: 'DoNotOfferNewDisksForBackup',                value: 1,               domain: 'com.apple.TimeMachine' }
   tasks:
     - include_role: 
         name: ../roles/macos-defaults
