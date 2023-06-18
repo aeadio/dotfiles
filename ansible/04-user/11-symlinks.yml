@@ -12,7 +12,6 @@
       - { linkname: '.config',             target: 'Config' }
       - { linkname: '.docker' }
       - { linkname: '.gitconfig',          config: 'git/config' }
-      - { linkname: '.hammerspoon' }
       - { linkname: '.kube' }
       - { linkname: '.ssh',                target: 'Security/ssh' }
       - { linkname: '.terraform.d',        config: 'terraform/terraform.d' }

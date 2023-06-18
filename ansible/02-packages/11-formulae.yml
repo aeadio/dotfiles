@@ -23,12 +23,13 @@
           - gh
           - git
           - gnu-sed
+          - gnu-tar
           - go
           - gopls
-          - graphicsmagick
           - grep
           - hexyl
           - highlight
+          - imagemagick
           - jd
           - jq
           - luarocks
