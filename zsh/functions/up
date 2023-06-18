@@ -16,6 +16,11 @@ local newname=$opts[-n]
 local genhash=${opts[-N]+1}
 local proto="http${opts[-T]-s}"
 
+if [[ -z $host ]]; then
+  print "$0: UP_HOST not set, please specify -h" >&2
+  exit 1
+fi
+
 local stdin
 local items=( $@ )
 if (( ${#items} == 0 )); then

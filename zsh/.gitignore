@@ -6,3 +6,4 @@
 # Machine-specific
 /env.d/hosts
 /env.d/work
+/rc.d/work
