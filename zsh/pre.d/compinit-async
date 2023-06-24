@@ -8,8 +8,6 @@ fpath=(
 )
 
 autoload -Uz compinit
-source $ZSH/vendor/zsh-async/async.zsh
-async_init
 
 () {
   local zcompfile=${ZCOMPDUMP:-$ZSH/compdump}
