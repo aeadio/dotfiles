@@ -1,0 +1,5 @@
+# vim: ft=sh ts=2 sw=2 et:
+
+# Should load after all other ZLE manipulations, so that it can properly 
+# highlight, eg, custom widgets.
+source $ZSH/vendor/fast-syntax-highlighting/fast-syntax-highlighting.plugin.zsh
