@@ -3,11 +3,13 @@
 # This file primarily bootstraps the zshrc. For actual config, see:
 # - rc.d      most user configuration
 # - pre.d     early-run initialization, eg compinit
+# - post.d    late-run initilization, eg load plugins sensitive to startup order
 # - env.d     static exports for all shells, including non-interactive
-# - incl.d    non-rc config files for sub utilities
 # - functions utility functions for the user, auto-loaded on demand
 # - widgets   functions which modify Zsh's input editor (see also: rc.d/zle)
 # - plugins   bundles of self-contained functionality
+# - incl.d    non-rc config files for sub utilities
+# - vendor    third party plugins/components explicitly loaded elsewhere
 
 # Each section below is wrapped in a named function so that we can blame their
 # contribution to startup when ZSHRC_PROFILE is set, and trace their activity
