@@ -7,8 +7,8 @@
 # - env.d     static exports for all shells, including non-interactive
 # - functions utility functions for the user, auto-loaded on demand
 # - widgets   functions which modify Zsh's input editor (see also: rc.d/zle)
-# - plugins   bundles of self-contained functionality
-# - incl.d    non-rc config files for sub utilities
+# - plugins.d bundles of self-contained functionality
+# - include   non-rc config files for sub utilities
 # - vendor    third party plugins/components explicitly loaded elsewhere
 
 # Each section below is wrapped in a named function so that we can blame their
@@ -58,8 +58,8 @@ unfunction zshrc:load-pre.d
 zshrc:load-plugins() {
   local f name REPLY
   local plugins=(
-    $ZSH/plugins/*(-.e:'[[ -x $REPLY ]]':onN)
-    $ZSH/plugins/*/*.plugin.zsh(-.onN)
+    $ZSH/plugins.d/*(-.e:'[[ -x $REPLY ]]':onN)
+    $ZSH/plugins.d/*/*.plugin.zsh(-.onN)
   )
   for f in $plugins; do
     name=${f:t}

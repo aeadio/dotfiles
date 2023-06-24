@@ -6,9 +6,9 @@ I've placed a particular emphasis on being well-organized and easy to navigate. 
 
 - `env.d`: Static environment exports. Variables that need to be available to third party applications. This is the only portion that is sourced always, including in non-interactive script shells. Bootstrapped by the file `env`.
 - `pre.d`: Early initialization, such as loading compinit, prior to other configuration. Files are loaded in explicit alphanumeric order.
-- `plugins`: Self-contained feature packages.
-  - First-party plugins (mine) are installed as single files directly under `plugins/`.
-  - Third-party plugins are installed as folders underneath `plugins/`. They are loaded if they contain a `.plugin.zsh` file. These are always loaded if present, even if not marked executable. Most of these are installed as Git submodules.
+- `plugins.d`: Self-contained feature packages.
+  - First-party plugins (mine) are installed as single files directly under `plugins.d/`.
+  - Third-party plugins are installed as folders underneath `plugins.d/`. They are loaded if they contain a `.plugin.zsh` file. These are always loaded if present, even if not marked executable. Most of these are installed as Git submodules.
 - `functions`: Utility functions used by the user, or by other portions of the configuration. These are [autoloaded](https://zsh.sourceforge.io/Doc/Release/Functions.html#Autoloading-Functions) as needed.
 - `widgets`: Functions to be used as [ZLE widgets](https://zsh.sourceforge.io/Doc/Release/Zsh-Line-Editor.html#User_002dDefined-Widgets). These are autoloaded, and automatically initialized as ZLE widgets.
 - `rc.d`: Primary Zsh configuration. Sets shell options, aliases, decorates the prompt, etc.
@@ -16,7 +16,7 @@ I've placed a particular emphasis on being well-organized and easy to navigate. 
 
 Other subfolders, not loaded automatically:
 
-- `incl.d`: Miscellaneous non-Zsh configuration files that need to be included as input to other commands during initialization.
+- `include`: Miscellaneous non-Zsh configuration files that need to be included as input to other commands during initialization.
 - `vendor`: Third party plugins & other vendored-in components which will be loaded manually when needed.
 
 Individual files can be enabled or disabled by toggling the execute permission -- most files are not sourced or autoloaded if they are not executable on startup.

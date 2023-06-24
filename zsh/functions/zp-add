@@ -33,7 +33,7 @@ if [[ -z $ZSH || ! -d $ZSH ]]; then
   return
 fi
 
-local plugindir=$ZSH/plugins
+local plugindir=$ZSH/plugins.d
 mkdir -p $plugindir
 
 (
