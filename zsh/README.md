@@ -119,18 +119,30 @@ When entering a Git repo (sub)directory, pivots the shell's history to one that 
 
 Small helper functions to faciliate installing and removing third-party Zsh plugins as Git submodules. Of note is `zp-try`, which clones the plugin(s) to a temporary folder, and starts up a new Zsh shell where they can be demoed. This relies on `bin/zshi`.
 
-#### `rc.d/zle`, `widgets/*`
+#### `rc.d/zle` & `widgets/*`
 
-Keybindings are set up to mimic contemporary GUI applications. Actions such as undo/redo (ctrl-Z/Y), cut/copy/paste (ctrl-X/K/V) work as they would in desktop GUI apps.
+Keybindings are set up to mimic contemporary GUI applications. Actions such as undo/redo (ctrl-Z/Y), cut/copy/paste (ctrl-X/K/V) work as they would in desktop GUI apps (K is used in place of C, which cannot be rebound).
 
-[fzf-tab](https://github.com/Aloxaf/fzf-tab) is used for the tab completion menu. Additionally, fzf-based menus are available for inserting files as arguments (ctrl-L) and searching history (ctrl-F). History can also be searched by entering the beginning of a command, then using alt-up/down to search for all lines beginning with that input.
+[fzf-tab](https://github.com/Aloxaf/fzf-tab) is used for the tab completion menu. Additionally, fzf-based menus are available for inserting files as arguments and searching history. History can also be searched by entering the beginning of a command, then using alt-up/down to search for all lines beginning with that input.
 
 A shift-selection model is implemented that mimics how GUI applications allow selecting blocks of text. The mechanism is based on the [zsh-shift-select](https://github.com/jirutka/zsh-shift-select) plugin, but reimplemented and expanded with some additional capabilities. 
 
 Holding shift and striking the arrow keys will select characters or lines behind or ahead of the current cursor. Additionally, ctrl+shift allows for selecting words ahead/behind, and alt+shift allows selecting to the beginning/end of the line (left/right) or entire input buffer (up/down).
 
-The active selection will be replaced upon entering any other text, including pasting via ctrl-V. It can also be manipulated with some keybindings -- e.g., edited in-place with ctrl-E, quoted with ctrl-W, replaced by a list of files with ctrl-L, or replaced by tab completion with <tab>.
+The active selection will be replaced upon entering any other text, including pasting via ctrl-V. It can also be manipulated with some keybindings -- e.g., edited in-place with ctrl-E, quoted with ctrl-W, replaced by a list of files with ctrl-L, or replaced by tab completion with Tab.
+
+A non-comprehensive list of useful keybindings:
+
+- **ctrl-A** to move **a**fter the first word (as opposed to the start of the input -- use alt-left for that).
+- **ctrl-F** to **f**ind in history using fzf.
+- **ctrl-E** to **e**dit the current input in your `$EDITOR`. If some text is selected, edit that instead.
+- **ctrl-L** to select a **l**ist of files using fzf, and insert them as an argument at the current position. If some text is selected, insert the list of files in place of the selected text instead.
+- **ctrl-N** while the cursor is over a hypothetical path location to push the current input onto the ZLE input stack, then open a new input with `mkdir <foldername>` pre-filled. This is for situations where, eg, you begin typing the output destination for a command, only to realize the folder doesn't exist yet.
+- **ctrl-P** to **p**ush the current input onto the ZLE input stack and open a fresh input. This is visually indicated by the prompt by a '⋮' character followed by the current stack depth.
+- **ctrl-R** to toggle prefixing the current command with `doas` or `sudo` to run as **r**oot.
+- **ctrl-S** to attempt to **s**pellcheck and correct the currently highlighted word.
+- **ctrl-W** to quote the current line. If some text is selected, quote around the selection instead.
 
 See `rc.d/zle` for a full list of keybinds. Custom [widgets](https://zsh.sourceforge.io/Doc/Release/Zsh-Line-Editor.html#Zle-Widgets) (functions invoked by these keybinds) are implemented in `widgets/`. Keybindings specific to shift-select mode are found at the bottom.
 
-Note that modifier keybindings, especially multi-modifier ones, may not work in all terminals. Keybindings present in `rc.d/zle` are developed for Alacritty.
+Note that modifier keybindings, especially multi-modifier ones, may not work in all terminals.
