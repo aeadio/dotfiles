@@ -1,4 +1,6 @@
 # vim: ft=sh ts=2 sw=2 et:
 
+# Must be manually loaded early-on, since we make use of this plugin throughout
+# the rc (see: pre.d/compinit-async).
 source $ZSH/vendor/zsh-async/async.zsh
 async_init
