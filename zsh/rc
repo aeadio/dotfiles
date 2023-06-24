@@ -106,6 +106,21 @@ zshrc:load-rc.d() {
 zshrc:load-rc.d
 unfunction zshrc:load-rc.d
 
+# post.d
+zshrc:load-post.d() {
+  local f name REPLY
+  for f in $ZSH/post.d/*(e:'[[ -x $REPLY ]]':onN); do
+    name=${f:t}
+    zshrc:load-post.d:$name() {
+      source $f
+    }
+    zshrc:load-post.d:$name
+    unfunction zshrc:load-post.d:$name
+  done
+}
+zshrc:load-post.d
+unfunction zshrc:load-post.d
+
 # Stop profiling
 case $ZSHRC_PROFILE in
   1) zprof >&2 ;;
