@@ -1,11 +1,7 @@
 # vim: ft=sh ts=2 sw=2 et:
 
 # Does our environment support color?
-(( $terminfo[colors] )) ||
-(( $termcap[Co] )) ||
-(( $+COLORTERM )) ||
-[[ $TERM == *color* ]] ||
-  return
+(( $+CLICOLOR )) || return
 
 # Per-application colors
 () {
@@ -112,7 +108,3 @@
   )
   typeset -gx FZF_DEFAULT_OPTS=${FZF_DEFAULT_OPTS:-${(j:,:)fzfopts}}
 }
-
-# Encourage apps to use color
-# https://bixense.com/clicolors/
-typeset -gx CLICOLOR=1

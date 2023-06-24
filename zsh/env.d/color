@@ -1,0 +1,8 @@
+# vim: ft=sh ts=2 sw=2 et:
+
+# Check if our environment supports color, and notify the rest of our config &
+# other apps.
+if (( $terminfo[colors] || $termcap[Co] || $+COLORTERM )) ||
+  [[ $TERM == *color* ]]; then
+  typeset -gx CLICOLOR=1
+fi

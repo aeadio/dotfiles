@@ -53,12 +53,14 @@
 prompt:basicinfo() {
   emulate -L zsh
   unset PROMPT_INFOLEN
-  local user host info
+  local user host info elidename
   # Username
-  # Only show if we've su'd to a user that's out of the ordinary
-  if [[ ${(%):-%n} != (a(|nt(|hony(|eadicicco)))|root) ]]; then
-    user="%(!,%B%F{red},%F{cyan})%n%f%b"
-  fi
+  # Only show if we've su'd to a user that's out of the ordinary. Only show for 
+  # root if our environment does not support color, otherwise depend on color
+  # scheme shift to indicate root shell.
+  if [[ ${(%):-%n} == a(|nt(|hony(|eadicicco))) ]] elidename=1
+  if (( $+CLICOLOR )) && [[ ${(%):-%n} == root ]] elidename=1
+  if (( ! elidename )) user="%(!,%B%F{red},%F{cyan})%n%f%b"
   # Hostname
   # Only show if connected to remote host
   if (( $+SSH_CLIENT || $+SSH_TTY )); then
