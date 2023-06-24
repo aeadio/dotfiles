@@ -242,17 +242,16 @@ if has git; then
     }
   }
   zle -N prompt:git-finished-zle
-
+  
   prompt:git-dispatch() {
     local fd
     exec {fd}< <( prompt:git-async )
-    command true  # https://www.zsh.org/mla/workers/2018/msg00966.html
     zle -Fw $fd prompt:git-finished-zle
   }
   add-zsh-hook precmd prompt:git-dispatch
-
+  
   prompt:git-clear() {
-    unset PROMPT_GITINFO
+    unset PS_GIT_HEAD PS_GIT_COMMITS PS_GIT_CHANGES
   }
   add-zsh-hook chpwd prompt:git-clear
   
