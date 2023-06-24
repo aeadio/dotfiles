@@ -35,7 +35,7 @@
   yabai -m config right_padding               $padding
   yabai -m config window_gap                  $padding
   
-  yabai -m config window_opacity              on      # SA
+  yabai -m config window_opacity              off     # SA
   yabai -m config active_window_opacity       1.0     # SA
   yabai -m config normal_window_opacity       0.92    # SA
   yabai -m config window_opacity_duration     0.1     # SA
