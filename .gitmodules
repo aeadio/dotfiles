@@ -13,3 +13,6 @@
 [submodule "zsh/plugins/!fzf-tab"]
 	path = zsh/plugins/!fzf-tab
 	url = https://github.com/Aloxaf/fzf-tab.git
+[submodule "zsh/vendor/zsh-async"]
+	path = zsh/vendor/zsh-async
+	url = https://github.com/mafredri/zsh-async.git

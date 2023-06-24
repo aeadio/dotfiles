@@ -1,0 +1,24 @@
+# vim: ft=sh ts=2 sw=2 et:
+
+# Add zsh-completions if it exists
+fpath=(
+  $ZSH/plugins/zsh-completions/src(N)
+  /opt/homebrew/share/zsh/site-functions(N)
+  $fpath
+)
+
+autoload -Uz compinit
+source $ZSH/vendor/zsh-async/async.zsh
+async_init
+
+() {
+  local zcompfile=${ZCOMPDUMP:-$ZSH/compdump}
+  zshrc:compinit-finished() {
+    compinit -d $zcompfile -C
+    async_stop_worker compinit
+    unfunction zshrc:compinit-finished
+  }
+  async_start_worker compinit -n -u
+  async_register_callback compinit zshrc:compinit-finished
+  async_job compinit compinit -d $zcompfile
+}
