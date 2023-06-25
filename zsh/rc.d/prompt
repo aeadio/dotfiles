@@ -98,7 +98,7 @@ prompt:directory() {
     for (( i = n; i > 0; i-- )); do
       len=${#components[$i]}
       if (( rem - len - npre <= ${#ellipses} + 1 )); then
-        truncate $(( rem - npre )) $components[$i]
+        truncate -q $(( rem - npre )) $components[$i]
         components[$i]=$reply
         break
       else
@@ -141,7 +141,7 @@ prompt:git() {
       commits=
       bsize=$maxsize
     fi
-    truncate -l $bsize $branch
+    truncate -q -l $bsize $branch
     branch="$reply"
   fi
   print -n " ${UTF8:+${(#):-16#2a15}}%(!,%B%F{red},%B%F{cyan})$branch%f%b"
@@ -177,7 +177,7 @@ prompt:aws() {
   if [[ -z $AWS_VAULT ]] return
   local reply profile=${AWS_VAULT:#default}
   if [[ -n $profile ]]; then
-    truncate 10 $profile &>/dev/null
+    truncate -q 10 $profile &>/dev/null
     profile="$reply"
     profile="%(!,%F{yellow},%B%F{magenta})$profile%f%b"
     profile=":$profile"
@@ -257,9 +257,9 @@ if has git; then
   
   prompt:git-async() {
     emulate -L zsh -o err_return -o pipefail
-
+    
     exec 2>/dev/null
-
+    
     env GIT_OPTIONAL_LOCKS=0 git status --branch --porcelain=v2 \
       | awk -v utf8=$UTF8 '
         BEGIN {

@@ -3,7 +3,7 @@
 emulate -L zsh
 
 local opts
-zparseopts -A opts -D l
+zparseopts -A opts -D l q
 
 local d
 (( $+opts[-l] )) &&
@@ -19,6 +19,6 @@ else
 fi
 
 typeset -g reply="%${amount}$d${${UTF8:+${(#):-16#2026}}:-..}$d$1%$d$d"
-if [[ ! -t 1 ]]; then
+if (( ! $+opts[-q] )); then
   print -rP -- $reply
 fi
