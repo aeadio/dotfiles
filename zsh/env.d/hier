@@ -15,7 +15,7 @@ typeset -g path=(
   ${~GOPATH:+$GOPATH/bin(N)}
   /opt/homebrew/opt/coreutils/libexec/gnubin(N)
   /usr/local/opt/coreutils/libexec/gnubin(N)
-  /opt/homebrew/bin(N)
+  /opt/homebrew/*bin(N)
   /opt/bin(N)
   /usr/local/bin(N)
   $path
