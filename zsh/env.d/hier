@@ -3,7 +3,7 @@
 # Informs as to the directory hierarchy of ~
 
 () {
-  gopath=(
+  local gopath=(
     $HOME/[Ss]ource/go(N)
     $HOME/src/go(N)
   )
@@ -12,7 +12,7 @@
 
 typeset -g path=(
   $HOME/[Bb]in(N)
-  ${~GOPATH:+$GOPATH/bin(N)}
+  ${~${GOPATH:+${(@s,:,)GOPATH}}/%//bin}(N)
   /opt/homebrew/opt/coreutils/libexec/gnubin(N)
   /usr/local/opt/coreutils/libexec/gnubin(N)
   /opt/homebrew/*bin(N)
