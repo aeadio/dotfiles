@@ -77,6 +77,7 @@ bindkey '^I'      fzf-tab-complete                   # tab
 bindkey '^K'      copy-to-clipboard
 bindkey '^L'      fzf-select-files
 bindkey '^N'      push-line-and-mkdir
+bindkey '^O'      open-path-or-pwd
 bindkey '^P'      smart-push-line
 bindkey '^R'      run-elevated
 bindkey '^S'      spell-word
@@ -136,6 +137,7 @@ bindkey -M shift-select '^F'      fzf-history
 bindkey -M shift-select '^K'      copy-to-clipboard
 bindkey -M shift-select '^L'      fzf-select-files
 bindkey -M shift-select '^N'      push-line-and-mkdir
+bindkey -M shift-select '^O'      open-path-or-pwd
 bindkey -M shift-select '^P'      smart-push-line
 bindkey -M shift-select '^V'      paste-from-clipboard
 bindkey -M shift-select '^W'      quote-region

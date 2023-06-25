@@ -1,0 +1,40 @@
+# vim: ft=sh ts=2 sw=2 et:
+
+emulate -L zsh
+
+local open=()
+
+if (( REGION_ACTIVE )); then
+  # We're in selection mode
+  # Open all valid files/dirs in the selected text
+  local x y selection item
+  get-selection | read -r selection
+  for item in ${(Z:n:)selection}; do  # split w/ shell parsing to respect quotes
+    item=${(Q)item}                   # filter out embedded quotes/escapes
+    [[ -f $item || -d $item ]] && open+=( $item )
+  done
+else
+  # Is the cursor over an argument that is a valid file/dir?
+  local file
+  modify-current-argument '${file:=$ARG}'
+  [[ -f $file || -d $file ]] && open+=( $file )
+fi
+
+# Finally, if we have nothing to open, just open the current directory
+if (( ! $#open )) open=( $PWD )
+
+case $OSTYPE in
+  darwin*)
+    # NeXT's 'open' can open multiple items, even of disparate types
+    has open && open $open
+    ;;
+  linux*|*bsd*)
+    # ... xdg-open cannot
+    if has xdg-open; then
+      local item
+      for item in $open; do
+        xdg-open $item
+      done
+    fi
+    ;;
+esac &> /dev/null
