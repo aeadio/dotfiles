@@ -32,6 +32,8 @@
       - { key: 'PMPrintingExpandedStateForPrint2',           value: 1 }
       - { key: 'NSWindowResizeTime',                         value: 0.1 }
       - { key: 'NSWindowShouldDragOnGesture',                value: 1 }
+      - { key: 'NSScrollAnimationEnabled',                   value: 0 }
+      - { key: 'NSScrollViewRubberbanding',                  value: 0 }
       # Appearance
       - { key: 'AppleAquaColorVariant',                      value: 1 }
       - { key: 'AppleInterfaceStyle',                        value: 'Dark' }
@@ -121,6 +123,7 @@
       # Global application behavior
       - { key: 'NSDisableAutomaticTermination',              value: 1 }
       # Finder
+      - { key: 'AppleShowAllExtensions',                     value: 1 }
       - { key: '_FXSortFoldersFirst',                        value: 1,               domain: 'com.apple.finder' }
       - { key: 'FXICloudDriveDesktop',                       value: 1,               domain: 'com.apple.finder' }
       - { key: 'FXICloudDriveDocuments',                     value: 1,               domain: 'com.apple.finder' }
@@ -139,6 +142,8 @@
       - { key: 'auto-open-ro-root',                          value: 0,               domain: 'com.apple.frameworks.diskimages' }
       - { key: 'auto-open-rw-root',                          value: 0,               domain: 'com.apple.frameworks.diskimages' }
       - { key: 'BrowseAllInterfaces',                        value: 1,               domain: 'com.apple.NetworkBrowser' }
+      - { key: 'DSDontWriteNetworkStores',                   value: 1,               domain: 'com.apple.desktopservices' }
+      - { key: 'DSDontWriteUSBStores',                       value: 1,               domain: 'com.apple.desktopservices' }
       # Safari/webkit
       - { key: 'AlwaysRestoreSessionAtLaunch',               value: 0,               domain: 'com.apple.Safari' }
       - { key: 'AutoFillCreditCardData',                     value: 0,               domain: 'com.apple.Safari' }
