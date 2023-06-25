@@ -4,24 +4,24 @@
 
 # Common exports
 # Standard variables used by many tools
-export VISUAL='micro'
-export EDITOR=$VISUAL
-export GEDITOR='code'  # Used in ranger's rifle.conf
-export PAGER='less'
-export TERMINAL='iterm2'
+typeset -gx VISUAL='micro'
+typeset -gx EDITOR=$VISUAL
+typeset -gx GEDITOR='code'  # Used in ranger's rifle.conf
+typeset -gx PAGER='less'
+typeset -gx TERMINAL='iterm2'
 
 # NOTE: Implicit dependency on env.d/hier loading first in order to set PATH
 if (( $+commands[bat] )); then
-  export MANPAGER="sh -c 'col -bx | bat -l man -p'"
-  export PAGER='bat'
+  typeset -gx MANPAGER="sh -c 'col -bx | bat -l man -p'"
+  typeset -gx PAGER='bat'
 fi
 
 # App exports
 # Per-app configuration overrides
-export LESSHISTFILE='-'
+typeset -gx LESSHISTFILE='-'
 
 case $OSTYPE in
   darwin*)
-    export HOMEBREW_CASK_OPTS='--no-quarantine'
+    typeset -gx HOMEBREW_CASK_OPTS='--no-quarantine'
     ;;
 esac

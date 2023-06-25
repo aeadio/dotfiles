@@ -13,5 +13,5 @@ if [[ -z $selection ]] return
 
 local m=$MARK c=$CURSOR
 zle delete-selection -w
-BUFFER="$LBUFFER$selection $selection$RBUFFER"
+typeset -g BUFFER="$LBUFFER$selection $selection$RBUFFER"
 set-selection $c $m

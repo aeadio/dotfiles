@@ -11,7 +11,7 @@ local direction=$(( CURSOR > MARK ))
 if [[ -n $selection ]] zle delete-selection -w
 x=${#LBUFFER}
 y=$(( x + ${#new} ))
-LBUFFER="$LBUFFER$new"
+typeset -g LBUFFER="$LBUFFER$new"
 if (( direction )); then
   set-selection $y $x
 else

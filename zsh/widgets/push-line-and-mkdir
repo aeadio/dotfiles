@@ -16,5 +16,5 @@ zle smart-push-line -w
 if [[ $dir != */ ]]; then
   dir=${dir:h}
 fi
-LBUFFER="mkdir -p $dir"
-RBUFFER=
+typeset -g LBUFFER="mkdir -p $dir"
+typeset -g RBUFFER=

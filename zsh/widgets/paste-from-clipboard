@@ -11,4 +11,4 @@ if (( REGION_ACTIVE )); then
   zle delete-selection -w
 fi
 
-LBUFFER="$LBUFFER$(paste)"
+typeset -g LBUFFER="$LBUFFER$(paste)"

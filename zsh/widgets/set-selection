@@ -7,6 +7,6 @@ if (( $REGION_ACTIVE )); then
 fi
 
 zle set-mark-command -w
-CURSOR=$1
-MARK=$2
+typeset -g CURSOR=$1
+typeset -g MARK=$2
 zle -K shift-select

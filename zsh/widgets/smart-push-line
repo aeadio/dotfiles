@@ -9,7 +9,7 @@ fi
 case $CONTEXT in
   start)
     if [[ -z $BUFFER || $BUFFER == [[:space:]]# ]]; then
-      BUFFER=
+      typeset -g BUFFER=
       return
     fi
     zle push-line

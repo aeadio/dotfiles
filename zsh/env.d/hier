@@ -2,13 +2,15 @@
 
 # Informs as to the directory hierarchy of ~
 
-gopath=(
-  $HOME/[Ss]ource/go(N)
-  $HOME/src/go(N)
-)
-export GOPATH=${(j,:,)gopath}
+() {
+  gopath=(
+    $HOME/[Ss]ource/go(N)
+    $HOME/src/go(N)
+  )
+  typeset -gx GOPATH=${(j,:,)gopath}
+}
 
-path=(
+typeset -g path=(
   $HOME/[Bb]in(N)
   ${~GOPATH:+$GOPATH/bin(N)}
   /opt/homebrew/opt/coreutils/libexec/gnubin(N)
@@ -18,7 +20,7 @@ path=(
   /usr/local/bin(N)
   $path
 )
-path=( ${(u)path} )
+typeset -g path=( ${(u)path} )
 
 : ${XDG_CONFIG_HOME:=${ZSH:h}}
-export XDG_CONFIG_HOME
+typeset -gx XDG_CONFIG_HOME

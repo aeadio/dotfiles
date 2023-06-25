@@ -30,9 +30,9 @@ bad-input:zle-line-finish() {
     firstword=${${(z)BUFFER}[1]}
   if (( $+PROMPT_DANGEROUS[$firstword] )); then
     setopt localoptions extended_glob
-    BUFFER=${BUFFER/#${firstword}[[:space:]]#/}
+    typeset -g BUFFER=${BUFFER/#${firstword}[[:space:]]#/}
     zle push-line
-    BUFFER=
+    typeset -g BUFFER=
     typeset -g _BAD_INPUT=2
   fi
 }

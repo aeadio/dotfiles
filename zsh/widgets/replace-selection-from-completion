@@ -14,5 +14,5 @@ if (( $? == 1 )); then
   return
 fi
 
-BUFFER=$b
+typeset -g BUFFER=$b
 set-selection $c $m

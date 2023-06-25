@@ -15,11 +15,11 @@ fi
 # Duplicate the character just before/after our target position, and blank it
 # out if it's a valid delimeter (such as whitespace, quotes, semicolon). If it
 # wasn't blanked out, then replace it with a space.
-if (( ${#LBUFFER} )) LBUFFER="$LBUFFER${${LBUFFER[-1]:#[[:space:]=\"\'\(\{]}:+ }"
-if (( ${#RBUFFER} )) RBUFFER="${${RBUFFER[1]:#[[:space:];\"\'\)\}]}:+ }$RBUFFER"
+if (( ${#LBUFFER} )) typeset -g LBUFFER="$LBUFFER${${LBUFFER[-1]:#[[:space:]=\"\'\(\{]}:+ }"
+if (( ${#RBUFFER} )) typeset -g RBUFFER="${${RBUFFER[1]:#[[:space:];\"\'\)\}]}:+ }$RBUFFER"
 
 if (( before )); then
-  RBUFFER="$1$RBUFFER"
+  typeset -g RBUFFER="$1$RBUFFER"
 else
-  LBUFFER="$LBUFFER$1"
+  typeset -g LBUFFER="$LBUFFER$1"
 fi

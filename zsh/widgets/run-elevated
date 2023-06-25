@@ -19,5 +19,5 @@ else
   newcursor=$(( CURSOR + (${#newbuffer} - ${#BUFFER}) ))
 fi
 
-BUFFER=$newbuffer
-CURSOR=$newcursor
+typeset -g BUFFER=$newbuffer
+typeset -g CURSOR=$newcursor

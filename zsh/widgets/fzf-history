@@ -24,8 +24,8 @@ if (( ret )) || [[ -z $line ]]; then
 fi
 
 if zle; then
-  LBUFFER=$line
-  RBUFFER=
+  typeset -g LBUFFER=$line
+  typeset -g RBUFFER=
 else
   print -nr -- $line
 fi
