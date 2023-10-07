@@ -4,20 +4,20 @@
 Thumbs.db
 
 # Machine-specific
-aws
-aws-sam
-autorandr
-circleci
-docker
-gh
-kube
-menus
-mimeapps.list
-msmtp
-packer
-pulse
-terraform
-vscode
+/aws
+/aws-sam
+/autorandr
+/circleci
+/docker
+/gh
+/kube
+/menus
+/mimeapps.list
+/msmtp
+/packer
+/pulse
+/terraform
+/vscode
 
 # Uninteresting stuff
 /cef_user_data
