@@ -1,9 +1,0 @@
-- name: 'Configure Keycastr'
-  hosts: 'localhost'
-  vars:
-    settings:
-      - { key: 'exportPath', value: '/Users/ant/Pictures/Screenshots', domain: 'pl.maketheweb.cleanshotx' }
-  tasks:
-    - include_role: 
-        name: ../roles/macos-defaults
-      loop: "{{ settings }}"
