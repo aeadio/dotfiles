@@ -19,4 +19,4 @@ render() {
   printf '%s\n' "$(icon $label) $(color $color "$freq")"
 }
 
-repeat 1
+repeat 2
