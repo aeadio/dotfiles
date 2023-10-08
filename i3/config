@@ -83,10 +83,6 @@ bindsym $mod+Shift+8            move container to workspace "8:八"
 bindsym $mod+Shift+9            move container to workspace "9:九"
 bindsym $mod+Shift+0            move container to workspace "10:十"
 bindsym $mod+Shift+Tab          floating toggle
-bindsym $mod+Ctrl+Left          move workspace to output left
-bindsym $mod+Ctrl+Right         move workspace to output right
-bindsym $mod+Ctrl+Up            move workspace to output up
-bindsym $mod+Ctrl+Down          move workspace to output down
 
 bindsym $mod+Left               focus left
 bindsym $mod+Right              focus right
@@ -103,15 +99,14 @@ bindsym $mod+8                  workspace "8:八"
 bindsym $mod+9                  workspace "9:九"
 bindsym $mod+0                  workspace "10:十"
 bindsym $mod+Tab                focus mode_toggle
-bindsym $mod+a                  focus parent
-bindsym $mod+d                  focus child
+bindsym $mod+g                  focus parent
 
 bindsym $mod+q                  kill
 bindsym $mod+h                  split h
 bindsym $mod+v                  split v
 bindsym $mod+f                  fullscreen toggle
-bindsym $mod+w                  layout tabbed
-bindsym $mod+e                  layout toggle split
+bindsym $mod+t                  layout tabbed
+bindsym $mod+a                  layout toggle split
 
 bindsym $mod+equal              resize grow   width 10 px or 1 ppt
 bindsym $mod+minus              resize shrink width 10 px or 1 ppt
@@ -126,33 +121,25 @@ bindsym $mod+Shift+bracketright resize set    height 659 px
 bindsym $mod+Shift+backslash    resize set    height 1014 px
 
 bindsym $mod+F5                 restart
-bindsym $mod+Escape             exec --no-startup-id quitmenu
 
 # Keybinds: external apps
 bindsym           $mod+z                exec --no-startup-id vivaldi-stable
 bindsym           $mod+Shift+z          exec --no-startup-id vivaldi-stable --incognito
-#bindsym          $mod+z                exec --no-startup-id firefox -new-window
-#bindsym          $mod+Shift+z          exec --no-startup-id firefox -private-window
 bindsym           $mod+x                exec --no-startup-id alacritty
 bindsym           $mod+Shift+x          exec --no-startup-id floatterm
 bindsym           $mod+c                exec --no-startup-id code-oss -n
-bindsym           $mod+n                exec --no-startup-id discord
-bindsym           $mod+b                exec --no-startup-id slack
-#bindsym          $mod+m                exec --no-startup-id irc
 bindsym           $mod+BackSpace        exec --no-startup-id 1password
+bindsym           $mod+Shift+BackSpace  exec --no-startup-id pw
 
+bindsym           $mod+Escape           exec --no-startup-id quitmenu
 bindsym           $mod+Return           exec --no-startup-id launch
 bindsym           $mod+slash            exec --no-startup-id switch
-#bindsym          $mod+apostrophe       exec --no-startup-id 1passmenu --type
-#bindsym          $mod+Shift+apostrophe exec --no-startup-id 1passmenu
-bindsym           $mod+Insert           exec --no-startup-id bluetoothmenu
-bindsym           $mod+Prior            exec --no-startup-id bluetoothmenu
+bindsym           $mod+b                exec --no-startup-id bluetoothmenu
 bindsym           $mod+period           exec --no-startup-id floatterm-clac
-bindsym           $mod+Next             exec --no-startup-id floatterm-vol
+bindsym           $mod+s                exec --no-startup-id floatterm-vol
 bindsym           $mod+comma            exec --no-startup-id floatterm-filemgr
-bindsym           $mod+s                exec --no-startup-id pw
 
-bindsym --release $mod+F8               exec --no-startup-id lock
+bindsym --release $mod+l                exec --no-startup-id lock
 bindsym --release $mod+Scroll_Lock      exec --no-startup-id lock
 bindsym --release $mod+Delete           exec --no-startup-id lock
 
@@ -160,9 +147,8 @@ bindsym           $mod+Print            exec --no-startup-id maim -u --format pn
 bindsym --release $mod+Shift+Print      exec --no-startup-id maim -u --format png -s -b 1 ~/pictures/screenshots/$(date -u +%Y-%m-%dT%H:%M:%S).png
 bindsym --release $mod+Ctrl+Print       exec --no-startup-id maim -u --format png -s -b 1 -t 9999999 | convert - \( +clone -background black -shadow 80x10-1-1 \) +swap -background none -layers merge +repage ~/pictures/screenshots/$(date -u +%Y-%m-%dT%H:%M:%S).png
 
-bindsym           $mod+F7               exec --no-startup-id sh -c "SVDIR=$HOME/sv sv restart wallpaper"
-bindsym           $mod+F11              exec --no-startup-id sh -c "SVDIR=$HOME/sv sv restart wallpaper"
-bindsym           $mod+F12              exec --no-startup-id sh -c "SVDIR=$HOME/sv sv restart picom"
+bindsym           $mod+w                exec --no-startup-id sh -c "SVDIR=$HOME/sv sv restart wallpaper"
+bindsym           $mod+o                exec --no-startup-id sh -c "SVDIR=$HOME/sv sv restart picom"
 
 bindsym           XF86AudioMute         exec --no-startup-id vol toggle-mute
 bindsym           XF86AudioLowerVolume  exec --no-startup-id vol -3%
