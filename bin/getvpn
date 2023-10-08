@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 declare -A vpn_ips
-#vpn_ips["0.0.0.0"]="host"
+vpn_ips["0.0.0.0"]="host"
 
 check_curl() {
   ip="$(curl -m 2 ipinfo.io/ip 2>/dev/null)"
