@@ -10,7 +10,7 @@ typeset -g fpath=(
 autoload -Uz compinit
 
 () {
-  local zcompfile=${ZCOMPDUMP:-$ZSH/compdump}
+  local zcompfile=${XDG_DATA_HOME:-$HOME/.local/share}/zsh/compdump
   zshrc:compinit-finished() {
     compinit -d $zcompfile -C
     async_stop_worker compinit

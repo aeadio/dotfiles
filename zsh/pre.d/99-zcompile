@@ -9,7 +9,7 @@
   setopt localoptions extended_glob
   (
     local f REPLY
-    for f in $ZSH/(*/)#(*.(z|)sh|^*.*)(-.e:'[[ ! -e $REPLY.zwc || $REPLY.zwc -ot $REPLY ]]':N);
+    for f in {$ZSH,${XDG_DATA_HOME:-$HOME/.local/share}/zsh}/(*/)#(*.(z|)sh|^*.*)(-.e:'[[ ! -e $REPLY.zwc || $REPLY.zwc -ot $REPLY ]]':N);
       zcompile $f &>/dev/null
   ) &|
 }

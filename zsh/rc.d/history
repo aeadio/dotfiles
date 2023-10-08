@@ -3,11 +3,14 @@
 HISTSIZE=10000
 SAVEHIST=10000
 
-if (( $+functions[sethistfile] )); then
-  sethistfile $ZSH/history
-else
-  typeset -g HISTFILE=$ZSH/history
-fi
+() {
+  local histfile=${XDG_DATA_HOME:-$HOME/.local/share}/zsh/history
+  if (( $+functions[sethistfile] )); then
+    sethistfile $histfile
+  else
+    typeset -g HISTFILE=$histfile
+  fi
+}
 
 setopt append_history
 setopt extended_history
