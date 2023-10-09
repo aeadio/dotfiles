@@ -6,7 +6,6 @@ Thumbs.db
 # Machine-specific
 /aws
 /aws-sam
-/autorandr
 /circleci
 /docker
 /gh

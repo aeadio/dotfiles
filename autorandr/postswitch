@@ -1,0 +1,4 @@
+#!/bin/sh
+
+setscreenblank
+SVDIR=$HOME/sv sv restart wallpaper
