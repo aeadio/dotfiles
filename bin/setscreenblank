@@ -3,18 +3,13 @@
 set -x
 
 # Sets screen blank (dpms) time depending on the following priority list:
-# - Screen is locked: pause only briefly before turning off screen
 # - AC adapter is plugged in: disabled
 # - On battery: turn off in 5 minutes
 
-xset s off
-
-if pgrep slock >/dev/null 2>/dev/null; then
-  xset +dpms
-  xset dpms 5 0 0
-elif cat /sys/class/power_supply/AC*/online 2>/dev/null | grep -q 1; then
-  xset -dpms
+if cat /sys/class/power_supply/AC*/online 2>/dev/null | grep -q 1; then
+  xset dpms 0 0 0
+  xset s off
 else
-  xset +dpms
   xset dpms 300 0 0
+  xset s off
 fi
