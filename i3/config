@@ -53,14 +53,14 @@ for_window [class="^1Password$"]                               floating enable
 
 # Give 4 workspaces to each desktop screen; fall back to laptop display if no
 # screens are attached.
-workspace "1:一"  output  DP-2  DP-1 eDP-1
-workspace "2:二"  output  DP-2  DP-1 eDP-1
-workspace "3:三"  output  DP-2  DP-1 eDP-1
-workspace "4:四"  output  DP-2  DP-1 eDP-1
-workspace "5:五"  output  DP-1 eDP-1
-workspace "6:六"  output  DP-1 eDP-1
-workspace "7:七"  output  DP-1 eDP-1
-workspace "8:八"  output  DP-1 eDP-1
+workspace "1:一"  output  DP-1 eDP-1
+workspace "2:二"  output  DP-1 eDP-1
+workspace "3:三"  output  DP-1 eDP-1
+workspace "4:四"  output  DP-1 eDP-1
+workspace "5:五"  output  DP-2  DP-1 eDP-1
+workspace "6:六"  output  DP-2  DP-1 eDP-1
+workspace "7:七"  output  DP-2  DP-1 eDP-1
+workspace "8:八"  output  DP-2  DP-1 eDP-1
 workspace "9:九"  output eDP-1
 workspace "10:十" output eDP-1
 
