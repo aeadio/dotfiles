@@ -9,10 +9,10 @@ xset s off
 
 if pgrep slock >/dev/null 2>/dev/null; then
   xset +dpms
-  xset dpms 5 10 15
+  xset dpms 5 0 0
 elif cat /sys/class/power_supply/AC*/online 2>/dev/null | grep -q 1; then
   xset -dpms
 else
   xset +dpms
-  xset dpms 0 0 300
+  xset dpms 300 0 0
 fi
