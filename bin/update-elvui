@@ -1,6 +1,6 @@
 #!/usr/bin/env zsh
 
-addonpaths=( /Applications/"World of Warcraft"/*/Interface/AddOns/(N) )
+addonpaths=( $HOME/games/"World of Warcraft"/*/Interface/AddOns/(N) )
 
 progname=${0:t}
 fail() {
