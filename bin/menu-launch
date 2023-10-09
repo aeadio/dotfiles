@@ -38,7 +38,7 @@ imageviewer() {
 	img --title "feh-float" -g "1920x1080" "$1"
 }
 
-dmenu_path | nmenu | while read selection; do
+dmenu_path | menu | while read selection; do
 	case "$selection" in
 		\:* | http://* | https://*) # URL
 			browser "${selection#:}" &

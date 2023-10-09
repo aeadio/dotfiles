@@ -11,7 +11,7 @@ windows=$(echo "$windows" | \
                     $1 = ""; printf "%s\n", $0}')
 
 
-target=$(echo "$windows" | nmenu -W 600 -p Windows: | tr -s '[:blank:]' | cut -d ' ' -f 2-)
+target=$(echo "$windows" | menu -W 600 -p Windows: | tr -s '[:blank:]' | cut -d ' ' -f 2-)
 
 if [[ -n $target ]]; then
     wmctrl -a "$target"

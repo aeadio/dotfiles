@@ -1,6 +1,6 @@
 #!/bin/mksh
 
-dmenu="nmenu"
+dmenu="menu"
 
 is_powered() {
   bluetoothctl show | grep -q "Powered: yes"

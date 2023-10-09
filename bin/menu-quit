@@ -1,6 +1,6 @@
 #!/usr/bin/env zsh
 
-dmenu='nmenu'
+dmenu='menu'
 
 fields=(lock logout sleep reboot shutdown)
 
