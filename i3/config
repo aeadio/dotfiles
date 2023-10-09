@@ -121,6 +121,7 @@ bindsym $mod+Shift+bracketright resize set    height 659 px
 bindsym $mod+Shift+backslash    resize set    height 1014 px
 
 bindsym $mod+F5                 restart
+bindsym $mod+Shift+F5           exec --no-startup-id autorandr --change
 
 # Keybinds: external apps
 bindsym           $mod+z                exec --no-startup-id vivaldi-stable
