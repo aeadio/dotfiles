@@ -9,6 +9,9 @@ has doas &&
   alias root='doas -s' ||
   alias root='sudo -sE'
 
+isgnu cp &&
+  alias cp='cp --reflink=auto'
+
 alias lf='noglob lf'
 
 # shorthands
