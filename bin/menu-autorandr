@@ -1,0 +1,5 @@
+#!/bin/sh
+
+autorandr --list | menu | while read -r selection; do
+  autorandr --load $selection
+done

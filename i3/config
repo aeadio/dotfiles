@@ -120,7 +120,6 @@ bindsym $mod+Shift+bracketright resize set    height 659 px
 bindsym $mod+Shift+backslash    resize set    height 1014 px
 
 bindsym $mod+F5                 restart
-bindsym $mod+Shift+F5           exec --no-startup-id autorandr --change
 
 # Keybinds: external apps
 bindsym           $mod+z                exec --no-startup-id vivaldi-stable
@@ -138,6 +137,8 @@ bindsym           $mod+Escape           exec --no-startup-id menu-quit
 bindsym           $mod+Return           exec --no-startup-id menu-launch
 bindsym           $mod+slash            exec --no-startup-id menu-switch
 bindsym           $mod+u                exec --no-startup-id menu-bluetooth
+bindsym           $mod+d                exec --no-startup-id menu-autorandr
+bindsym           $mod+Shift+d          exec --no-startup-id autorandr --load mobile --force --ignore-lid
 bindsym           $mod+period           exec --no-startup-id floatterm-clac
 bindsym           $mod+comma            exec --no-startup-id floatterm-filemgr
 bindsym           $mod+s                exec --no-startup-id floatterm-vol
