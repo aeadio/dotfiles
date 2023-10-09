@@ -60,5 +60,5 @@ render() {
     *) printf '%s\n' "$(icon ${labels[enet]}) $(color dim "$dev")" ;;
   esac
 }
-set -x
+
 listen <(ip monitor)

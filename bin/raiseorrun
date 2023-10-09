@@ -1,7 +1,5 @@
 #!/usr/bin/env zsh
 
-set -x
-
 while read -r wmclass title; do
   if [[ $wmclass =~ ^${1}$ ]]; then
     wmctrl -a $title
