@@ -99,7 +99,6 @@ bindsym $mod+8                  workspace "8:八"
 bindsym $mod+9                  workspace "9:九"
 bindsym $mod+0                  workspace "10:十"
 bindsym $mod+Tab                focus mode_toggle
-bindsym $mod+g                  focus parent
 
 bindsym $mod+q                  kill
 bindsym $mod+h                  split h
@@ -129,6 +128,9 @@ bindsym           $mod+Shift+z          exec --no-startup-id vivaldi-stable --in
 bindsym           $mod+x                exec --no-startup-id alacritty
 bindsym           $mod+Shift+x          exec --no-startup-id floatterm
 bindsym           $mod+c                exec --no-startup-id code-oss -n
+bindsym           $mod+b                exec --no-startup-id raiseorrun weechat.alacritty irc
+bindsym           $mod+n                exec --no-startup-id raiseorrun discord.discord Discord --disable-smooth-scrolling
+bindsym           $mod+m                exec --no-startup-id raiseorrun slack.Slack slack --disable-smooth-scrolling
 bindsym           $mod+BackSpace        exec --no-startup-id 1password
 bindsym           $mod+Shift+BackSpace  exec --no-startup-id pw
 

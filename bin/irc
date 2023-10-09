@@ -2,5 +2,5 @@
 
 alacritty \
 	--title weechat \
+	--class alacritty,weechat \
 	-e weechat
-	#-e tmux -2 -u new-session -A -s weechat weechat

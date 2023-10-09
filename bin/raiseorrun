@@ -1,0 +1,13 @@
+#!/usr/bin/env zsh
+
+set -x
+
+while read -r wmclass title; do
+  if [[ $wmclass =~ ^${1}$ ]]; then
+    wmctrl -a $title
+    exit 0
+  fi
+done < <(wmctrl -xl | tr -s '[:blank:]' | cut -d ' ' -f 3,5-)
+
+shift
+"$@"
