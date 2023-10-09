@@ -1,5 +1,7 @@
 #!/bin/sh
 
+set -x
+
 # Sets screen blank (dpms) time depending on the following priority list:
 # - Screen is locked: pause only briefly before turning off screen
 # - AC adapter is plugged in: disabled
