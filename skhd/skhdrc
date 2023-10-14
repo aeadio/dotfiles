@@ -42,14 +42,17 @@ ralt + rcmd + rctrl + rshift + lshift - 7         : yabai -m window --space 7
 ralt + rcmd + rctrl + rshift + lshift - 8         : yabai -m window --space 8
 ralt + rcmd + rctrl + rshift + lshift - 9         : yabai -m window --space 9
 
+ralt + rcmd + rctrl + rshift          - 0x21      : yabai -m window --ratio abs:0.7
+ralt + rcmd + rctrl + rshift          - 0x1E      : yabai -m window --ratio abs:0.3
+ralt + rcmd + rctrl + rshift          - 0x2A      : yabai -m window --ratio abs:0.5
+ralt + rcmd + rctrl + rshift + lshift - 0x2A      : yabai -m space --balance
+
 ralt + rcmd + rctrl + rshift          - f         : yabai -m window --toggle float
 ralt + rcmd + rctrl + rshift          - s         : yabai -m window --toggle sticky
 ralt + rcmd + rctrl + rshift          - t         : yabai -m window --toggle topmost
+ralt + rcmd + rctrl + rshift          - r         : yabai -m window --toggle split
 
 ralt + rcmd + rctrl + rshift          - w         : yabai -m window --close
-
-# Workspace control
-ralt + rcmd + rctrl + rshift          - b         : yabai -m space --balance
 
 # Yabai control
 ralt + rcmd + rctrl + rshift          - f4        : skhd --restart-service
