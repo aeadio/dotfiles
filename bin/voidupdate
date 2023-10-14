@@ -3,9 +3,10 @@
 yes=
 vkpurge=
 xbps_cleanup=
+print_updates=
 
 OPTIND=0
-while getopts "yvo" opt; do
+while getopts "yvop" opt; do
   case $opt in
     y)
       # Auto-accept all updates
@@ -16,11 +17,18 @@ while getopts "yvo" opt; do
     o)
       # Clean up orphaned dependencies and stale cached packages
       xbps_cleanup=1 ;;
+    p)
+      # Print available updates and exit (ignoring other options).
+      print_updates=1 ;;
   esac
 done
 
 # Determine if there are available updates
 output="$(xbps-install -Sun)"
+if [ -n "$print_updates" ]; then
+  printf '%s' "$output"
+  exit 0
+fi
 if [ -z "$output" ]; then
   printf '%s\n' "Up to date."
   exit 0

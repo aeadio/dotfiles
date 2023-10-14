@@ -1,0 +1,22 @@
+#!/usr/bin/env bash
+
+. blocks/common
+
+buttons=("floatterm sh -c 'doas /opt/bin/voidupdate -vo; read _' #c")
+
+label=f0aa
+
+get_num_updates() {
+  doas /opt/bin/voidupdate -p | wc -l
+}
+
+render() {
+  local updates="$(get_num_updates)"
+  if [[ $updates > 0 ]]; then
+    printf '%s\n' "$(icon $label) $(color green "$updates")"
+  else
+    printf '%s\n' ''
+  fi
+}
+
+repeat 600
