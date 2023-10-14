@@ -26,7 +26,7 @@ case $OSTYPE in
       autofitter:no-stem-darkening=0  \
     "
     typeset -gx CHROME_FLAGS="--enable-features=VaapiVideoDecoder"
-    typeset -gx WINEPREFIX="win64"
+    typeset -gx WINEARCH="win64"
     ;;
   darwin*)
     typeset -gx HOMEBREW_CASK_OPTS='--no-quarantine'
