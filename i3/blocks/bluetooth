@@ -2,7 +2,7 @@
 
 . blocks/common
 
-buttons=('bluetoothmenu #c')
+buttons=('menu-bluetooth #c')
 
 label=f294
 
