@@ -71,6 +71,6 @@ ralt + rcmd + rctrl + rshift          - z         : open -gna /Applications/Viva
 ralt + rcmd + rctrl + rshift + lshift - z         : open -gna /Applications/Vivaldi.app --args --incognito
 ralt + rcmd + rctrl + rshift          - x         : open -gna /Applications/Alacritty.app
 ralt + rcmd + rctrl + rshift          - e         : code -n
-ralt + rcmd + rctrl + rshift          - p         : open -a /Applications/1Password.app
+ralt + rcmd + rctrl + rshift + lshift - p         : open -a /Applications/1Password.app
 ralt + rcmd + rctrl + rshift          - h         : open -n "$HOME"
 ralt + rcmd + rctrl + rshift          - c         : alacritty -e clac
