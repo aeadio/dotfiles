@@ -1,22 +1,22 @@
-#!/bin/sh
+#!/usr/bin/env zsh
 
-# Given a single image, set it
-# Given a folder, set a random image within it
+# Takes a list of image files and/or directories containing image files 
+# (recursively). Sets each detectable screen's background to a random image 
+# within the list.
 
-getrandom() {
-  find "$1" -iregex ".*\.\(jpg\|gif\|png\|jpeg\|tiff\|bmp\)" | shuf -n 1
-}
+wallpapers=(
+  $^@(.e,'[[ $REPLY:e == (j(e|)pg|png|tiff|bmp) ]]',N)
+  $^@/**.(jp(e|)g|png|tiff|bmp)(N)
+)
 
-wall="$1"
-if [ -d "$wall" ]; then
-  wall="$(getrandom "$wall")"
+ndisplays=$(xrandr --listactivemonitors | sed -n 's/Monitors: \([[:digit:]]*\)/\1/p')
+if [[ -z $ndisplays ]]; then
+  ndisplays=1  # will set the same image to all screens
 fi
 
-mimetype="$(file --mime-type -b "$wall")"
-if [ "${mimetype%/*}" != "image" ]; then
-  printf '%s\n' "unknown image format: $wall"
-  exit 1
-fi
+w=()
+for (( i = 1; i <= $ndisplays; i++ )); do
+  w+=( $wallpapers[(( $RANDOM % $#wallpapers + 1 ))] )
+done
 
-#setroot --store --zoom "$wall"
-feh --bg-fill "$wall" --no-fehbg
+feh --bg-fill $w --no-fehbg
