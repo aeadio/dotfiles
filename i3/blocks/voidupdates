@@ -2,12 +2,12 @@
 
 . blocks/common
 
-buttons=("floatterm sh -c 'doas /opt/bin/voidupdate -vo; read _' #c")
+buttons=("floatterm sh -c 'doas /opt/bin/voidupdate -vo; pause' #c")
 
 label=f0aa
 
 get_num_updates() {
-  doas /opt/bin/voidupdate -p | wc -l
+  xbps-install -un | wc -l
 }
 
 render() {
