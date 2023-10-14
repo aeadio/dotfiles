@@ -15,11 +15,11 @@ isgnu cp &&
 alias lf='noglob lf'
 
 # shorthands
-if has exa; then
-  alias l="exa -lbF -I '*.pyc|*.pyo|*.zwc|__pycache__|__cache__|lost+found' --group-directories-first --no-time --git --no-icons"
-  alias L='exa -lbF --group-directories-first --no-time --git --no-icons -aa'
-  alias ll="exa -lbFgm -I '*.pyc|*.pyo|*.zwc|__pycache__|__cache__|lost+found' --group-directories-first --git --no-icons"
-  alias LL='exa -lbFgm --group-directories-first --git --no-icons -aa'
+if has eza; then
+  alias l="eza -lFXb -I '*.pyc|*.pyo|*.zwc|__pycache__|__cache__|lost+found' --group-directories-first --no-time --git --no-icons"
+  alias L='eza -lFXb --group-directories-first --no-time --git --no-icons -aa'
+  alias ll="eza -lFXbgm -I '*.pyc|*.pyo|*.zwc|__pycache__|__cache__|lost+found' --group-directories-first --git --no-icons"
+  alias LL='eza -lFXbgm --group-directories-first --git --no-icons -aa'
 elif isgnu ls; then
   alias l='ls -lFkh --quoting-style=literal --color=auto --group-directories-first'
   alias L='ls -lFkh --quoting-style=literal --color=auto --group-directories-first -A'
