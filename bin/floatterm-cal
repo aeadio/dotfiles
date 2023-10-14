@@ -1,8 +1,0 @@
-#!/bin/sh
-
-alacritty \
-	--class alacritty,floating \
-	--title cal \
-	-o window.dimensions.columns=66 \
-	-o window.dimensions.lines=35 \
-	-e sh -c 'cal -y; pause'

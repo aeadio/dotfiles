@@ -1,8 +1,0 @@
-#!/bin/sh
-
-alacritty \
-	--class alacritty,floating \
-	--title clac \
-	-o window.dimensions.columns=80 \
-	-o window.dimensions.lines=40 \
-	-e clac

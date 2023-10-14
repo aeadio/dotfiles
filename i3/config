@@ -139,9 +139,9 @@ bindsym           $mod+slash            exec --no-startup-id menu-switch
 bindsym           $mod+u                exec --no-startup-id menu-bluetooth
 bindsym           $mod+d                exec --no-startup-id menu-autorandr
 bindsym           $mod+Shift+d          exec --no-startup-id autorandr --load mobile --force --ignore-lid
-bindsym           $mod+period           exec --no-startup-id floatterm-clac
-bindsym           $mod+comma            exec --no-startup-id floatterm-filemgr
-bindsym           $mod+s                exec --no-startup-id floatterm-vol
+bindsym           $mod+period           exec --no-startup-id floatterm -s 80x40 clac
+bindsym           $mod+comma            exec --no-startup-id floatterm ranger
+bindsym           $mod+s                exec --no-startup-id floatterm pulsemixer
 
 bindsym --release $mod+l                exec --no-startup-id lock
 bindsym --release $mod+Scroll_Lock      exec --no-startup-id lock

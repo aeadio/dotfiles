@@ -2,7 +2,7 @@
 
 . blocks/common
 
-buttons=('floatterm-cal')
+buttons=("floatterm -s 66x35 sh -c 'cal -y; read _' #c")
 
 render() {
   date +'%a %b %-d, %-I:%M %p   '

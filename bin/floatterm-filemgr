@@ -1,8 +1,0 @@
-#!/bin/sh
-
-alacritty \
-	--class alacritty,floating \
-	--title ranger \
-	-o window.dimensions.columns=100 \
-	-o window.dimensions.lines=28 \
-	-e ranger
