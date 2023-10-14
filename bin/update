@@ -1,0 +1,50 @@
+#!/bin/sh
+
+yes=
+vkpurge=
+xbps_cleanup=
+
+OPTIND=0
+while getopts "yvo" opt; do
+  case $opt in
+    y)
+      # Auto-accept all updates
+      yes=1 ;;
+    v)
+      # Remove all kernels except (1) the latest and (2) the currently booted
+      vkpurge=1 ;;
+    o)
+      # Clean up orphaned dependencies and stale cached packages
+      xbps_cleanup=1 ;;
+  esac
+done
+
+# Determine if there are available updates
+output="$(xbps-install -Sun)"
+if [ -z "$output" ]; then
+  printf '%s\n' "Up to date."
+  exit 0
+fi
+
+# Determine the currently active root filesystem
+bootenv="$(mount | awk '/ \/ / {print $1}')"
+if [ -z "$bootenv" ]; then
+  printf '%s\n' "update: could not determine active boot environment" >&2
+  exit 1
+fi
+
+# Snapshot the currently active root filesystem
+snapshot="${bootenv}@update_$(date -u +%04Y-%02m-%02d_%02H:%02M:%02S)"
+zfs snapshot -r "$snapshot"
+printf '%s\n' "Snapshot created: $snapshot"
+
+# Install updates
+xbps-install -Su ${yes:+-y}
+
+# Post-update cleanup
+if [ -n "$vkpurge" ]; then
+  vkpurge rm all
+fi
+if [ -n "$xbps_cleanup" ]; then
+  xbps-remove -oO
+fi
