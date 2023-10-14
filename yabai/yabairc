@@ -46,7 +46,7 @@ config=(
   insert_feedback_color       '0xaa8fbcbb'
 )
 
-typeset -A rules=(
+typeset -A float=(
   # System dialogues
   ['^Activity Monitor$']=
   ['^App Store$']=
@@ -99,6 +99,13 @@ typeset -A rules=(
   ['^zoom.us$']=
 )
 
+typeset -A sticky=(
+  # Apps
+  ['^1Password']=
+  ['^AWS VPN Client$']=
+  ['^Numi$']=
+)
+
 # Load scripting additions (SA)
 yabai -m signal --add event=dock_did_restart action="sudo yabai --load-sa"
 sudo yabai --load-sa
@@ -106,5 +113,8 @@ sudo yabai --load-sa
 # Load config
 yabai -m config $config
 
-for app in ${(k)rules};
-  yabai -m rule --add app=$app ${rules[$app]:+--title=$rules[$app]} manage=off
+for app in ${(k)float};
+  yabai -m rule --add app=$app ${float[$app]:+--title=$float[$app]} manage=off label="float:$app"
+
+for app in ${(k)sticky};
+  yabai -m rule --add app=$app ${sticky[$app]:+--title=$sticky[$app]} sticky=on label="sticky:$app"
