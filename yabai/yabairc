@@ -29,12 +29,12 @@ config=(
   right_padding               28
   window_gap                  28
   
-  window_opacity              off     # SA
+  window_opacity              on      # SA
   active_window_opacity       1.0     # SA
   normal_window_opacity       0.92    # SA
   window_opacity_duration     0.1     # SA
   
-  window_animation_duration   0.08    # SA
+  window_animation_duration   0       # SA
   
   window_shadow               on      # SA
   
