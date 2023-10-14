@@ -25,6 +25,9 @@ if [ -z "$output" ]; then
   printf '%s\n' "Up to date."
   exit 0
 fi
+count="$(printf '%s\n' $output | wc -l)"
+printf '%s\n' "$count updates available."
+printf '%s\n' ''
 
 # Determine the currently active root filesystem
 bootenv="$(mount | awk '/ \/ / {print $1}')"
