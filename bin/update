@@ -34,17 +34,26 @@ if [ -z "$bootenv" ]; then
 fi
 
 # Snapshot the currently active root filesystem
+printf '%s\n' '[*] Snapshotting live system'
 snapshot="${bootenv}@update_$(date -u +%04Y-%02m-%02d_%02H:%02M:%02S)"
 zfs snapshot -r "$snapshot"
 printf '%s\n' "Snapshot created: $snapshot"
+printf '%s\n' ''
 
 # Install updates
 xbps-install -Su ${yes:+-y}
 
 # Post-update cleanup
 if [ -n "$vkpurge" ]; then
+  printf '%s\n' ''
+  printf '%s\n' '[*] Removing old kernels'
   vkpurge rm all
 fi
 if [ -n "$xbps_cleanup" ]; then
-  xbps-remove -oO
+  printf '%s\n' ''
+  printf '%s\n' '[*] Cleaning up orphaned dependencies'
+  xbps-remove -o
+  printf '%s\n' ''
+  printf '%s\n' '[*] Cleaning up XBPS cache'
+  xbps-remove -O
 fi
