@@ -41,7 +41,7 @@ printf '%s\n' "Snapshot created: $snapshot"
 printf '%s\n' ''
 
 # Install updates
-xbps-install -Su ${yes:+-y}
+xbps-install -u ${yes:+-y}
 
 # Post-update cleanup
 if [ -n "$vkpurge" ]; then
