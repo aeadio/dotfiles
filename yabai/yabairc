@@ -95,6 +95,7 @@ typeset -A rules=(
   ['^OnyX$']=
   ['^Secretive$']=
   ['^Steam$']=
+  ['^Textual$']='^Textual Preferences$'
   ['^The Unarchiver$']=
   ['^zoom.us$']=
 )
