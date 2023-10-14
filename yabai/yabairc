@@ -30,8 +30,8 @@ config=(
   
   window_opacity              on      # SA
   active_window_opacity       1.0     # SA
-  normal_window_opacity       0.92    # SA
-  window_opacity_duration     0.1     # SA
+  normal_window_opacity       0.98    # SA
+  window_opacity_duration     0.05    # SA
   
   window_animation_duration   0       # SA
   
