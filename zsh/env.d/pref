@@ -8,7 +8,7 @@ typeset -gx VISUAL='micro'
 typeset -gx EDITOR=$VISUAL
 typeset -gx GEDITOR='code'  # Used in ranger's rifle.conf
 typeset -gx PAGER='less'
-typeset -gx TERMINAL='iterm2'
+typeset -gx TERMINAL='alacritty'
 
 # NOTE: Implicit dependency on env.d/hier loading first in order to set PATH
 if (( $+commands[bat] )); then
