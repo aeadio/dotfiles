@@ -1,0 +1,15 @@
+#!/usr/bin/env zsh
+
+# Try to move the window in a more i3-like way
+# 1. Warp in the direction if possible
+# 2. Swap in the direction if possible
+# 3. Move to the next display in the direction if possible (maintain focus)
+
+yabai -m window --warp $1 2>/dev/null && exit 0
+yabai -m window --swap $1 2>/dev/null && exit 0
+
+# When we move the window to another display, it loses focus. Prevent that.
+yabai -m query --windows --window | jq -r '.id' | read -r window_id
+yabai -m window --display $1 &&
+  [[ -n $window_id ]] &&
+  yabai -m window --focus $window_id

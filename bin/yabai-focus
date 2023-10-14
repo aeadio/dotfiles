@@ -1,0 +1,31 @@
+#!/usr/bin/env zsh
+
+# Try to move focus in a more i3-like way
+# 1. If we're on a stacked window, try focus the next/prev in the stack on 
+#    east/west movement
+# 1. Focus the next window in that direction if possible
+# 2. Focus the next display in that direction if possible
+
+is_stacked_window() {
+  local stack_id
+  yabai -m query --windows --window | jq -r '."stack-index"' | read -r stack_id
+  [[ -n $stack_id ]] && (( stack_id > 0 ))
+}
+
+focus_next_stack() {
+  is_stacked_window &&
+    yabai -m window --focus stack.next
+}
+
+focus_prev_stack() {
+  is_stacked_window &&
+    yabai -m window --focus stack.prev
+}
+
+case $1 in
+  east) focus_next_stack && exit 0 ;;
+  west) focus_prev_stack && exit 0 ;;
+esac
+
+yabai -m window --focus $1 2>/dev/null && exit 0
+yabai -m display --focus $1

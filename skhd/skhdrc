@@ -2,10 +2,10 @@
 # we can still use left-hand modifiers in combation with it.
 
 # Navigation
-ralt + rcmd + rctrl + rshift          - left      : yabai -m window --focus west
-ralt + rcmd + rctrl + rshift          - down      : yabai -m window --focus south
-ralt + rcmd + rctrl + rshift          - up        : yabai -m window --focus north
-ralt + rcmd + rctrl + rshift          - right     : yabai -m window --focus east
+ralt + rcmd + rctrl + rshift          - left      : yabai-focus west
+ralt + rcmd + rctrl + rshift          - down      : yabai-focus south
+ralt + rcmd + rctrl + rshift          - up        : yabai-focus north
+ralt + rcmd + rctrl + rshift          - right     : yabai-focus east
 
 ralt + rcmd + rctrl + rshift          - 1         : yabai -m space --focus 1
 ralt + rcmd + rctrl + rshift          - 2         : yabai -m space --focus 2
@@ -18,19 +18,16 @@ ralt + rcmd + rctrl + rshift          - 8         : yabai -m space --focus 8
 ralt + rcmd + rctrl + rshift          - 9         : yabai -m space --focus 9
 
 # Window control
-ralt + rcmd + rctrl + rshift + lshift - left      : yabai -m window --warp west
-ralt + rcmd + rctrl + rshift + lshift - down      : yabai -m window --warp south
-ralt + rcmd + rctrl + rshift + lshift - up        : yabai -m window --warp north
-ralt + rcmd + rctrl + rshift + lshift - right     : yabai -m window --warp east
-
-ralt + rcmd + rctrl + rshift + lcmd   - left      : yabai -m window --display west
-ralt + rcmd + rctrl + rshift + lcmd   - right     : yabai -m window --display east
+ralt + rcmd + rctrl + rshift + lshift - left      : yabai-move-window west
+ralt + rcmd + rctrl + rshift + lshift - down      : yabai-move-window south
+ralt + rcmd + rctrl + rshift + lshift - up        : yabai-move-window north
+ralt + rcmd + rctrl + rshift + lshift - right     : yabai-move-window east
 
 ralt + rcmd + rctrl + rshift + lalt   - left      : yabai -m window --insert west
 ralt + rcmd + rctrl + rshift + lalt   - down      : yabai -m window --insert south
 ralt + rcmd + rctrl + rshift + lalt   - up        : yabai -m window --insert north
 ralt + rcmd + rctrl + rshift + lalt   - right     : yabai -m window --insert east
-ralt + rcmd + rctrl + rshift + lalt   - space     : yabai -m window --insert stack
+ralt + rcmd + rctrl + rshift + lalt   - tab       : yabai -m window --insert stack
 
 ralt + rcmd + rctrl + rshift + lshift - 1         : yabai -m window --space 1
 ralt + rcmd + rctrl + rshift + lshift - 2         : yabai -m window --space 2
