@@ -49,7 +49,7 @@ ralt + rcmd + rctrl + rshift          - s         : yabai -m window --toggle sti
 ralt + rcmd + rctrl + rshift          - t         : yabai -m window --toggle topmost
 ralt + rcmd + rctrl + rshift          - r         : yabai -m window --toggle split
 
-ralt + rcmd + rctrl + rshift          - w         : yabai -m window --close
+ralt + rcmd + rctrl + rshift          - w         : yabai-smart-close
 
 # Yabai control
 ralt + rcmd + rctrl + rshift          - f4        : skhd --restart-service

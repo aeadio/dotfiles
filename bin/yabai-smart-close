@@ -1,0 +1,36 @@
+#!/usr/bin/env zsh
+
+# Close a window and try to leave the focus on a suitable replacement window
+# - When closing a window that's part of a stack, focus,
+#   - The next element of the stack if there was one
+#   - The previous element of the stack if there wasn't
+# - When closing a window, keep focus on the same space
+
+is_stacked_window() {
+  local stack_id
+  yabai -m query --windows --window | jq -r '."stack-index"' | read -r stack_id
+  [[ -n $stack_id ]] && (( stack_id > 0 ))
+}
+
+get_window_id() {
+  yabai -m query --windows --window | jq -r '.id'
+}
+
+get_window_space() {
+  yabai -m query --windows --window | jq -r '.space'
+}
+
+if is_stacked_window; then
+  get_window_id | read -r window_id
+  if [[ -n $window_id ]]; then
+    { yabai -m window --focus stack.next ||
+      yabai -m window --focus stack.prev } &&
+      yabai -m window --close $window_id &&
+      exit 0
+  fi
+fi
+
+get_window_space | read space_id
+yabai -m window --close
+[[ -n $space_id ]] &&
+  yabai -m space --focus $space_id
