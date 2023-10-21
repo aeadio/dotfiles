@@ -120,4 +120,4 @@ cursor:
   thickness: 0.2
 
 mouse:
-  hide_when_typing: true
+  hide_when_typing: false
