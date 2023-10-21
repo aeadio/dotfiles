@@ -27,7 +27,7 @@ ralt + rcmd + rctrl + rshift + lalt   - left      : yabai -m window --insert wes
 ralt + rcmd + rctrl + rshift + lalt   - down      : yabai -m window --insert south
 ralt + rcmd + rctrl + rshift + lalt   - up        : yabai -m window --insert north
 ralt + rcmd + rctrl + rshift + lalt   - right     : yabai -m window --insert east
-ralt + rcmd + rctrl + rshift + lalt   - tab       : yabai -m window --insert stack
+ralt + rcmd + rctrl + rshift          - tab       : yabai -m window --insert stack
 
 ralt + rcmd + rctrl + rshift + lshift - 1         : yabai -m window --space 1
 ralt + rcmd + rctrl + rshift + lshift - 2         : yabai -m window --space 2
