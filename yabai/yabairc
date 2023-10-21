@@ -112,9 +112,8 @@ sudo yabai --load-sa
 
 # Load config
 yabai -m config $config
-
 for app in ${(k)float};
-  yabai -m rule --add app=$app ${float[$app]:+--title=$float[$app]} manage=off label="float:$app"
+  yabai -m rule --add app=$app ${float[$app]:+title=$float[$app]} manage=off label="float:$app${title:+:$title}"
 
 for app in ${(k)sticky};
-  yabai -m rule --add app=$app ${sticky[$app]:+--title=$sticky[$app]} sticky=on label="sticky:$app"
+  yabai -m rule --add app=$app ${sticky[$app]:+title=$sticky[$app]} sticky=on label="sticky:$app"
