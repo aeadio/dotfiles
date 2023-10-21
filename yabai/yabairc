@@ -94,6 +94,7 @@ typeset -A float=(
   ['^OnyX$']=
   ['^Secretive$']=
   ['^Steam$']=
+  ['^SwitchResX Control$']=
   ['^Textual$']='^Textual Preferences$'
   ['^The Unarchiver$']=
   ['^zoom.us$']=
