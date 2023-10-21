@@ -44,7 +44,8 @@ ralt + rcmd + rctrl + rshift          - 0x1E      : yabai -m window --ratio abs:
 ralt + rcmd + rctrl + rshift          - 0x2A      : yabai -m window --ratio abs:0.5
 ralt + rcmd + rctrl + rshift + lshift - 0x2A      : yabai -m space --balance
 
-ralt + rcmd + rctrl + rshift          - f         : yabai -m window --toggle float
+ralt + rcmd + rctrl + rshift          - f         : yabai-float
+ralt + rcmd + rctrl + rshift + lshift - f         : yabai -m window --toggle float
 ralt + rcmd + rctrl + rshift          - s         : yabai -m window --toggle sticky
 ralt + rcmd + rctrl + rshift          - t         : yabai -m window --toggle topmost
 ralt + rcmd + rctrl + rshift          - r         : yabai -m window --toggle split

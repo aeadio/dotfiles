@@ -1,0 +1,55 @@
+#!/usr/bin/env zsh
+
+# Float a window, and also add a rule to the live ruleset to keep all copies of
+# the same window floating.
+
+is_floating_window() {
+  local is_floating
+  yabai -m query --windows --window |
+    jq -r '."is-floating"' |
+    read -r is_floating
+  [[ $is_floating == true ]]
+}
+
+floating_rule_exists() {
+  local app=$1 title=$2 query
+  [[ -n $title ]] &&
+    query=".[] | select(.label == \"float:$app:$title\")" ||
+    query=".[] | select(.label == \"float:$app\")"
+  yabai -m rule --list |
+    jq --exit-status $query
+}
+
+add_floating_rule() {
+  local app=$1 title=$2 label
+  [[ -n $title ]] &&
+    label="float:$app:$title" ||
+    label="float:$app"
+  yabai -m rule --add label=$label app='^'$app'$' ${title:+title='^'$title'$'} manage=off
+}
+
+del_floating_rule() {
+  local app=$1 title=$2 label
+  [[ -n $title ]] &&
+    label="float:$app:$title" ||
+    label="float:$app"
+  yabai -m rule --remove $label
+}
+
+get_active_window() {
+  yabai -m query --windows --window |
+    jq -r '.index, .app, .title'
+}
+
+get_active_window | {
+  read -r window_id
+  read -r app
+  read -r title
+}
+
+if is_floating_window; then
+  del_floating_rule $app $title
+  yabai -m window --toggle float
+else
+  add_floating_rule $app $title
+fi
