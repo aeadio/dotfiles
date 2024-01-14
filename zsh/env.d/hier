@@ -11,6 +11,7 @@
 }
 
 typeset -g path=(
+  $HOME/[Pp]rojects/*/[Bb]in(N)
   $HOME/[Bb]in(N)
   ${~${GOPATH:+${(@s,:,)GOPATH}}/%//bin}(N)
   /opt/homebrew/opt/coreutils/libexec/gnubin(N)
