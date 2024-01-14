@@ -1,0 +1,103 @@
+#!/usr/bin/env zsh
+
+# Try to produce some textual preview of a file, suitable for printing or
+# piping to a pager.
+
+if (( ! $# )); then
+  return
+fi
+
+color=
+if [[ -t 1 ]] && (( $terminfo[colors] || $termcap[Co] )); then
+  color=1
+fi
+
+OPTIND=0
+while getopts "c" opt; do
+  case "$opt" in
+    c) color=1 ;;
+  esac
+done
+shift $(( OPTIND - 1 ))
+
+try() {
+  local cmd=$1
+  shift
+  if (( $+commands[$cmd] )); then
+    $cmd "$@" 2>/dev/null &&
+    exit
+  fi
+}
+
+local mime=$(file -b --mime-type $1)
+local ext=${1:e}
+
+case $ext in
+  md)
+    try mdcat -- $1 ;;
+  ?htm?)
+    try pandoc -s -t markdown -- $1 ;;
+  json)
+    try jq -- '' $1 ;;
+  epub*)
+    try epr  -- $1
+    try bk   -- $1
+    try epub -- $1 ;|
+  epub*|fb2|mobi|azw3)
+    try epy -- $1 ;;
+  pdf)
+    try pdftotext -l 10 -nopgbrk -q -- $1 -
+    try exiftool -- $1 ;;
+  doc?|rtf)
+    try catdoc -- $1 ;;
+  odt|ods|odp|sxw)
+    try odt2txt -- $1
+    try pandoc -s -t markdown -- $1 ;;
+  xls?)
+    try xlsx2csv -- $1
+    try xls2csv  -- $1 ;;
+  torrent)
+    try transmission-show $1 ;;
+  001|7z|a|apm|ar|arj|bz(ip|)?|cab|ch(i|m|q|w))  ;&
+  cpio|cramfs|deb|dmg|esd|ext?|fat|gz(ip|)|hfs?) ;&
+  hx(i|q|r|s|w)|ihex|img|iso|lib|lha|lz(h|ma))   ;&
+  mbr|msi|mslz|msp|nsis|ntfs|qcow(2(c|)|)rar)    ;&
+  r00|rpm|pkg|ppmd|scap|swm|ta(r|z)|tbz?|tgz)    ;&
+  udf|eufif|vdi|vhd?|vmdk|wim|xar|xz|z|zip)
+    try 7z l -- $1 ;|
+  ace|ar|arc|bz?|bzip?|cab|cpio|cpt|deb|dgc|dmg) ;&
+  gz|iso|jar|msi|pkg|rar|shar|tar|tgz|xar|xpi)   ;&
+  xz|zip)
+    try atool --list -- $1 ;|
+  tar|?bz?|?gz|?xz)
+    try tar vvtf -- $1 ;;
+  zip)
+    try unzip -l -- $1 ;;
+  ace)
+    try unace l -- $1 ;;
+  rar)
+    try rar   l -- $1
+    try unrar l -- $1 ;;
+  zst?)
+    try zstd -lv -- $1 ;;
+esac
+
+case $mime in
+  *directory)
+    try exa -lbF --group-directories-first --no-time --git --no-icons --all \
+      ${color:+--color=always} -- $1
+    try ls -oFkhA --time-style='+' --group-directories-first \
+      --quoting-style=literal ${color:+--color=always} -- $1
+    try ls -aop -- $1 ;;
+  text/*)
+    try bat ${color:+--color=always} $1
+    try cat $1 ;;
+  audio*|ogg*)
+    try mediainfo -- $1 ;;
+  video*)
+    try mediainfo -- $1 ;;
+  image*)
+    try exiftool -- $1 ;;
+esac
+
+file $1
