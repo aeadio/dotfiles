@@ -6,9 +6,7 @@
 # Standard variables used by many tools
 typeset -gx VISUAL='micro'
 typeset -gx EDITOR=$VISUAL
-typeset -gx GEDITOR='code-oss'  # Used in ranger's rifle.conf
 typeset -gx PAGER='less'
-typeset -gx TERMINAL='alacritty'
 
 # App exports
 # Per-app configuration overrides
@@ -16,6 +14,8 @@ typeset -gx LESSHISTFILE='-'
 
 case $OSTYPE in
   linux*|*bsd*)
+    typeset -gx TERMINAL='alacritty'
+    typeset -gx GEDITOR='code-oss'  # Used in ranger's rifle.conf
     typeset -gx BROWSER="vivaldi-stable"
     typeset -gx QT_STYLE_OVERRIDE="GTK+"
     typeset -gx QT_QPA_PLATFORMTHEME="gtk2"
@@ -29,6 +29,8 @@ case $OSTYPE in
     typeset -gx WINEARCH="win64"
     ;;
   darwin*)
+    typeset -gx TERMINAL='iterm2'
+    typeset -gx GEDITOR='code'  # Used in ranger's rifle.conf
     typeset -gx HOMEBREW_CASK_OPTS='--no-quarantine'
     ;;
 esac
