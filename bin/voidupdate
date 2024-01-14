@@ -59,3 +59,6 @@ if [ -n "$xbps_cleanup" ]; then
   printf '%s\n' '[*] Cleaning up XBPS cache'
   xbps-remove -O
 fi
+
+printf '%s\n' ''
+printf '%s\n' 'OK.'
