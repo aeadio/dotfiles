@@ -14,15 +14,15 @@ tailscale status --json |
   jq -r '
     .Peer[]
       | select(.ExitNodeOption==true)
-      | [if .ExitNode==true then "active" else "-" end, .TailscaleIPs[0], .Location.Country // "-", .Location.City // "-"]
+      | [if .ExitNode==true then "active" else "-" end, .TailscaleIPs[0], .HostName, .Location.Country // "-", .Location.City // "-"]
       | @tsv' |
   sort -k 3,4 |
   column --separator $'\t' --table |
-  menu -W 600 |
-  while read -r active hostname _; do
-    if [[ $active == active ]]; then
-      doas tailscale set --exit-node=
-    else
-      doas tailscale set --exit-node=$hostname
-    fi
-  done
+  menu -W 680 |
+  read -r active ip hostname _
+
+if [[ $active == active ]]; then
+  doas tailscale set --exit-node=
+else
+  doas tailscale set --exit-node=$ip
+fi
