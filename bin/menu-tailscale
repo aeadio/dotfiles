@@ -16,6 +16,7 @@ tailscale status --json |
       | select(.ExitNodeOption==true)
       | [if .ExitNode==true then "active" else "-" end, .TailscaleIPs[0], .Location.Country // "-", .Location.City // "-"]
       | @tsv' |
+  sort -k 3,4 |
   column --separator $'\t' --table |
   menu -W 600 |
   while read -r active hostname _; do
