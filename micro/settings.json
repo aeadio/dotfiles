@@ -22,7 +22,6 @@
     "keepautoindent": true,
     "linter": false,
     "mkparents": true,
-    "parsecursor": true,
     "savehistory": false,
     "statusformatl": "$(filename)$(modified) $(status.paste)",
     "statusformatr": "$(opt:encoding) | $(opt:fileformat) | $(opt:filetype) | $(line),$(col)",
