@@ -1,0 +1,51 @@
+#!/usr/bin/env bash
+
+# TBD:
+# - Active/inactive display
+#   - If inactive due to expiry cert
+#   - If inactive due to not logged in
+# - Name of current exit node
+# - Account display
+# - Available files 
+# - If this machine is funneling
+# - If there are available routes to accept
+
+. blocks/common
+
+buttons=('menu-tailscale #c')
+
+declare -A labels
+labels[connected]=f132
+labels[disconnected]=f09c
+
+ts_is_active() {
+  local status="$(/bin/tailscale status --json)" || return 1
+  [[ "$(printf '%s\n' "$status" | jq -r '.BackendState')" == "Running" ]]
+}
+
+get_current_exit_node() {
+  /bin/tailscale status --json |
+    jq -r '.Peer[] | select(.ExitNode==true) | .HostName'
+    # also see: | .Location.CountryCode
+}
+
+render() {
+  if ts_is_active; then
+    local exitnode=$(get_current_exit_node)
+    if [[ -n "$exitnode" ]]; then
+      printf '%s\n' "$(icon ${labels[connected]}) $(color ok "on") ($(color yellow "$exitnode"))"
+    else
+      printf '%s\n' "$(icon ${labels[connected]}) $(color ok "on")"
+    fi
+  else
+    printf '%s\n' "$(icon ${labels[disconnected]}) $(color dim "off")"
+  fi
+}
+
+# If invoked immediately upon login, `ip monitor` is exhibiting extremely high
+# rates of events indefinitely, even if restarting the block would cause it to
+# cool down to a more reasonable level. For now, just delay starting up the
+# event listening. TODO: figure out wtf is going on.
+sleep 2
+
+listen <(ip monitor)

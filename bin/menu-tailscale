@@ -1,0 +1,27 @@
+#!/usr/bin/env zsh
+
+# TBD:
+# - Toggle active/inactive
+# - Account switching
+# - Exit node display / switching
+#   - Display Mullvad exit nodes in submenu?
+#   - Sort exit nodes by location
+# - Enable/disable available routes
+# - Show Health messages in submenu -> jq -r '.Health[]'
+# - No longer rely on bare doas
+
+tailscale status --json |
+  jq -r '
+    .Peer[]
+      | select(.ExitNodeOption==true)
+      | [if .ExitNode==true then "active" else "-" end, .TailscaleIPs[0], .Location.Country // "-", .Location.City // "-"]
+      | @tsv' |
+  column --separator $'\t' --table |
+  menu -W 600 |
+  while read -r active hostname _; do
+    if [[ $active == active ]]; then
+      doas tailscale set --exit-node=
+    else
+      doas tailscale set --exit-node=$hostname
+    fi
+  done
