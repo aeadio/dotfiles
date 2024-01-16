@@ -1,0 +1,28 @@
+#!/bin/sh
+
+prefix="manual"
+
+OPTIND=0
+while getopts "p:" opt; do
+  case $opt in
+    p) prefix="$OPTARG" ;;
+    *) exit 1 ;;
+  esac
+done
+shift $(( OPTIND - 1 ))
+
+# Determine the currently active root filesystem
+bootenv="$(mount | awk '/ \/ / {print $1}')"
+if [ -z "$bootenv" ]; then
+  printf '%s\n' "error: Could not determine active boot environment" >&2
+  exit 10
+fi
+
+# Snapshot the currently active root filesystem
+snapshot="${bootenv}@${prefix}_$(date -u +%04Y-%02m-%02d_%02H:%02M:%02S)"
+if ! zfs snapshot -r "$snapshot"; then
+  printf '%s\n' "error: Failed to create snapshot" >&2
+  exit 11
+fi
+
+printf '%s\n' "Snapshot created: $snapshot"
