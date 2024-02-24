@@ -94,7 +94,7 @@ typeset -A float=(
   ['^OnyX$']=
   ['^Secretive$']=
   ['^Steam$']=
-  ['^SwitchResX Control$']=
+  ['^SwitchResX Control$']='^SwitchResX Settings$'
   ['^Textual$']='^Textual Preferences$'
   ['^The Unarchiver$']=
   ['^zoom.us$']=
@@ -115,6 +115,7 @@ sudo yabai --load-sa
 
 # Load config
 yabai -m config $config
+
 for app in ${(k)float};
   yabai -m rule --add app=$app ${float[$app]:+title=$float[$app]} manage=off label="float:$app${title:+:$title}"
 
