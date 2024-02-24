@@ -12,7 +12,7 @@
           - clac
           - coreutils
           - dash
-          - exa
+          - eza
           - exiftool
           - fd
           - ffmpeg
