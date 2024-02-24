@@ -62,3 +62,5 @@ ralt + rcmd + rctrl + rshift          - e         : code -n
 ralt + rcmd + rctrl + rshift + lshift - p         : open -a /Applications/1Password.app
 ralt + rcmd + rctrl + rshift          - h         : open -n "$HOME"
 ralt + rcmd + rctrl + rshift          - c         : alacritty -e clac
+ralt + rcmd + rctrl + rshift          - n         : open -a /Applications/Bear.app
+ralt + rcmd + rctrl + rshift + lshift - n         : alacritty -e micro
