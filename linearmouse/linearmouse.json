@@ -1,48 +1,72 @@
 {
-  "$schema" : "https:\/\/schema.linearmouse.app\/0.9.4",
   "schemes" : [
     {
-      "buttons" : {
-        "universalBackForward" : true
+      "pointer" : {
+        "disableAcceleration" : true
+      },
+      "scrolling" : {
+        "distance" : 3,
+        "reverse" : {
+          "vertical" : true,
+          "horizontal" : false
+        }
       },
       "if" : {
         "device" : {
           "category" : "mouse"
         }
       },
-      "pointer" : {
-        "disableAcceleration" : true
-      },
-      "scrolling" : {
-        "reverse" : {
-          "horizontal" : false,
-          "vertical" : true
-        },
-        "distance" : 3
+      "buttons" : {
+        "universalBackForward" : true
       }
     },
     {
       "buttons" : {
         "universalBackForward" : true
       },
-      "if" : {
-        "device" : {
-          "productName" : "USB Receiver",
-          "productID" : "0xc53f",
-          "category" : "mouse",
-          "vendorID" : "0x46d"
-        }
-      },
       "pointer" : {
         "disableAcceleration" : true
       },
+      "if" : {
+        "device" : {
+          "vendorID" : "0x46d",
+          "productID" : "0xc53f",
+          "category" : "mouse",
+          "productName" : "USB Receiver"
+        }
+      },
       "scrolling" : {
+        "distance" : 3,
+        "reverse" : true
+      }
+    },
+    {
+      "scrolling" : {
+        "acceleration" : 1,
+        "distance" : "auto",
         "reverse" : {
-          "horizontal" : false,
-          "vertical" : true
+          "vertical" : false
         },
-        "distance" : 3
+        "speed" : 0
+      },
+      "buttons" : {
+        "universalBackForward" : true
+      },
+      "if" : {
+        "device" : {
+          "category" : "trackpad",
+          "productID" : "0x340",
+          "vendorID" : "0x5ac",
+          "serialNumber" : "FM7938407V6HYYKA5+RDZ",
+          "productName" : "Apple Internal Keyboard \/ Trackpad"
+        }
+      },
+      "pointer" : {
+        "speed" : 0.0689655172413792768,
+        "disableAcceleration" : false,
+        "acceleration" : 0.6875
       }
     }
-  ]
+  ],
+  "$schema" : "https:\/\/schema.linearmouse.app\/0.9.5"
 }
