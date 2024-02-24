@@ -1,6 +1,7 @@
 # vim: ft=sh ts=2 sw=2 et:
 
-# Does our environment support color?
+# Color OK?
+# This is set in env.d/color if our terminal environment supports color output
 (( $+CLICOLOR )) || return
 
 # Per-application colors
@@ -104,6 +105,8 @@
     [Gc]="$green"                                      #    ... clean
     [Gd]="$yellow"                                     #    ... dirty
   )
+  # Collapse the above assoc array into an EZA_COLORS definition (like
+  # LS_COLORS, see eza_colors(5))
   typeset -gx EZA_COLORS='reset:'${(kj,:,)ezacolors/(#m)*/$MATCH=$ezacolors[$MATCH]}
   
   local fzfopts=(

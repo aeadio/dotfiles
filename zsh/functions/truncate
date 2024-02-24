@@ -1,5 +1,8 @@
 # vim: ft=sh ts=2 sw=2 et:
 
+# Truncates a bit of text to the specified length, inserting ellipses. Useful 
+# in rc.d/prompt as well as ZLE widgets.
+
 emulate -L zsh
 
 local opts

@@ -1,5 +1,7 @@
 # vim: ft=sh ts=2 sw=2 et:
 
+# Print zulu (UTC) date (and maybe time), with either colons or dashes.
+
 emulate -L zsh
 
 local -A opts

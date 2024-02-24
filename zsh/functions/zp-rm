@@ -1,5 +1,7 @@
 # vim: ft=sh ts=2 sw=2 et:
 
+# Deleted a third-party Zsh plugin from plugins.d, removing the Git submodule.
+
 emulate -L zsh -o extended_glob
 
 local force=

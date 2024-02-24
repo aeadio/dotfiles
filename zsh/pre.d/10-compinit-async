@@ -9,6 +9,9 @@ typeset -g fpath=(
 
 autoload -Uz compinit
 
+# compinit may take a while (hundreds of ms), depending on how many completion
+# definitions are available. Generate the compdump async, and load the 
+# generated file (`compinit -d`) later.
 () {
   local zcompfile=${ZCOMPDUMP:-$ZSH/compdump}
   zshrc:compinit-finished() {

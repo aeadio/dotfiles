@@ -1,5 +1,7 @@
 # vim: ft=zsh ts=2 sw=2 et:
 
+# Wraps the cd command to implement an alias ('@') for jumping to the git root.
+
 emulate -L zsh
 
 local OPTIND=0 _

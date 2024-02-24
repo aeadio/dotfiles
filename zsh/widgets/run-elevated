@@ -1,5 +1,7 @@
 # vim: ft=sh ts=2 sw=2 et:
 
+# Add/remove doas/sudo at the beginning of the line editor
+
 emulate -L zsh -o extended_glob
 
 if [[ -z $BUFFER || $BUFFER == [[:space:]]# ]]; then

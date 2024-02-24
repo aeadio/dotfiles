@@ -13,7 +13,7 @@ isgnu cp &&
   alias cp='cp --reflink=auto'
 
 alias lf='noglob lf'
-  
+
 # shorthands
 if has eza; then
   alias l="eza -lF -Xb -I '*.pyc|*.pyo|*.zwc|__pycache__|__cache__|lost+found' --group-directories-first --no-time --git"
@@ -52,6 +52,8 @@ case $OSTYPE in
     () {
       # Search for all alternative/pinned versions of Homebrew packages, and
       # sets up <name><ver> aliases for each of that package's binaries.
+      # Eg, might create an alias named 'terraform0.11' pointing to the older
+      # version of the Terraform binary when installed.
       local brew_prefixes=( /usr/local/Cellar(N) /opt/homebrew/Cellar(N) )
       local prefix progpath ver binpaths bin
       for prefix in $brew_prefixes; do

@@ -1,5 +1,8 @@
 # vim: ft=zsh ts=2 sw=2 et:
 
+# Interactively search the shell history with fzf. If run from outside of ZLE, 
+# simply prints the matching line(s) to stdout.
+
 emulate -L zsh -o prompt_subst
 
 if (( ! $+commands[fzf] )); then

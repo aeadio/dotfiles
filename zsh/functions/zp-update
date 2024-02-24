@@ -1,5 +1,8 @@
 # vim: ft=sh ts=2 sw=2 et:
 
+# Updates all third party Zsh plugins installed as Git submodules in 
+# zsh/plugins.d.
+
 emulate -L zsh -o extended_glob
 
 local force=
