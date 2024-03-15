@@ -3,5 +3,5 @@
 alacritty \
 	--title weechat \
 	--class alacritty,weechat \
-	--option font.size=15 \
+	--option font.size=14 \
 	-e weechat
