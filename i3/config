@@ -109,15 +109,15 @@ bindsym $mod+a                  layout toggle split
 
 bindsym $mod+equal              resize grow   width 10 px or 1 ppt
 bindsym $mod+minus              resize shrink width 10 px or 1 ppt
-bindsym $mod+bracketleft        resize set    width 2828 px
-bindsym $mod+bracketright       resize set    width 908 px
-bindsym $mod+backslash          resize set    width 1868 px
+bindsym $mod+bracketleft        resize set    width 75 ppt
+bindsym $mod+bracketright       resize set    width 25 ppt
+bindsym $mod+backslash          resize set    width 50 ppt
 
 bindsym $mod+Shift+equal        resize grow   height 10 px or 1 ppt
 bindsym $mod+Shift+minus        resize shrink height 10 px or 1 ppt
-bindsym $mod+Shift+bracketleft  resize set    height 1370 px
-bindsym $mod+Shift+bracketright resize set    height 659 px
-bindsym $mod+Shift+backslash    resize set    height 1014 px
+bindsym $mod+Shift+bracketleft  resize set    height 67 ppt
+bindsym $mod+Shift+bracketright resize set    height 33 ppt
+bindsym $mod+Shift+backslash    resize set    height 50 ppt
 
 bindsym $mod+F5                 restart
 
