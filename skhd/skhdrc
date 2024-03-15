@@ -31,8 +31,8 @@ ralt + rcmd + rctrl + rshift + lshift - 9         : yabai -m window --space 9
 
 ralt + rcmd + rctrl + rshift          - 0x21      : yabai -m window --ratio abs:0.7
 ralt + rcmd + rctrl + rshift          - 0x1E      : yabai -m window --ratio abs:0.3
-ralt + rcmd + rctrl + rshift          - 0x2A      : yabai -m window --ratio abs:0.5
-ralt + rcmd + rctrl + rshift + lshift - 0x2A      : yabai -m space --balance
+ralt + rcmd + rctrl + rshift          - 0x2A      : yabai -m space --balance y-axis
+ralt + rcmd + rctrl + rshift + lshift - 0x2A      : yabai -m space --balance x-axis
 
 ralt + rcmd + rctrl + rshift          - f         : yabai-float
 ralt + rcmd + rctrl + rshift + lshift - f         : yabai -m window --toggle float
