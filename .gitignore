@@ -4,6 +4,7 @@
 Thumbs.db
 
 # Machine-specific
+/asciinema
 /aws
 /aws-sam
 /circleci
