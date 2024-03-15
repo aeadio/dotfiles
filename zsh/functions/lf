@@ -1,5 +1,8 @@
 # vim: ft=zsh ts=2 sw=2 et:
 
+# List all functions available to the shell, organized by where their function
+# definition lives on the filesystem. Useful for finding available ZLE widgets.
+
 emulate -L zsh
 
 local pattern=${1:-*}

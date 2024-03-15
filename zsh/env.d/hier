@@ -1,6 +1,6 @@
 # vim: ft=sh ts=2 sw=2 et:
 
-# Informs as to the directory hierarchy of ~
+# Informs apps as to the directory hierarchy of ~
 
 () {
   local gopath=(
@@ -13,7 +13,7 @@
 typeset -g path=(
   $HOME/[Pp]rojects/*/[Bb]in(N)
   $HOME/[Bb]in(N)
-  ${~${GOPATH:+${(@s,:,)GOPATH}}/%//bin}(N)
+  ${~${GOPATH:+${(@s,:,)GOPATH}}/%//bin}(N)  # expand multiple gopath entries correctly, with /bin appended to each
   /opt/homebrew/opt/coreutils/libexec/gnubin(N)
   /usr/local/opt/coreutils/libexec/gnubin(N)
   /opt/homebrew/*bin(N)
@@ -21,9 +21,9 @@ typeset -g path=(
   /usr/local/bin(N)
   $path
 )
-typeset -g path=( ${(u)path} )
+typeset -g path=( ${(u)path} )  # (u) removes dups inherited from default $path
 
-: ${XDG_CONFIG_HOME:=${ZSH:h}}
+: ${XDG_CONFIG_HOME:=${ZSH:h}}  # :h = the enclosing folder of $ZSH
 typeset -gx XDG_CONFIG_HOME
 
 typeset -gx XDG_CACHE_HOME=$HOME/var/cache

@@ -7,8 +7,8 @@
 # Configure fzf-tab
 zstyle ':fzf-tab:*' fzf-flags '--height=40%' '--no-sort'
 zstyle ':fzf-tab:complete:*' fzf-bindings \
-  'ctrl-a:toggle-all'           \
-  'tab:toggle'                  \
+  'ctrl-a:toggle-all'                     \
+  'tab:toggle'                            \
   'backward-eof:abort'
 
 # Auto rehash
@@ -42,4 +42,5 @@ zstyle ':completion:*:cd:*' ignore-parents parent pwd
 typeset -g ZSH_AUTOSUGGEST_STRATEGY=(history completion)
 typeset -g ZSH_AUTOSUGGEST_BUFFER_MAX_SIZE=20
 typeset -g ZSH_AUTOSUGGEST_MANUAL_REBIND=1
+# brew completions can be especially slow...
 typeset -g ZSH_AUTOSUGGEST_COMPLETION_IGNORE='brew*([[:space:]])*([[:alnum:]])*([[:space:]])*'

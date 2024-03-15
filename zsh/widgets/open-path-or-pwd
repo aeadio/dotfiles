@@ -1,5 +1,12 @@
 # vim: ft=sh ts=2 sw=2 et:
 
+# Attempt to open a file being interacted with in the ZLE input editor, using 
+# the system configured default application.
+# - If the cursor is over an argument which is a file/directory, open that.
+# - If the cursor is selecting multiple arguments which are files/directories,
+#   open them.
+# - Otherwise open the current working directory in the system file manager.
+
 emulate -L zsh
 
 local open=()

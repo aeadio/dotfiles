@@ -1,7 +1,7 @@
 # vim: ft=sh ts=2 sw=2 et:
 
-# At this point, $0 points to the ZSH binary, so resolve the location of this
-# file (zsh/env) manually.
+# Determine where the Zsh config directory lives. At the bare minimum, symlink
+# from ~/.zshenv should be set up to point to this file.
 : ${ZSH:=${${:-${ZDOTDIR:-$HOME}/.zshenv}:A:h}}
 
 # XXX: Zsh's :A only resolves symlinks on systems that implement realpath(3).

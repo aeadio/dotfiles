@@ -11,15 +11,17 @@
 # - include   non-rc config files for sub utilities
 # - vendor    third party plugins/components explicitly loaded elsewhere
 
-# Each section below is wrapped in a named function so that we can blame their
-# contribution to startup when ZSHRC_PROFILE is set, and trace their activity
-# in the log when ZSHRC_DEBUG is set.
+# Each section below (and each sourced subfile) is temporarily wrapped in a 
+# named function so that we can blame their contribution to startup when 
+# ZSHRC_PROFILE is set, and trace their activity in the log when ZSHRC_DEBUG is 
+# set.
 
 : ${ZSHRC_PROFILE:=0}
 : ${ZSHRC_DEBUG:=0}
 
+# zsh/env sets $ZSH to the location of the Zsh config directory
+# If that wasn't successful, we don't know how to locate most of the config
 if [[ ! -d $ZSH ]]; then
-  # Set by zsh/env
   print "Warning: Zsh config directory not found: $ZSH" >&2
   return
 fi
@@ -93,7 +95,8 @@ zshrc:load-functions
 unfunction zshrc:load-functions
 
 # zshrc.d
-# Primary place for zsh config. Load last so that it may make use of plugins.
+# Primary place for most Zsh config. Load last (before post.d) so that it may 
+# make use of plugins.
 zshrc:load-rc.d() {
   local f name REPLY
   for f in $ZSH/rc.d/*(e:'[[ -x $REPLY ]]':onN); do

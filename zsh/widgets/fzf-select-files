@@ -1,5 +1,9 @@
 # vim: ft=zsh ts=2 sw=2 et:
 
+# Use fzf to insert files as an argument to the command being typed (or as a 
+# replacement to the arguments currently selected). If run outside of ZLE, 
+# simply prints the selected files to stdout.
+
 emulate -L zsh -o multios -o prompt_subst
 
 if (( ! $+commands[fzf] )); then

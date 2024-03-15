@@ -1,5 +1,8 @@
 # vim: ft=sh ts=2 sw=2 et:
 
+# Temporarily installs a Zsh plugin from the provided Git repo link in a child 
+# interactive shell for demoing.
+
 emulate -L zsh
 
 if (( ! $# )); then

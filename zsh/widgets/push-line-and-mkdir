@@ -1,6 +1,12 @@
 # vim: ft=sh ts=2 sw=2 et:
 # Credit: leah https://leahneukirchen.org/dotfiles/.zshrc
 
+# If we're currently entering some text such as the following,
+#   mv foo bar/
+# ... but bar/ doesn't exist yet, then push the current input onto the ZLE 
+# stack and open a new input like,
+#   mkdir bar
+
 emulate -L zsh
 
 local dir

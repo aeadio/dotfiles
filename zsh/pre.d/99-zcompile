@@ -8,6 +8,10 @@
 () {
   setopt localoptions extended_glob
   (
+    # Run async in a subshell
+    # Zsh validates that a compiled version of a source file is valid and 
+    # matches the original source file, so it's safe to let the shell 
+    # potentially race zcompile when attempting to source something.
     local f REPLY
     for f in {$ZSH,${XDG_DATA_HOME:-$HOME/.local/share}/zsh}/(*/)#(*.(z|)sh|^*.*)(-.e:'[[ ! -e $REPLY.zwc || $REPLY.zwc -ot $REPLY ]]':N);
       zcompile $f &>/dev/null

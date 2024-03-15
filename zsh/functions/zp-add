@@ -1,5 +1,8 @@
 # vim: ft=sh ts=2 sw=2 et:
 
+# Adds a Zsh plugin from the provided Git repo. Plugin is installed as a Git
+# submodule in zsh/plugins.d.
+
 emulate -L zsh -o extended_glob
 
 local force=

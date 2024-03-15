@@ -1,5 +1,7 @@
 # vim: ft=sh ts=2 sw=2 et:
 
+# Open the currently selected text in a text editor for replacement
+
 emulate -L zsh
 
 local x y selection

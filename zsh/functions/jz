@@ -1,5 +1,8 @@
 # vim: ft=zsh ts=2 sw=2 et:
 
+# Interactively play with jq filters on the input via fzf. Prints the final 
+# filter when you are finished.
+
 # TODO: Implement compatible interface to jq so this can be used as a drop-in
 # replacement.
 
