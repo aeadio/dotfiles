@@ -16,8 +16,8 @@ alias lf='noglob lf'
 
 # shorthands
 if has eza; then
-  alias l="eza -lF -Xb -I '*.pyc|*.pyo|*.zwc|__pycache__|__cache__|lost+found' --group-directories-first --no-time --git"
-  alias L='eza -lF -Xb --group-directories-first --no-time --git -aa'
+  alias l="eza -lF -Xb -I '*.pyc|*.pyo|*.zwc|__pycache__|__cache__|lost+found' --group-directories-first --no-time"
+  alias L='eza -lF -Xb --group-directories-first --no-time -aa'
   alias ll="eza -lF -Xbgm -I '*.pyc|*.pyo|*.zwc|__pycache__|__cache__|lost+found' --time-style long-iso --group-directories-first --git"
   alias LL='eza -lF -Xbgm --time-style long-iso --group-directories-first --git -aa'
 elif isgnu ls; then
