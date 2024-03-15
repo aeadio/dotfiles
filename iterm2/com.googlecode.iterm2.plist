@@ -876,13 +876,13 @@
 				<key>Alpha Component</key>
 				<real>1</real>
 				<key>Blue Component</key>
-				<real>0.9337158203125</real>
+				<real>0.74509803921568629</real>
 				<key>Color Space</key>
 				<string>sRGB</string>
 				<key>Green Component</key>
-				<real>0.55789834260940552</real>
+				<real>0.65098039215686276</real>
 				<key>Red Component</key>
-				<real>0.19802422821521759</real>
+				<real>0.7686274509803922</real>
 			</dict>
 			<key>Mouse Reporting</key>
 			<true/>
