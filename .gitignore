@@ -4,6 +4,7 @@
 Thumbs.db
 
 # Machine-specific
+/Alfred
 /aws
 /aws-sam
 /AWSVPNClient
