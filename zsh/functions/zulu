@@ -11,7 +11,7 @@ local dashes short
 (( $+opts[-d] || $+opts[--dash]  )) && dashes=1
 (( $+opts[-s] || $+opts[--short] )) && short=1
 
-local fmt=('%Y-%02m-%02d')
+local fmt=('%Y-%m-%d')
 
 if (( ! short )); then
   fmt+=('T')
