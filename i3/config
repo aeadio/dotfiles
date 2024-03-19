@@ -100,6 +100,9 @@ bindsym $mod+9                  workspace "9:九"
 bindsym $mod+0                  workspace "10:十"
 bindsym $mod+Tab                focus mode_toggle
 
+bindsym $mod+Ctrl+Left          move workspace to output left
+bindsym $mod+Ctrl+Right         move workspace to output right
+
 bindsym $mod+q                  kill
 bindsym $mod+h                  split h
 bindsym $mod+v                  split v
