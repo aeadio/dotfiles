@@ -42,7 +42,7 @@ render() {
   elif (( ${rate%.*} > 30 ));      then rate_color=warn
   fi
   
-  printf '%s\n' "$(icon $label) $(color $charge_color "$charge%") ($(color $rate_color "${polarity:--}${rate}W"))"
+  printf '%s\n' "$(icon $label) $(color $charge_color "$charge%") [$(color $rate_color "${polarity:--}${rate}W")]"
 }
 
 repeat
