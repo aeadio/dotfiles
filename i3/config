@@ -127,8 +127,6 @@ bindsym $mod+F5                 restart
 # Keybinds: external apps
 bindsym           $mod+z                 exec --no-startup-id vivaldi-stable
 bindsym           $mod+Shift+z           exec --no-startup-id vivaldi-stable --incognito
-bindsym           $mod+x                 exec --no-startup-id alacritty
-bindsym           $mod+Shift+x           exec --no-startup-id floatterm
 bindsym           $mod+c                 exec --no-startup-id code-oss -n
 bindsym           $mod+b                 exec --no-startup-id raiseorrun weechat.alacritty irc
 bindsym           $mod+n                 exec --no-startup-id raiseorrun discord.discord Discord --disable-smooth-scrolling
@@ -137,15 +135,23 @@ bindsym           $mod+BackSpace         exec --no-startup-id 1password --quick-
 bindsym           $mod+Shift+BackSpace   exec --no-startup-id raiseorrun 1password.1Password 1password --disable-smooth-scrolling
 bindsym           $mod+Control+BackSpace exec --no-startup-id pw
 
+bindsym           $mod+x                 exec --no-startup-id alacritty
+bindsym           $mod+Shift+x           exec --no-startup-id floatterm
+bindsym           $mod+period            exec --no-startup-id alacritty -e clac
+bindsym           $mod+Shift+period      exec --no-startup-id floatterm -s 80x40 clac
+bindsym           $mod+comma             exec --no-startup-id alacritty -e ranger
+bindsym           $mod+Shift+comma       exec --no-startup-id floatterm ranger
+bindsym           $mod+s                 exec --no-startup-id alacritty -e pulsemixer
+bindsym           $mod+Shift+s           exec --no-startup-id floatterm pulsemixer
+bindsym           $mod+p                 exec --no-startup-id alacritty -e ptop
+bindsym           $mod+Shift+p           exec --no-startup-id floatterm ptop
+
 bindsym           $mod+Escape            exec --no-startup-id menu-quit
 bindsym           $mod+Return            exec --no-startup-id menu-launch
 bindsym           $mod+slash             exec --no-startup-id menu-switch
 bindsym           $mod+u                 exec --no-startup-id menu-bluetooth
 bindsym           $mod+d                 exec --no-startup-id menu-autorandr
 bindsym           $mod+Shift+d           exec --no-startup-id autorandr --load mobile --force --ignore-lid
-bindsym           $mod+period            exec --no-startup-id floatterm -s 80x40 clac
-bindsym           $mod+comma             exec --no-startup-id floatterm ranger
-bindsym           $mod+s                 exec --no-startup-id floatterm pulsemixer
 
 bindsym --release $mod+l                 exec --no-startup-id lock
 bindsym --release $mod+Scroll_Lock       exec --no-startup-id lock
