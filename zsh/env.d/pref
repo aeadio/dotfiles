@@ -6,7 +6,7 @@
 # Standard variables used by many tools
 typeset -gx VISUAL='micro'
 typeset -gx EDITOR=$VISUAL
-typeset -gx PAGER='less'
+typeset -gx PAGER='moar'
 
 # App exports
 # Per-app configuration overrides
