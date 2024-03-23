@@ -12,6 +12,8 @@ typeset -gx PAGER='moar'
 # Per-app configuration overrides
 typeset -gx LESSHISTFILE='-'
 
+typeset -gx MOAR='-style nord -statusbar plain -no-clear-on-exit'
+
 case $OSTYPE in
   linux*|*bsd*)
     typeset -gx TERMINAL='alacritty'
