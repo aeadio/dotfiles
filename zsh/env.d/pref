@@ -14,6 +14,8 @@ typeset -gx TERMINAL='iterm2'
 # Per-app configuration overrides
 typeset -gx LESSHISTFILE='-'
 
+typeset -gx MOAR='-style nord -statusbar plain -no-clear-on-exit'
+
 case $OSTYPE in
   darwin*)
     typeset -gx HOMEBREW_CASK_OPTS='--no-quarantine'
