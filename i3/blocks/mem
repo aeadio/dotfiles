@@ -7,62 +7,58 @@ local COLOR_WARN = '#dca493'
 local COLOR_FULL = '#bf616a'
 local COLOR_SWAP = '#9cb5ce'
 
-local PROC_MEM = '/proc/meminfo'
-local PROC_ARC = '/proc/spl/kstat/zfs/arcstats'
+local PROCFS_MEM = '/proc/meminfo'
+local PROCFS_ARC = '/proc/spl/kstat/zfs/arcstats'
 
 local ustd = require('posix.unistd')
 local time = require('posix.sys.time')
 
-local mt = { __index = function() return 0 end }
-
-local function meminfo()
-  local f = assert(io.open(PROC_MEM, 'r'))
-  local mem = setmetatable({}, mt)
+local function procfs_fields(file, pattern)
+  local f = assert(io.open(file, 'r'))
+  local fields = {}
   for line in f:lines() do
-    local stat, amount = line:match('^(%S+):%s+(%d+) kB$')
-    if stat and amount then
-      mem[stat] = tonumber(amount)
+    local key, val = line:match(pattern or '^(%S+)%s*(%S+)')
+    if key and val then
+      fields[key] = tonumber(val) or val
     end
   end
   f:close()
-  return mem
-end
-
-local function arcinfo()
-  local f = io.open(PROC_ARC, 'r')
-  if not f then
-    return nil  -- ZFS not in use
-  end
-  local arc = setmetatable({}, mt)
-  for line in f:lines() do
-    local stat, amount = line:match('^(%S+)%s+%d+%s+(%d+)$')
-    if stat and amount then
-      arc[stat] = tonumber(amount)
-    end
-  end
-  f:close()
-  return arc
+  return fields
 end
 
 local function getmemusage()
-  local mem = meminfo()
-  local totalMem = mem.MemTotal
-  local usedMem
-  local usedDiff = mem.MemFree + mem.Cached + mem.SReclaimable + mem.Buffers
-  if totalMem >= usedDiff then
-    usedMem = totalMem - usedDiff
+  local mem = procfs_fields(PROCFS_MEM, '^(%S+):%s+(%d+) kB$')
+  local total = mem.MemTotal
+  local free  = mem.MemFree
+  
+  if not total or not free then
+    error("unable to get system memory information")
+  end
+  
+  local used
+  
+  local available = mem.MemAvailable
+  if available then
+    -- https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=34e431b0ae398fc54ea69ff85ec700722c9da773
+    used = total - available
   else
-    usedMem = totalMem - mem.MemFree
-  end
-  local totalSwap = mem.SwapTotal
-  local usedSwap = totalSwap - mem.SwapFree
-  
-  local arc = arcinfo()
-  if arc and arc.size and arc.c_min then
-    usedMem = usedMem - math.max(0, math.floor(arc.size / 1024 - arc.c_min / 1024))
+    local diff = free + (mem.Cached or 0) + (mem.SReclaimable or 0) + (mem.Buffers or 0)
+    if total >= diff then
+      used = total - diff
+    else
+      used = total - free
+    end
   end
   
-  return usedMem, totalMem, usedSwap, totalSwap
+  local total_swap = (mem.SwapTotal or 0)
+  local used_swap = total_swap - (mem.SwapFree or 0)
+  
+  local arc = procfs_fields(PROCFS_ARC, '^(%S+)%s+%d+%s+(%d+)$')
+  if arc and arc.size then
+    used = used - math.max(0, math.floor(arc.size / 1024 - (arc.c_min or 0) / 1024))
+  end
+  
+  return used, total, used_swap, total_swap
 end
 
 local function render()
