@@ -2,15 +2,19 @@
 
 emulate -L zsh
 
-# Trigger the builtin method for clearing the screen. This is not aware of the
-# enclosing terminal emulator's ability to retain scrollback history, but it
-# should always work.
+# Trigger the builtin method for clearing the current screen. This will not
+# affect the scrollback buffer, but should clear the visible screen in most/all
+# terminal emulators.
 zle clear-screen
+
+# Clear scrollback history via ANSI CSI
+# Supported by some terminal emulators (Alacritty) but not others (iTerm2)
+print -n -- '\033[3J'
 
 # Clear's iTerm2's scrollback history
 # https://iterm2.com/3.3/documentation-escape-codes.html
-print -n -- '\033]1337;ClearScrollback\a'
+if [[ $TERMINAL == iterm2 ]] print -n -- '\033]1337;ClearScrollback\a'
 
-# Clearing the iTerm buffer via OSC races with Zsh's prompt drawing so may
-# be munged at this point
+# Clearing the scrollback in some terminal emulators may munge or erase the
+# prompt. Trigger a redraw.
 zle reset-prompt
