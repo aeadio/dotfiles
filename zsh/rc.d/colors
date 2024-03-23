@@ -16,6 +16,39 @@
   local   bgred=41 bggreen=42 bgyellow=43 bgblue=44 bgmagenta=45  bgcyan=46
   local   brred=91 brgreen=92 bryellow=93 brblue=94 brmagenta=95  brcyan=96
   
+  local -A lscolors=(
+    # normals
+    [no]="$default"
+    [rs]="$default"
+    # files, dir, links
+    [fi]="$default"
+    [di]="$brblue"
+    [ln]="$cyan"
+    [mh]="$brcyan"
+    # specials: fifo, socks, blocks, etc
+    [pi]="$yellow"
+    [so]="$yellow"
+    [do]="$yellow"
+    [bd]="$yellow"
+    [cd]="$yellow"
+    # broken, oprhened
+    [or]="$cyan"
+    [mi]="$brred"
+    # executable
+    [ex]="$green"
+    # exceptional: set*id, cap
+    [su]="$bold;$bgred"
+    [sg]="$bold;$bgred"
+    [ca]="$bold;$bgred"
+    # sticky, writable
+    [tw]="$bold;$bgred"
+    [ow]="$bold;$bgred"
+    [st]="$bold;$bgred"
+    # file types
+    ['*']="$default"
+  )
+  typeset -gx LS_COLORS=${(kj,:,)lscolors/(#m)*/$MATCH=$lscolors[$MATCH]}
+  
   local -A ezacolors=(
     # permissions
     [ur]="$default"                                    # owner read
