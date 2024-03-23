@@ -1,0 +1,11 @@
+# vim: ft=sh ts=2 sw=2 et:
+
+emulate -L zsh
+
+local x y
+get-selection > /dev/null
+
+zle deactivate-region -w
+zle -K main
+
+CURSOR=$y
