@@ -5,47 +5,52 @@
   # [[user][@host]:]dir [⨕gitbranch[:commits][ ⇄ localchanges]]
   # [R⠶shlvl ][🯊[:awsprofile] ][⋮stack]» 
   local ps1=(
-    $'\n'  # Start with newline for some padding between commands
-    '$(prompt:basicinfo)'
-    '$(prompt:directory; prompt:git)'
-    $'\n'
-    #'$(prompt:promptception)'
-    '$(prompt:ranger)'
-    '$(prompt:aws)'
-    '$(prompt:bufstack)'
-    '$(prompt:caret) '
+    'print'  # Start with newline for some padding between commands
+    'prompt:basicinfo'
+    'prompt:directory'
+    'prompt:git'
+    
+    'print'
+    #'prompt:promptception'
+    'prompt:ranger'
+    'prompt:aws'
+    'prompt:bufstack'
+    'prompt:caret'
+    'print -n " "'
   )
   
   # [R⠶shlvl ][🯊[:awsprofile] ][⋮stack]» 
   local ps2=(
-    #'$(prompt:promptception)'
-    '$(prompt:ranger)'
-    '$(prompt:aws)'
-    '$(prompt:bufstack)'
-    '$(prompt:caret) '
+    #'prompt:promptception'
+    'prompt:ranger'
+    'prompt:aws'
+    'prompt:bufstack'
+    'prompt:caret'
+    'print -n " "'
   )
   
   # ?
-  local ps3=( '$(prompt:caret "?")' )
+  local ps3=( 'prompt:caret "?"' )
   
   # function:linenum @ file:linenum
   # → details
   # Indent by 2 spaces for each execution depth
   local ps4=(
-    $'\n'
-    '%B%F{blue}%2x%f%b:%B%F{magenta}%I%f%b'
-    ' in %B%F{cyan}%N%f%b'
-    $'\n'
-    '${(pl[${(%):-%e}][  ])}'
-    "%F{cyan}${${UTF8:+${(#):-16#2192} }:->}%f"
+    'print'
+    'print -n "%B%F{blue}%2x%f%b:%B%F{magenta}%I%f%b"'
+    'print -n " in %B%F{cyan}%N%f%b"'
+    
+    'print'
+    'print -n "${(pl[${(%):-%e}][  ])}"'
+    "print -n '%F{cyan}${${UTF8:+${(#):-16#2192} }:->}%f'"
   )
   
   # Build prompts from arrays
   setopt prompt_subst
   local i
   for i in {1..4}; do
-    eval -- "typeset -g PS$i=\"\${(j::)ps$i}\""
-    eval -- "typeset -g RPS$i=\"\${(j::)rps$i}\""
+    eval -- "typeset -g  PS$i=\"\\\$( \${(j:; :)ps$i}  )\""
+    eval -- "typeset -g RPS$i=\"\\\$( \${(j:; :)rps$i} )\""
   done
 }
 
