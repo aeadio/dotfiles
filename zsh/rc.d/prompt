@@ -11,8 +11,8 @@
     'prompt:git'
     
     'print'
-    #'prompt:promptception'
-    'prompt:ranger'
+    'prompt:promptception'
+    #'prompt:ranger'
     'prompt:aws'
     'prompt:bufstack'
     'prompt:caret'
@@ -21,8 +21,8 @@
   
   # [R⠶shlvl ][🯊[:awsprofile] ][⋮stack]» 
   local ps2=(
-    #'prompt:promptception'
-    'prompt:ranger'
+    'prompt:promptception'
+    #'prompt:ranger'
     'prompt:aws'
     'prompt:bufstack'
     'prompt:caret'
