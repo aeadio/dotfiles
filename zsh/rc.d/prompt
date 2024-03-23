@@ -63,7 +63,7 @@ prompt:basicinfo() {
   # Only show if we've su'd to a user that's out of the ordinary. Only show for 
   # root if our environment does not support color, otherwise depend on color
   # scheme shift to indicate root shell.
-  if [[ ${(%):-%n} == a(|nt(|hony(|eadicicco))) ]] elidename=1
+  if [[ ${(%):-%n} == a(|nt(|hony(|.(|eadicicco)))) ]] elidename=1
   if (( $+CLICOLOR )) && [[ ${(%):-%n} == root ]] elidename=1
   if (( ! elidename )) user="%(!,%B%F{red},%F{cyan})%n%f%b"
   # Hostname
