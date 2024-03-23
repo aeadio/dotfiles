@@ -173,7 +173,7 @@ prompt:promptception() {
     rlvl="%F{green}R${RANGER_LEVEL:#1}%f"
   fi
   if [[ -n "$rlvl$lvl" ]]; then
-    print -n "$rlvl${${UTF8:+${(#):-16#2836}}:- }%(!,%B%F{red},%{\e[2m%}%F{cyan})$lvl%f%b "
+    print -n "$rlvl${${UTF8:+${(#):-16#2836}}:- }%F{yellow}$lvl%f%b "
   fi
 }
 
