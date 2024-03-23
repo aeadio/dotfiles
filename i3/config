@@ -137,14 +137,12 @@ bindsym           $mod+Control+BackSpace exec --no-startup-id pw
 
 bindsym           $mod+x                 exec --no-startup-id alacritty
 bindsym           $mod+Shift+x           exec --no-startup-id floatterm
-bindsym           $mod+period            exec --no-startup-id alacritty -e clac
-bindsym           $mod+Shift+period      exec --no-startup-id floatterm -s 80x40 clac
+bindsym           $mod+period            exec --no-startup-id floatterm -s 80x40 clac
 bindsym           $mod+comma             exec --no-startup-id alacritty -e ranger
 bindsym           $mod+Shift+comma       exec --no-startup-id floatterm ranger
-bindsym           $mod+s                 exec --no-startup-id alacritty -e pulsemixer
-bindsym           $mod+Shift+s           exec --no-startup-id floatterm pulsemixer
-bindsym           $mod+p                 exec --no-startup-id alacritty -e ptop
-bindsym           $mod+Shift+p           exec --no-startup-id floatterm ptop
+bindsym           $mod+s                 exec --no-startup-id floatterm pulsemixer
+bindsym           $mod+p                 exec --no-startup-id alacritty -e htop
+bindsym           $mod+Shift+p           exec --no-startup-id floatterm htop
 
 bindsym           $mod+Escape            exec --no-startup-id menu-quit
 bindsym           $mod+Return            exec --no-startup-id menu-launch
