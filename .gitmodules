@@ -12,7 +12,7 @@
 	url = https://github.com/zsh-users/zsh-autosuggestions.git
 [submodule "zsh/plugins.d/zsh-completions"]
 	path = zsh/plugins.d/zsh-completions
-	url = https://github.com/zsh-users/zsh-completions.git
+	url = https://github.com/zsh-users/zsh-completions.gits
 [submodule "zsh/plugins.d/00-fzf-tab"]
 	path = zsh/plugins.d/00-fzf-tab
 	url = https://github.com/Aloxaf/fzf-tab.git
