@@ -3,7 +3,7 @@
 # Prompt formats
 () {
   # [[user][@host]:]dir [⨕gitbranch[:commits][ ⇄ localchanges]]
-  # [R⠶shlvl ][🯊[:awsprofile] ][⋮stack]» 
+  # »                                                              ⋮stack ⠶shlvl
   local ps1=(
     'print'  # Start with newline for some padding between commands
     'prompt:basicinfo'
@@ -11,16 +11,12 @@
     'prompt:git'
     
     'print'
-    'prompt:aws'
-    'prompt:bufstack'
     'prompt:caret'
     'print -n " "'
   )
   
-  # [R⠶shlvl ][🯊[:awsprofile] ][⋮stack]» 
+  # » 
   local ps2=(
-    'prompt:aws'
-    'prompt:bufstack'
     'prompt:caret'
     'print -n " "'
   )
@@ -42,6 +38,7 @@
   )
   
   local rps1=(
+    'prompt:bufstack'
     'prompt:promptception'
   )
   
@@ -158,22 +155,15 @@ prompt:git() {
   fi
 }
 
-prompt:ranger() {
-  if (( $+RANGER_LEVEL )); then
-    print -n "%F{green}R${RANGER_LEVEL:#1}%f "
-  fi
-}
-
 prompt:promptception() {
   emulate -L zsh
-  # If ( SHLVL - RANGER_LEVEL ) is over 1, show as a number.
-  # If inside ranger, show R, plus ( RANGER_LEVEL ) if > 1.
-  local rlvl lvl=${${:-$(( SHLVL - ${RANGER_LEVEL:-0} ))}:#1}
-  if (( $+RANGER_LEVEL )); then
-    rlvl="%F{green}R${RANGER_LEVEL:#1}%f"
-  fi
-  if [[ -n "$rlvl$lvl" ]]; then
-    print -n "$rlvl${${UTF8:+${(#):-16#2836}}:- } %F{yellow}$lvl%f%b"
+  # If SHLVL is over 1, show. If we're inside ranger, color it green.
+  local lvl=${SHLVL:#1} color
+  (( $+RANGER_LEVEL )) &&
+    color=green ||
+    color=cyan
+  if [[ -n "$lvl" ]]; then
+    print -n " ${${UTF8:+${(#):-16#2836}}:- }%F{$color}$lvl%f%b"
   fi
 }
 
@@ -203,14 +193,18 @@ prompt:aws() {
 prompt:bufstack() {
   emulate -L zsh
   if (( BUFSTACK > 0 )); then
-    print -n "${${UTF8:+${(#):-16#22ee}}:-S:}%(!,%{\e[2m%}%F{yellow},%F{yellow})$BUFSTACK%f%b "
+    print -n " ${${UTF8:+${(#):-16#22ee}}:-S:}%F{yellow}$BUFSTACK%f "
   fi
 }
 
 prompt:caret() {
   emulate -L zsh
   local caret
-  if (( ! $+UTF8 )); then
+  if (( $+RANGER_LEVEL )); then
+    # Is it possible to determine if _the shell we're in_ is spawned from 
+    # ranger? Ie, if we've entered another shell, make this go away.
+    caret='R'
+  elif (( ! $+UTF8 )); then
     caret='>'
   elif (( _BAD_INPUT > 0 )); then
     caret="${(#):-16#226f}"
