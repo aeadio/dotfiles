@@ -167,29 +167,6 @@ prompt:promptception() {
   fi
 }
 
-prompt:aws() {
-  emulate -L zsh
-  if [[ -z $AWS_VAULT ]] return
-  local reply profile=${AWS_VAULT:#default}
-  if [[ -n $profile ]]; then
-    truncate -q 10 $profile &>/dev/null
-    profile="$reply"
-    profile="%(!,%F{yellow},%B%F{magenta})$profile%f%b"
-    profile=":$profile"
-  fi
-  local token="${${UTF8:+${(#):-16#1fbca}}:-A}"
-  if [[ -n $AWS_SESSION_EXPIRATION ]]; then
-    if [[ $(date -u +'%Y-%m-%dT%H:%M:%SZ') > $AWS_SESSION_EXPIRATION ]]; then
-      token="%B%F{red}$token%f%b"
-    else
-      token="%B%F{green}$token%f%b"
-    fi
-  else
-    token="%F{yellow}$token%f"
-  fi
-  print -n "$token$profile "
-}
-
 prompt:bufstack() {
   emulate -L zsh
   if (( BUFSTACK > 0 )); then
