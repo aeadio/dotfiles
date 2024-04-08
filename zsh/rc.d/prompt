@@ -11,8 +11,6 @@
     'prompt:git'
     
     'print'
-    'prompt:promptception'
-    #'prompt:ranger'
     'prompt:aws'
     'prompt:bufstack'
     'prompt:caret'
@@ -21,8 +19,6 @@
   
   # [R⠶shlvl ][🯊[:awsprofile] ][⋮stack]» 
   local ps2=(
-    'prompt:promptception'
-    #'prompt:ranger'
     'prompt:aws'
     'prompt:bufstack'
     'prompt:caret'
@@ -43,6 +39,10 @@
     'print'
     'print -n "${(pl[${(%):-%e}][  ])}"'
     "print -n '%F{cyan}${${UTF8:+${(#):-16#2192} }:->}%f'"
+  )
+  
+  local rps1=(
+    'prompt:promptception'
   )
   
   # Build prompts from arrays
@@ -173,7 +173,7 @@ prompt:promptception() {
     rlvl="%F{green}R${RANGER_LEVEL:#1}%f"
   fi
   if [[ -n "$rlvl$lvl" ]]; then
-    print -n "$rlvl${${UTF8:+${(#):-16#2836}}:- }%F{yellow}$lvl%f%b "
+    print -n "$rlvl${${UTF8:+${(#):-16#2836}}:- } %F{yellow}$lvl%f%b"
   fi
 }
 
