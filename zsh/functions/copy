@@ -14,7 +14,7 @@ if (( $+TMUX )); then
   tmux set-buffer $input
 fi
 
-if (( $+commands[base64] )); then
+if (( ($+SSH_CLIENT || $+SSH_TTY) && $+commands[base64] )); then
   local encoded=$(print -nr -- $input | base64)
   local osc52seq="\033]52;c;$encoded\a"
   # NOTE: We need to check the raw byte length, so cannot use $#encoded
