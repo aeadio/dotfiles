@@ -21,12 +21,11 @@ case $OSTYPE in
     typeset -gx BROWSER="vivaldi-stable"
     typeset -gx QT_STYLE_OVERRIDE="GTK+"
     typeset -gx QT_QPA_PLATFORMTHEME="gtk2"
-    typeset -gx FREETYPE_PROPERTIES="      \
-      truetype:interpreter-version=40 \
-      cff:no-stem-darkening=0         \
-      cff:hinting-engine=adobe        \
-      autofitter:no-stem-darkening=0  \
-    "
+    typeset -gx FREETYPE_PROPERTIES='
+      truetype:interpreter-version=40
+      cff:no-stem-darkening=0
+      cff:hinting-engine=adobe
+      autofitter:no-stem-darkening=0'
     typeset -gx CHROME_FLAGS="--enable-features=VaapiVideoDecoder"
     typeset -gx WINEARCH="win64"
     ;;
