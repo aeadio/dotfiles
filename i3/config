@@ -125,8 +125,8 @@ bindsym $mod+Shift+backslash    resize set    height 50 ppt
 bindsym $mod+F5                 restart
 
 # Keybinds: external apps
-bindsym           $mod+z                 exec --no-startup-id vivaldi-stable
-bindsym           $mod+Shift+z           exec --no-startup-id vivaldi-stable --incognito
+bindsym           $mod+z                 exec --no-startup-id firefox
+bindsym           $mod+Shift+z           exec --no-startup-id firefox -private-window
 bindsym           $mod+c                 exec --no-startup-id code-oss -n
 bindsym           $mod+b                 exec --no-startup-id raiseorrun weechat.alacritty irc
 bindsym           $mod+n                 exec --no-startup-id raiseorrun discord.discord Discord --disable-smooth-scrolling
