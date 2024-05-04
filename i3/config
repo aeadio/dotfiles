@@ -44,7 +44,7 @@ for_window [class="^Steam$" title="^Friends$"]                 floating enable
 for_window [class="^Firefox$" title="^Library$"]               floating enable
 for_window [class="^Firefox$" title="^Classic Theme Restorer"] floating enable
 for_window [class="^Firefox$" title="^Page Info"]              floating enable
-for_window [class="^alacritty$" instance="^floating$"]         floating enable
+for_window [class="^alacritty$" instance="^floating"]          floating enable
 for_window [class="^Steam$" title="^Settings$"]                floating enable
 for_window [class="^Steam$" title="^Steam Library Folders$"]   floating enable
 for_window [class="^Steam$" title="^Create"]                   floating enable
@@ -135,14 +135,14 @@ bindsym           $mod+BackSpace         exec --no-startup-id 1password --quick-
 bindsym           $mod+Shift+BackSpace   exec --no-startup-id raiseorrun 1password.1Password 1password --disable-smooth-scrolling
 bindsym           $mod+Control+BackSpace exec --no-startup-id pw
 
-bindsym           $mod+x                 exec --no-startup-id alacritty
-bindsym           $mod+Shift+x           exec --no-startup-id floatterm
-bindsym           $mod+period            exec --no-startup-id floatterm -s 80x40 clac
-bindsym           $mod+comma             exec --no-startup-id alacritty -e ranger
-bindsym           $mod+Shift+comma       exec --no-startup-id floatterm ranger
-bindsym           $mod+s                 exec --no-startup-id floatterm pulsemixer
-bindsym           $mod+p                 exec --no-startup-id alacritty -e htop
-bindsym           $mod+Shift+p           exec --no-startup-id floatterm htop
+bindsym           $mod+x                 exec --no-startup-id terminal
+bindsym           $mod+Shift+x           exec --no-startup-id terminal -f
+bindsym           $mod+period            exec --no-startup-id terminal -f -s 80x40 clac
+bindsym           $mod+comma             exec --no-startup-id terminal ranger
+bindsym           $mod+Shift+comma       exec --no-startup-id terminal -f ranger
+bindsym           $mod+s                 exec --no-startup-id terminal -f pulsemixer
+bindsym           $mod+p                 exec --no-startup-id terminal htop
+bindsym           $mod+Shift+p           exec --no-startup-id terminal -f htop
 
 bindsym           $mod+Escape            exec --no-startup-id menu-quit
 bindsym           $mod+Return            exec --no-startup-id menu-launch

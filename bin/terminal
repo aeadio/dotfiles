@@ -1,0 +1,28 @@
+#!/bin/sh
+
+float=
+float_width=100
+float_height=28
+
+OPTIND=0
+while getopts "s:f" opt; do
+  case $opt in
+    s)
+			float_width=${OPTARG%x*}
+      float_height=${OPTARG#*x}
+			;;
+		f)
+		  float=1
+			;;
+  esac
+done
+shift $(( OPTIND - 1 ))
+
+prog=$1
+instance=${float:+"floating/"}${prog:-alacritty}
+
+alacritty \
+	--class alacritty,$instance \
+	${float:+-o window.dimensions.columns=$float_width} \
+	${float:+-o window.dimensions.lines=$float_height}  \
+	${1:+-e "$@"}
