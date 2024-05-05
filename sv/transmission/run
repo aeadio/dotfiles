@@ -1,4 +1,8 @@
 #!/bin/sh
 
 exec 2>&1
-exec transmission-daemon -f --log-info -e /dev/stdout 
+exec transmission-daemon \
+  --foreground \
+  --log-level=info --logfile /dev/stdout \
+  --watch-dir "$HOME/downloads/torrents" \
+  --incomplete-dir "$HOME/downloads/pending"

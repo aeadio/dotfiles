@@ -18,6 +18,7 @@ Thumbs.db
 /pulse
 /Slack
 /terraform
+/transmission*
 /vscode
 
 # Uninteresting stuff

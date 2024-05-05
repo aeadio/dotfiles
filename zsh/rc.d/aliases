@@ -33,6 +33,12 @@ if has fzf; then
   alias zl='fzf-select-files'
 fi
 
+if has transmission-remote; then
+  has watch &&
+    alias lst='watch transmission-remote --list --session-stats' ||
+    alias lst='transmission-remote --list --session-stats'
+fi
+
 has rg       && alias rf='rg -F'
 has fd       && alias ff='fd -F'
 
