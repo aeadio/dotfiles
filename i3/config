@@ -148,6 +148,7 @@ bindsym           $mod+Escape            exec --no-startup-id menu-quit
 bindsym           $mod+Return            exec --no-startup-id menu-launch
 bindsym           $mod+slash             exec --no-startup-id menu-switch
 bindsym           $mod+u                 exec --no-startup-id menu-bluetooth
+bindsym           $mod+e                 exec --no-startup-id menu-network
 bindsym           $mod+d                 exec --no-startup-id menu-autorandr
 bindsym           $mod+Shift+d           exec --no-startup-id autorandr --load mobile --force --ignore-lid
 
