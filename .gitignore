@@ -23,7 +23,9 @@ Thumbs.db
 
 # Uninteresting stuff
 /cef_user_data
+/Electron
 /fontforge
+/ibus
 /glib-2.0
 /w3m
 /pavucontrol.ini
