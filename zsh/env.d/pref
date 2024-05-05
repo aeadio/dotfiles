@@ -18,7 +18,7 @@ case $OSTYPE in
   linux*|*bsd*)
     typeset -gx TERMINAL='alacritty'
     typeset -gx GEDITOR='code-oss'  # Used in ranger's rifle.conf
-    typeset -gx BROWSER="firefox"
+    typeset -gx BROWSER="vivaldi-stable"
     typeset -gx QT_STYLE_OVERRIDE="GTK+"
     typeset -gx QT_QPA_PLATFORMTHEME="gtk2"
     typeset -gx FREETYPE_PROPERTIES='
