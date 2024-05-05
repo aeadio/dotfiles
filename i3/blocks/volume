@@ -2,7 +2,7 @@
 
 . blocks/common
 
-buttons=('floatterm pulsemixer #c' '' 'vol toggle-mute' 'vol +3%' 'vol -3%')
+buttons=('terminal -f pulsemixer #c' '' 'vol toggle-mute' 'vol +3%' 'vol -3%')
 
 declare -A labels
 labels[full]=f028

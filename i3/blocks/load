@@ -6,7 +6,7 @@ fi
 
 . blocks/common
 
-buttons=("floatterm htop #c")
+buttons=("terminal -f htop #c")
 
 label=f0ae
 

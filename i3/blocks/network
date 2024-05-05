@@ -6,6 +6,8 @@ declare -A labels
 labels[enet]=f0e8
 labels[wifi]=f1eb
 
+buttons=('menu-network #c')
+
 test_addr="1.1.1.1"
 
 wifi_disabled() {

@@ -103,7 +103,7 @@ button_loop() {
     else
       run="$buttons"
     fi
-    [[ -n "$run" ]] && eval "$run"
+    [[ -n "$run" ]] && eval "$run" >/dev/null 2>/dev/null
     [[ $run =~ '#c'$ ]] && clear_stdin
   done
 }
