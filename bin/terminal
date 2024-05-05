@@ -5,7 +5,7 @@ float_width=100
 float_height=28
 
 OPTIND=0
-while getopts "s:f" opt; do
+while getopts "s:fe:" opt; do
   case $opt in
     s)
 			float_width=${OPTARG%x*}
@@ -14,15 +14,19 @@ while getopts "s:f" opt; do
 		f)
 		  float=1
 			;;
+		e)
+			command="$OPTARG"
+			;;
   esac
 done
 shift $(( OPTIND - 1 ))
 
-prog=$1
-instance=${float:+"floating/"}${prog:-alacritty}
+: ${command:="$@"}
+progname=${command%% *}
+instance=${float:+"floating/"}${progname:-alacritty}
 
 alacritty \
 	--class alacritty,$instance \
 	${float:+-o window.dimensions.columns=$float_width} \
 	${float:+-o window.dimensions.lines=$float_height}  \
-	${1:+-e "$@"}
+	${command:+-e $command}
