@@ -19,4 +19,4 @@ render() {
   fi
 }
 
-repeat 600
+repeat 300
