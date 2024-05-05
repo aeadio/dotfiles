@@ -2,5 +2,4 @@
 
 exec 2>&1
 cd
-exec i3
-#exec dbus-launch --exit-with-session i3
+exec i3 -c "$XDG_CONFIG_HOME/i3/main.conf"
