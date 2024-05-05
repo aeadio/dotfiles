@@ -768,16 +768,17 @@ def launch_connection_editor():
     """Launch nmtui or the gui nm-connection-editor
 
     """
-    terminal = CONF.get("editor", "terminal", fallback="xterm")
     gui_if_available = CONF.getboolean("editor", "gui_if_available", fallback=True)
-    guis = ["gnome-control-center", "nm-connection-editor"]
     if gui_if_available is True:
+        guis = ["gnome-control-center", "nm-connection-editor"]
         for gui in guis:
             if is_installed(gui):
                 subprocess.run(gui, check=False)
                 return
     if is_installed("nmtui"):
-        subprocess.run([terminal, "-e", "nmtui"], check=False)
+        command = shlex.split(CONF.get("editor", "terminal", fallback="xterm"))
+        command.extend(["-e", "nmtui"])
+        subprocess.run(command, check=False)
         return
     notify("No network connection editor installed", urgency="critical")
 
