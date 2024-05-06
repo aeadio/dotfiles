@@ -1,30 +1,30 @@
 #!/bin/sh
 
 get_workspaces() {
-	i3-msg -t get_workspaces | jq -r '.[] | [.name,.focused] | @tsv'
-	# format: name\tfocused
-	#         1	true
-	#         2	false
-	#         3	false
+  i3-msg -t get_workspaces | jq -r '.[] | [.name,.focused] | @tsv'
+  # format: name\tfocused
+  #         1	true
+  #         2	false
+  #         3	false
 }
 
 print_output() {
-	printf '%s\n' "$(
-		get_workspaces | while read name active; do
-			name="${name#*:}"
-			style=
-			if [ "${active}" = "true" ]; then
-				style="color='${COLOR_BLACK}' background='${COLOR_WHITE}'"
-			else
-				style="color='${COLOR_WHITE}'"
-			fi
-			printf '%s' " <span ${style}> ${name} </span> "
-		done
-	)"
+  printf '%s\n' "$(
+    get_workspaces | while read name active; do
+      name="${name#*:}"
+      style=
+      if [ "${active}" = "true" ]; then
+        style="color='${COLOR_BLACK}' background='${COLOR_WHITE}'"
+      else
+        style="color='${COLOR_WHITE}'"
+      fi
+      printf '%s' " <span ${style}> ${name} </span> "
+    done
+  )"
 }
 
 # Listen for workspace changes
 print_output
 i3-msg -t subscribe -m '[ "workspace", "shutdown" ]' | while read _; do
-	print_output
+  print_output
 done

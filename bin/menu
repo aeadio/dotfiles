@@ -7,17 +7,17 @@ width=400
 lines=20
 
 while getopts "W:l:m:p:w:" opt; do
-	case "$opt" in
-		W)
-			width="$OPTARG"
-			;;
-		l)
-			lines="$OPTARG"
-			;;
-		*)
-			extraopts="$extraopts -$opt $OPTARG"
-			;;
-	esac
+  case "$opt" in
+    W)
+      width="$OPTARG"
+      ;;
+    l)
+      lines="$OPTARG"
+      ;;
+    *)
+      extraopts="$extraopts -$opt $OPTARG"
+      ;;
+  esac
 done
 
 getscreensize() {

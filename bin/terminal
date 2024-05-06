@@ -9,32 +9,32 @@ OPTIND=0
 while getopts "s:fe:" opt; do
   case $opt in
     s)
-			float_width=${OPTARG%x*}
+      float_width=${OPTARG%x*}
       float_height=${OPTARG#*x}
-			;;
-		f)
-		  float=1
-			;;
-		e)
-			# -e must be the last parameter, if given. The remaining parameters are
-			# assumed to belong to the child command within the spawned terminal.
-			command="$OPTARG"
-			shift $(( OPTIND - 1 ))
-			OPTIND=1
-			break
-			;;
+      ;;
+    f)
+      float=1
+      ;;
+    e)
+      # -e must be the last parameter, if given. The remaining parameters are
+      # assumed to belong to the child command within the spawned terminal.
+      command="$OPTARG"
+      shift $(( OPTIND - 1 ))
+      OPTIND=1
+      break
+      ;;
   esac
 done
 shift $(( OPTIND - 1 ))
 
 if [ -z "$command" ] && [ -n "$1" ]; then
-	command="$1"
-	shift
+  command="$1"
+  shift
 fi
 instance="${float:+floating/}${command:-alacritty}"
 
 alacritty \
-	--class alacritty,"$instance" \
-	${float:+-o window.dimensions.columns=$float_width} \
-	${float:+-o window.dimensions.lines=$float_height}  \
-	${command:+-e "$command" "$@"}
+  --class alacritty,"$instance" \
+  ${float:+-o window.dimensions.columns=$float_width} \
+  ${float:+-o window.dimensions.lines=$float_height}  \
+  ${command:+-e "$command" "$@"}
