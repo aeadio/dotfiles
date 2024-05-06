@@ -3,6 +3,7 @@
 float=
 float_width=100
 float_height=28
+command=
 
 OPTIND=0
 while getopts "s:fe:" opt; do
@@ -15,18 +16,25 @@ while getopts "s:fe:" opt; do
 		  float=1
 			;;
 		e)
+			# -e must be the last parameter, if given. The remaining parameters are
+			# assumed to belong to the child command within the spawned terminal.
 			command="$OPTARG"
+			shift $(( OPTIND - 1 ))
+			OPTIND=1
+			break
 			;;
   esac
 done
 shift $(( OPTIND - 1 ))
 
-: ${command:="$@"}
-progname=${command%% *}
-instance=${float:+"floating/"}${progname:-alacritty}
+if [ -z "$command" ] && [ -n "$1" ]; then
+	command="$1"
+	shift
+fi
+instance="${float:+floating/}${command:-alacritty}"
 
 alacritty \
-	--class alacritty,$instance \
+	--class alacritty,"$instance" \
 	${float:+-o window.dimensions.columns=$float_width} \
 	${float:+-o window.dimensions.lines=$float_height}  \
-	${command:+-e $command}
+	${command:+-e "$command" "$@"}
