@@ -1,48 +1,10 @@
-#!/usr/bin/env zsh
-set -x
-lineheight=12  # depends on DPI, difficult to calculate
+#!/bin/sh
 
-extraopts=
-width=400
-lines=20
-
-while getopts "W:l:m:p:w:" opt; do
-  case "$opt" in
-    W)
-      width="$OPTARG"
-      ;;
-    l)
-      lines="$OPTARG"
-      ;;
-    *)
-      extraopts="$extraopts -$opt $OPTARG"
-      ;;
-  esac
-done
-
-getscreensize() {
-  xrandr | awk '
-    / primary / { print gensub(/([[:digit:]]+)x([[:digit:]]+)[+-][[:digit:]]+[+-][[:digit:]]+/, "\\1 \\2", 1, $4) }
-  '
-}
-
-height=$(( lines * lineheight ))
-
-getscreensize | read -r screenwidth screenheight
-if (( screenwidth && screenheight )); then
-  x=$(( screenwidth / 2 - width / 2 ))
-  y=$(( screenheight / 2 - height / 2 ))
-else
-  print "$0: warning: cannot determine dimensions of the active screen"
-  x=0
-  y=0
-fi
-
-dmenu -i \
+dmenu -F -i \
   -fn "Iosevka Term Medium:size=10" \
   -nb "#323845" \
   -nf "#d8dee9" \
   -sb "#323845" \
   -sf "#8fbcbb" \
-  -m 0 -x "$x" -y "$y" -z "$width" -l "$lines" \
-  ${=extraopts} <&0
+  -m 0 -c -l 20 \
+  "$@"

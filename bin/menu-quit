@@ -1,10 +1,20 @@
 #!/usr/bin/env zsh
 
-dmenu='menu'
+menu() {
+  local uptime
+  if (( $+commands[menu] )); then
+    uptime -s | read uptime
+    [[ -n $uptime ]] &&
+      command menu -noi -p "Up since: $uptime" ||
+      command menu
+  else
+    dmenu
+  fi
+}
 
 fields=(lock logout sleep reboot shutdown)
 
-case $(print -f '%s\n' $fields | ${dmenu:-dmenu}) in
+case $(print -f '%s\n' $fields | menu) in
   lock)     lock ;;
   logout)   loginctl kill-session self || stopx ;;
   sleep)    loginctl suspend ;;
