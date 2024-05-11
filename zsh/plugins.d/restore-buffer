@@ -1,0 +1,16 @@
+# vim: ft=sh ts=2 sw=2 et:
+
+# Attempts to restore the ZLE buffer/cursor after a break is sent.
+
+restore-buffer:restore() {
+  emulate -L zsh
+  if (( $+RESTORE_BUFFER )); then
+    if [[ -z $BUFFER ]]; then
+      typeset -g BUFFER=$RESTORE_BUFFER
+      typeset -g CURSOR=${RESTORE_CURSOR:-$#BUFFER}
+    fi
+    unset RESTORE_BUFFER RESTORE_CURSOR
+  fi
+}
+autoload -Uz add-zle-hook-widget &&
+add-zle-hook-widget zle-line-init restore-buffer:restore

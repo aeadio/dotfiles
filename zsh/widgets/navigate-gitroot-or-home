@@ -1,0 +1,36 @@
+# vim: ft=sh ts=2 sw=2 et:
+
+# If we're in a git repo, and not at the root of the repo, navigate there
+# Otherwise, navigate to ~
+
+# add hook for precmd and then zle send-break?
+
+emulate -L zsh
+
+local gitroot target
+
+git rev-parse --show-toplevel 2>/dev/null | read -r gitroot
+if [[ -n $gitroot ]]; then
+  if [[ ${(A)gitroot} != ${(A)PWD} ]]; then
+    # Only jump to gitroot if we're not already there
+    target=$gitroot
+  fi
+fi
+
+if [[ -z $target && $PWD == $HOME ]]; then
+  # If we repeatedly strike the key, do not keep breaking the line editor or
+  # trying to munge BUFFER/CURSOR.
+  return
+fi
+
+builtin cd ${target:-$HOME}
+
+# Anything after the send-break will not be reached(?), so
+# zsh/plugins/restore-buffer will take care of restoring these on our behalf.
+typeset -g RESTORE_BUFFER=$BUFFER
+typeset -g RESTORE_CURSOR=$CURSOR
+
+# Send a full break rather than simply redrawing the prompt. This ensures 
+# hooks like precmd run, which may be necessary to update variables related to 
+# our environment (such as kicking the project-history plugin).
+zle send-break
