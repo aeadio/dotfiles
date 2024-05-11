@@ -6,6 +6,6 @@
 emulate -L zsh
 
 if (( $+functions[_zsh_highlight] )); then
-  _ZSH_HIGHLIGHT_PRIOR_BUFFER=
+  typeset -g _ZSH_HIGHLIGHT_PRIOR_BUFFER=
   _zsh_highlight
 fi
