@@ -35,9 +35,11 @@ if [ -z "$command" ] && [ -n "$1" ]; then
   command="$1"
   shift
 fi
-instance="${float:+floating/}${command:-alacritty}"
 
 if [ -n "$command" ]; then
+  # If we have zshi available, try to launch the target command through it.
+  # This gives us an enclosing interactive shell session, which we drop into if 
+  # we quit the application, rather than the terminal closing.
   if command -v zshi >/dev/null 2>/dev/null; then
     # zshi introduces additional levels of shell depth to achieve its trickery,
     # and our Zsh config tries to display _effective_ shell depth to the user
@@ -50,6 +52,11 @@ if [ -n "$command" ]; then
     set -- '-e' "$command" "$@"
   fi
 fi
+
+# If we've set -f, we should get a floating terminal. Setting the WMCLASS 
+# instance to begin with "floating" will signal to i3's configured rules to 
+# float the window.
+instance="${float:+floating/}${command:-alacritty}"
 
 alacritty \
   --class alacritty,"$instance" \
