@@ -1,7 +1,3 @@
-My Zsh setup. I do not use any configuration frameworks, and I only use a handful of third-party plugins. The rest is bespoke. Since Zsh is one of my most heavily used tools, I put a good deal of effort into creating a configuration that is powerful, but still user friendly, and fast.
-
-I've placed a particular emphasis on being well-organized and easy to navigate. Where possible, functionality is split into isolated configuration units within `.d` directories, so that individual changes can be effected piecemeal, in self-contained files, which are easy to change or (temporarily) remove.
-
 ### Subfolder structure (in the order they are loaded):
 
 - `env.d`: Static environment exports. Variables that need to be available to third party applications. This is the only portion that is sourced always, including in non-interactive script shells. Bootstrapped by the file `env`.
@@ -25,9 +21,7 @@ Individual files can be enabled or disabled by toggling the execute permission -
 
 Primary bootstrap happens in `rc`, where each stage is wrapped in a named function to facilitate tracing and debugging. The variables `ZSHRC_PROFILE` and `ZSHRC_DEBUG` can be set to an integer (see below) to enable startup benchmarking, and print some information during start, respectively. Logs from either are also saved to the home directory.
 
-The variable `ZSH` is set to the location of the Zsh config directory. Some helper functions are set up in `pre.d/util` to make writing configuration a bit more concise.
-
-Finally, all files are automatically compiled with [zcompile](https://zsh.sourceforge.io/Doc/Release/Shell-Builtin-Commands.html#index-zcompile) once per day to speed up shell startup times (see `pre.d/zcompile`). This can be invoked manually via `compile-zshrc`, or by setting `ZSHRC_FORCECOMPILE` when starting up Zsh.
+The variable `ZSH` is set to the location of the Zsh config directory. Some helper functions are set up in `pre.d/20-util` to make writing configuration a bit more concise.
 
 ### Parameters used by startup
 #### `ZSHRC_PROFILE`
@@ -52,7 +46,7 @@ If set to any value, always recompiles all `zsh/` source files on startup.
 
 #### `rc.d/aliases`
 
-Sets up common aliases. You won't find a ton of two- and three-letter aliases for all conceivable tasks. I use aliases mostly for the most frequently leveraged actions (viewing directory contents, opening an editor, etc), and rely on zsh-autosuggestions and smart completion for most other things.
+Sets up common aliases. I use aliases mostly for the most frequently leveraged actions (viewing directory contents, opening an editor, etc), and rely on zsh-autosuggestions and smart completion for most other things.
 
 On MacOS, Homebrew is automatically searched for any packages which are verion-pinned (i.e., installed as "package@version"), and aliases are automatically set up for all of that package version's binaries. This includes an emulated x86 instance of Homebrew on Apple ARM Macs, if present.
 
@@ -63,22 +57,19 @@ I've tried to display quite a bit of useful information in the prompt while keep
 ```
    .-- not shown unless it's different from my user or root
    |      .-- not shown unless connected over SSH
-   |      |         .----------+-- responsively collapses if too long --------.
-   |      |         |          |         .-- ahead/behind remote              |
-   |      |         |          |         |       .- un/staged/merged/tracked  |
-   |      |         |          |         |       `---.                        |
-   |      |         |          |         |            \                       |
-   v      v         v          v         v             v                      |
-[[user][@host]:]directory [⨕gitbranch[:commits][ ⇄ localchanges]]             |
-[[R] ][🯊[:awsprofile] ][⋮stack]»          ^-------------^--------------------'
-  ^    ^      ^            ^
-  |    |      |             `- displays the ZLE stack size (ie push-line)
-  |    |       `-- AWS profile from Vault if not 'default'
-  |     `-- MFA set by AWS Vault; red=expired, green=ok, yellow=unknown
-   `-- if inside a Ranger shell
+   |      |                              .-- ahead/behind remote
+   |      |                              |   un/staged/merged/tracked -.
+   |      |                              |              ,--------------'
+   v      v                              v              v
+[[user][@host]:]directory [⨕gitbranch[:commits][ ⇄ localchanges]]
+»                                                             [⋮stack] [⠶SHLVL]
+                \                                             /   ^        ^
+                 `--- collapsible based on terminal width ---'    |        |
+                                  ZLE stack size (ie push-line) --'        |
+                                    becomes 'R' if inside a Ranger shell --'
 ```
 
-Because each of these components collapse when unused, a prompt in my home directory looks much less daunting:
+Because each of these components is only displayed when showing something non-standard, a prompt in my home directory, on my local machine, run as my own user, is much simpler:
 
 ```
 ~
@@ -87,9 +78,9 @@ Because each of these components collapse when unused, a prompt in my home direc
 
 The prompt is always prepended by an empty line for visual padding between commands. The second line alone is used for the continuation prompt (PS2).
 
-The color scheme is switched to a red, purple and yellow if running as root.
+The color scheme is switched to a red, purple and yellow if running as root. If color support is not available in the local terminal, then the user tag will display for the root user instead.
 
-Git information is fetched asynchronously. See `functions/prompt:git-async` to see how the information is collected. The async plumbing is found at the end of `rc.d/prompt` and relies on backgrounding a task which sends the information back via [a new fd](https://zsh.sourceforge.io/Doc/Release/Redirection.html#Opening-file-descriptors-using-parameters), and a listener which waits for the response via [zle -Fw](https://zsh.sourceforge.io/Doc/Release/Zsh-Line-Editor.html#index-zle).
+Git information is fetched asynchronously. See `functions/prompt:git-async` to see how the information is collected. 
 
 Additionally, the XTRACE prompt (PS4) is set:
 
@@ -141,6 +132,7 @@ A non-comprehensive list of useful keybindings:
 - **ctrl-A** to move **a**fter the first word (as opposed to the start of the input -- use alt-left for that).
 - **ctrl-F** to **f**ind in history using fzf.
 - **ctrl-E** to **e**dit the current input in your `$EDITOR`. If some text is selected, edit that instead.
+- **ctrl-H** to change directory to either the current Git repository's root (if we're inside a Git repo _and not already at the root_), otherwise change directory to **h**ome.
 - **ctrl-L** to select a **l**ist of files using fzf, and insert them as an argument at the current position. If some text is selected, insert the list of files in place of the selected text instead.
 - **ctrl-N** while the cursor is over a hypothetical path location to push the current input onto the ZLE input stack, then open a new input with `mkdir <foldername>` pre-filled. This is for situations where, eg, you begin typing the output destination for a command, only to realize the folder doesn't exist yet.
 - **ctrl-P** to **p**ush the current input onto the ZLE input stack and open a fresh input. This is visually indicated by the prompt by a '⋮' character followed by the current stack depth.
