@@ -1,8 +1,12 @@
 #!/bin/sh
 
 float=
-float_width=100
-float_height=28
+# This is roughly the size of a terminal in our standard desktop configuration:
+# - 4K screen
+# - Screen divided into 4 columns (with i3 gaps)
+# - Rightmost column contains 3 terminals vertically
+float_width=112
+float_height=32
 command=
 
 OPTIND=0
