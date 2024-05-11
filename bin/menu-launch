@@ -16,6 +16,10 @@ browser() {
 	"${BROWSER:-xdg-open}" "$url"
 }
 
+terminal() {
+	command terminal -f "$@"
+}
+
 editor() {
 	terminal "${VISUAL:-${EDITOR:-micro}}" "$1"
 }
@@ -40,7 +44,7 @@ get-desktop-apps | menu -d ' |' | while read selection; do
 			browser "https://www.google.com/search?q=${selection#?}" &
 			;;
 		\$*) # terminal
-			terminal -f ${selection#$} &
+			terminal ${selection#$} &
 			;;
 		*)   # handle as file
 			case "$selection" in \~/* | \~) selection="$HOME${selection#'~'}" ;; esac
