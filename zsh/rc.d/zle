@@ -72,7 +72,7 @@ bindkey '^?'      backward-delete-char               # backspace
 bindkey '^A'      after-first-word
 bindkey '^E'      edit-command-line
 bindkey '^F'      fzf-history
-bindkey '^H'      run-help
+bindkey '^H'      navigate-gitroot-or-home
 bindkey '^I'      fzf-tab-complete                   # tab
 bindkey '^K'      copy-to-clipboard
 bindkey '^L'      fzf-select-files
