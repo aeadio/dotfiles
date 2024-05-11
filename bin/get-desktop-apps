@@ -10,6 +10,7 @@ app_dirs=(
 )
 
 typeset -A apps=()
+typeset -A appnames=()
 
 for dir in $app_dirs; do
   for desktop_file in $dir/*.desktop(N); do
@@ -36,34 +37,39 @@ for filename in ${(k)apps}; do
   dir=$apps[$filename]
   desktop_file=$dir/$filename
   
-  sed -n 's/^Type=\([[:alnum:]]*\)/\1/p' $desktop_file | read -r type
-  if [[ $type != (Application|) ]]; then
-    info "removing $filename from $dir: unknown/unsupported type: $type"
-    unset 'apps['$filename']'
-    continue
-  fi
-  
-  sed -n 's/^NoDisplay=\([[:alnum:]]*\)/\1/p' $desktop_file | read -r nodisplay
-  if [[ $nodisplay == true ]]; then
-    info "removing $filename from $dir: NoDisplay is set"
-    unset 'apps['$filename']'
-    continue
-  fi
-  
-  sed -n 's/^Hidden=\([[:alnum:]]*\)/\1/p' $desktop_file | read -r hidden
-  if [[ $hidden == true ]]; then
-    info "removing $filename from $dir: Hidden is set"
-    unset 'apps['$filename']'
-    continue
-  fi
+  sed -n 's/^\([[:alnum:]]*\)=\([[:alnum:]]*\).*/\1 \2/p' $desktop_file |
+    while read -r key val; do
+      case $key in
+        Type)
+          if [[ $val != (Application|) ]]; then
+            info "removing $filename from $dir: unknown/unsupported type: $type"
+            unset 'apps['$filename']'
+            break
+          fi
+          ;;
+        NoDisplay)
+          if [[ $val == true ]]; then
+            info "removing $filename from $dir: NoDisplay is set"
+            unset 'apps['$filename']'
+            break
+          fi
+          ;;
+        Hidden)
+          if [[ $val == true ]]; then
+            info "removing $filename from $dir: Hidden is set"
+            unset 'apps['$filename']'
+            break
+          fi
+          ;;
+        Name)
+          appnames[$key]=$val
+          ;;
+      esac
+    done
 done
 
 for filename in ${(ki)apps}; do
   dir=$apps[$filename]
   desktop_file=$dir/$filename
-  
-  sed -n 's/^Name=\([[:alnum:]]*\)/\1/p' $desktop_file | read -r name
-  if [[ -z $name ]] name=$filename:r
-  
-  print -f '%s %s\n' $desktop_file $name
+  print -f '%s %s\n' $desktop_file ${appnames[$filename]:-$filename:r}
 done
