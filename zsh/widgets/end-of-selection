@@ -8,4 +8,4 @@ get-selection > /dev/null
 zle deactivate-region -w
 zle -K main
 
-CURSOR=$y
+typeset -g CURSOR=$y
