@@ -1,0 +1,55 @@
+#!/bin/sh
+
+BACKUP_POOL_NAME=backup
+
+fail() {
+  printf 'error: %s\n' "$1"
+  exit 1
+}
+
+check_import_pool() {
+  if ! zpool list "$BACKUP_POOL_NAME" >/dev/null 2>/dev/null; then
+    printf '%s\n' "Import backup zpool: $BACKUP_POOL_NAME"
+    mkdir -p /mnt/"$BACKUP_POOL_NAME" &&
+    zpool import -R /mnt/"$BACKUP_POOL_NAME" "$BACKUP_POOL_NAME"
+  fi
+}
+
+get_local_zroot() {
+  rootfs="$(mount | awk '/ \/ / {print $1}')"
+  if printf '%s' "$rootfs" | grep -q -m 1 -E '^/dev/'; then
+    fail "This system does not appear to contain a zroot pool."
+  fi
+  
+  pool="$(printf '%s' "$rootfs" | awk -F '/' '{print $1}')"
+  if [ -z "$pool" ]; then
+    fail "Cannot locate root ZFS pool"
+  fi
+  if ! zpool list "$pool" >/dev/null 2>/dev/null; then
+    fail "Cannot verify root ZFS pool name"
+  fi
+}
+
+hostname="$(uname -n)"
+if [ -z "$hostname" ]; then
+  fail "Cannot get system hostname"
+fi
+
+if ! check_import_pool; then
+  fail "Backup pool not available"
+fi
+
+if ! get_local_zroot; then
+  fail "Unable to detect system zroot pool"
+fi
+
+syncoid --recursive                               \
+  --sendoptions="wp" --recvoptions="u"            \
+  --identifier="$BACKUP_POOL_NAME"                \
+  "$pool" "$BACKUP_POOL_NAME"/machine/"$hostname"
+
+if [ $? -eq 0 ]; then
+  printf '%s\n' "Success."
+  printf '%s\n' "Exporting backup zpool: $BACKUP_POOL_NAME"
+  zpool export "$BACKUP_POOL_NAME"
+fi
