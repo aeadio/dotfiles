@@ -29,7 +29,14 @@ filemanager() {
 }
 
 imageviewer() {
-	img --title "feh-float" -g "1920x1080" "$1"
+  xrandr |
+		sed -n 's/.*primary \([[:digit:]]*\)x\([[:digit:]]*\).*/\1 \2/p' |
+		while read -r width height; do
+			[ -n "$width"  ] && width=$(( width / 2 ))
+			[ -n "$height" ] && height=$(( height / 2 ))
+			img --title "feh-float" -g "${width:-1280}x${height:-720}" "$1"
+			break
+		done
 }
 
 get-desktop-apps | menu -d ' |' | while read selection; do
