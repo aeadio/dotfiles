@@ -1,11 +1,75 @@
 #!/usr/bin/env zsh
 
-while read -r wmclass title; do
-  if [[ $wmclass =~ ^${1}$ ]]; then
-    wmctrl -a $title
-    exit 0
-  fi
-done < <(wmctrl -xl | tr -s '[:blank:]' | cut -d ' ' -f 3,5-)
+# Try to find the corresponding application .desktop file
+desktop_file=
+if [[ $1 == *.desktop && -e $1 ]]; then
+  # Passed directly
+  desktop_file=$1
+else
+  # We should not try to manually search the .desktop app paths, since we would 
+  # need to respect correct shadowing behavior. Let our script get-desktop-apps
+  # do the heavy lifting.
+  while read -r filepath name; do
+    # By filename
+    if [[ $filepath:t == $1 || $filepath:t:r == $1 ]]; then
+      desktop_file=$filepath
+      break
+    fi
+    # By name
+    if [[ $name == $1 ]]; then
+      desktop_file=$filepath
+      break
+    fi
+  done < <(get-desktop-apps -a)
+fi
 
-shift
-"$@"
+if [[ -z $desktop_file ]]; then
+  print "could not locate application: $1" >&2
+  exit 1
+fi
+
+activate_and_exit() {
+  wmctrl -a $1
+  exit 0
+}
+
+launch_and_exit() {
+  dex $1
+  exit 0
+}
+
+# Try to match window by .desktop StartupWMClass
+sed -n 's/^StartupWMClass=//p' $desktop_file | read -r appwmclass
+if [[ -n $appwmclass ]]; then
+  # Class/instance may (erroneously?) contain a space, so we have to explicitly 
+  # search each window ID
+  while read -r windowid title; do
+    xprop -id $windowid WM_CLASS |
+      sed -n 's/WM_CLASS(STRING) = //p' |
+      read wmclass
+    if [[ $wmclass =~ $appwmclass ]]; then
+      activate_and_exit $title
+    fi
+  done < <(wmctrl -l | tr -s '[:blank:]' | cut -d ' ' -f 1,4-)
+  
+  # We're confident we have a correct match criteria since we presume the 
+  # .desktop file shipped by the vendor is correct. At this stage, we can 
+  # assume the app is not launched.
+  launch_and_exit $desktop_file
+fi
+
+# Try to match window by associating /proc/*/cmdline with .desktop Exec=
+sed -n 's/^Exec=\([^[:space:]]*\).*/\1/p' $desktop_file | read -r appexec
+if [[ -n $appexec ]]; then
+  basename=$appexec:t
+  while read -r pid title; do
+    # Don't assume our target binary is at the front of the cmdline
+    # For instance, with electron apps, the cmdline basename may be electron,
+    # with our app's path passed via --app=
+    if [[ $(cat /proc/$pid/cmdline 2>/dev/null) =~ $basename ]]; then
+      activate_and_exit $title
+    fi
+  done < <(wmctrl -pl | tr -s '[:blank:]' | cut -d ' ' -f 3,5-)
+fi
+
+launch_and_exit $desktop_file

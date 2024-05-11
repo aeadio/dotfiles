@@ -1,7 +1,14 @@
 #!/usr/bin/env zsh
 
+zparseopts -A opts -D a v
+
+(( $+opts[-a] )) && showhidden=1
+(( $+opts[-v] )) && verbose=1
+
 info() {
-  print $1 >&2
+  if (( verbose )); then
+    print $1 >&2
+  fi
 }
 
 app_dirs=(
@@ -48,14 +55,14 @@ for filename in ${(k)apps}; do
           fi
           ;;
         NoDisplay)
-          if [[ $val == true ]]; then
+          if [[ $val == true ]] && (( ! showhidden )); then
             info "removing $filename from $dir: NoDisplay is set"
             unset 'apps['$filename']'
             break
           fi
           ;;
         Hidden)
-          if [[ $val == true ]]; then
+          if [[ $val == true ]] && (( ! showhidden )); then
             info "removing $filename from $dir: Hidden is set"
             unset 'apps['$filename']'
             break
