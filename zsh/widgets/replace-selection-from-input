@@ -3,4 +3,4 @@
 emulate -L zsh
 
 zle delete-selection -w
-zle -U "$KEYS"
+zle -U -- "$KEYS"
