@@ -1,0 +1,88 @@
+map [normal] <Up> scroll up
+map [normal] <Down> scroll down
+map [normal] <Left> scroll left
+map [normal] <Right> scroll right
+map [normal] <PageUp> scroll full-up
+map [normal] <PageDown> scroll full-down
+map [normal] 0 adjust_window best-fit
+map [normal] - zoom out
+map [normal] + zoom in
+map [normal] = zoom in
+map [normal] i toggle_index
+map [normal] <Tab> toggle_index
+map [normal] : focus_inputbar
+map [normal] r reload
+map [normal] c recolor
+map [normal] s toggle_page_mode
+map [normal] p print
+map [normal] \, search backward
+map [normal] \. search forward
+map [normal] q quit
+
+map [fullscreen] <Up> scroll up
+map [fullscreen] <Down> scroll down
+map [fullscreen] <Left> scroll left
+map [fullscreen] <Right> scroll right
+map [fullscreen] <PageUp> scroll full-up
+map [fullscreen] <PageDown> scroll full-down
+map [fullscreen] 0 adjust_window best-fit
+map [fullscreen] - zoom out
+map [fullscreen] + zoom in
+map [fullscreen] = zoom in
+map [fullscreen] i toggle_index
+map [fullscreen] <Tab> toggle_index
+map [fullscreen] : toggle_inputbar
+map [fullscreen] r reload
+map [fullscreen] c recolor
+map [fullscreen] s toggle_page_mode
+map [fullscreen] p print
+map [fullscreen] \, search backward
+map [fullscreen] \. search forward
+map [fullscreen] q quit
+map [fullscreen] <Esc> abort
+
+map [index] <Up> scroll up
+map [index] <Down> scroll down
+map [index] <Left> scroll left
+map [index] <Right> scroll right
+map [index] <PageUp> scroll full-up
+map [index] <PageDown> scroll full-down
+map [index] 0 adjust_window best-fit
+map [index] - zoom out
+map [index] + zoom in
+map [index] = zoom in
+map [index] i toggle_index
+map [index] <Tab> toggle_index
+map [index] : toggle_inputbar
+map [index] r reload
+map [index] c recolor
+map [index] s toggle_page_mode
+map [index] p print
+map [index] \, search backward
+map [index] \. search forward
+map [index] q quit
+map [index] <Esc> abort
+
+map [presentation] <Up> scroll up
+map [presentation] <Down> scroll down
+map [presentation] <Left> scroll left
+map [presentation] <Right> scroll right
+map [presentation] <PageUp> scroll full-up
+map [presentation] <PageDown> scroll full-down
+map [presentation] 0 adjust_window best-fit
+map [presentation] - zoom out
+map [presentation] + zoom in
+map [presentation] = zoom in
+map [presentation] i toggle_index
+map [presentation] <Tab> toggle_index
+map [presentation] : toggle_inputbar
+map [presentation] r reload
+map [presentation] c recolor
+map [presentation] s toggle_page_mode
+map [presentation] p print
+map [presentation] \, search backward
+map [presentation] \. search forward
+map [presentation] q quit
+map [presentation] <Esc> abort
+
+map [insert] <Esc> abort

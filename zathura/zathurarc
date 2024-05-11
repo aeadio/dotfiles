@@ -1,0 +1,40 @@
+include bindings
+
+# Appearance
+include nord
+set font "Iosevka Term 10"
+set guioptions shv
+set page-padding 20
+set statusbar-h-padding 20
+set statusbar-v-padding 8
+
+# Information
+set render-loading true
+set selection-notification false
+set show-directories true
+set show-hidden false
+set show-recent 0
+set show-signature-information true
+set statusbar-home-tilde true
+set window-title-basename true
+
+# Behavior
+set double-click-follow false
+set filemonitor noop
+set incremental-search true
+set selection-clipboard clipboard
+
+set zoom-min 5
+set zoom-max 2000
+set zoom-step 10
+set zoom-center true
+
+set scroll-step 100
+set scroll-page-aware true
+set scroll-full-overlap 0.2
+
+# Performance
+set page-cache-size 20
+
+# Misc
+set dbus-service false

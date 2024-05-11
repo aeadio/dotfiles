@@ -58,7 +58,7 @@ get-desktop-apps | menu -d ' |' | while read selection; do
       if [ -e "$selection" ]; then
         case "$(file -Lb --mime-type "$selection")" in
           application/pdf)
-            browser "file://$selection"
+            zathura "$selection"
             ;;
           text/* | inode/x-empty | message/rfc822)
             editor "$selection"
