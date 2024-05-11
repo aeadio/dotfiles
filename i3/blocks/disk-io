@@ -2,8 +2,8 @@
 
 local LABEL = "<span font='FontAwesome'>\239\130\160</span>"
 local REPEAT_RATE = 2
-local WARN_THRESHOLD = 150
-local WARN_COLOR = '#bf616a'
+local WARN_THRESHOLD = 250
+local WARN_COLOR = '#dca493'
 
 local SYSFS_DISK = '/sys/class/block/nvme0n1'
 local SYSFS_STAT = SYSFS_DISK .. '/stat'

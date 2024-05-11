@@ -2,8 +2,8 @@
 
 local LABEL = "<span font='FontAwesome'>\239\133\181\239\133\182</span>"
 local REPEAT_RATE = 2
-local WARN_THRESHOLD = 150
-local WARN_COLOR = '#bf616a'
+local WARN_THRESHOLD = 50
+local WARN_COLOR = '#dca493'
 
 local SYSFS_ROOT   = '/sys/class/net'
 local SYSFS_RXRATE = '/statistics/rx_bytes'  -- in total bytes
