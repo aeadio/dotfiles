@@ -3,7 +3,8 @@
 . blocks/common
 
 label=f2c9
-warn_threshold=85
+warn_threshold_mid=85
+warn_threshold_high=95
 
 maxtemp() {
   local maxtemp="$(sysfs_max /sys/devices/platform/coretemp.*/hwmon/hwmon*/temp*_input)"
@@ -14,7 +15,11 @@ render() {
   local temp="$(maxtemp)"
   local color
   
-  (( $temp > $warn_threshold )) && color=bad
+  if (( $temp >= $warn_threshold_high )); then
+    color=bad
+  elif (( $temp >= $warn_threshold_mid )); then
+    color=warn
+  fi
   
   printf '%s\n' "$(icon $label) $(color $color "$temp°C")"
 }
