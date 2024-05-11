@@ -1,0 +1,44 @@
+#!/usr/bin/env bash
+
+. blocks/common
+
+# TODO: Autodetect fan warning threshold from min/max speed of the fans
+# Fans for desktop computers spin at considerably lower RPMs than those found 
+# in laptops, and produce far less noise-per-RPM. What's an innocuous speed for 
+# a laptop fan (and barely audible), might be full tilt in a desktop and be 
+# absolutely screaming noise. The script should try to autoscale the displayed
+# thredholds, as well as what it considers to be the fastest fan, based on 
+# reported supported RPMs from the underlying sensor(s).
+# 
+# For now, since I only own laptops, and they all have fairly similar fan RPM 
+# curves, this is mostly fine.
+
+label=f863
+
+warn_threshold_mid=5000
+warn_threshold_high=6500
+
+dell_fans() {
+  local rpm="$(sysfs_max /sys/devices/platform/dell_smm_hwmon/hwmon/hwmon*/fan*_input)"
+  printf '%s' "$rpm"
+}
+
+render() {
+  local rpm color
+  for method in dell_fans; do
+    rpm=$("$method")
+    [[ -n $rpm ]] && break
+  done
+  
+  if (( $rpm >= $warn_threshold_high )); then
+    color=bad
+  elif (( $rpm >= $warn_threshold_mid )); then
+    color=warn
+  elif (( $rpm == 0 )); then
+    color=cyan
+  fi
+  
+  printf '%s\n' "$(icon6 $label) $(color $color "$rpm RPM")"
+}
+
+repeat
