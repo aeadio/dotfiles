@@ -7,10 +7,11 @@ float=
 # - Rightmost column contains 3 terminals vertically
 float_width=112
 float_height=32
+interactive=
 command=
 
 OPTIND=0
-while getopts "s:fe:" opt; do
+while getopts "s:fie:" opt; do
   case $opt in
     s)
       float_width=${OPTARG%x*}
@@ -18,6 +19,9 @@ while getopts "s:fe:" opt; do
       ;;
     f)
       float=1
+      ;;
+    i)
+      interactive=1
       ;;
     e)
       # -e must be the last parameter, if given. The remaining parameters are
@@ -40,7 +44,7 @@ if [ -n "$command" ]; then
   # If we have zshi available, try to launch the target command through it.
   # This gives us an enclosing interactive shell session, which we drop into if 
   # we quit the application, rather than the terminal closing.
-  if command -v zshi >/dev/null 2>/dev/null; then
+  if [ "$interactive" ] && command -v zshi >/dev/null 2>/dev/null; then
     # zshi introduces additional levels of shell depth to achieve its trickery,
     # and our Zsh config tries to display _effective_ shell depth to the user
     # so we can tell if we've, eg, entered zsh->ranger->zsh->ranger multiple 
