@@ -13,11 +13,11 @@ browser() {
 			url="http://$1"
 			;;
 	esac
-	xdg-open "$url"
+	"${BROWSER:-xdg-open}" "$url"
 }
 
 editor() {
-	terminal micro "$1"
+	terminal "${VISUAL:-${EDITOR:-micro}}" "$1"
 }
 
 filemanager() {
