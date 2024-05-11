@@ -44,7 +44,8 @@ if [ -n "$command" ]; then
     # so we can tell if we've, eg, entered zsh->ranger->zsh->ranger multiple 
     # times by mistake. So we'll start off with a SHLVL offset that ends up 
     # with our enclosing shell at SHLVL=1.
-    set -- '-e' 'env' 'SHLVL=-1' 'zshi' "$command $*"
+    : ${SHLVL:=1}
+    set -- '-e' 'env' "SHLVL=$(( SHLVL - 1 ))" 'zshi' "$command $*"
   else
     set -- '-e' "$command" "$@"
   fi
