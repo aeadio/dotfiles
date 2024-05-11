@@ -34,7 +34,7 @@ imageviewer() {
     while read -r width height; do
       [ -n "$width"  ] && width=$(( width / 2 ))
       [ -n "$height" ] && height=$(( height / 2 ))
-      img --title "feh-float" -g "${width:-1280}x${height:-720}" "$1"
+      img --title "floating/feh" -g "${width:-1280}x${height:-720}" "$1"
       break
     done
 }
