@@ -176,9 +176,9 @@ handle_image() {
 
         ## PDF
         application/pdf)
-            mutool draw -F jpeg -w "${DEFAULT_SIZE%x*}" \
-                -o "${IMAGE_CACHE_PATH%.*}.jpg" "${FILE_PATH}" 1 \
-                && exit 6 || exit 1
+            #mutool draw -F jpeg -w "${DEFAULT_SIZE%x*}" \
+            #    -o "${IMAGE_CACHE_PATH%.*}.jpg" "${FILE_PATH}" 1 \
+            #    && exit 6 || exit 1
             pdftoppm -f 1 -l 1 \
                      -scale-to-x "${DEFAULT_SIZE%x*}" \
                      -scale-to-y -1 \
