@@ -8,6 +8,12 @@ restore-buffer:restore() {
     if [[ -z $BUFFER ]]; then
       typeset -g BUFFER=$RESTORE_BUFFER
       typeset -g CURSOR=${RESTORE_CURSOR:-$#BUFFER}
+      # Zsh fast-syntax-highlighting maintains a memory of the previous BUFFER
+      # contents to determine if it ought to initiate syntax highlighting. It 
+      # incorrectly does not clear this memory on an break/init cycle, so when 
+      # we restore a buffer that is (potentially) identical to a previous 
+      # state, f-sy-h will elect not to highlight. We need to manually kick it.
+      force-fsyh
     fi
     unset RESTORE_BUFFER RESTORE_CURSOR
   fi

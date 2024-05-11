@@ -1,0 +1,11 @@
+# vim: ft=sh ts=2 sw=2 et:
+
+# Forces fast-syntax-highlighting plugin to reevaluate and re-color the current
+# input buffer.
+
+emulate -L zsh
+
+if (( $+functions[_zsh_highlight] )); then
+  _ZSH_HIGHLIGHT_PRIOR_BUFFER=
+  _zsh_highlight
+fi
