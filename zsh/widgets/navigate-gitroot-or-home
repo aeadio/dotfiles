@@ -3,8 +3,6 @@
 # If we're in a git repo, and not at the root of the repo, navigate there
 # Otherwise, navigate to ~
 
-# add hook for precmd and then zle send-break?
-
 emulate -L zsh
 
 local gitroot target
