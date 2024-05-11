@@ -1,0 +1,69 @@
+#!/usr/bin/env zsh
+
+info() {
+  print $1 >&2
+}
+
+app_dirs=(
+  ${XDG_DATA_HOME:-$HOME/.local/share}/applications(N)
+  ${~${(@s,:,)${XDG_DATA_DIRS:-/usr/local/share:/usr/share}}/%//applications(N)}
+)
+
+typeset -A apps=()
+
+for dir in $app_dirs; do
+  for desktop_file in $dir/*.desktop(N); do
+    if [[ ! -r $desktop_file ]] continue
+    
+    desktop_file=$desktop_file:t
+    
+    if (( $+apps[$desktop_file] )); then
+      info "skipping $desktop_file from $dir: shadowed by $apps[$desktop_file]"
+      continue
+    fi
+    
+    info "adding $desktop_file from $dir"
+    apps[$desktop_file]=$dir
+  done
+done
+
+# Instances of .desktop files in a high-priority directory should completely
+# shadow those found in lower-priority directories. Therefore, we need to first 
+# collate all .desktop entries before performing filtering. For instance, if a 
+# copy in $XDG_DATA_HOME sets NoDisplay=true, but the system-wide one does not,
+# we must still exclude it from the list.
+for filename in ${(k)apps}; do
+  dir=$apps[$filename]
+  desktop_file=$dir/$filename
+  
+  sed -n 's/^Type=\([[:alnum:]]*\)/\1/p' $desktop_file | read -r type
+  if [[ $type != (Application|) ]]; then
+    info "removing $filename from $dir: unknown/unsupported type: $type"
+    unset 'apps['$filename']'
+    continue
+  fi
+  
+  sed -n 's/^NoDisplay=\([[:alnum:]]*\)/\1/p' $desktop_file | read -r nodisplay
+  if [[ $nodisplay == true ]]; then
+    info "removing $filename from $dir: NoDisplay is set"
+    unset 'apps['$filename']'
+    continue
+  fi
+  
+  sed -n 's/^Hidden=\([[:alnum:]]*\)/\1/p' $desktop_file | read -r hidden
+  if [[ $hidden == true ]]; then
+    info "removing $filename from $dir: Hidden is set"
+    unset 'apps['$filename']'
+    continue
+  fi
+done
+
+for filename in ${(ki)apps}; do
+  dir=$apps[$filename]
+  desktop_file=$dir/$filename
+  
+  sed -n 's/^Name=\([[:alnum:]]*\)/\1/p' $desktop_file | read -r name
+  if [[ -z $name ]] name=$filename:r
+  
+  print -f '%s %s\n' $desktop_file $name
+done

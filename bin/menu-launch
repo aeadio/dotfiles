@@ -28,8 +28,11 @@ imageviewer() {
 	img --title "feh-float" -g "1920x1080" "$1"
 }
 
-dmenu_path | menu | while read selection; do
+get-desktop-apps | menu -d ' |' | while read selection; do
 	case "$selection" in
+	  *.desktop)
+			dex "$selection"
+			;;
 		\:* | http://* | https://*) # URL
 			browser "${selection#:}" &
 			;;
@@ -39,11 +42,9 @@ dmenu_path | menu | while read selection; do
 		\$*) # terminal
 			terminal -f ${selection#$} &
 			;;
-		*)   # launch binary or handle as file
-			if command -v "$selection"; then
-				"${SHELL:-/bin/sh}" -c "$selection" &
-			else
-			  case "$selection" in \~/* | \~) selection="$HOME${selection#'~'}" ;; esac
+		*)   # handle as file
+			case "$selection" in \~/* | \~) selection="$HOME${selection#'~'}" ;; esac
+			if [ -e "$selection" ]; then
 				case "$(file -Lb --mime-type "$selection")" in
 					application/pdf)
 						browser "file://$selection"
