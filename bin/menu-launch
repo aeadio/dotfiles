@@ -48,7 +48,7 @@ get-desktop-apps | menu -d ' |' | while read selection; do
       browser "${selection#:}" &
       ;;
     \?*) # web search
-      browser "https://www.google.com/search?q=${selection#?}" &
+      browser "https://duckduckgo.com/?q=${selection#?}" &
       ;;
     \$*) # terminal
       terminal ${selection#$} &
