@@ -5,6 +5,8 @@
 
 emulate -L zsh -o extended_glob
 
+zle || exit 1
+
 local sucmd=${${+commands[doas]:+doas}:-sudo}
 
 if [[ -z $BUFFER || $BUFFER == [[:space:]]# ]]; then

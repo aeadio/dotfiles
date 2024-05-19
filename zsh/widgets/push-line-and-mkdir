@@ -9,6 +9,8 @@
 
 emulate -L zsh
 
+zle || exit 1
+
 local dir
 if (( REGION_ACTIVE )); then
   local x y
