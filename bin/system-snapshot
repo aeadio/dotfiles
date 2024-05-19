@@ -1,5 +1,7 @@
 #!/bin/sh
 
+# Copied to /usr/local/bin to be whitelisted in doas.conf
+
 prefix="manual"
 
 OPTIND=0

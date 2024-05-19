@@ -2,7 +2,7 @@
 
 . blocks/common
 
-buttons=("terminal -f sh -c 'doas /opt/bin/voidupdate -vo; pause' #c")
+buttons=("terminal -f sh -c 'doas system-update -vo; pause' #c")
 
 label=f0aa
 

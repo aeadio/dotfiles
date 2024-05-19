@@ -60,7 +60,7 @@ case "$yn" in
 esac
 
 # Snapshot the zroot
-snapshot -p "update" ||
+system-snapshot -p "update" ||
   fail "Could not snapshot root filesystem prior to update."
 
 # Install updates
