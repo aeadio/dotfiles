@@ -1,15 +1,21 @@
 # vim: ft=sh ts=2 sw=2 et:
 
 # Add/remove doas/sudo at the beginning of the line editor
+# If the line editor is empty, invoke a root shell
 
 emulate -L zsh -o extended_glob
 
+local sucmd=${${+commands[doas]:+doas}:-sudo}
+
 if [[ -z $BUFFER || $BUFFER == [[:space:]]# ]]; then
+  if (( UID != 0 )); then
+    BUFFER="$sucmd -s"
+    zle accept-line
+  fi
   return
 fi
 
 local firstword=${${(z)BUFFER}[1]}
-local sucmd=${${+commands[doas]:+doas}:-sudo}
 local newbuffer newcursor
 integer diff
 
