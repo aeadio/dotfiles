@@ -2,6 +2,8 @@
 
 emulate -L zsh
 
+zle || exit 1
+
 # Trigger the builtin method for clearing the current screen. This will not
 # affect the scrollback buffer, but should clear the visible screen in most/all
 # terminal emulators.

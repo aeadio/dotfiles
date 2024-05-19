@@ -6,6 +6,8 @@
 
 emulate -L zsh
 
+zle || exit 1
+
 local before
 if [[ $1 == '-b' ]]; then
   before=1

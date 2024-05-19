@@ -2,5 +2,7 @@
 
 emulate -L zsh
 
+zle || exit 1
+
 zle kill-region -w
 zle -K main

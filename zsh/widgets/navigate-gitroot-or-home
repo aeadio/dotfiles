@@ -5,6 +5,8 @@
 
 emulate -L zsh
 
+zle || exit 1
+
 local gitroot target
 
 git rev-parse --show-toplevel 2>/dev/null | read -r gitroot

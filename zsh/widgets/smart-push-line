@@ -2,6 +2,8 @@
 
 emulate -L zsh -o extended_glob -o prompt_subst
 
+zle || exit 1
+
 if (( REGION_ACTIVE )); then
   zle clear-selection -w
 fi

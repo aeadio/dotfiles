@@ -2,6 +2,8 @@
 
 emulate -L zsh
 
+zle || exit 1
+
 if (( $REGION_ACTIVE )); then
   zle deactivate-region -w
 fi
