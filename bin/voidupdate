@@ -1,5 +1,7 @@
 #!/bin/sh
 
+# Copied to /usr/local/bin to be whitelisted in doas.conf
+
 yes=
 vkpurge=
 xbps_cleanup=
@@ -19,31 +21,51 @@ while getopts "yvop" opt; do
   esac
 done
 
+fail() {
+  printf '%s\n' "$1" >&2
+  exit 1
+}
+
 # Determine if there are available updates
-count="$(xbps-install -Sun | wc -l)"
+updates="$(xbps-install -Sun)" ||
+  fail "Unable to determine available system updates."
+count="$(printf '%s\n' "$updates" | wc -l)"
 if [ "$count" -eq 0 ]; then
   printf '%s\n' "Up to date."
   exit 0
 fi
-printf '%s\n' "$count updates available."
-printf '%s\n' ''
 
-# Determine the currently active root filesystem
-bootenv="$(mount | awk '/ \/ / {print $1}')"
-if [ -z "$bootenv" ]; then
-  printf '%s\n' "update: could not determine active boot environment" >&2
-  exit 1
-fi
+printf '%s\n' "$count updates available"
+printf '%s\n' ""
+printf '%s\n' "$updates" |
+  while read -r pkg action arch mirror instsize dlsize; do
+    newver="${pkg##*-}"
+    pkg="${pkg%-*}"
+    ver="$(xbps-query "$pkg" | sed -n 's/^pkgver: .*-\([[:alnum:]_.]*\)$/\1/p')"
+    dlsize="$(numfmt --to=iec "${dlsize:-$instsize}")B"
+    printf '%s %s %s %s %s\n' "$pkg" "$action" "$ver" "$newver" "$dlsize"
+  done |
+  column -t -N "Name,Action,Version,New version,Download size"
 
-# Snapshot the currently active root filesystem
-printf '%s\n' '[*] Snapshotting live system'
-snapshot="${bootenv}@update_$(date -u +%04Y-%02m-%02d_%02H:%02M:%02S)"
-zfs snapshot -r "$snapshot"
-printf '%s\n' "Snapshot created: $snapshot"
-printf '%s\n' ''
+# Size to download: 
+# Size required on disk: 
+# Space available on disk: 
+
+printf '%s\n' ""
+printf '%s\n' "Do you want to continue? [Y/n]"
+read yn
+case "$yn" in
+  [Yy]) ;;
+  *) exit 0 ;;
+esac
+
+# Snapshot the zroot
+snapshot -p "update" ||
+  fail "Could not snapshot root filesystem prior to update."
 
 # Install updates
-xbps-install -u ${yes:+-y}
+xbps-install -u ${yes:+-y} ||
+  fail "Failed to apply updates."
 
 # Post-update cleanup
 if [ -n "$vkpurge" ]; then
