@@ -33,20 +33,6 @@ Some things to look at,
 - Most shell configuration happens in [rc.d/](zsh/rc.d)
 - Primary bootstrapping happens in [rc](zsh/rc), including functionality for debugging and profiling startup time.
 
-## Other stuff
-
-- I currently use [X11](x11), not Wayland. This may change in the future, but as of 2024, I don't feel Wayland is there yet.
-- I use the [i3 window manager](i3)
-  - I have [several custom i3block blocklets](i3/blocks) that you may find useful
-  - Some i3blocks blocklets which are written in Bash utilize [a micro framework](i3/blocks/common) for consistent and easy rendering and behavior.
-- [bin](bin) (symlinked to `~/bin`) contains several useful utilities
-  - [menu-launch](bin/menu-launch) is an all-in-one app launcher that can launch XDG .desktop apps, open web links, perform web search queries, open files, or run a given command inside a terminal.
-  - [raiseorrun](bin/raiseorrun) implements MacOS-like behavior of selecting an application's window if it's already launched, or launching the application if it's not.
-- A [runit](https://smarden.org/runit/) instance is used in place of the typical `foo &` pattern in `.xinitrc`.
-  - Stuff like wallpaper setter/rotater, compositor, etc are typically launched as child processes via `.xinitrc`. This provides no supervision if they crash, and no ability to bring down or restart easily.
-  - Instead, I launch these via [runit service scripts](sv) (these get symlinked into `~/sv` to enable them).
-  - The service tree is [bootstrapped by X11](https://github.com/aeadio/dotfiles/blob/f5629ecc97052fd33399ca79ff40251bd10e6904/x11/xinitrc#L22) after it's finished self-configuring. Session variables such as DBUS info is correctly available to all supervised services.
-
 ## How do I use them?
 
 These are my personal dotfiles. If you find something useful here, you are free to use any or all of it under the terms of [0BSD](https://opensource.org/licenses/0BSD), except for any files/folders which have their own license included or are attributed to another author.
