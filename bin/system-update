@@ -55,7 +55,7 @@ printf '%s\n' ""
 printf '%s\n' "Do you want to continue? [Y/n]"
 read yn
 case "$yn" in
-  [Yy]) ;;
+  [Yy]|'') ;;
   *) exit 0 ;;
 esac
 
