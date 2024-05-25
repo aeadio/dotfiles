@@ -10,7 +10,12 @@ get-selection | read -r selection
 
 zle delete-selection -w
 
-zle fzf-tab-complete -w
+if (( $+functions[fzf-tab-complete] )); then
+  zle fzf-tab-complete -w
+else
+  zle expand-or-complete -w
+fi
+
 if (( $? == 1 )); then
   zle -K main
   return
