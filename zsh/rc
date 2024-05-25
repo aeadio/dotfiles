@@ -38,7 +38,15 @@ case $ZSH_DEBUG in
 esac
 if (( ZSHRC_PROFILE )) zmodload zsh/zprof
 
-# Plugins
+# Helper functions
+has() {
+  (( $+commands[$1] ))
+}
+
+isgnu() {
+  has $1 && [[ $($1 --version 2>/dev/null) =~ GNU ]]
+}
+
 # Plain files in zsh/plugins/ are first-party plugins -- mine.
 # Third-party plugins are installed as directories under zsh/vendor.
 load-plugin() {
@@ -62,6 +70,11 @@ load-plugin() {
   fi
   
   return 1
+}
+
+load-widget() {
+  autoload -U $1 &&
+  zle -N ${2:-$1} $1
 }
 
 # pre.d
