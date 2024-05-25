@@ -7,7 +7,7 @@
 # - env.d     static exports for all shells, including non-interactive
 # - functions utility functions for the user, auto-loaded on demand
 # - widgets   functions which modify Zsh's input editor (see also: rc.d/zle)
-# - plugins.d bundles of self-contained functionality
+# - plugins   bundles of self-contained functionality
 # - include   non-rc config files for sub utilities
 # - vendor    third party plugins/components explicitly loaded elsewhere
 
