@@ -69,7 +69,6 @@ bindkey '^A'      after-first-word
 bindkey '^E'      edit-command-line
 bindkey '^F'      fzf-history
 bindkey '^H'      navigate-gitroot-or-home
-bindkey '^I'      fzf-tab-complete                   # tab
 bindkey '^K'      copy-to-clipboard
 bindkey '^L'      fzf-select-files
 bindkey '^N'      push-line-and-mkdir
@@ -78,12 +77,19 @@ bindkey '^P'      smart-push-line
 bindkey '^R'      run-elevated
 bindkey '^S'      spell-word
 bindkey '^T'      tetris
-bindkey '^U'      autosuggest-toggle
 bindkey '^V'      paste-from-clipboard
 bindkey '^W'      quote-line
 bindkey '^Y'      redo
 bindkey '^X'      cut-to-clipboard
 bindkey '^Z'      undo
+
+# Plugin-dependent
+(( $+functions[fzf-tab-complete] )) &&
+  bindkey '^I'      fzf-tab-complete   ||            # tab
+  bindkey '^I'      expand-or-complete               # tab
+
+(( $+functions[autosuggest-toggle] )) &&
+  bindkey '^U'      autosuggest-toggle
 
 # Perform history expansion during normal editing flow
 bindkey ' '       magic-space

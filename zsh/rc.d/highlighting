@@ -1,3 +1,4 @@
 # vim: ft=sh ts=2 sw=2 et:
 
-fast-theme $ZSH/include/highlight-theme.ini &>/dev/null
+(( $+functions[fast-theme] )) &&
+  fast-theme $ZSH/include/highlight-theme.ini &>/dev/null

@@ -2,4 +2,6 @@
 
 # Manually rebind zsh-autosuggestions widgets since we may have munged them in
 # rc.d/zle.
-_zsh_autosuggest_bind_widgets
+if (( $+functions[_zsh_autosuggest_bind_widgets] )); then
+  _zsh_autosuggest_bind_widgets
+fi
