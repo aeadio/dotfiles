@@ -29,42 +29,49 @@ fail() {
 # Determine if there are available updates
 updates="$(xbps-install -Sun)" ||
   fail "Unable to determine available system updates."
-count="$(printf '%s\n' "$updates" | wc -l)"
+count="$(printf '%s' "$updates" | wc -l)"
 if [ "$count" -eq 0 ]; then
   printf '%s\n' "Up to date."
   exit 0
 fi
 
-printf '%s\n' "$count updates available"
-printf '%s\n' ""
-printf '%s\n' "$updates" |
-  while read -r pkg action arch mirror instsize dlsize; do
-    newver="${pkg##*-}"
-    pkg="${pkg%-*}"
-    ver="$(xbps-query "$pkg" | sed -n 's/^pkgver: .*-\([[:alnum:]_.]*\)$/\1/p')"
-    dlsize="$(numfmt --to=iec "${dlsize:-$instsize}")B"
-    printf '%s %s %s %s %s\n' "$pkg" "$action" "$ver" "$newver" "$dlsize"
-  done |
-  column -t -N "Name,Action,Version,New version,Download size"
-
-# Size to download: 
-# Size required on disk: 
-# Space available on disk: 
-
-printf '%s\n' ""
-printf '%s\n' "Do you want to continue? [Y/n]"
-read yn
-case "$yn" in
-  [Yy]|'') ;;
-  *) exit 0 ;;
-esac
+if [ ! "$yes" ]; then
+  printf '%s\n' "$count updates available"
+  printf '%s\n' ""
+  printf '%s\n' "$updates" |
+    while read -r pkg action arch mirror instsize dlsize; do
+      newver="${pkg##*-}"
+      pkg="${pkg%-*}"
+      ver="$(xbps-query "$pkg" | sed -n 's/^pkgver: .*-\([[:alnum:]_.]*\)$/\1/p')"
+      dlsize="$(numfmt --to=iec "${dlsize:-$instsize}")B"
+      printf '%s %s %s %s %s\n' "$pkg" "$action" "$ver" "$newver" "$dlsize"
+    done |
+    column -t -N "Name,Action,Version,New version,Download size"
+  
+  # Size to download: 
+  # Size required on disk: 
+  # Space available on disk: 
+  
+  printf '%s\n' ""
+  printf '%s '  "Do you want to continue? [Y/n]"
+  read yn
+  case "$yn" in
+    [Yy]|'')
+      # continue
+      ;;
+    *)
+      printf '%s\n' "Aborting!"
+      exit 0 
+      ;;
+  esac
+fi
 
 # Snapshot the zroot
 system-snapshot -p "update" ||
   fail "Could not snapshot root filesystem prior to update."
 
 # Install updates
-xbps-install -u ${yes:+-y} ||
+xbps-install -uy ||
   fail "Failed to apply updates."
 
 # Post-update cleanup
