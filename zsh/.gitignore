@@ -4,7 +4,7 @@
 /history
 
 # Machine-specific
-/env.d/hosts
+/env.d/local
 /env.d/private
 /env.d/work
 /rc.d/work

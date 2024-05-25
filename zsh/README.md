@@ -2,9 +2,8 @@
 
 - `env.d`: Static environment exports. Variables that need to be available to third party applications. This is the only portion that is sourced always, including in non-interactive script shells. Bootstrapped by the file `env`.
 - `pre.d`: Early initialization, such as loading compinit, prior to other configuration. Files are loaded in explicit alphanumeric order.
-- `plugins.d`: Self-contained feature packages.
-  - First-party plugins (mine) are installed as single files directly under `plugins.d/`.
-  - Third-party plugins are installed as folders underneath `plugins.d/`. They are loaded if they contain a `.plugin.zsh` file. These are always loaded if present, even if not marked executable. Most of these are installed as Git submodules.
+- `plugins`: First-party plugins (mine).
+  - Third-party plugins are installed undernearth `vendor`.
 - `functions`: Utility functions used by the user, or by other portions of the configuration. These are [autoloaded](https://zsh.sourceforge.io/Doc/Release/Functions.html#Autoloading-Functions) as needed.
 - `widgets`: Functions to be used as [ZLE widgets](https://zsh.sourceforge.io/Doc/Release/Zsh-Line-Editor.html#User_002dDefined-Widgets). These are autoloaded, and automatically initialized as ZLE widgets.
 - `rc.d`: Primary Zsh configuration. Sets shell options, aliases, decorates the prompt, etc.
@@ -110,10 +109,6 @@ If `fswatch` is installed, variables are instead sourced immediately in other sh
 #### `plugins/project-history`
 
 When entering a Git repo (sub)directory, pivots the shell's history to one that is local to the Git project (via `<gitroot>/.history.user` histfile). This works fairly well as-is, but I'm investigating replacing this with a SQLite-backed global history mechanism instead, which would track (in addition to other useful things), which Git repo the command was invoked in, so that `widgets/fzf-history` can expose keybinds for swapping between global and per-project history search on the fly.
-
-#### `functions/zp-*`
-
-Small helper functions to faciliate installing and removing third-party Zsh plugins as Git submodules. Of note is `zp-try`, which clones the plugin(s) to a temporary folder, and starts up a new Zsh shell where they can be demoed. This relies on `bin/zshi`.
 
 #### `rc.d/zle` & `widgets/*`
 

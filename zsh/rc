@@ -38,6 +38,32 @@ case $ZSH_DEBUG in
 esac
 if (( ZSHRC_PROFILE )) zmodload zsh/zprof
 
+# Plugins
+# Plain files in zsh/plugins/ are first-party plugins -- mine.
+# Third-party plugins are installed as directories under zsh/vendor.
+load-plugin() {
+  local p=$1
+  if [[ ! -e $p ]]; then
+    p=$ZSH/$1
+  fi
+  
+  if [[ -f $p:A ]]; then
+    # First-party plugins are built as single files
+    source $p
+    return 0
+  fi
+  
+  if [[ -d $p && -f ${${:-$p/${p:t}.plugin.zsh}:A}  ]]; then
+    # Standard format for third-party plugins: foo/foo.plugin.zsh
+    # https://zplugin.readthedocs.io/en/latest/zsh-plugin-standard/
+    fpath=($p $fpath)
+    source $p/${p:t}.plugin.zsh
+    return 0
+  fi
+  
+  return 1
+}
+
 # pre.d
 zshrc:load-pre.d() {
   local f name REPLY
@@ -52,28 +78,6 @@ zshrc:load-pre.d() {
 }
 zshrc:load-pre.d
 unfunction zshrc:load-pre.d
-
-# Plugins
-# Plain (executable) files in zsh/plugins/ are first-party plugins -- mine.
-# Directories are third-party plugins (if they contain a .plugin.zsh file).
-# See zsh/functions/zp* for installation helper.
-zshrc:load-plugins() {
-  local f name REPLY
-  local plugins=(
-    $ZSH/plugins.d/*(-.e:'[[ -x $REPLY ]]':onN)
-    $ZSH/plugins.d/*/*.plugin.zsh(-.onN)
-  )
-  for f in $plugins; do
-    name=${f:t}
-    zshrc:load-plugins:$name() {
-      source $f
-    }
-    zshrc:load-plugins:$name
-    unfunction zshrc:load-plugins:$name
-  done
-}
-zshrc:load-plugins
-unfunction zshrc:load-plugins
 
 # User functions & ZLE widgets
 # zsh/functions/* and zsh/widgets/* are autoloaded only if marked executable
