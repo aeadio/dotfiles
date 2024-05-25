@@ -36,9 +36,8 @@ for p in "$@"; do
 done
 
 zshi '
-for f in "'$tmpdir'"/*/*.plugin.zsh(-.N); do
-  emulate -L zsh
-  . $f
+for f in "'$tmpdir'"/*; do
+  load-plugin $f
 done
 PS1="'$'\n''[demo: '${(pj:, :)plugins}']'$'\n''${PS1#'"$'\n'"'}"
 '

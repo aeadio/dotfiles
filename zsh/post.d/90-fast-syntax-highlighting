@@ -2,4 +2,9 @@
 
 # Should load after all other ZLE manipulations, so that it can properly 
 # highlight, eg, custom widgets.
-source $ZSH/vendor/fast-syntax-highlighting/fast-syntax-highlighting.plugin.zsh
+if (( ! $+ZSHRC_LITE )); then
+  # Heavyweight plugins which may cripple performance on small devices like
+  # older generation Rasp Pis, particularly weak VPS boxes, etc.
+  # This should be set in env.d/local.
+  load-plugin vendor/fast-syntax-highlighting
+fi

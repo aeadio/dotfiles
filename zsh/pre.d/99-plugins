@@ -1,0 +1,23 @@
+# vim: ft=sh ts=2 sw=2 et:
+
+# Load plugins before rc.d, so that functionality is available if rc.d/* wishes 
+# to leverage it.
+
+# First-party
+load-plugin plugins/bad-input
+load-plugin plugins/bufstack
+load-plugin plugins/dynenv
+load-plugin plugins/exit-status
+load-plugin plugins/project-history
+load-plugin plugins/restore-buffer
+
+# Third-party
+load-plugin vendor/zsh-completions
+
+if (( ! $+ZSHRC_LITE )); then
+  # Heavyweight plugins which may cripple performance on small devices like
+  # older generation Rasp Pis, particularly weak VPS boxes, etc.
+  # This should be set in env.d/local.
+  load-plugin vendor/fzf-tab
+  load-plugin vendor/zsh-autosuggestions
+fi
