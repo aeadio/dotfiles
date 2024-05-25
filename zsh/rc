@@ -64,7 +64,7 @@ load-plugin() {
   if [[ -d $p && -f ${${:-$p/${p:t}.plugin.zsh}:A}  ]]; then
     # Standard format for third-party plugins: foo/foo.plugin.zsh
     # https://zplugin.readthedocs.io/en/latest/zsh-plugin-standard/
-    fpath=($p $fpath)
+    #fpath=($p $fpath)
     source $p/${p:t}.plugin.zsh
     return 0
   fi
