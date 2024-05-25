@@ -1,16 +1,12 @@
 # vim: ft=sh ts=2 sw=2 et:
 
-# Vendor-provided widgets
-load-widget() {
-  autoload -U $1 &&
-  zle -N ${2:-$1} $1
-} &> /dev/null
-
-load-widget edit-command-line
-load-widget modify-current-argument
-load-widget run-help
-load-widget tetris
-load-widget transpose-words-match transpose-words
+{
+  load-widget edit-command-line
+  load-widget modify-current-argument
+  load-widget run-help
+  load-widget tetris
+  load-widget transpose-words-match transpose-words
+} &>/dev/null
 
 # Primary binding set
 bindkey -N mine
