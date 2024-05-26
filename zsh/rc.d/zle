@@ -69,6 +69,7 @@ bindkey '^A'      after-first-word
 bindkey '^E'      edit-command-line
 bindkey '^F'      fzf-history
 bindkey '^H'      navigate-gitroot-or-home
+bindkey '^I'      tab-complete                       # tab
 bindkey '^K'      copy-to-clipboard
 bindkey '^L'      fzf-select-files
 bindkey '^N'      push-line-and-mkdir
@@ -84,10 +85,6 @@ bindkey '^X'      cut-to-clipboard
 bindkey '^Z'      undo
 
 # Plugin-dependent
-(( $+functions[fzf-tab-complete] )) &&
-  bindkey '^I'      fzf-tab-complete   ||            # tab
-  bindkey '^I'      expand-or-complete               # tab
-
 (( $+functions[autosuggest-toggle] )) &&
   bindkey '^U'      autosuggest-toggle
 

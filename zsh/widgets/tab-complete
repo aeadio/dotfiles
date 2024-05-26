@@ -1,0 +1,17 @@
+# vim: ft=zsh ts=2 sw=2 et:
+
+emulate -L zsh -o prompt_subst
+
+local ret
+
+if (( $+commands[fzf] && $+functions[fzf-tab-complete] )); then
+  zle fzf-tab-complete -w
+  ret=$?
+  # If we cancel out of the fzf-tab instance, it strips the input buffer of
+  # syntax highlighting, so try and re-eval.
+  (( $+functions[force-fsyh] )) &&
+    force-fsyh
+  return $ret
+fi
+
+zle expand-or-complete -w
