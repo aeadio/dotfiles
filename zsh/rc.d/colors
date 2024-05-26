@@ -49,6 +49,9 @@
   )
   typeset -gx LS_COLORS=${(kj,:,)lscolors/(#m)*/$MATCH=$lscolors[$MATCH]}
   
+  # Utilize LS_COLORS in tab completion widget (fzf-tab)
+  zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
+  
   local -A ezacolors=(
     # permissions
     [ur]="$default"                                    # owner read
