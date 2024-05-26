@@ -1,8 +1,11 @@
 # vim: ft=sh ts=2 sw=2 et:
 
+# Load third-party completions
+load-plugin vendor/zsh-completions
+
 # Add zsh-completions if it exists
 typeset -g fpath=(
-  $ZSH/plugins/zsh-completions/src(N)
+  $ZSH/vendor/zsh-completions/src(N)
   /opt/homebrew/share/zsh/site-functions(N)
   $fpath
 )
