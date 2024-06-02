@@ -8,12 +8,11 @@
           - awscli
           - bash
           - bat
-          - circleci
           - clac
           - coreutils
           - dash
-          - eza
           - exiftool
+          - eza
           - fd
           - ffmpeg
           - ffmpegthumbnailer
@@ -53,7 +52,6 @@
           - sqlite3
           - telnet
           - terraform
-          - tig
           - w3m
           - watch
           - wget

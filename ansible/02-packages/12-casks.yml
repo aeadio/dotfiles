@@ -4,6 +4,7 @@
     - community.general.homebrew_cask:
         cask:
           - 1password
+          - alacritty
           - alfred4
           - app-tamer
           - appcleaner
@@ -18,10 +19,12 @@
           - karabiner-elements
           - keycastr
           - linearmouse
+          - mullvadvpn
           - onyx
           - rar
           - secretive
           - slack
+          - switchresx
           - the-unarchiver
           - visual-studio-code
           - vivaldi
