@@ -52,6 +52,12 @@
 			<key>InputSourceKind</key>
 			<string>Input Mode</string>
 		</dict>
+		<dict>
+			<key>Bundle ID</key>
+			<string>com.apple.inputmethod.EmojiFunctionRowItem</string>
+			<key>InputSourceKind</key>
+			<string>Non Keyboard Input Method</string>
+		</dict>
 	</array>
 	<key>AppleFnUsageType</key>
 	<integer>3</integer>
@@ -82,6 +88,8 @@
 			<string>Input Mode</string>
 		</dict>
 	</array>
+	<key>AppleInputSourceUpdateTime</key>
+	<date>2024-06-02T17:13:50Z</date>
 	<key>AppleSelectedInputSources</key>
 	<array>
 		<dict>
@@ -97,6 +105,12 @@
 			<integer>0</integer>
 			<key>KeyboardLayout Name</key>
 			<string>U.S.</string>
+		</dict>
+		<dict>
+			<key>Bundle ID</key>
+			<string>com.apple.inputmethod.EmojiFunctionRowItem</string>
+			<key>InputSourceKind</key>
+			<string>Non Keyboard Input Method</string>
 		</dict>
 	</array>
 </dict>
