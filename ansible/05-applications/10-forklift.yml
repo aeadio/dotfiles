@@ -1,0 +1,12 @@
+- name: 'Configure Keycastr'
+  hosts: 'localhost'
+  vars:
+    settings:
+      # Make Forklift the default file manager system-wide
+      - { key: 'NSFileViewer', value: 'com.binarynights.ForkLift' }
+  tasks:
+    - include_role: 
+        name: ../roles/macos-defaults
+      loop: "{{ settings }}"
+    - ansible.builtin.command: |
+        defaults write com.apple.LaunchServices/com.apple.launchservices.secure LSHandlers -array-add '{LSHandlerContentType="public.folder";LSHandlerRoleAll="com.binarynights.ForkLift";}'
