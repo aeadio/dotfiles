@@ -121,3 +121,7 @@ for app in ${(k)float};
 
 for app in ${(k)sticky};
   yabai -m rule --add app=$app ${sticky[$app]:+title=$sticky[$app]} sticky=on label="sticky:$app"
+
+# Since 7.0, rules are not applied on existing windows. Apply immediately on 
+# any window that existed on startup/restart.
+yabai -m rule --apply

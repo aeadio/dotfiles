@@ -26,6 +26,7 @@ add_floating_rule() {
     label="float:$app:$title" ||
     label="float:$app"
   yabai -m rule --add label=$label app='^'$app'$' ${title:+title='^'$title'$'} manage=off
+  yabai -m rule --apply $label
 }
 
 del_floating_rule() {
