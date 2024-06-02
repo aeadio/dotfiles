@@ -13,12 +13,6 @@ ralt + rcmd + rctrl + rshift + lshift - down      : yabai-move-window south
 ralt + rcmd + rctrl + rshift + lshift - up        : yabai-move-window north
 ralt + rcmd + rctrl + rshift + lshift - right     : yabai-move-window east
 
-ralt + rcmd + rctrl + rshift + lalt   - left      : yabai -m window --insert west
-ralt + rcmd + rctrl + rshift + lalt   - down      : yabai -m window --insert south
-ralt + rcmd + rctrl + rshift + lalt   - up        : yabai -m window --insert north
-ralt + rcmd + rctrl + rshift + lalt   - right     : yabai -m window --insert east
-ralt + rcmd + rctrl + rshift          - tab       : yabai -m window --insert stack
-
 ralt + rcmd + rctrl + rshift + lshift - 1         : yabai -m window --space 1
 ralt + rcmd + rctrl + rshift + lshift - 2         : yabai -m window --space 2
 ralt + rcmd + rctrl + rshift + lshift - 3         : yabai -m window --space 3
@@ -30,20 +24,24 @@ ralt + rcmd + rctrl + rshift + lshift - 8         : yabai -m window --space 8
 ralt + rcmd + rctrl + rshift + lshift - 9         : yabai -m window --space 9
 ralt + rcmd + rctrl + rshift + lshift - 0         : yabai -m window --space 10
 
+ralt + rcmd + rctrl + rshift          - tab       : yabai-float
+ralt + rcmd + rctrl + rshift + lshift - tab       : yabai -m window --toggle float
+ralt + rcmd + rctrl + rshift          - s         : yabai -m window --toggle sticky
+ralt + rcmd + rctrl + rshift          - t         : yabai -m window --toggle topmost
+ralt + rcmd + rctrl + rshift          - a         : yabai -m window --toggle split
+
+ralt + rcmd + rctrl + rshift          - w         : yabai-smart-close
+
+# Layout
 ralt + rcmd + rctrl + rshift          - 0x21      : yabai -m window --ratio abs:0.7
 ralt + rcmd + rctrl + rshift          - 0x1E      : yabai -m window --ratio abs:0.3
 ralt + rcmd + rctrl + rshift          - 0x2A      : yabai -m space --balance y-axis
 ralt + rcmd + rctrl + rshift + lshift - 0x2A      : yabai -m space --balance x-axis
 
-ralt + rcmd + rctrl + rshift          - f         : yabai-float
-ralt + rcmd + rctrl + rshift + lshift - f         : yabai -m window --toggle float
-ralt + rcmd + rctrl + rshift          - s         : yabai -m window --toggle sticky
-ralt + rcmd + rctrl + rshift          - t         : yabai -m window --toggle topmost
-ralt + rcmd + rctrl + rshift          - r         : yabai -m window --toggle split
+# Settings toggles
+ralt + rcmd + rctrl + rshift          - o         : yabai -m config window_opacity ${${${$(yabai -m config window_opacity):#on}:/off/on}:-off}
 
-ralt + rcmd + rctrl + rshift          - w         : yabai-smart-close
-
-# Yabai control
+# Service control
 ralt + rcmd + rctrl + rshift          - f4        : skhd --restart-service
 ralt + rcmd + rctrl + rshift          - f5        : yabai --restart-service
 ralt + rcmd + rctrl + rshift          - f6        : yabai --stop-service
@@ -51,9 +49,6 @@ ralt + rcmd + rctrl + rshift          - f7        : yabai --start-service
 
 # Machine control
 ralt + rcmd + rctrl + rshift          - l         : pmset displaysleepnow
-
-# Settins toggles
-ralt + rcmd + rctrl + rshift          - o         : yabai -m config window_opacity ${${${$(yabai -m config window_opacity):#on}:/off/on}:-off}
 
 # Launch apps
 ralt + rcmd + rctrl + rshift          - z         : open -gna /Applications/Vivaldi.app
