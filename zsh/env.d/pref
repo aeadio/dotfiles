@@ -12,8 +12,8 @@ typeset -gx TERMINAL='iterm2'
 
 # App exports
 # Per-app configuration overrides
+typeset -gx HIGHLIGHT_STYLE='nord'
 typeset -gx LESSHISTFILE='-'
-
 typeset -gx MOAR='-style nord -statusbar plain -no-clear-on-exit'
 
 case $OSTYPE in
