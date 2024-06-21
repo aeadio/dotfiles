@@ -58,7 +58,7 @@ load-plugin() {
   if [[ -f $p:A ]]; then
     # First-party plugins are built as single files
     source $p
-    return 0
+    return $?
   fi
   
   if [[ -d $p && -f ${${:-$p/${p:t}.plugin.zsh}:A}  ]]; then
@@ -66,7 +66,7 @@ load-plugin() {
     # https://zplugin.readthedocs.io/en/latest/zsh-plugin-standard/
     #fpath=($p $fpath)
     source $p/${p:t}.plugin.zsh
-    return 0
+    return $?
   fi
   
   return 1
