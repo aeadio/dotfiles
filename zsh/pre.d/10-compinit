@@ -1,0 +1,26 @@
+# vim: ft=sh ts=2 sw=2 et:
+
+# Load third-party completions
+load-plugin vendor/zsh-completions
+
+# Add zsh-completions if it exists
+typeset -g fpath=(
+  $ZSH/vendor/zsh-completions/src(N)
+  /opt/homebrew/share/zsh/site-functions(N)
+  $fpath
+)
+
+autoload -Uz compinit
+
+() {
+  setopt localoptions extended_glob
+  local zcompfile=${ZCOMPDUMP:-$ZSH/compdump}
+  # NOTE: compinit's auto check always runs compaudit, which is pretty hefty
+  # in startup time. So elide that, and use a basic daily recycle check.
+  if [[ -f $zcompfile && -n $zcompfile(#qNm+1) ]]; then
+    rm -f $zcompfile $zcompfile.zwc
+  fi
+  
+  autoload -Uz compinit &&
+  compinit -u -d $zcompfile -C
+}
