@@ -8,6 +8,7 @@ Thumbs.db
 /aws
 /aws-sam
 /circleci
+/deluge
 /docker
 /gh
 /kube
@@ -15,6 +16,7 @@ Thumbs.db
 /msmtp
 /op
 /packer
+/pipewire
 /pulse
 /terraform
 /transmission*
