@@ -1,0 +1,56 @@
+{
+	"floating": "auto_off",
+	"layout": "splitv",
+	"percent": 0.25,
+	"type": "con",
+	"nodes": [
+		{
+			"floating": "auto_off",
+			"percent": 1,
+			"swallows": [
+				{
+					"class": "^alacritty$",
+					"instance": "^ranger$"
+				}
+			],
+			"type": "con"
+		}
+	]
+}
+
+{
+	"floating": "auto_off",
+	"layout": "tabbed",
+	"percent": 0.5,
+	"type": "con",
+	"nodes": [
+		{
+			"floating": "auto_off",
+			"percent": 1,
+			"swallows": [
+				{ "class": "^Typora$" }
+			],
+			"type": "con"
+		}
+	]
+}
+
+{
+	"floating": "auto_off",
+	"layout": "splitv",
+	"percent": 0.25,
+	"type": "con",
+	"nodes": [
+		{
+			"floating": "auto_off",
+			"percent": 1,
+			"swallows": [
+				{
+					"class": "^alacritty$",
+					"instance": "^alacritty$"
+				}
+			],
+			"type": "con"
+		}
+	]
+}
