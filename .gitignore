@@ -21,7 +21,6 @@ Thumbs.db
 /vscode
 
 # Uninteresting stuff
-/cef_user_data
 /Electron
 /fontforge
 /ibus
