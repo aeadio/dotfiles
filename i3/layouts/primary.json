@@ -23,36 +23,60 @@
 	"nodes": [
 		{
 			"floating": "auto_off",
+			"layout": "tabbed",
 			"percent": 0.333333333333333,
-			"swallows": [
+			"type": "con",
+			"nodes": [
 				{
-					"class": "^alacritty$",
-					"instance": "^htop$"
+					"floating": "auto_off",
+					"percent": 1,
+					"swallows": [
+						{
+							"class": "^alacritty$",
+							"instance": "^htop$"
+						}
+					],
+					"type": "con"
 				}
-			],
-			"type": "con"
+			]
 		},
 		{
 			"floating": "auto_off",
+			"layout": "tabbed",
 			"percent": 0.333333333333333,
-			"swallows": [
+			"type": "con",
+			"nodes": [
 				{
-					"class": "^alacritty$",
-					"instance": "^ranger$"
+					"floating": "auto_off",
+					"percent": 1,
+					"swallows": [
+						{
+							"class": "^alacritty$",
+							"instance": "^ranger$"
+						}
+					],
+					"type": "con"
 				}
-			],
-			"type": "con"
+			]
 		},
 		{
 			"floating": "auto_off",
+			"layout": "tabbed",
 			"percent": 0.333333333333333,
-			"swallows": [
+			"type": "con",
+			"nodes": [
 				{
-					"class": "^alacritty$",
-					"instance": "^alacritty$"
+					"floating": "auto_off",
+					"percent": 1,
+					"swallows": [
+						{
+							"class": "^alacritty$",
+							"instance": "^alacritty$"
+						}
+					],
+					"type": "con"
 				}
-			],
-			"type": "con"
+			]
 		}
 	]
 }
