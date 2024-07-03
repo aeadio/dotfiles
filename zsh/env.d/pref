@@ -8,31 +8,18 @@ typeset -gx TERMINAL="$XDG_CONFIG_HOME/bin/terminal"
 typeset -gx VISUAL='micro'
 typeset -gx EDITOR=$VISUAL
 typeset -gx PAGER='moar'
+typeset -gx BROWSER='vivaldi-stable'
 
 # App exports
 # Per-app configuration overrides
 typeset -gx LESSHISTFILE='-'
-
 typeset -gx MOAR='-style nord -statusbar plain -no-clear-on-exit'
-
-case $OSTYPE in
-  linux*|*bsd*)
-    typeset -gx TERMINAL='alacritty'
-    typeset -gx GEDITOR='code-oss'  # Used in ranger's rifle.conf
-    typeset -gx BROWSER="vivaldi-stable"
-    typeset -gx QT_STYLE_OVERRIDE="GTK+"
-    typeset -gx QT_QPA_PLATFORMTHEME="gtk2"
-    typeset -gx FREETYPE_PROPERTIES='
-      truetype:interpreter-version=40
-      cff:no-stem-darkening=0
-      cff:hinting-engine=adobe
-      autofitter:no-stem-darkening=0'
-    typeset -gx CHROME_FLAGS="--enable-features=VaapiVideoDecoder"
-    typeset -gx WINEARCH="win64"
-    ;;
-  darwin*)
-    typeset -gx TERMINAL='iterm2'
-    typeset -gx GEDITOR='code'  # Used in ranger's rifle.conf
-    typeset -gx HOMEBREW_CASK_OPTS='--no-quarantine'
-    ;;
-esac
+typeset -gx CHROME_FLAGS='--enable-features=VaapiVideoDecoder'
+typeset -gx QT_STYLE_OVERRIDE='GTK+'
+typeset -gx QT_QPA_PLATFORMTHEME='gtk2'
+typeset -gx WINEARCH='win64'
+typeset -gx FREETYPE_PROPERTIES='
+  truetype:interpreter-version=40
+  cff:no-stem-darkening=0
+  cff:hinting-engine=adobe
+  autofitter:no-stem-darkening=0'

@@ -3,22 +3,15 @@
 # Clipboard interface
 () {
   emulate -L zsh -o multifuncdef
-  case $OSTYPE in
-    darwin*)
-      native-copy() pbcopy
-      paste() pbpaste
-      ;;
-    linux*|*bsd*)
-      if (( $+WAYLAND_DISPLAY )) && has wl-copy; then
-        native-copy() wl-copy
-        paste() wl-paste
-      elif has xsel; then
-        native-copy() xsel -ib
-        paste() xsel -ob
-      elif has xclip; then
-        native-copy() xclip -in -selection clipboard
-        paste() xclip -out -selection clipboard
-      fi
-      ;;
-  esac
+  
+  if (( $+WAYLAND_DISPLAY )) && has wl-copy; then
+    native-copy() wl-copy
+    paste() wl-paste
+  elif has xsel; then
+    native-copy() xsel -ib
+    paste() xsel -ob
+  elif has xclip; then
+    native-copy() xclip -in -selection clipboard
+    paste() xclip -out -selection clipboard
+  fi
 }

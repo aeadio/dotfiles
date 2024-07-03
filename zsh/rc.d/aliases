@@ -51,44 +51,18 @@ alias c='copy'
 alias C='native-copy'
 alias p='paste'
 
-# platform specific
-case $OSTYPE in
-  darwin*)
-    # x86 aliases
-    () {
-      # Search for all alternative/pinned versions of Homebrew packages, and
-      # sets up <name><ver> aliases for each of that package's binaries.
-      # Eg, might create an alias named 'terraform0.11' pointing to the older
-      # version of the Terraform binary when installed.
-      local brew_prefixes=( /usr/local/Cellar(N) /opt/homebrew/Cellar(N) )
-      local prefix progpath ver binpaths bin
-      for prefix in $brew_prefixes; do
-        for progpath in $prefix/*@*(-/N); do
-          ver=${${progpath:t}##*@}
-          binpaths=( $progpath/*/bin(-/OnN) )
-          [[ -n $ver && -n $binpaths[1] ]] || continue
-          for bin in $binpaths[1]/*(-*N);
-            alias "${bin:t}$ver"=$bin
-        done
-      done
-    }
-    ;;
-    
-  linux*|*bsd*)
-    # Void tools
-    if has xbps-query; then
-      alias xr='xbps-remove -R'
-      alias xoo='xbps-remove -oO'
-      alias xqf='xbps-query -f'
-      alias xqx='xbps-query -x'
-      alias XQX='xbps-query -X'
-    fi
-    
-    if has vsv; then
-      alias s="vsv -d $HOME/sv"
-      alias S='vsv'
-    fi
-    
-    has vkpurge && alias vkp='vkpurge rm all'
-    ;;
-esac
+# distro specific
+if has xbps-query; then
+  alias xr='xbps-remove -R'
+  alias xoo='xbps-remove -oO'
+  alias xqf='xbps-query -f'
+  alias xqx='xbps-query -x'
+  alias XQX='xbps-query -X'
+fi
+
+if has vsv; then
+  alias s="vsv -d $HOME/sv"
+  alias S='vsv'
+fi
+
+has vkpurge && alias vkp='vkpurge rm all'
