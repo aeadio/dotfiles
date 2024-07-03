@@ -23,6 +23,10 @@ ts_is_active() {
   [[ "$(printf '%s\n' "$status" | jq -r '.BackendState')" == "Running" ]]
 }
 
+ts_get_id() {
+  /bin/tailscale status --json | jq -r '.CurrentTailnet.Name'
+}
+
 get_current_exit_node() {
   /bin/tailscale status --json |
     jq -r '.Peer[] | select(.ExitNode==true) | .HostName'
@@ -32,10 +36,11 @@ get_current_exit_node() {
 render() {
   if ts_is_active; then
     local exitnode=$(get_current_exit_node)
+    local id=$(ts_get_id)
     if [[ -n "$exitnode" ]]; then
-      printf '%s\n' "$(icon ${labels[connected]}) $(color ok "on") ($(color yellow "$exitnode"))"
+      printf '%s\n' "$(icon ${labels[connected]}) $(color ok "${id:-tailnet}") ($(color yellow "$exitnode"))"
     else
-      printf '%s\n' "$(icon ${labels[connected]}) $(color ok "on")"
+      printf '%s\n' "$(icon ${labels[connected]}) $(color ok "${id:-tailnet}")"
     fi
   else
     printf '%s\n' "$(icon ${labels[disconnected]}) $(color dim "off")"
