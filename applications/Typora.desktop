@@ -1,0 +1,6 @@
+[Desktop Entry]
+Name=Typora
+Exec=/opt/typora/Typora --disable-smooth-scrolling %U
+Terminal=false
+Type=Application
+StartupWMClass=Typora
