@@ -11,13 +11,19 @@
 }
 
 typeset -g path=(
+  # Scripts and personal projects
+  $HOME/[Pp]rojects/*/[Bb]in(N)
   $HOME/[Bb]in(N)
   ${~${GOPATH:+${(@s,:,)GOPATH}}/%//bin}(N)  # expand multiple gopath entries correctly, with /bin appended to each
-  /opt/homebrew/opt/coreutils/libexec/gnubin(N)
-  /usr/local/opt/coreutils/libexec/gnubin(N)
-  /opt/homebrew/*bin(N)
+  
+  # System-wide, manually managed
   /opt/bin(N)
-  /usr/local/bin(N)
+  /opt/*/bin(N)
+  
+  # System-wide, owned by system package manager
+  /usr/local/(|s)bin(N)
+  /usr/(|s)bin(N)
+  /(|s)bin(N)
   $path
 )
 typeset -g path=( ${(u)path} )  # (u) removes dups inherited from default $path
