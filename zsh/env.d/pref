@@ -4,6 +4,7 @@
 
 # Common exports
 # Standard variables used by many tools
+typeset -gx TERMINAL="$XDG_CONFIG_HOME/bin/terminal"
 typeset -gx VISUAL='micro'
 typeset -gx EDITOR=$VISUAL
 typeset -gx PAGER='moar'
