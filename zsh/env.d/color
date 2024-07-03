@@ -3,7 +3,7 @@
 # Check if our environment supports color, and notify the rest of our config &
 # other apps by setting the CLICOLOR convention.
 
-if (( $terminfo[colors] || $termcap[Co] || $+COLORTERM )) ||
+if (( $+terminfo[colors] || $+termcap[Co] || $+COLORTERM )) ||
   [[ $TERM == *color* ]]; then
   typeset -gx CLICOLOR=1
 fi
