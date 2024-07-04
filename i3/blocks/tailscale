@@ -15,8 +15,8 @@
 buttons=('menu-tailscale #c')
 
 declare -A labels
-labels[connected]=f132
-labels[disconnected]=f09c
+labels[connected]=f0c2
+labels[disconnected]=f0c2
 
 ts_is_active() {
   local status="$(/bin/tailscale status --json)" || return 1
