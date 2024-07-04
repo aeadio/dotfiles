@@ -4,10 +4,6 @@
 
 () {
   setopt localoptions no_case_match
-  # XXX: `locale charmap` is POSIX but its output is not standardized. Any
-  # platforms where this breaks?
-  if (( $+commands[locale] )); then
-    [[ -o multibyte && $(locale charmap) =~ utf.8 ]] &&
-      typeset -g UTF8=1
-  fi
+  [[ -o multibyte && ( $LANG =~ utf.8 || $(locale charmap) =~ utf.8 ) ]] &&
+    typeset -g UTF8=1
 }
