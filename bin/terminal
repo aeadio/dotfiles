@@ -7,15 +7,19 @@ float=
 # - Rightmost column contains 3 terminals vertically
 float_width=112
 float_height=32
+font_size=
 interactive=
 command=
 
 OPTIND=0
-while getopts "s:fie:" opt; do
+while getopts "s:F:fie:" opt; do
   case $opt in
     s)
       float_width=${OPTARG%x*}
       float_height=${OPTARG#*x}
+      ;;
+    F)
+      font_size="$OPTARG"
       ;;
     f)
       float=1
@@ -64,6 +68,7 @@ instance="${float:+floating/}${command:-alacritty}"
 
 alacritty \
   --class alacritty,"$instance" \
+  ${font_size:+-o font.size=$font_size}               \
   ${float:+-o window.dimensions.columns=$float_width} \
   ${float:+-o window.dimensions.lines=$float_height}  \
   "$@"

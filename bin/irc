@@ -1,7 +1,0 @@
-#!/bin/sh
-
-alacritty \
-  --title weechat \
-  --class alacritty,weechat \
-  --option font.size=14 \
-  -e weechat

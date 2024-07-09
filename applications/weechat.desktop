@@ -1,0 +1,6 @@
+[Desktop Entry]
+Name=Weechat
+Exec=/home/ant/bin/terminal -F 14 weechat
+Terminal=false
+Type=Application
+StartupWMClass=weechat
