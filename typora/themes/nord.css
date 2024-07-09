@@ -842,3 +842,7 @@ input {
 .ty-sidebar-search-panel {
   border-bottom: none;
 }
+
+.ty-footer {
+  border-top: none !important;
+}
