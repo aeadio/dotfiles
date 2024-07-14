@@ -19,6 +19,6 @@
 
 # Start our runit instance
 # We start our window manager and other programs via services
-if [[ -d $HOME/sv ]] exec dbus-launch --exit-with-x11 runsvdir $HOME/sv
+if [[ -d $HOME/sv ]] exec dbus-run-session runsvdir $HOME/sv
 
 print "Nothing to do: ~/sv not found."
