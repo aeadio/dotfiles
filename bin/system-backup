@@ -2,8 +2,10 @@
 
 # Copied to /usr/local/bin to be whitelisted in doas.conf
 
+BACKUP_USER=zfs
 BACKUP_HOST=nexus
 BACKUP_POOL_NAME=backup
+SYNCOID_OPTS="--sshport 2022 --no-privilege-elevation"
 
 fail() {
   printf 'error: %s\n' "$1"
@@ -37,8 +39,8 @@ fi
 TZ=UTC syncoid --recursive                        \
   --sendoptions="wp" --recvoptions="u"            \
   --identifier="$BACKUP_POOL_NAME"                \
-  --no-privilege-elevation                        \
-  "$pool" "${BACKUP_HOST+$BACKUP_HOST:}$BACKUP_POOL_NAME/machine/$hostname"
+  $SYNCOID_OPTS                                   \
+  "$pool" "${BACKUP_HOST+${BACKUP_USER+$BACKUP_USER@}$BACKUP_HOST:}$BACKUP_POOL_NAME/machine/$hostname"
 
 if [ $? -eq 0 ]; then
   printf '%s\n' "Success."
