@@ -34,7 +34,7 @@ if ! get_local_zroot; then
   fail "Unable to detect system zroot pool"
 fi
 
-syncoid --recursive                               \
+TZ=UTC syncoid --recursive                        \
   --sendoptions="wp" --recvoptions="u"            \
   --identifier="$BACKUP_POOL_NAME"                \
   --no-privilege-elevation                        \
