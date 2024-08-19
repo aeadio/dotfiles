@@ -1,2 +1,5 @@
-/sec.conf
-/tls
+*
+!/.gitignore
+!/alias.conf
+!/buflist.conf
+!/weechat.conf
