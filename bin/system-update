@@ -29,7 +29,7 @@ fail() {
 # Determine if there are available updates
 updates="$(xbps-install -Sun)" ||
   fail "Unable to determine available system updates."
-count="$(printf '%s' "$updates" | wc -l)"
+count="$(printf '%s\n' "$updates" | wc -l)"
 if [ "$count" -eq 0 ]; then
   printf '%s\n' "Up to date."
   exit 0
