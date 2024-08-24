@@ -44,6 +44,7 @@
       - { key: 'AppleMeasurementUnits',                      value: 'Inches' }
       - { key: 'AppleMetricUnits',                           value: 0 }
       - { key: 'AppleTemperatureUnit',                       value: 'Fahrenheit' }
+      - { key: 'TSMLanguageIndicatorEnabled',                value: 0,               domain: 'kCFPreferencesAnyApplication' }
       # Keyboard
       - { key: 'InitialKeyRepeat',                           value: 15 }
       - { key: 'KeyRepeat',                                  value: 2 }
