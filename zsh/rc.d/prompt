@@ -22,7 +22,10 @@
   )
   
   # ?
-  local ps3=( 'prompt:caret "?"' )
+  local ps3=(
+    'prompt:caret "?"'
+    'print -n " "'
+  )
   
   # function:linenum @ file:linenum
   # → details
