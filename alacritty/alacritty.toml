@@ -102,7 +102,7 @@ multiplier = 3
 
 [window]
 dynamic_padding = true
-opacity = 0.88
+opacity = 0.98
 
 [window.padding]
 x = 6
