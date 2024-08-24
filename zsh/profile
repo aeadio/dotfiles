@@ -5,8 +5,24 @@
     linux*|*bsd*)
       # Start a graphical session if we're on a configured TTY
       if [[ $TTY != /dev/(tty1|ttyv0) ]] return
-      if (( $+commands[sway] ))   pgrep sway  &> /dev/null || exec sway --unsupported-gpu
-      if (( $+commands[startx] )) pgrep xinit &> /dev/null || exec startx
+      
+      # TODO: Interface with seat manager and support multiple seats?
+      pgrep sway  &> /dev/null && return
+      pgrep xinit &> /dev/null && return
+      
+      local targets=()
+      if (( $+commands[startx] )) targets+=(startx)
+      if (( $+commands[sway] ))   targets+=(sway)
+      
+      if (( $#targets == 1 )); then
+        exec $targets[1]
+      elif (( $#targets > 1 )); then
+        print "Choose a session:"
+        select target in $targets; do
+          exec $target
+          break
+        done
+      fi
       ;;
   esac
 }
