@@ -5,7 +5,7 @@
         cask:
           - 1password
           - alacritty
-          - alfred4
+          - alfred@4
           - app-tamer
           - appcleaner
           - cleanshot
