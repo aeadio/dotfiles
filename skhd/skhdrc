@@ -23,6 +23,8 @@ ralt + rcmd + rctrl + rshift + lshift - 7         : yabai -m window --space 7
 ralt + rcmd + rctrl + rshift + lshift - 8         : yabai -m window --space 8
 ralt + rcmd + rctrl + rshift + lshift - 9         : yabai -m window --space 9
 ralt + rcmd + rctrl + rshift + lshift - 0         : yabai -m window --space 10
+ralt + rcmd + rctrl + rshift + lshift - 0x1B      : yabai -m window --space 11
+ralt + rcmd + rctrl + rshift + lshift - 0x18      : yabai -m window --space 12
 
 ralt + rcmd + rctrl + rshift          - tab       : yabai-float
 ralt + rcmd + rctrl + rshift + lshift - tab       : yabai -m window --toggle float
