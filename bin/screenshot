@@ -1,0 +1,73 @@
+#!/bin/sh
+
+set -x
+
+format=png
+select=
+shadow=
+clipboard=
+hidecursor=1
+output="$HOME/pictures/screenshots"
+
+fail() {
+  printf '%s\n' "$1" >&2
+  exit 1
+}
+
+OPTIND=0
+while getopts "f:sScCo:" opt; do
+  case $opt in
+    f)
+      format="$OPTARG"
+      case "$format" in
+        png)  ;;
+        jpg)  ;;
+        bmp)  ;;
+        webp) ;;
+        *) fail "unrecognized output format: $format" ;;
+      esac
+      ;;
+    s)
+      if not command -v slop >/dev/null 2>/dev/null; then
+        fail 'window/area selection requires slop; not found in $PATH'
+      fi
+      select=1
+      ;;
+    S)
+      if not command -v convert >/dev/null 2>/dev/null; then
+        fail 'drop shadow requires imagemagick; convert not found in $PATH'
+      fi
+      shadow=1
+      ;;
+    c)
+      if not command -v xclip >/dev/null 2>/dev/null; then
+        printf '%s\n' 'warn: -c given but xclip not present in $PATH; clipboard will not be set'
+      fi
+      clipboard=1
+      ;;
+    C)
+      hidecursor=
+      ;;
+    o)
+      output="$OPTARG"
+      if [ ! -d "$output" ]; then
+        fail "cannot set output directory: $output"
+      fi
+      ;;
+  esac
+done
+shift $(( OPTIND - 1 ))
+
+filename=${1:-"$(date -u +%Y-%m-%dT%H%M%S)Z.$format"}
+
+maim -f "$format" ${hidecursor:+-u} ${select:+-s -b 1} ${shadow:+-t 9999999} |
+  if [ -n "$shadow" ]; then
+    convert - \( +clone -background black -shadow 80x10-1-1 \) +swap -background none -layers merge +repage -
+  else
+    cat
+  fi |
+  if [ -n "$clipboard" ]; then
+    tee "$output/$filename" | xclip -selection clipboard -t image/"$format"
+  else
+    cat > "$output/$filename"
+  fi
