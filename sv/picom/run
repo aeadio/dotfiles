@@ -3,5 +3,13 @@
 : ${HOME:="$(eval print "~$(id -un)")"}
 : ${XDG_CONFIG_HOME:="$HOME"/.config}
 
+hostname="$(uname -n)"
+config_path="$XDG_CONFIG_HOME/picom/host/$hostname.conf"
+if [ ! -e "$config_path" ]; then
+  # If we don't have a machine-specific config, let picom start up with its
+  # default config.
+  config_path=
+fi
+
 exec 2>&1
-exec picom --config "$XDG_CONFIG_HOME/picom/picom.conf"
+exec picom ${config_path:+--config "$config_path"}
