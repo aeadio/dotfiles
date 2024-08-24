@@ -5,20 +5,15 @@
 emulate -L zsh
 
 local -A opts
-zparseopts -A opts -D d -dash s -short
+zparseopts -A opts -D s -short
 
-local dashes short
-(( $+opts[-d] || $+opts[--dash]  )) && dashes=1
-(( $+opts[-s] || $+opts[--short] )) && short=1
+local short
+(( $+opts[-s] || $+opts[--short]    )) && short=1
 
 local fmt=('%Y-%m-%d')
 
 if (( ! short )); then
-  fmt+=('T')
-  (( dashes )) &&
-    fmt+=('%02H-%02M-%02S') ||
-    fmt+=('%02H:%02M:%02S')
-  fmt+=('Z')
+  fmt+=('T%02H%02M%02SZ')
 fi
 
 date -u +${(j::)fmt}
