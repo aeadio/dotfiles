@@ -1,6 +1,6 @@
 #!/bin/sh
 
-float=
+float=1
 # This is roughly the size of a terminal in our standard desktop configuration:
 # - 4K screen
 # - Screen divided into 4 columns (with i3 gaps)
@@ -12,7 +12,7 @@ interactive=
 command=
 
 OPTIND=0
-while getopts "s:F:fie:" opt; do
+while getopts "s:F:ftie:" opt; do
   case $opt in
     s)
       float_width=${OPTARG%x*}
@@ -22,7 +22,11 @@ while getopts "s:F:fie:" opt; do
       font_size="$OPTARG"
       ;;
     f)
+      # For backward compat.
       float=1
+      ;;
+    t)
+      float=
       ;;
     i)
       interactive=1
