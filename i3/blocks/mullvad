@@ -1,0 +1,36 @@
+#!/usr/bin/env bash
+
+. blocks/common
+
+declare -A icons
+icons[connected]=f132
+icons[disconnected]=f09c
+
+try_mullvad() {
+  curl -m 2 -s https://am.i.mullvad.net/json |
+    jq -r -e 'if .mullvad_exit_ip then .city // .country else empty end'
+}
+
+render() {
+  local icon color label exitnode
+  exitnode="$(try_mullvad)"
+  if [[ $? -eq 0 ]]; then
+    icon=connected
+    color=ok
+    label="${exitnode:-connected}"
+  else
+    icon=disconnected
+    color=dim
+    label=none
+  fi
+  
+  printf '%s\n' "$(icon ${icons[$icon]}) $(color $color "$label")"
+}
+
+# If invoked immediately upon login, `ip monitor` is exhibiting extremely high
+# rates of events indefinitely, even if restarting the block would cause it to
+# cool down to a more reasonable level. For now, just delay starting up the
+# event listening. TODO: figure out wtf is going on.
+sleep 2
+
+listen <(ip monitor)
