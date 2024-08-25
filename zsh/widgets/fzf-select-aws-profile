@@ -1,0 +1,70 @@
+# vim: ft=zsh ts=2 sw=2 et:
+
+# Use fzf to select an AWS profile. If we are already typing a command, then
+# prefix that command with the chosen profile as an AWS_PROFILE parameter. 
+# Otherwise, (dyn)export the chosen profile into the environment.
+
+emulate -L zsh -o extended_glob
+
+if (( ! $+commands[fzf] )); then
+  return
+fi
+
+local profile=$(
+  sed -n 's/^\[profile \(.*\)\]$/\1/p' ~/.aws/config | fzf \
+    --layout=reverse \
+    --tiebreak=begin \
+    --height=~10     \
+    --no-info
+)
+
+# fzf munges the prompt, so we always need to redraw right after
+zle && zle reset-prompt
+
+if [[ -z $profile ]]; then
+  return
+fi
+
+if [[ -z $BUFFER || $BUFFER == [[:space:]]# ]]; then
+  if (( $+functions[dynexport] )); then
+    dynexport AWS_PROFILE=$profile
+  else
+    export AWS_PROFILE=$profile
+  fi
+  # The prompt (may) display the contents of AWS_PROFILE, so we should redraw.
+  zle && zle reset-prompt
+  return
+fi
+
+# If we have a non-empty buffer when the widget is invoked, then we want to 
+# insert an AWS_PROFILE= assignment as a prefix to the command being invoked.
+# 
+# Start by scanning the existing buffer to see if we already have AWS_PROFILE= 
+# assignments prepending the command, and strip them out.
+local newbuffer newcursor
+
+for word in ${(z)BUFFER}; do
+  if [[ $word == [[:alnum:]_]##=* ]]; then
+    if [[ $word != AWS_PROFILE=* ]]; then
+      continue
+    fi
+    newbuffer=${BUFFER/${word}[[:space:]]#/}
+    newcursor=$(( CURSOR - (${#BUFFER} - ${#newbuffer}) ))
+    typeset -g BUFFER=$newbuffer
+    typeset -g CURSOR=$newcursor
+  elif [[ $word == env ]]; then
+    continue
+  else
+    # We've reached the end of the prepended parameter list
+    # XXX: 'env' supports specifying options ahead of its parameter list, but
+    # this is tricky to support.
+    break
+  fi
+done
+
+# Finally prepend the AWS_PROFILE= parameter with the select profile
+newbuffer="AWS_PROFILE=$profile $BUFFER"
+newcursor=$(( CURSOR + (${#newbuffer} - ${#BUFFER}) ))
+
+typeset -g BUFFER=$newbuffer
+typeset -g CURSOR=$newcursor

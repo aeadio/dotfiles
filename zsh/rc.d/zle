@@ -4,7 +4,6 @@
   load-widget edit-command-line
   load-widget modify-current-argument
   load-widget run-help
-  load-widget tetris
   load-widget transpose-words-match transpose-words
 } &>/dev/null
 
@@ -77,7 +76,7 @@ bindkey '^O'      open-path-or-pwd
 bindkey '^P'      smart-push-line
 bindkey '^R'      run-elevated
 bindkey '^S'      spell-word
-bindkey '^T'      tetris
+bindkey '^T'      fzf-select-aws-profile
 bindkey '^V'      paste-from-clipboard
 bindkey '^W'      quote-line
 bindkey '^Y'      redo
