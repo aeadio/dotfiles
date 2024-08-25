@@ -1,0 +1,6 @@
+[Desktop Entry]
+Name=ChatGPT
+Exec=/usr/bin/vivaldi-stable --app=https://chatgpt.com
+StartupNotify=true
+Terminal=false
+Type=Application
