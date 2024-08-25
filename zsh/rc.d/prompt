@@ -43,6 +43,7 @@
   local rps1=(
     'prompt:bufstack'
     'prompt:promptception'
+    'prompt:aws'
   )
   
   # Build prompts from arrays
@@ -166,14 +167,28 @@ prompt:promptception() {
     color=green ||
     color=cyan
   if [[ -n "$lvl" ]]; then
-    print -n " ${${UTF8:+${(#):-16#2836}}:- }%F{$color}$lvl%f%b"
+    print -n " ${${UTF8:+${(#):-16#2836}}:-L}%F{$color}$lvl%f%b"
+  fi
+}
+
+prompt:aws() {
+  emulate -L zsh
+  local profile reply
+  if [[ ${(%):-%-2~} != '~'/(source|projects) ]]; then
+    # Only show AWS_PROFILE when in a directory related to infra work
+    return
+  fi
+  if [[ -n ${AWS_PROFILE:#default} ]]; then
+    truncate -q -l 10 $AWS_PROFILE
+    profile=$reply
+    print -n " ${${UTF8:+${(#):-16#1fbca}}:-%}%(!,%F{yellow},%B%F{magenta})$AWS_PROFILE%f%b"
   fi
 }
 
 prompt:bufstack() {
   emulate -L zsh
   if (( BUFSTACK > 0 )); then
-    print -n " ${${UTF8:+${(#):-16#22ee}}:-S:}%F{yellow}$BUFSTACK%f "
+    print -n " ${${UTF8:+${(#):-16#22ee}}:-S:}%F{yellow}$BUFSTACK%f"
   fi
 }
 
