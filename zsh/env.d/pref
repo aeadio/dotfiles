@@ -4,8 +4,8 @@
 
 # Common exports
 # Standard variables used by many tools
-typeset -gx TERMINAL='alacritty'
-typeset -gx TERMCMD="$XDG_CONFIG_HOME/bin/terminal"
+typeset -gx TERMINAL="$XDG_CONFIG_HOME/bin/terminal"
+typeset -gx TERMCMD=$TERMINAL
 typeset -gx VISUAL='micro'
 typeset -gx EDITOR=$VISUAL
 typeset -gx PAGER='moar'
