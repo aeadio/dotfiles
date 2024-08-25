@@ -3,7 +3,7 @@
 
 emulate -L zsh -o ksh_glob
 
-zle || exit 1
+zle || return 1
 
 if (( ! $+functions[paste] )) return
 

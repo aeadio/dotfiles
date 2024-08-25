@@ -2,7 +2,7 @@
 
 emulate -L zsh -o prompt_subst
 
-zle || exit 1
+zle || return 1
 
 local x y selection new=$1
 get-selection | read -r selection
