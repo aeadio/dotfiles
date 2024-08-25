@@ -8,7 +8,7 @@ icons[disconnected]=f09c
 
 try_mullvad() {
   curl -m 2 -s https://am.i.mullvad.net/json |
-    jq -r -e 'if .mullvad_exit_ip then .city // .country else empty end'
+    jq -r -e 'if .mullvad_exit_ip then .city // .country // "connected" else empty end'
 }
 
 render() {
