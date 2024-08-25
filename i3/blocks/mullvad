@@ -13,7 +13,7 @@ try_mullvad() {
 
 render() {
   local icon color label exitnode
-  exitnode="$(try_mullvad)"
+  exitnode="$(retry 5 try_mullvad)"
   if [[ $? -eq 0 ]]; then
     icon=connected
     color=ok
