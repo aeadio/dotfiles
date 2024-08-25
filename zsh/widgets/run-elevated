@@ -5,7 +5,7 @@
 
 emulate -L zsh -o extended_glob
 
-zle || exit 1
+zle || return 1
 
 local sucmd=${${+commands[doas]:+doas}:-sudo}
 

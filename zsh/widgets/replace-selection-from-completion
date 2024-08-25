@@ -2,7 +2,7 @@
 
 emulate -L zsh
 
-zle || exit 1
+zle || return 1
 
 local m=$MARK c=$CURSOR b=$BUFFER
 local x y selection

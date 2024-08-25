@@ -4,7 +4,7 @@
 
 emulate -L zsh
 
-zle || exit 1
+zle || return 1
 
 local x y selection
 get-selection | read -r selection

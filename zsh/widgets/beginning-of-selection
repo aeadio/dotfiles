@@ -2,7 +2,7 @@
 
 emulate -L zsh
 
-zle || exit 1
+zle || return 1
 
 local x y
 get-selection > /dev/null
