@@ -174,7 +174,7 @@ prompt:promptception() {
 prompt:aws() {
   emulate -L zsh
   local profile reply
-  if [[ ${(%):-%-2~} != '~'/(source|projects) ]]; then
+  if [[ ${(%):-%-2~} != '~'/([Ss]ource|[Pp]rojects) ]]; then
     # Only show AWS_PROFILE when in a directory related to infra work
     return
   fi
