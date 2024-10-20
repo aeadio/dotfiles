@@ -7,6 +7,7 @@ Thumbs.db
 /asciinema
 /aws
 /aws-sam
+/bin/aws*
 /circleci
 /deluge
 /docker
