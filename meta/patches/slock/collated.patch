@@ -1,8 +1,8 @@
 diff --git a/config.def.h b/config.def.h
-index 9855e21..089d419 100644
+index 9855e21..d0fd2cd 100644
 --- a/config.def.h
 +++ b/config.def.h
-@@ -10,3 +10,31 @@ static const char *colorname[NUMCOLS] = {
+@@ -10,3 +10,32 @@ static const char *colorname[NUMCOLS] = {
  
  /* treat a cleared input like a wrong password (color) */
  static const int failonclear = 1;
@@ -27,6 +27,7 @@ index 9855e21..089d419 100644
 +	{ "unmount",        "doas /opt/bin/unmount-sensitive" },
 +	{ "umount",         "doas /opt/bin/unmount-sensitive" },
 +	{ "clean",          "force-clean-desktop" },
++	{ "close",          "force-clean-desktop" },
 +	{ "stopx",          "loginctl kill-session self || stopx" },
 +	{ "killx",          "loginctl kill-session self || stopx" },
 +	{ "logout",         "loginctl kill-session self || stopx" },
