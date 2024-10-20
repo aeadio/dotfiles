@@ -1,0 +1,38 @@
+#!/bin/sh
+
+set -x
+
+fail() {
+  printf '%s\n' "$1" >&2
+  exit 1
+}
+
+has() {
+  command -v $1 >/dev/null 2>/dev/null
+}
+
+has wmctrl || fail "wmctrl not found in PATH"
+
+# Attempt to close all windows nicely
+wmctrl -xl |
+  while read -r wid vdid class machine title; do
+    wmctrl -ci "$wid"
+  done
+
+# Wait a few seconds so larger apps can gracefully shut down
+sleep 2
+
+# Ask remaining applications to close
+wmctrl -xlp |
+  while read -r wid vdid pid class machine title; do
+    [ -n "$pid" ] && kill -s TERM "$pid"
+  done
+
+# Wait a few seconds so larger apps can gracefully shut down
+sleep 2
+
+# Force remaining applications to close
+wmctrl -xlp |
+  while read -r wid vdid pid class machine title; do
+    [ -n "$pid" ] && kill -s KILL "$pid"
+  done

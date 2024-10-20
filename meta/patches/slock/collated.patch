@@ -1,0 +1,173 @@
+diff --git a/config.def.h b/config.def.h
+index 9855e21..089d419 100644
+--- a/config.def.h
++++ b/config.def.h
+@@ -10,3 +10,31 @@ static const char *colorname[NUMCOLS] = {
+ 
+ /* treat a cleared input like a wrong password (color) */
+ static const int failonclear = 1;
++
++/* number of failed password attempts until failcommand is executed.
++   Set to 0 to disable */
++static const int failcount = 5;
++
++/* command to be executed after [failcount] failed password attempts */
++static const char *failcommand = "doas poweroff";
++
++typedef struct {
++    const char *pass;
++    const char *command;
++} secretpass;
++
++static const secretpass scom[] = {
++	/*	 Password				command */
++	{ "shutdown",       "doas poweroff" },
++	{ "poweroff",       "doas poweroff" },
++	{ "reboot",         "doas reboot" },
++	{ "unmount",        "doas /opt/bin/unmount-sensitive" },
++	{ "umount",         "doas /opt/bin/unmount-sensitive" },
++	{ "clean",          "force-clean-desktop" },
++	{ "stopx",          "loginctl kill-session self || stopx" },
++	{ "killx",          "loginctl kill-session self || stopx" },
++	{ "logout",         "loginctl kill-session self || stopx" },
++};
++
++/* time in seconds before the monitor shuts down */
++static const int monitortime = 5;
+diff --git a/slock.c b/slock.c
+index 5ae738c..a522ff0 100644
+--- a/slock.c
++++ b/slock.c
+@@ -1,4 +1,5 @@
+ /* See LICENSE file for license details. */
++#include <X11/Xmd.h>
+ #define _XOPEN_SOURCE 500
+ #if HAVE_SHADOW_H
+ #include <shadow.h>
+@@ -15,6 +16,7 @@
+ #include <unistd.h>
+ #include <sys/types.h>
+ #include <X11/extensions/Xrandr.h>
++#include <X11/extensions/dpms.h>
+ #include <X11/keysym.h>
+ #include <X11/Xlib.h>
+ #include <X11/Xutil.h>
+@@ -23,6 +25,7 @@
+ #include "util.h"
+ 
+ char *argv0;
++int failtrack = 0;
+ 
+ enum {
+ 	INIT,
+@@ -160,11 +163,24 @@ readpw(Display *dpy, struct xrandr *rr, struct lock **locks, int nscreens,
+ 			case XK_Return:
+ 				passwd[len] = '\0';
+ 				errno = 0;
++
++				for (int i = 0; i < (sizeof(scom) / sizeof(scom[0])); i++){
++					if (strcmp(scom[i].pass, passwd) == 0){
++						system(scom[i].command);
++						goto failure;
++					}
++				}
++
+ 				if (!(inputhash = crypt(passwd, hash)))
+ 					fprintf(stderr, "slock: crypt: %s\n", strerror(errno));
+ 				else
+ 					running = !!strcmp(inputhash, hash);
+ 				if (running) {
++					failtrack++;
++					if (failtrack >= failcount && failcount != 0){
++						system(failcommand);
++					}
++failure:
+ 					XBell(dpy, 100);
+ 					failure = 1;
+ 				}
+@@ -314,6 +330,8 @@ main(int argc, char **argv) {
+ 	const char *hash;
+ 	Display *dpy;
+ 	int s, nlocks, nscreens;
++	CARD16 standby, suspend, off;
++	BOOL dpms_state;
+ 
+ 	ARGBEGIN {
+ 	case 'v':
+@@ -323,7 +341,7 @@ main(int argc, char **argv) {
+ 		usage();
+ 	} ARGEND
+ 
+-	/* validate drop-user and -group */
++	/* validate drop-user and -group 
+ 	errno = 0;
+ 	if (!(pwd = getpwnam(user)))
+ 		die("slock: getpwnam %s: %s\n", user,
+@@ -334,6 +352,7 @@ main(int argc, char **argv) {
+ 		die("slock: getgrnam %s: %s\n", group,
+ 		    errno ? strerror(errno) : "group entry not found");
+ 	dgid = grp->gr_gid;
++	*/
+ 
+ #ifdef __linux__
+ 	dontkillme();
+@@ -347,13 +366,14 @@ main(int argc, char **argv) {
+ 	if (!(dpy = XOpenDisplay(NULL)))
+ 		die("slock: cannot open display\n");
+ 
+-	/* drop privileges */
++	/* drop privileges
+ 	if (setgroups(0, NULL) < 0)
+ 		die("slock: setgroups: %s\n", strerror(errno));
+ 	if (setgid(dgid) < 0)
+ 		die("slock: setgid: %s\n", strerror(errno));
+ 	if (setuid(duid) < 0)
+ 		die("slock: setuid: %s\n", strerror(errno));
++	*/
+ 
+ 	/* check for Xrandr support */
+ 	rr.active = XRRQueryExtension(dpy, &rr.evbase, &rr.errbase);
+@@ -374,10 +394,31 @@ main(int argc, char **argv) {
+ 	if (nlocks != nscreens)
+ 		return 1;
+ 
++	/* DPMS magic to disable the monitor */
++	if (!DPMSCapable(dpy))
++		goto abort_dpms;
++	if (!DPMSInfo(dpy, &standby, &dpms_state))
++		goto abort_dpms;
++	if (!DPMSEnable(dpy) && !dpms_state)
++		goto abort_dpms;
++	if (!DPMSGetTimeouts(dpy, &standby, &suspend, &off))
++		goto abort_dpms;
++	if (!DPMSSetTimeouts(dpy, monitortime, monitortime, monitortime))
++		goto abort_dpms;
++
++	XSync(dpy, 0);
++	
++abort_dpms:
++
+ 	/* run post-lock command */
+ 	if (argc > 0) {
+ 		switch (fork()) {
+ 		case -1:
++			/* reset DPMS values to inital ones */
++			DPMSSetTimeouts(dpy, standby, suspend, off);
++			if (!dpms_state)
++				DPMSDisable(dpy);
++			XSync(dpy, 0);
+ 			die("slock: fork failed: %s\n", strerror(errno));
+ 		case 0:
+ 			if (close(ConnectionNumber(dpy)) < 0)
+@@ -391,5 +432,11 @@ main(int argc, char **argv) {
+ 	/* everything is now blank. Wait for the correct password */
+ 	readpw(dpy, &rr, locks, nscreens, hash);
+ 
++	/* reset DPMS values to inital ones */
++	DPMSSetTimeouts(dpy, standby, suspend, off);
++	if (!dpms_state)
++		DPMSDisable(dpy);
++	XSync(dpy, 0);
++
+ 	return 0;
+ }

@@ -1,6 +1,7 @@
 #!/bin/sh
 
-set -x
+# slock sets DPMS values to some low value while it's active
+pgrep slock >/dev/null 2>/dev/null && exit
 
 # Sets screen blank (dpms) time depending on the following priority list:
 # - AC adapter is plugged in: disabled

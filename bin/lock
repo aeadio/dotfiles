@@ -3,11 +3,7 @@
 pgrep slock >/dev/null 2>/dev/null && exit
 slock &
 
-# Reconfigure the screen blank for screen-locked mode
-sleep 1
-"$HOME"/bin/setscreenblank
-
 # Stay alive until the screen has been unlocked (slock exits), then re-set
 # screen blanking for unlocked mode
 wait
-"$HOME"/bin/setscreenblank
+setscreenblank
