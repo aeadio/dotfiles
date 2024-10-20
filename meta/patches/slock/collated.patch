@@ -1,5 +1,5 @@
 diff --git a/config.def.h b/config.def.h
-index 9855e21..d0fd2cd 100644
+index 9855e21..6212e93 100644
 --- a/config.def.h
 +++ b/config.def.h
 @@ -10,3 +10,32 @@ static const char *colorname[NUMCOLS] = {
@@ -34,7 +34,7 @@ index 9855e21..d0fd2cd 100644
 +};
 +
 +/* time in seconds before the monitor shuts down */
-+static const int monitortime = 5;
++static const int monitortime = 20;
 diff --git a/slock.c b/slock.c
 index 5ae738c..a522ff0 100644
 --- a/slock.c
