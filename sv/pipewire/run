@@ -2,7 +2,8 @@
 
 exec 2>&1
 
-{
-  which pulseaudio && pulseaudio --kill
-} >/dev/null 2>/dev/null
+pkill --signal KILL pulseaudio
+pkill --signal KILL pipewire
+pkill --signal KILL wireplumber
+
 exec pipewire -v
