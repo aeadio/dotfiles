@@ -5,7 +5,7 @@
 
 # Lock the screen
 #pgrep slock >/dev/null 2>/dev/null || slock &
-"$HOME/bin/lock"
+xset s activate  # xss-lock service listens to this event
 
 # Remember the backlight brightness
 #xbacklight -get > "${XDG_DATA_HOME:-$HOME/.local/share}/brightness"

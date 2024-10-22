@@ -15,4 +15,5 @@ autorandr --change --force
 xbacklight -set 60
 
 # Reset screen blanking in case we missed an event during sleep
-"$HOME"/bin/setscreenblank
+# Autorandr will do this on our behalf, so skip
+#"$HOME"/bin/setscreenblank

@@ -1,7 +1,7 @@
 #!/bin/sh
 
-setscreenblank
-SVDIR=$HOME/sv sv restart wallpaper
+#"$HOME"/bin/setscreenblank
+SVDIR="$HOME"/sv sv restart wallpaper
 
 # Ask i3 to reload its config since it picks up workspace->screen assignment 
 # from active autorandr profile name.

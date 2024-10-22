@@ -1,9 +1,4 @@
 #!/bin/sh
 
-pgrep slock >/dev/null 2>/dev/null && exit
-slock &
-
-# Stay alive until the screen has been unlocked (slock exits), then re-set
-# screen blanking for unlocked mode
-wait
-setscreenblank
+#pgrep slock >/dev/null 2>/dev/null || slock &
+xset s activate  # xss-lock service listens to this event
