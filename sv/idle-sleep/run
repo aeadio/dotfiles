@@ -1,0 +1,5 @@
+#!/bin/sh
+
+exec 2>&1
+exec xidlehook --detect-sleep --not-when-audio --not-when-fullscreen \
+  --timer 1800 'loginctl suspend-then-hibernate' ''
