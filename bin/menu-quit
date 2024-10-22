@@ -12,12 +12,13 @@ menu() {
   fi
 }
 
-fields=(lock logout sleep reboot shutdown)
+fields=(lock logout sleep hibernate reboot shutdown)
 
 case $(print -f '%s\n' $fields | menu) in
-  lock)     lock ;;
-  logout)   loginctl kill-session self || stopx ;;
-  sleep)    loginctl suspend ;;
-  reboot)   loginctl reboot ;;
-  shutdown) loginctl poweroff ;;
+  lock)      loginctl lock-session self || "$HOME"/bin/lock ;;
+  logout)    loginctl kill-session self || "$HOME"/bin/stopx ;;
+  sleep)     loginctl suspend-then-hibernate ;;
+  hibernate) loginctl hibernate ;;
+  reboot)    loginctl reboot ;;
+  shutdown)  loginctl poweroff ;;
 esac
