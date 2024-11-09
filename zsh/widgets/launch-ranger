@@ -1,0 +1,13 @@
+# vim: ft=sh ts=2 sw=2 et:
+
+# Launch ranger from the current terminal, saving the input buffer to be 
+# restored after ranger exits.
+
+emulate -L zsh -o extended_glob
+
+if [[ -n $BUFFER && $BUFFER != [[:space:]]# ]]; then
+  zle push-input
+fi
+
+BUFFER=". ranger"
+zle accept-line
