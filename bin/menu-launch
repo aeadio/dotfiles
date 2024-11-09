@@ -39,7 +39,7 @@ imageviewer() {
     done
 }
 
-get-desktop-apps | menu -d ' |' | while read selection; do
+get-desktop-apps | menu -d ' |' | while read -r selection; do
   case "$selection" in
     *.desktop)
       dex "$selection"
