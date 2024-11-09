@@ -36,7 +36,7 @@ index 9855e21..6212e93 100644
 +/* time in seconds before the monitor shuts down */
 +static const int monitortime = 20;
 diff --git a/slock.c b/slock.c
-index 5ae738c..a522ff0 100644
+index 5ae738c..31348d7 100644
 --- a/slock.c
 +++ b/slock.c
 @@ -1,4 +1,5 @@
@@ -141,11 +141,11 @@ index 5ae738c..a522ff0 100644
 +		goto abort_dpms;
 +	if (!DPMSGetTimeouts(dpy, &standby, &suspend, &off))
 +		goto abort_dpms;
-+	if (!DPMSSetTimeouts(dpy, monitortime, monitortime, monitortime))
++	if (!DPMSSetTimeouts(dpy, monitortime, 0, 0))
 +		goto abort_dpms;
 +
 +	XSync(dpy, 0);
-+	
++
 +abort_dpms:
 +
  	/* run post-lock command */
