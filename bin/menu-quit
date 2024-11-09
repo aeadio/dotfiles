@@ -17,7 +17,7 @@ fields=(lock logout sleep hibernate reboot shutdown)
 case $(print -f '%s\n' $fields | menu) in
   lock)      loginctl lock-session self || "$HOME"/bin/lock ;;
   logout)    loginctl kill-session self || "$HOME"/bin/stopx ;;
-  sleep)     loginctl suspend-then-hibernate ;;
+  sleep)     loginctl suspend ;;
   hibernate) loginctl hibernate ;;
   reboot)    loginctl reboot ;;
   shutdown)  loginctl poweroff ;;
