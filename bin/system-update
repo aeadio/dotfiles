@@ -5,9 +5,23 @@
 yes=
 vkpurge=
 xbps_cleanup=
+background=1
+
+warn() {
+  printf '%s\n' "$1" >&2
+}
+
+fail() {
+  warn "$1" 
+  exit 1
+}
+
+has() {
+  command -v "$1" >/dev/null 2>/dev/null
+}
 
 OPTIND=0
-while getopts "yvop" opt; do
+while getopts "yvoB" opt; do
   case $opt in
     y)
       # Auto-accept all updates
@@ -18,19 +32,43 @@ while getopts "yvop" opt; do
     o)
       # Clean up orphaned dependencies and stale cached packages
       xbps_cleanup=1 ;;
+    B)
+      background= ;;
   esac
 done
 
-fail() {
-  printf '%s\n' "$1" >&2
-  exit 1
-}
+pre_cmd=
+if [ -n "$background" ]; then
+  # I/O priority first, because schedtool will have a dangling -e that
+  # consumes the rest of the parameter list
+  if has ionice; then
+    pre_cmd="$pre_cmd ionice -c 3"
+  else
+    warn "cannot set the requested I/O priority class"
+  fi
+  
+  #if has schedtool; then
+  #  # Can do priority level and niceness in one
+  #  pre_cmd="$pre_cmd schedtool -n 19 -D -e"
+  #else
+    if has nice; then
+      pre_cmd="$pre_cmd nice -n 19"
+    else
+      warn "cannot set the requested process niceness"
+    fi
+    if has chrt; then
+      pre_cmd="$pre_cmd chrt -i 0"
+    else
+      warn "cannot set the requested process priority class"
+    fi
+  #fi
+fi
 
 # Determine if there are available updates
 updates="$(xbps-install -Sun)" ||
   fail "Unable to determine available system updates."
 count="$(printf '%s\n' "$updates" | wc -l)"
-if [ "$count" -eq 0 ]; then
+if [ "$count" -eq 0 ] || [ -z "$updates" ]; then
   printf '%s\n' "Up to date."
   exit 0
 fi
@@ -71,7 +109,7 @@ system-snapshot -p "update" ||
   fail "Could not snapshot root filesystem prior to update."
 
 # Install updates
-xbps-install -uy ||
+$pre_cmd xbps-install -uy ||
   fail "Failed to apply updates."
 
 # Post-update cleanup
