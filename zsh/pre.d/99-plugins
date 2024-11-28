@@ -6,10 +6,11 @@
 # First-party
 load-plugin plugins/bad-input
 load-plugin plugins/bufstack
-load-plugin plugins/dynenv
 load-plugin plugins/exit-status
 load-plugin plugins/project-history
 load-plugin plugins/restore-buffer
+
+DYNENV_FSWATCH=0 load-plugin plugins/dynenv
 
 # Third-party
 if (( ! $+ZSHRC_LITE )); then
