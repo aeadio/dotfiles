@@ -70,7 +70,7 @@ fi
 # float the window.
 instance="${float:+floating/}${command:-alacritty}"
 
-alacritty \
+exec alacritty \
   --class alacritty,"$instance" \
   ${font_size:+-o font.size=$font_size}               \
   ${float:+-o window.dimensions.columns=$float_width} \

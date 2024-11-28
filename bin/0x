@@ -53,4 +53,4 @@ if [ -z "$object" ] || [ "$object" = "-" ]; then
   object="$tmpfile"
 fi
 
-x0 "$object"
+exec x0 "$object"

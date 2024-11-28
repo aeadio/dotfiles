@@ -18,4 +18,4 @@ opts="-Zd."  # fit to window size, show filename
 [ $# -eq 0 ] && set -- "${PWD}"
 [ $# -eq 1 ] && [ ! -d "$1" ] && opts="${opts} -|"
 
-feh ${opts} "$@"
+exec feh ${opts} "$@"

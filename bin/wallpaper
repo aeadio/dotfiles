@@ -19,4 +19,4 @@ for (( i = 1; i <= $ndisplays; i++ )); do
   w+=( $wallpapers[(( $RANDOM % $#wallpapers + 1 ))] )
 done
 
-feh --bg-fill $w --no-fehbg
+exec feh --bg-fill $w --no-fehbg

@@ -1,6 +1,6 @@
 #!/bin/sh
 
-dmenu -F -i \
+exec dmenu -F -i \
   -fn "Iosevka Term Medium:size=10" \
   -nb "#323845" \
   -nf "#d8dee9" \
