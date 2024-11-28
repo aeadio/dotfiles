@@ -22,4 +22,10 @@ case "$(lscpu | sed -n 's/Model name:[[:space:]]*\(.*\)[[:space:]]*@.*/\1/p')" i
     ;;
 esac
 
-exec taskset $pcore_mask "$@"
+case "$0" in
+  pcore) mask=$pcore_mask ;;
+  ecore) mask=$ecore_mask ;;
+  *)     mask=0xFFFFFFFF  ;;
+esac
+
+exec taskset $mask "$@"
