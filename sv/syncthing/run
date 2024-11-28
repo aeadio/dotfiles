@@ -4,4 +4,4 @@
 : ${XDG_CONFIG_HOME:="$HOME"/.config}
 
 exec 2>&1
-exec syncthing --no-browser
+exec "$HOME"/bin/ecore syncthing --no-browser

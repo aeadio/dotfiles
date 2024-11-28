@@ -1,4 +1,4 @@
 #!/bin/sh
 
 exec 2>&1
-exec xsettingsd
+exec "$HOME/bin/ecore" xsettingsd
