@@ -116,15 +116,15 @@ $pre_cmd xbps-install -uy ||
 if [ -n "$vkpurge" ]; then
   printf '%s\n' ''
   printf '%s\n' '[*] Removing old kernels'
-  vkpurge rm all
+  $pre_cmd vkpurge rm all
 fi
 if [ -n "$xbps_cleanup" ]; then
   printf '%s\n' ''
   printf '%s\n' '[*] Cleaning up orphaned dependencies'
-  xbps-remove -o
+  $pre_cmd xbps-remove -o
   printf '%s\n' ''
   printf '%s\n' '[*] Cleaning up XBPS cache'
-  xbps-remove -O
+  $pre_cmd xbps-remove -O
 fi
 
 printf '%s\n' ''
