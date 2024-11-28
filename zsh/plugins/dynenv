@@ -44,6 +44,7 @@ if (( $DYNENV_FSWATCH && $+commands[fswatch] )); then
   typeset -gr DYNENV_FILE
   
   dynenv:zle-callback() {
+    local REPLY
     if ! read -r -u $1; then
       # If callback was triggered for an empty fd, an error occurred. Detach to
       # avoid busy loop.
