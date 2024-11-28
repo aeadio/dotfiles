@@ -1,0 +1,4 @@
+#!/bin/sh
+
+#smbios-thermal-ctl --set-thermal-mode=quiet
+doas smbios-thermal-ctl --set-thermal-mode=balanced

@@ -1,0 +1,3 @@
+#!/bin/sh
+
+doas smbios-thermal-ctl --set-thermal-mode=performance

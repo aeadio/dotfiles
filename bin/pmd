@@ -1,31 +1,42 @@
 #!/bin/sh
 
-sysfs_ac="/sys/class/power_supply/AC"
+status_ac=0
 
-pm_onac() {
-  nvidia-settings -a "[gpu:0]/GpuPowerMizerMode=1"
+change_ac() {
+  #nvidia-settings -a "[gpu:0]/GpuPowerMizerMode=1"
   #doas cpupower frequency-set -g performance
+  LC_COLLATE=C
+  for f in "${XDG_CONFIG_HOME:-$HOME/.config}"/pmd/ac/*; do
+    [ -x "$f" ] && "$f"
+  done
 }
 
-pm_onbattery() {
-  nvidia-settings -a "[gpu:0]/GpuPowerMizerMode=0"
+change_bat() {
+  #nvidia-settings -a "[gpu:0]/GpuPowerMizerMode=0"
   #doas cpupower frequency-set -g powersave
+  LC_COLLATE=C
+  wfor f in "${XDG_CONFIG_HOME:-$HOME/.config}"/pmd/battery/*; do
+    [ -x "$f" ] && "$f"
+  done
 }
 
-ac_status() {
-  [ "$(cat "$sysfs_ac/online")" = "1" ]
-}
-
-apply() {
-  if ac_status; then
-    pm_onac
+ac_changed() {
+  if [ "$(cat "sys/class/power_supply/AC/online")" = "1" ]; then
+    if [ "$status_ac" -ne 1 ]; then
+      change_ac
+      status_ac=1
+    fi
   else
-    pm_onbattery
+    if [ "$status_ac" -eq 1 ]; then
+      change_bat
+      status_ac=0
+    fi
   fi
-  "$HOME"/bin/setscreenblank
 }
 
-apply
-stdbuf -i 0 -o 0 -e 0 udevadm monitor -s power_supply -u | while read _; do
-  apply
-done
+ac_changed
+
+stdbuf -o 0 udevadm monitor -s power_supply -u |
+  while read _; do
+    ac_changed
+  done
