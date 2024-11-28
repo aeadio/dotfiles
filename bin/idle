@@ -1,0 +1,38 @@
+#!/bin/sh
+
+# Run the provided command at lowest CPU and I/O priority class, and maximal
+# niceness.
+
+pre_cmd=
+
+warn() {
+  printf '%s\n' "$1" >&2
+}
+
+has() {
+  command -v "$1" >/dev/null 2>/dev/null
+}
+
+if has ionice; then
+  pre_cmd="$pre_cmd ionice -c 3"
+else
+  warn "cannot set the requested I/O priority class"
+fi
+
+if has schedtool; then
+  # Can do priority level and niceness in one
+  pre_cmd="$pre_cmd schedtool -n 19 -D -e"
+else
+  if has nice; then
+    pre_cmd="$pre_cmd nice -n 19"
+  else
+    warn "cannot set the requested process niceness"
+  fi
+  if has chrt; then
+    pre_cmd="$pre_cmd chrt -i 0"
+  else
+    warn "cannot set the requested process priority class"
+  fi
+fi
+
+exec $pre_cmd "$@"
