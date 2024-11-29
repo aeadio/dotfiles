@@ -3,6 +3,6 @@
 # Waits for the Wine system tray floating dialogue to appear, then kills it.
 
 exec 2>&1
-exec "$HOME/bin/ecore" "$HOME/bin/idle" chpst -b winesystray \
+exec ecore idle chpst -b winesystray \
   wmctrl -i -c \
   "$(xdotool search --sync --all --onlyvisible --name "Wine System Tray")"

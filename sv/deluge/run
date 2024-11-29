@@ -4,4 +4,4 @@
 : ${XDG_CONFIG_HOME:="$HOME"/.config}
 
 exec 2>&1
-exec "$HOME/bin/ecore" "$HOME/bin/idle" deluged -c "$XDG_CONFIG_HOME/deluge" -d
+exec ecore idle deluged -c "$XDG_CONFIG_HOME/deluge" -d

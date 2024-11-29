@@ -1,4 +1,4 @@
 #!/bin/sh
 
 cd "$HOME/games/World of Warcraft/_classic_era" &&
-exec "$HOME/bin/pcore" wine "WowClassic.exe"
+exec pcore wine "WowClassic.exe"

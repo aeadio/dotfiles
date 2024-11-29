@@ -2,4 +2,4 @@
 
 exec 2>&1
 pkill dunst
-exec "$HOME/bin/ecore" dunst
+exec ecore dunst

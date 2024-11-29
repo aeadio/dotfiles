@@ -1,4 +1,4 @@
 #!/bin/sh
 
 cd "$HOME/games/Battle.net" &&
-exec "$HOME/bin/pcore" wine "Battle.net.exe"
+exec pcore wine "Battle.net.exe"

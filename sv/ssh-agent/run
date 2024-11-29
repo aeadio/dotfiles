@@ -5,4 +5,4 @@
 : ${SSH_AGENT_INFO_FILE:="$XDG_DATA_HOME"/ssh-agent-info}
 
 exec 2>&1
-exec "$HOME/bin/ecore" ssh-agent -D > "$SSH_AGENT_INFO_FILE"
+exec ecore ssh-agent -D > "$SSH_AGENT_INFO_FILE"

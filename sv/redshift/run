@@ -4,4 +4,4 @@
 : ${XDG_CONFIG_HOME:="$HOME"/.config}
 
 exec 2>&1
-exec "$HOME/bin/ecore" redshift -c "$XDG_CONFIG_HOME/redshift/redshift.conf"
+exec ecore redshift -c "$XDG_CONFIG_HOME/redshift/redshift.conf"
