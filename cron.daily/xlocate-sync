@@ -1,3 +1,3 @@
 #!/bin/sh
 
-"$HOME"/bin/ecore "$HOME"/bin/idle xlocate -S
+"$HOME"/bin/idle xlocate -S

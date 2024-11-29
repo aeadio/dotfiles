@@ -12,4 +12,4 @@ if [ -z "$svname" ] || [ ! -d "$SVDIR/$svname" ]; then
 fi
 
 mkdir -p "$XDG_DATA_HOME/log/$svname" &&
-exec svlogd -tt "$XDG_DATA_HOME/log/$svname"
+exec "$HOME/bin/ecore" svlogd -tt "$XDG_DATA_HOME/log/$svname"
