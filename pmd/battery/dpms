@@ -1,0 +1,3 @@
+#!/bin/sh
+
+xset dpms 600 0 0
