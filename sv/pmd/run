@@ -3,4 +3,4 @@
 : ${HOME:="$(eval print "~$(id -un)")"}
 
 exec 2>&1
-exec ecore "$HOME"/bin/pmd
+exec lcore "$HOME"/bin/pmd

@@ -2,4 +2,4 @@
 
 exec 2>&1
 pkill dunst
-exec ecore dunst
+exec lcore dunst
