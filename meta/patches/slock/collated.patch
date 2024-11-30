@@ -1,5 +1,5 @@
 diff --git a/config.def.h b/config.def.h
-index 9855e21..6212e93 100644
+index 9855e21..addc2b6 100644
 --- a/config.def.h
 +++ b/config.def.h
 @@ -10,3 +10,32 @@ static const char *colorname[NUMCOLS] = {
@@ -24,8 +24,8 @@ index 9855e21..6212e93 100644
 +	{ "shutdown",       "doas poweroff" },
 +	{ "poweroff",       "doas poweroff" },
 +	{ "reboot",         "doas reboot" },
-+	{ "unmount",        "doas /opt/bin/unmount-sensitive" },
-+	{ "umount",         "doas /opt/bin/unmount-sensitive" },
++	{ "unmount",        "doas unmount-sensitive" },
++	{ "umount",         "doas unmount-sensitive" },
 +	{ "clean",          "force-clean-desktop" },
 +	{ "close",          "force-clean-desktop" },
 +	{ "stopx",          "loginctl kill-session self || stopx" },
