@@ -15,7 +15,7 @@ change_bat() {
   #nvidia-settings -a "[gpu:0]/GpuPowerMizerMode=0"
   #doas cpupower frequency-set -g powersave
   LC_COLLATE=C
-  wfor f in "${XDG_CONFIG_HOME:-$HOME/.config}"/pmd/battery/*; do
+  for f in "${XDG_CONFIG_HOME:-$HOME/.config}"/pmd/battery/*; do
     [ -x "$f" ] && "$f"
   done
 }
