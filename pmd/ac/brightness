@@ -1,0 +1,3 @@
+#!/bin/sh
+
+xbacklight -set 100
