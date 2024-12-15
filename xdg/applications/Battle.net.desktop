@@ -1,6 +1,6 @@
 [Desktop Entry]
 Name=Battle.net
-Exec=sh -c 'cd "$HOME"/games/Battle.net && exec pcore wine Battle.net.exe'
+Exec=sh -c 'cd "$HOME"/games/Battle.net && exec pcore prime-run wine Battle.net.exe'
 StartupNotify=true
 Terminal=false
 Type=Application
