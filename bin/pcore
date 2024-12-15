@@ -31,7 +31,7 @@ case "$(lscpu | sed -n 's/Model name:[[:space:]]*\(.*\)[[:space:]]*@.*/\1/p')" i
     ;;
 esac
 
-case "$0" in
+case "$(basename "$0")" in
   pcore) mask=$pcore_mask ;;
   ecore) mask=$ecore_mask ;;
   lcore) mask=$lcore_mask ;;
