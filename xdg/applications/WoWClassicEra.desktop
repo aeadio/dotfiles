@@ -1,0 +1,6 @@
+[Desktop Entry]
+Name=WoW Classic Era
+Exec=wow-vanilla
+StartupNotify=true
+Terminal=false
+Type=Application
