@@ -5,4 +5,4 @@
 exec 2>&1
 exec lcore chpst -b winesystray \
   wmctrl -i -c \
-  "$(xdotool search --sync --all --onlyvisible --name "Wine System Tray")"
+  "$(xdotool search --sync --all --onlyvisible --class "explorer.exe")"
