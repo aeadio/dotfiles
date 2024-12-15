@@ -44,7 +44,8 @@ getssid() {
   #      end
   #    )))
   #  '
-  iwgetid -r "$1"
+  #iwgetid -r "$1"  # no longer works on WiFi 7 devices
+  iw dev "$1" link | sed -n 's/.*SSID: \(.*\)/\1/p'
 }
 
 render() {
