@@ -1,0 +1,17 @@
+#!/bin/sh
+
+picom_conf_dir="${XDG_CONFIG_HOME:-$HOME/.config}/picom"
+if [ -w "$picom_conf_dir" ]; then
+  cat <<EOF > "$picom_conf_dir/dynamic-blur.conf"
+# Transparency
+active-opacity   = 1.00
+inactive-opacity = 0.98
+
+# Blur
+blur-background         = false
+blur-background-frame   = false
+blur-background-fixed   = false
+blur-method             = "none"
+blur-strength           = 0
+EOF
+fi
