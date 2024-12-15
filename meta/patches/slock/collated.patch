@@ -36,7 +36,7 @@ index 9855e21..addc2b6 100644
 +/* time in seconds before the monitor shuts down */
 +static const int monitortime = 20;
 diff --git a/slock.c b/slock.c
-index 5ae738c..31348d7 100644
+index 5ae738c..e9be97c 100644
 --- a/slock.c
 +++ b/slock.c
 @@ -1,4 +1,5 @@
@@ -132,7 +132,7 @@ index 5ae738c..31348d7 100644
  	if (nlocks != nscreens)
  		return 1;
  
-+	/* DPMS magic to disable the monitor */
++	/* DPMS magic to disable the monitor
 +	if (!DPMSCapable(dpy))
 +		goto abort_dpms;
 +	if (!DPMSInfo(dpy, &standby, &dpms_state))
@@ -144,19 +144,19 @@ index 5ae738c..31348d7 100644
 +	if (!DPMSSetTimeouts(dpy, monitortime, 0, 0))
 +		goto abort_dpms;
 +
-+	XSync(dpy, 0);
++	XSync(dpy, 0); 
 +
-+abort_dpms:
++abort_dpms: */
 +
  	/* run post-lock command */
  	if (argc > 0) {
  		switch (fork()) {
  		case -1:
-+			/* reset DPMS values to inital ones */
++			/* reset DPMS values to inital ones 
 +			DPMSSetTimeouts(dpy, standby, suspend, off);
 +			if (!dpms_state)
 +				DPMSDisable(dpy);
-+			XSync(dpy, 0);
++			XSync(dpy, 0); */
  			die("slock: fork failed: %s\n", strerror(errno));
  		case 0:
  			if (close(ConnectionNumber(dpy)) < 0)
@@ -164,11 +164,11 @@ index 5ae738c..31348d7 100644
  	/* everything is now blank. Wait for the correct password */
  	readpw(dpy, &rr, locks, nscreens, hash);
  
-+	/* reset DPMS values to inital ones */
++	/* reset DPMS values to inital ones 
 +	DPMSSetTimeouts(dpy, standby, suspend, off);
 +	if (!dpms_state)
 +		DPMSDisable(dpy);
-+	XSync(dpy, 0);
++	XSync(dpy, 0); */
 +
  	return 0;
  }
