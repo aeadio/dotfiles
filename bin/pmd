@@ -21,7 +21,7 @@ change_bat() {
 }
 
 ac_changed() {
-  if [ "$(cat "sys/class/power_supply/AC/online")" = "1" ]; then
+  if [ "$(cat "/sys/class/power_supply/AC/online")" = "1" ]; then
     if [ "$status_ac" -ne 1 ]; then
       change_ac
       status_ac=1
