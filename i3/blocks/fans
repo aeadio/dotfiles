@@ -15,20 +15,23 @@
 
 label=f863
 
-warn_threshold_mid=5000
-warn_threshold_high=6500
+warn_threshold_mid=2900
+warn_threshold_high=3400
 
 dell_fans() {
   local rpm="$(sysfs_max /sys/devices/platform/dell_smm_hwmon/hwmon/hwmon*/fan*_input)"
   printf '%s' "$rpm"
 }
 
+dell_fans_lmsensors() {
+  sensors dell_smm-virtual-0 |
+    sed -n 's/.*[Ff]an[[:digit:]]*:[[:space:]]*\([[:digit:]]*\) RPM.*/\1/p' | 
+    sort -r | head -n 1
+}
+
 render() {
   local rpm color
-  for method in dell_fans; do
-    rpm=$("$method")
-    [[ -n $rpm ]] && break
-  done
+  rpm="$(dell_fans_lmsensors)"
   
   if (( $rpm >= $warn_threshold_high )); then
     color=bad
