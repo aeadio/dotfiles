@@ -17,7 +17,7 @@ warn() {
   printf '%s\n' "$1" >&2
 }
 
-case "$(lscpu | sed -n 's/.*Model name:[[:space:]]*\(.*\)[[:space:]]*/\1/p')" in
+case "$(lscpu | sed -n 's/.*Model name:[[:space:]]*\(.*\)/\1/p')" in
   *'Ultra 7 165H'*)
     case "$(nproc)" in
       22)  # SMT enabled
