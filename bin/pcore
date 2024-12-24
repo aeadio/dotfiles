@@ -7,6 +7,12 @@ pcore_mask=0xFFFFFFFF
 ecore_mask=0xFFFFFFFF
 lcore_mask=0xFFFFFFFF
 
+re_mode=
+if [ "$1" = "-p" ]; then
+  re_mode=1
+  shift
+fi
+
 warn() {
   printf '%s\n' "$1" >&2
 }
@@ -41,4 +47,10 @@ case "$(basename "$0")" in
     ;;
 esac
 
-exec taskset $mask "$@"
+if [ -n "$re_mode" ]; then
+  for pid in "$@"; do
+    taskset -p $mask "$pid"
+  done
+else
+  exec taskset $mask "$@"
+fi
