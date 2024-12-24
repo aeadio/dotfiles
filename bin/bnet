@@ -1,20 +1,36 @@
 #!/bin/sh
 
-export PBA_DISABLE=1
-export WINEESYNC=1
-export STAGING_SHARED_MEMORY=1
-export __GL_DXVK_OPTIMIZATIONS=1
-export __GL_SHADER_DISK_CACHE=1
-export DXVK_ENABLE_NVAPI=1
-export DXVK_CONFIG="dxgi.deferSurfaceCreation = True; dxgi.hideNvidiaGpu = False"
-
+app=
 case "$(basename "$0")" in
   bnet)
     cd "$HOME/games/Battle.net" &&
-    exec pcore prime-run wine Battle.net.exe
+    app="Battle.net.exe"
     ;;
   wow-vanilla)
     cd "$HOME/games/World of Warcraft/_classic_era_" &&
-    exec pcore prime-run wine WowClassic.exe
+    app="WowClassic.exe"
+    ;;
+  *)
+    exit 1
     ;;
 esac
+
+# Wine performance tunables
+export WINEFSYNC=1
+export STAGING_SHARED_MEMORY=1
+export STAGING_WRITECOPY=1
+
+# NVidia driver tunables
+export __GL_SHADER_DISK_CACHE=1
+export __GL_SHADER_DISK_CACHE_PATH="$PWD/.nv"; mkdir -p "$__GL_SHADER_DISK_CACHE_PATH"
+
+# DXVK config
+#export DXVK_CONFIG="dxgi.deferSurfaceCreation = True"
+export DXVK_FILTER_DEVICE_NAME="NVIDIA"
+export DXVK_STATE_CACHE_PATH="$PWD/.dxvk"; mkdir -p "$DXVK_STATE_CACHE_PATH"
+
+# Debug output
+export WINEDEBUG="-all"
+export DXVK_LOG_LEVEL="error"
+
+exec pcore prime-run wine "$app"
