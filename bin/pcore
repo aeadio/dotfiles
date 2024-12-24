@@ -52,5 +52,6 @@ if [ -n "$re_mode" ]; then
     taskset -p $mask "$pid"
   done
 else
+  printf '%s\n' "Starting up with process mask $mask..." >&2
   exec taskset $mask "$@"
 fi
