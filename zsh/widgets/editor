@@ -1,0 +1,18 @@
+# vim: ft=sh ts=2 sw=2 et:
+
+# Add/remove doas/sudo at the beginning of the line editor
+# If the line editor is empty, invoke a root shell
+
+emulate -L zsh -o extended_glob
+
+zle || return 1
+
+if [[ -z $BUFFER || $BUFFER == [[:space:]]# ]]; then
+  if (( UID != 0 )); then
+    BUFFER="quicknote"
+    zle accept-line
+  fi
+  return
+fi
+
+zle edit-command-line -w

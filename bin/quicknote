@@ -1,0 +1,3 @@
+#!/bin/sh
+
+exec ${VISUAL:-${EDITOR:-micro}} "$HOME/documents/Notes/temp-note-$(date -u +'%Y-%m-%dT%02H%02M%02SZ').md"

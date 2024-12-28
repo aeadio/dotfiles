@@ -65,7 +65,7 @@ bindkey '^M'      accept-line                        # enter
 bindkey '^?'      backward-delete-char               # backspace
 
 bindkey '^A'      after-first-word
-bindkey '^E'      edit-command-line
+bindkey '^E'      editor
 bindkey '^F'      fzf-history
 bindkey '^G'      launch-ranger
 bindkey '^H'      navigate-gitroot-or-home
