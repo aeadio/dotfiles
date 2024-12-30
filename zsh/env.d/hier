@@ -2,6 +2,7 @@
 
 # Informs apps as to the directory hierarchy of ~
 
+# Language-specific tooling
 () {
   local gopath=(
     $HOME/[Ss]ource/go(N)
@@ -10,6 +11,7 @@
   typeset -gx GOPATH=${(j,:,)gopath}
 }
 
+# Shell configuration
 typeset -g path=(
   # Scripts and personal projects
   $HOME/[Pp]rojects/*/[Bb]in(N)
@@ -28,10 +30,12 @@ typeset -g path=(
 )
 typeset -g path=( ${(u)path} )  # (u) removes dups inherited from default $path
 
+# XDG desktop specification
 : ${XDG_CONFIG_HOME:=${ZSH:h}}  # :h = the enclosing folder of $ZSH
 typeset -gx XDG_CONFIG_HOME
-
 typeset -gx XDG_CACHE_HOME=$HOME/var/cache
 typeset -gx XDG_DATA_HOME=$HOME/var
 
+# Application level paths
 typeset -gx WINEPREFIX=$XDG_DATA_HOME/wine
+typeset -gx XBPS_DISTDIR=$HOME/source/void-packages
