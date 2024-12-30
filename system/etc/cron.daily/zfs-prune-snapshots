@@ -1,0 +1,6 @@
+#!/bin/sh
+
+export TZ=UTC
+
+/bin/zfs-prune-snapshots -p 'update_' 1M zroot/ROOT
+/bin/zfs-prune-snapshots -p 'boot_' 1M zroot/ROOT
