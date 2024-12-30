@@ -15,6 +15,11 @@ case "$(basename "$0")" in
     ;;
 esac
 
+if [ -z "$app" ] || [ ! -r "$app" ]; then
+  printf '%s\n' "app not found or not accessible" >&2
+  exit 1
+fi
+
 # Wine performance tunables
 export WINEFSYNC=1
 export STAGING_SHARED_MEMORY=1
