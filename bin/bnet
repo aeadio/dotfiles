@@ -25,7 +25,7 @@ export __GL_SHADER_DISK_CACHE=1
 export __GL_SHADER_DISK_CACHE_PATH="$PWD/.nv"; mkdir -p "$__GL_SHADER_DISK_CACHE_PATH"
 
 # DXVK config
-#export DXVK_CONFIG="dxgi.deferSurfaceCreation = True"
+export DXVK_CONFIG="dxgi.deferSurfaceCreation = True"
 export DXVK_FILTER_DEVICE_NAME="NVIDIA"
 export DXVK_STATE_CACHE_PATH="$PWD/.dxvk"; mkdir -p "$DXVK_STATE_CACHE_PATH"
 
