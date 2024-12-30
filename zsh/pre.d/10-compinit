@@ -1,5 +1,7 @@
 # vim: ft=sh ts=2 sw=2 et:
 
+typeset -g ZCOMPDUMP=${XDG_DATA_HOME:-$HOME/.local}/zsh/compdump
+
 # Load third-party completions
 load-plugin vendor/zsh-completions
 

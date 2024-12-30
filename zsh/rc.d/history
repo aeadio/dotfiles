@@ -1,8 +1,5 @@
 # vim: ft=sh ts=2 sw=2 et:
 
-HISTSIZE=10000
-SAVEHIST=10000
-
 () {
   local histfile=${XDG_DATA_HOME:-$HOME/.local/share}/zsh/history
   if (( $+functions[sethistfile] )); then
@@ -21,3 +18,7 @@ setopt hist_no_store
 setopt hist_reduce_blanks
 setopt hist_verify
 setopt share_history
+
+HISTSIZE=10000
+SAVEHIST=10000
+sethistfile ${XDG_DATA_HOME:-$HOME/.local}/zsh/history
