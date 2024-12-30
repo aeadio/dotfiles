@@ -19,6 +19,7 @@ Thumbs.db
 /packer
 /pipewire
 /pulse
+/QtProject.conf
 /terraform
 /transmission*
 /vscode
