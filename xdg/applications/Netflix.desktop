@@ -1,6 +1,8 @@
 [Desktop Entry]
-Name=ChatGPT
+Name=Netflix
 Exec=/usr/bin/vivaldi-stable --app=https://netflix.com
 StartupNotify=true
+StartupWMClass=netflix.com
 Terminal=false
 Type=Application
+Categories=AudioVideo;Video

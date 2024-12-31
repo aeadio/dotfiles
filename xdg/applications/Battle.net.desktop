@@ -2,5 +2,7 @@
 Name=Battle.net
 Exec=bnet
 StartupNotify=true
+StartupWMClass=battle.net.exe
 Terminal=false
 Type=Application
+Categories=Game

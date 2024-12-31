@@ -2,5 +2,6 @@
 Name=ChatGPT
 Exec=/usr/bin/vivaldi-stable --app=https://chatgpt.com
 StartupNotify=true
+StartupWMClass=chatgpt.com
 Terminal=false
 Type=Application

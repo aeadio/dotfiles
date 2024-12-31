@@ -2,5 +2,7 @@
 Name=WoW Classic Era
 Exec=wow-vanilla
 StartupNotify=true
+StartupWMClass=wowclassic.exe
 Terminal=false
 Type=Application
+Categories=Game
