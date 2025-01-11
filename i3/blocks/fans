@@ -15,8 +15,10 @@
 
 label=f863
 
-warn_threshold_mid=2900
-warn_threshold_high=3400
+warn_threshold_min=1000
+warn_threshold_low=2700
+warn_threshold_mid=3300
+warn_threshold_high=3800
 
 dell_fans() {
   local rpm="$(sysfs_max /sys/devices/platform/dell_smm_hwmon/hwmon/hwmon*/fan*_input)"
@@ -34,10 +36,12 @@ render() {
   rpm="$(dell_fans_lmsensors)"
   
   if (( $rpm >= $warn_threshold_high )); then
-    color=bad
+    color=red
   elif (( $rpm >= $warn_threshold_mid )); then
-    color=warn
-  elif (( $rpm == 0 )); then
+    color=orange
+  elif (( $rpm >= $warn_threshold_low )); then
+    color=yellow
+  elif (( $rpm <= $warn_threshold_min )); then
     color=cyan
   fi
   
