@@ -13,11 +13,17 @@
 ## `Global.DracutConfDir` in the ZFSBootMenu `config.yaml`.
 
 # exit early if we're missing our env var
-[ -n "${ZBM_SELECTED_BE}" ] || exit
+if [[ -z "$ZBM_SELECTED_BE" ]]; then
+  printf '%s\n' "snapshot-teardown: warn: ZBM_SELECTED_BE is empty; cannot snapshot rootfs"
+  exit
+fi
 
 for src in /lib/zfsbootmenu-core.sh /lib/kmsg-log-lib.sh ; do
   # shellcheck disable=SC1090
-  source "${src}" || exit
+  if ! source "${src}"; then
+    printf '%s\n' "snapshot-teardown: warn: could not source $src; exiting"
+    exit
+  fi
 done
 
 zpool="${ZBM_SELECTED_BE%%/*}"
@@ -28,6 +34,7 @@ else
   set_rw_pool "${zpool}"
 fi
 
-TZ=UTC printf -v snapshot "${ZBM_SELECTED_BE}@boot_%(%Y-%m-%d-%H:%M:%S)T\n"
-zfs snapshot -r "${snapshot}" 
+TZ=UTC printf -v snapshot "${ZBM_SELECTED_BE}@boot_%(%Y-%m-%d_%H:%M:%S)T"
+printf '%s\n' "snapshot-teardown: creating snapshot: $snapshot"
+zfs snapshot -r "${snapshot}"
 export_pool "${zpool}"
