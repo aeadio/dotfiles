@@ -26,8 +26,8 @@ image_delay     = 30
 image_filter    = "triangle"
 image_quality   = 75
 sixel_fraction  = 15
-ueberzug_scale  = 1
-ueberzug_offset = [ 0, 0, 0, 0 ]
+ueberzug_scale  = 1.25
+ueberzug_offset = [ -4, -4, 0, -7 ]
 
 [opener]
 edit = [
