@@ -49,7 +49,7 @@ border_symbol = " "
 border_style  = { fg = "gray" }
 
 # Highlighting
-syntect_theme = ""
+syntect_theme = "~/config/yazi/nord.tmTheme"
 
 # : }}}
 
@@ -85,10 +85,10 @@ progress_error  = { fg = "red", bg = "black" }
 
 # Permissions
 perm_sep   = { fg = "darkgray" }
-perm_type  = { fg = "green" }
-perm_read  = { fg = "yellow" }
-perm_write = { fg = "red" }
-perm_exec  = { fg = "cyan" }
+perm_type  = { fg = "lightblue" }
+perm_read  = { fg = "white" }
+perm_write = { fg = "yellow" }
+perm_exec  = { fg = "green" }
 
 # : }}}
 
