@@ -1,6 +1,6 @@
 
 [Default Applications]
-inode/directory=ranger.desktop
+inode/directory=yazi.desktop
 text/plain=micro.desktop
 text/html=com.vivaldi.Vivaldi.desktop
 x-scheme-handler/http=com.vivaldi.Vivaldi.desktop

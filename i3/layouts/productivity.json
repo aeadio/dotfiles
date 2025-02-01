@@ -10,7 +10,7 @@
 			"swallows": [
 				{
 					"class": "^alacritty$",
-					"instance": "^ranger$"
+					"instance": "^yazi$"
 				}
 			],
 			"type": "con"

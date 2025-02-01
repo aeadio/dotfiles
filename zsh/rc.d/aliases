@@ -43,7 +43,6 @@ has rg       && alias rf='rg -F'
 has fd       && alias ff='fd -F'
 
 has micro    && alias e='micro'
-has ranger   && alias f='ranger'
 has code-oss && alias E='code-oss'
 has code     && alias E='code'
 

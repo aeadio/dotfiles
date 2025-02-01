@@ -67,7 +67,7 @@ bindkey '^?'      backward-delete-char               # backspace
 bindkey '^A'      after-first-word
 bindkey '^E'      editor
 bindkey '^F'      fzf-history
-bindkey '^G'      launch-ranger
+bindkey '^G'      launch-filemgr
 bindkey '^H'      navigate-gitroot-or-home
 bindkey '^I'      tab-complete                       # tab
 bindkey '^K'      copy-to-clipboard
