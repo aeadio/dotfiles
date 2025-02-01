@@ -40,4 +40,4 @@ export DXVK_LOG_LEVEL="error"
 
 op read -fn op://private/Blizzard/password | xsel -ib
 
-exec pcore prime-run wine "$app"
+exec gamemoderun wine "$app"
