@@ -1,0 +1,16 @@
+[Desktop Entry]
+Name=Typora
+Comment=A minimal Markdown reading & writing app. Change Log: (https://typora.io/releases/all)
+GenericName=Markdown Editor
+Exec=/usr/bin/flatpak run --branch=stable --arch=x86_64 --command=typora --file-forwarding io.typora.Typora --disable-smooth-scrolling @@u %U @@
+Icon=io.typora.Typora
+Type=Application
+StartupNotify=true
+Categories=Office;WordProcessor;
+MimeType=text/markdown;text/x-markdown;
+Actions=new-window
+X-Flatpak=io.typora.Typora
+
+[Desktop Action new-window]
+Name=Open a new Window
+Exec=/usr/bin/flatpak run --branch=stable --arch=x86_64 --command=typora --file-forwarding io.typora.Typora @@u %U @@

@@ -2,9 +2,9 @@
 [Default Applications]
 inode/directory=ranger.desktop
 text/plain=micro.desktop
-text/html=vivaldi-stable.desktop
-x-scheme-handler/http=vivaldi-stable.desktop
-x-scheme-handler/https=vivaldi-stable.desktop
-x-scheme-handler/about=vivaldi-stable.desktop
-x-scheme-handler/unknown=vivaldi-stable.desktop
+text/html=com.vivaldi.Vivaldi.desktop
+x-scheme-handler/http=com.vivaldi.Vivaldi.desktop
+x-scheme-handler/https=com.vivaldi.Vivaldi.desktop
+x-scheme-handler/about=com.vivaldi.Vivaldi.desktop
+x-scheme-handler/unknown=com.vivaldi.Vivaldi.desktop
 application/pdf=org.pwmt.zathura.desktop

@@ -31,10 +31,20 @@ typeset -g path=(
 typeset -g path=( ${(u)path} )  # (u) removes dups inherited from default $path
 
 # XDG desktop specification
-: ${XDG_CONFIG_HOME:=${ZSH:h}}  # :h = the enclosing folder of $ZSH
-typeset -gx XDG_CONFIG_HOME
-typeset -gx XDG_CACHE_HOME=$HOME/var/cache
+typeset -gx XDG_CONFIG_HOME=${XDG_CONFIG_HOME:=${ZSH:h}}
 typeset -gx XDG_DATA_HOME=$HOME/var
+typeset -gx XDG_CACHE_HOME=$HOME/var/cache
+typeset -gx XDG_STATE_HOME=$HOME/var/state
+
+() {
+  local xdg_data_dirs=(
+    $HOME/var/flatpak/exports/share(N)
+    /var/lib/flatpak/exports/share(N)
+    /usr/local/share(N)
+    /usr/share(N)
+  )
+  typeset -gx XDG_DATA_DIRS=${(j,:,)xdg_data_dirs}
+}
 
 # Application level paths
 typeset -gx WINEPREFIX=$XDG_DATA_HOME/wine
