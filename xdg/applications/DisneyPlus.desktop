@@ -1,6 +1,6 @@
 [Desktop Entry]
 Name=Disney+
-Exec=/usr/bin/vivaldi-stable --app=http://disneyplus.com
+Exec=vivaldi-stable --app=http://disneyplus.com
 StartupNotify=true
 StartupWMClass=disneyplus.com
 Terminal=false

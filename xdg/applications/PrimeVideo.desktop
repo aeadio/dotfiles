@@ -1,6 +1,6 @@
 [Desktop Entry]
 Name=Prime Video
-Exec=/usr/bin/vivaldi-stable --app=https://www.amazon.com/gp/video/prime
+Exec=vivaldi-stable --app=https://www.amazon.com/gp/video/prime
 StartupNotify=true
 StartupWMClass=www.amazon.com__gp_video_prime
 Terminal=false

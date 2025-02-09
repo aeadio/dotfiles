@@ -1,6 +1,6 @@
 [Desktop Entry]
 Name=Netflix
-Exec=/usr/bin/vivaldi-stable --app=https://netflix.com
+Exec=vivaldi-stable --app=https://netflix.com
 StartupNotify=true
 StartupWMClass=netflix.com
 Terminal=false

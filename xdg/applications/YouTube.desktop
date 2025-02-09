@@ -1,6 +1,6 @@
 [Desktop Entry]
 Name=YouTube
-Exec=/usr/bin/vivaldi-stable --app=https://youtube.com
+Exec=vivaldi-stable --app=https://youtube.com
 StartupNotify=true
 StartupWMClass=youtube.com
 Terminal=false

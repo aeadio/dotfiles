@@ -1,6 +1,6 @@
 [Desktop Entry]
 Name=Hulu
-Exec=/usr/bin/vivaldi-stable --app=https://hulu.com
+Exec=vivaldi-stable --app=https://hulu.com
 StartupNotify=true
 StartupWMClass=hulu.com
 Terminal=false
