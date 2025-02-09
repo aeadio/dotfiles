@@ -1,6 +1,7 @@
 # Ephemeral
 *.user
 .DS_Store
+.Trash-1000
 Thumbs.db
 
 # Machine-specific
