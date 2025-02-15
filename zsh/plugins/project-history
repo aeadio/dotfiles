@@ -77,3 +77,7 @@ sethistfile() {
     fc -R
   fi
 }
+
+# The shell could conceivably start up with a different working directory, ie 
+# already inside a git project. So trigger right away.
+projecthistory:chpwd
