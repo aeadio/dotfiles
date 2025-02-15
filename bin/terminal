@@ -10,9 +10,10 @@ float_height=32
 font_size=
 interactive=
 command=
+workdir=
 
 OPTIND=0
-while getopts "s:F:ftie:" opt; do
+while getopts "s:F:ftiw:e:" opt; do
   case $opt in
     s)
       float_width=${OPTARG%x*}
@@ -30,6 +31,9 @@ while getopts "s:F:ftie:" opt; do
       ;;
     i)
       interactive=1
+      ;;
+    w)
+      workdir="$OPTARG"
       ;;
     e)
       # -e must be the last parameter, if given. The remaining parameters are
@@ -75,4 +79,5 @@ exec alacritty \
   ${font_size:+-o font.size=$font_size}               \
   ${float:+-o window.dimensions.columns=$float_width} \
   ${float:+-o window.dimensions.lines=$float_height}  \
+  ${workdir:+--working-directory $workdir}            \
   "$@"
