@@ -6,14 +6,26 @@ buttons=("terminal -f sh -c 'doas system-update -vo; pause' #c")
 
 label=f0aa
 
-get_num_updates() {
+get_void_updates() {
   xbps-install -un | wc -l
 }
 
+get_flatpak_updates() {
+  flatpak remote-ls --updates 2> /dev/null | wc -l
+}
+
 render() {
-  local updates="$(get_num_updates)"
-  if [[ $updates > 0 ]]; then
-    printf '%s\n' "$(icon $label) $(color green "$updates")"
+  local void_updates="$(get_void_updates)"
+  local flpk_updates="$(get_flatpak_updates)"
+  local output=
+  if (( void_updates > 0 )); then
+    output=" $(color green "$void_updates")"
+  fi
+  if (( flpk_updates > 0 )); then
+    output="$output [$(color blue "$flpk_updates")]"
+  fi
+  if [[ -n "$output" ]]; then
+    printf '%s\n' "$(icon $label)$output"
   else
     printf '%s\n' ''
   fi
