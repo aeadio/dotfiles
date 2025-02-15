@@ -6,6 +6,7 @@ Exec=/usr/bin/flatpak run --branch=stable --arch=x86_64 --command=typora --file-
 Icon=io.typora.Typora
 Type=Application
 StartupNotify=true
+StartupWMClass=Typora
 Categories=Office;WordProcessor;
 MimeType=text/markdown;text/x-markdown;
 Actions=new-window
