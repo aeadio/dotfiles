@@ -1,5 +1,16 @@
 #!/usr/bin/env zsh
 
+# Activates an existing application window is the app if already launched, 
+# otherwise launches a new instance. If passed `-n`, skips activating the 
+# application window if found, effectively acting as a silent "launch if not 
+# already launched."
+
+dontraise=
+if [[ $1 == '-n' ]]; then
+  dontraise=1
+  shift
+fi
+
 # Try to find the corresponding application .desktop file
 desktop_file=
 if [[ $1 == *.desktop && -e $1 ]]; then
@@ -29,7 +40,9 @@ if [[ -z $desktop_file ]]; then
 fi
 
 activate_and_exit() {
-  wmctrl -a $1
+  if (( ! dontraise )); then
+    wmctrl -a $1
+  fi
   exit 0
 }
 
