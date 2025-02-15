@@ -31,7 +31,7 @@ else
       desktop_file=$filepath
       break
     fi
-  done < <(get-desktop-apps -a)
+  done < <(get-desktop-apps)
 fi
 
 if [[ -z $desktop_file ]]; then
@@ -41,7 +41,7 @@ fi
 
 activate_and_exit() {
   if (( ! dontraise )); then
-    wmctrl -a $1
+    wmctrl -ia $1
   fi
   exit 0
 }
@@ -61,7 +61,7 @@ if [[ -n $appwmclass ]]; then
       sed -n 's/WM_CLASS(STRING) = //p' |
       read wmclass
     if [[ $wmclass =~ $appwmclass ]]; then
-      activate_and_exit $title
+      activate_and_exit $windowid
     fi
   done < <(wmctrl -l | tr -s '[:blank:]' | cut -d ' ' -f 1,4-)
   

@@ -1,82 +1,35 @@
-#!/usr/bin/env zsh
+#!/usr/bin/env python
 
-zparseopts -A opts -D a v
+import os, sys, gi
+gi.require_version("Gio", "2.0")
+from gi.repository import Gio
 
-(( $+opts[-a] )) && showhidden=1
-(( $+opts[-v] )) && verbose=1
+def get_xdg_data_dirs():
+  xdg_data_home = os.getenv("XDG_DATA_HOME", os.path.expanduser("~/.local/share"))
+  xdg_data_dirs = os.getenv("XDG_DATA_DIRS", "/usr/local/share/:/usr/share/").split(":")
+  return [xdg_data_home] + xdg_data_dirs
 
-info() {
-  if (( verbose )); then
-    print $1 >&2
-  fi
-}
-
-app_dirs=(
-  ${XDG_DATA_HOME:-$HOME/.local/share}/applications(N)
-  ${~${(@s,:,)${XDG_DATA_DIRS:-/usr/local/share:/usr/share}}/%//applications(N)}
-)
-
-typeset -A apps=()
-typeset -A appnames=()
-
-for dir in $app_dirs; do
-  for desktop_file in $dir/*.desktop(N); do
-    if [[ ! -r $desktop_file ]] continue
-    
-    desktop_file=$desktop_file:t
-    
-    if (( $+apps[$desktop_file] )); then
-      info "skipping $desktop_file from $dir: shadowed by $apps[$desktop_file]"
-      continue
-    fi
-    
-    info "adding $desktop_file from $dir"
-    apps[$desktop_file]=$dir
-  done
-done
-
-# Instances of .desktop files in a high-priority directory should completely
-# shadow those found in lower-priority directories. Therefore, we need to first 
-# collate all .desktop entries before performing filtering. For instance, if a 
-# copy in $XDG_DATA_HOME sets NoDisplay=true, but the system-wide one does not,
-# we must still exclude it from the list.
-for filename in ${(k)apps}; do
-  dir=$apps[$filename]
-  desktop_file=$dir/$filename
+def get_desktop_files():
+  desktop_files = {}
   
-  sed -n 's/^\([[:alnum:]]*\)=\([[:alnum:]]*\).*/\1 \2/p' $desktop_file |
-    while read -r key val; do
-      case $key in
-        Type)
-          if [[ $val != (Application|) ]]; then
-            info "removing $filename from $dir: unknown/unsupported type: $type"
-            unset 'apps['$filename']'
-            break
-          fi
-          ;;
-        NoDisplay)
-          if [[ $val == true ]] && (( ! showhidden )); then
-            info "removing $filename from $dir: NoDisplay is set"
-            unset 'apps['$filename']'
-            break
-          fi
-          ;;
-        Hidden)
-          if [[ $val == true ]] && (( ! showhidden )); then
-            info "removing $filename from $dir: Hidden is set"
-            unset 'apps['$filename']'
-            break
-          fi
-          ;;
-        Name)
-          appnames[$key]=$val
-          ;;
-      esac
-    done
-done
+  for directory in get_xdg_data_dirs():
+    application_folder = os.path.join(directory, "applications")
+    if os.path.exists(application_folder):
+      for root, dirs, files in os.walk(application_folder):
+        for file in files:
+          if file.endswith(".desktop"):
+            file_path = os.path.join(root, file)
+            if file not in desktop_files:
+              try:
+                desktop_file = Gio.DesktopAppInfo.new_from_filename(file_path)
+                desktop_files[file] = {'name': desktop_file.get_name(), 'path': file_path, 'hidden': desktop_file.get_is_hidden()}
+              except Exception as e:
+                print(f"Error reading {file_path}: {e}", file=sys.stderr)
+  
+  return desktop_files
 
-for filename in ${(ki)apps}; do
-  dir=$apps[$filename]
-  desktop_file=$dir/$filename
-  print -f '%s %s\n' $desktop_file ${appnames[$filename]:-$filename:r}
-done
+# Print the list of .desktop files with their names and paths
+desktop_files = get_desktop_files()
+for filename, info in desktop_files.items():
+  if not info['hidden']:
+    print(f"{info['path']} {info['name']}")
