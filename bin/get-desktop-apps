@@ -1,35 +1,47 @@
-#!/usr/bin/env python
+#!/usr/bin/env luajit
 
-import os, sys, gi
-gi.require_version("Gio", "2.0")
-from gi.repository import Gio
+local lfs = require("lfs")
+local lgi = require("lgi")
+local Gio = lgi.Gio
 
-def get_xdg_data_dirs():
-  xdg_data_home = os.getenv("XDG_DATA_HOME", os.path.expanduser("~/.local/share"))
-  xdg_data_dirs = os.getenv("XDG_DATA_DIRS", "/usr/local/share/:/usr/share/").split(":")
-  return [xdg_data_home] + xdg_data_dirs
+local function get_xdg_data_dirs()
+  local xdg_data_home = os.getenv("XDG_DATA_HOME") or os.getenv("HOME") .. "/.local/share"
+  local xdg_data_dirs = os.getenv("XDG_DATA_DIRS") or "/usr/share:/usr/local/share"
+  local dirs = { xdg_data_home }
+  for dir in xdg_data_dirs:gmatch("([^:]+)") do
+    table.insert(dirs, dir)
+  end
+  return dirs
+end
 
-def get_desktop_files():
-  desktop_files = {}
-  
-  for directory in get_xdg_data_dirs():
-    application_folder = os.path.join(directory, "applications")
-    if os.path.exists(application_folder):
-      for root, dirs, files in os.walk(application_folder):
-        for file in files:
-          if file.endswith(".desktop"):
-            file_path = os.path.join(root, file)
-            if file not in desktop_files:
-              try:
-                desktop_file = Gio.DesktopAppInfo.new_from_filename(file_path)
-                desktop_files[file] = {'name': desktop_file.get_name(), 'path': file_path, 'hidden': desktop_file.get_is_hidden()}
-              except Exception as e:
-                print(f"Error reading {file_path}: {e}", file=sys.stderr)
-  
+local function get_desktop_files()
+  local desktop_files = {}
+  for _, directory in ipairs(get_xdg_data_dirs()) do
+    local applications_folder = directory .. "/applications"
+    local attr = lfs.attributes(applications_folder)
+    if attr and attr.mode == "directory" then
+      for file in lfs.dir(applications_folder) do
+        if file:match("%.desktop$") then
+          if not desktop_files[file] then
+            local file_path = applications_folder .. "/" .. file
+            local desktop_entry = Gio.DesktopAppInfo.new_from_filename(file_path)
+            if desktop_entry then
+              desktop_files[file] = {
+                name = desktop_entry:get_name(),
+                path = file_path,
+                hidden = desktop_entry:get_is_hidden(),
+              }
+            end
+          end
+        end
+      end
+    end
+  end
   return desktop_files
+end
 
-# Print the list of .desktop files with their names and paths
-desktop_files = get_desktop_files()
-for filename, info in desktop_files.items():
-  if not info['hidden']:
-    print(f"{info['path']} {info['name']}")
+for file, info in pairs(get_desktop_files()) do
+  if not info.hidden then
+    io.stdout:write(info.path, '\t', info.name, '\n')
+  end
+end
