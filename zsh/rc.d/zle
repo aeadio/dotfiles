@@ -22,14 +22,14 @@ bindkey    '^[[200~'       bracketed-paste
 # Action bindings
 bindkey '^[[H'    beginning-of-line                  # home
 bindkey '^[[F'    end-of-line                        # end
-bindkey '^[[5~'   up-history                         # pgup
-bindkey '^[[6~'   down-history                       # pgdn
+#bindkey '^[[5~'  up-history                         # pgup
+#bindkey '^[[6~'  down-history                       # pgdn
 
 bindkey '^[[3~'   delete-char                        # del
 bindkey '^[[3;2~' kill-line                          # shift-del
 
-bindkey '^[[A'    up-line-or-history                 # up
-bindkey '^[[B'    down-line-or-history               # down
+#bindkey '^[[A'   up-line                            # up
+#bindkey '^[[B'   down-line                          # down
 bindkey '^[[D'    backward-char                      # left
 bindkey '^[[C'    forward-char                       # right
 
@@ -46,8 +46,8 @@ bindkey '^[[1;4C' select-direction                   # shift-alt-right
 bindkey '^[[1;6D' select-direction                   # shift-ctrl-left
 bindkey '^[[1;6C' select-direction                   # shift-ctrl-right
 
-bindkey '^[[1;3A' history-beginning-search-backward  # alt-up
-bindkey '^[[1;3B' history-beginning-search-forward   # alt-down
+#bindkey '^[[1;3A' history-beginning-search-backward # alt-up
+#bindkey '^[[1;3B' history-beginning-search-forward  # alt-down
 bindkey '^[[1;3D' beginning-of-line                  # alt-left
 bindkey '^[[1;3C' end-of-line                        # alt-right
 
@@ -66,8 +66,7 @@ bindkey '^?'      backward-delete-char               # backspace
 
 bindkey '^A'      after-first-word
 bindkey '^E'      editor
-bindkey '^F'      fzf-history
-bindkey '^G'      launch-filemgr
+bindkey '^F'      launch-filemgr
 bindkey '^H'      navigate-gitroot-or-home
 bindkey '^I'      tab-complete                       # tab
 bindkey '^K'      copy-to-clipboard
@@ -87,6 +86,20 @@ bindkey '^Z'      undo
 # Plugin-dependent
 (( $+functions[autosuggest-toggle] )) &&
   bindkey '^U'      autosuggest-toggle
+
+if (( $+functions[_atuin_search] )); then
+  bindkey '^[[A'    up-line                            # up
+  bindkey '^[[B'    down-line                          # down
+  bindkey '^_'      atuin-search                       # ?
+else
+  bindkey '^[[5~'   up-history                         # pgup
+  bindkey '^[[6~'   down-history                       # pgdn
+  bindkey '^[[A'    up-line-or-history                 # up
+  bindkey '^[[B'    down-line-or-history               # down
+  bindkey '^[[1;3A' history-beginning-search-backward  # alt-up
+  bindkey '^[[1;3B' history-beginning-search-forward   # alt-down
+  bindkey '^_'      fzf-history                        # ?
+fi
 
 # Perform history expansion during normal editing flow
 bindkey ' '       magic-space
