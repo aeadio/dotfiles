@@ -17,8 +17,8 @@ keymap = [
 	{ on = "<PageUp>",             run = "arrow -100%",                                          desc = "Move cursor up one page" },
 	{ on = "<PageDown>",           run = "arrow 100%",                                           desc = "Move cursor down one page" },
 	
-	{ on = "<Home>",               run = "arrow -99999999",                                      desc = "Move cursor to the top" },
-	{ on = "<End>",                run = "arrow 99999999",                                       desc = "Move cursor to the bottom" },
+	{ on = "<Home>",               run = "arrow top",                                            desc = "Move cursor to the top" },
+	{ on = "<End>",                run = "arrow bot",                                            desc = "Move cursor to the bottom" },
 	
 	# Navigation
 	{ on = "<Left>",               run = "leave",                                                desc = "Go back to the parent directory" },
