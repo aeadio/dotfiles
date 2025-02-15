@@ -121,6 +121,12 @@ local function mtime()
 	return ui.Span(os.date("%Y-%m-%d %H:%M", h.cha.mtime // 1) .. " ")
 end
 
+local function isroot()
+	return ya.uid() == 0 and
+		ui.Line { ui.Span("ROOT"):bg("lightred"):bold(), spacer() } or
+		ui.Span("")
+end
+
 return {
 	setup = function()
 		Status:children_remove(1, Status.LEFT) -- mode
@@ -128,8 +134,9 @@ return {
 		Status:children_remove(3, Status.LEFT) -- name
 		Status:children_remove(5, Status.RIGHT) -- percentage
 		
-		Status:children_add(name, 1000, Status.LEFT)
-		Status:children_add(symlink, 2000, Status.LEFT)
+		Status:children_add(isroot, 1000, Status.LEFT)
+		Status:children_add(name, 2000, Status.LEFT)
+		Status:children_add(symlink, 3000, Status.LEFT)
 		
 		Status:children_add(size, 500, Status.RIGHT)
 		Status:children_add(spacer, 900, Status.RIGHT)
