@@ -38,6 +38,6 @@ export DXVK_STATE_CACHE_PATH="$PWD/.dxvk"; mkdir -p "$DXVK_STATE_CACHE_PATH"
 export WINEDEBUG="-all"
 export DXVK_LOG_LEVEL="error"
 
-op read -fn op://private/Blizzard/password | xsel -ib
+PASSWORD_STORE_CLIP_TIME=120 pass -c blizzard
 
 exec gamemoderun wine "$app"
