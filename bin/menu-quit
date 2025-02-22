@@ -12,13 +12,11 @@ menu() {
   fi
 }
 
-fields=(lock logout sleep hibernate reboot shutdown)
-
-case $(print -f '%s\n' $fields | menu) in
+case $(sed -n '/^case.*| menu/,/^esac/ { /^\s*#/d; s/^\s*\([^)]\+\))\s.*/\1/p }' $0 | menu) in
   lock)      loginctl lock-session self || "$HOME"/bin/lock ;;
   logout)    loginctl kill-session self || "$HOME"/bin/stopx ;;
-  sleep)     loginctl suspend ;;
-  hibernate) loginctl hibernate ;;
+  sleep)     loginctl suspend-then-hibernate ;;
+# hibernate) loginctl hibernate ;;
   reboot)    loginctl reboot ;;
   shutdown)  loginctl poweroff ;;
 esac
