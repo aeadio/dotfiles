@@ -3,6 +3,6 @@
 # Waits for the Wine system tray floating dialogue to appear, then kills it.
 
 exec 2>&1
-exec lcore chpst -b winesystray \
+exec ecore chpst -b winesystray \
   wmctrl -i -c \
   "$(xdotool search --sync --all --onlyvisible --class "explorer.exe")"
