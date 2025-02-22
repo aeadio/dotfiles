@@ -1,3 +1,4 @@
 #!/bin/sh
 
-xset dpms 1800 0 0
+xset s 300 300
+xset dpms 600 0 0

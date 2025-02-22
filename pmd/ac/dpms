@@ -1,3 +1,4 @@
 #!/bin/sh
 
+xset s 900 900
 xset -dpms
