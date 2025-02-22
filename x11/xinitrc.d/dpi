@@ -1,3 +1,29 @@
-xrandr --dpi 120
-export WINIT_HIDPI_FACTOR=1
-export WINIT_X11_SCALE_FACTOR=1
+# Ideally I'd like to reconfigure the DPI on the fly via autorandr postswitch. 
+# However, to the best of my knowledge, there is no way to accomplish dynamic 
+# DPI changes to running applications on X11. This seems to be application 
+# dependent, and while many older native applications were able to accomodate, 
+# newer Chromium/Electron based applications don't. Alacritty also uses its own 
+# completely nonstandard DPI logic that's configured through the environment, 
+# complicating things further.
+# 
+# There's an argument to be made that all modern software really DOES suck.
+# 
+# OTOH I very rarely use my laptop on the go, I'm almost always docked. So just 
+# manually setting a cookie works for now.
+if [ -e "$XDG_CONFIG_HOME/travel-mode" ]; then
+  # Using my laptop on the go, I'm physically much closer to the screen than 
+  # when docked at a desk, and appreciate the additional screen real estate.
+  dpi=96
+else
+  # Using my laptop docked, I sit a comfortable distance from the screens, and 
+  # do most of my work on large, high-resolution screens.
+  dpi=120
+fi
+
+scale_factor=$(clac "$dpi 96 /")
+
+xrandr --dpi $dpi
+printf '%s' "Xft.dpi: $dpi" | xrdb -merge -
+
+export WINIT_HIDPI_FACTOR=$scale_factor
+export WINIT_X11_SCALE_FACTOR=$scale_factor
