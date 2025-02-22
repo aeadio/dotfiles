@@ -2,34 +2,6 @@
 
 # Informs apps as to the directory hierarchy of ~
 
-# Language-specific tooling
-() {
-  local gopath=(
-    $HOME/[Ss]ource/go(N)
-    $HOME/src/go(N)
-  )
-  typeset -gx GOPATH=${(j,:,)gopath}
-}
-
-# Shell configuration
-typeset -g path=(
-  # Scripts and personal projects
-  $HOME/[Pp]rojects/*/[Bb]in(N)
-  $HOME/[Bb]in(N)
-  ${~${GOPATH:+${(@s,:,)GOPATH}}/%//bin}(N)  # expand multiple gopath entries correctly, with /bin appended to each
-  
-  # System-wide, manually managed
-  /opt/bin(N)
-  /opt/*/bin(N)
-  
-  # System-wide, owned by system package manager
-  /usr/local/(|s)bin(N)
-  /usr/(|s)bin(N)
-  /(|s)bin(N)
-  $path
-)
-typeset -g path=( ${(u)path} )  # (u) removes dups inherited from default $path
-
 # XDG desktop specification
 typeset -gx XDG_CONFIG_HOME=${XDG_CONFIG_HOME:=${ZSH:h}}
 typeset -gx XDG_DATA_HOME=$HOME/var
@@ -45,6 +17,59 @@ typeset -gx XDG_STATE_HOME=$HOME/var/state
   )
   typeset -gx XDG_DATA_DIRS=${(j,:,)xdg_data_dirs}
 }
+
+# Language-specific tooling
+# Go
+() {
+  local gopath=(
+    $XDG_DATA_HOME/go(N)
+    $HOME/[Ss]ource/go(N)
+    $HOME/src/go(N)
+  )
+  typeset -gx GOPATH=${(j,:,)gopath}
+}
+
+# Lua
+() {
+  local luapath=(
+    "./?.lua"
+    "./?/init.lua"
+    "$XDG_DATA_HOME/luarocks/share/lua/5.1/?.lua"
+    "$XDG_DATA_HOME/luarocks/share/lua/5.1/?/init.lua"
+    "/usr/share/lua/5.1/?.lua"
+    "/usr/share/lua/5.1/?/init.lua"
+    "/usr/lib/lua/5.1/?.lua"
+    "/usr/lib/lua/5.1/?/init.lua"
+  )
+  local luacpath=(
+    "./?.so"
+    "$XDG_DATA_HOME/luarocks/lib/lua/5.1/?.so"
+    "/usr/lib/lua/5.1/?.so"
+    "/usr/lib/lua/5.1/loadall.so"
+  )
+  typeset -gx LUA_PATH=${(j,;,)luapath}
+  typeset -gx LUA_CPATH=${(j,;,)luacpath}
+}
+
+# Shell configuration
+typeset -g path=(
+  # Scripts and personal projects
+  $HOME/[Pp]rojects/*/[Bb]in(N)
+  $HOME/[Bb]in(N)
+  ${~${GOPATH:+${(@s,:,)GOPATH}}/%//bin}(N)  # expand multiple gopath entries correctly, with /bin appended to each
+  $XDG_DATA_HOME/luarocks/bin(N)
+  
+  # System-wide, manually managed
+  /opt/bin(N)
+  /opt/*/bin(N)
+  
+  # System-wide, owned by system package manager
+  /usr/local/(|s)bin(N)
+  /usr/(|s)bin(N)
+  /(|s)bin(N)
+  $path
+)
+typeset -g path=( ${(u)path} )  # (u) removes dups inherited from default $path
 
 # Application level paths
 typeset -gx WINEPREFIX=$XDG_DATA_HOME/wine
