@@ -9,6 +9,8 @@ keymap = [
 	{ on = "<C-[>",                run = "escape",                                               desc = "Exit visual mode, clear selected, or cancel search" },
 	{ on = "q",                    run = "quit",                                                 desc = "Quit the process" },
 	{ on = "Q",                    run = "quit --no-cwd-file",                                   desc = "Quit the process without outputting cwd-file" },
+	{ on = "<C-q>",                run = "quit",                                                 desc = "Quit the process" },
+	{ on = "<C-Q>",                run = "quit --no-cwd-file",                                   desc = "Quit the process without outputting cwd-file" },
 	
 	# Hopping
 	{ on = "<Up>",                 run = "arrow -1",                                             desc = "Move cursor up" },
