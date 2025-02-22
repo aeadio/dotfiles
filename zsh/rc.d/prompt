@@ -42,7 +42,6 @@
   
   local rps1=(
     'prompt:bufstack'
-    'prompt:promptception'
     'prompt:aws'
   )
   
