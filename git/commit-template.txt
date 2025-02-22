@@ -1,0 +1,11 @@
+
+# ^ Title: Brief summary, don't end in a period
+################################ stop here (50): #
+
+
+# ^ Body: Explain what and why (not how); include issue IDs
+###################################################### wrap here (72): #
+
+
+# ^ Co-authors
+# Co-authored-by: name <user@users.noreply.github.com>
