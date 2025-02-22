@@ -11,9 +11,10 @@ font_size=
 interactive=
 command=
 workdir=
+instance=
 
 OPTIND=0
-while getopts "s:F:ftiw:e:" opt; do
+while getopts "s:F:ftiw:I:e:" opt; do
   case $opt in
     s)
       float_width=${OPTARG%x*}
@@ -34,6 +35,9 @@ while getopts "s:F:ftiw:e:" opt; do
       ;;
     w)
       workdir="$OPTARG"
+      ;;
+    I)
+      instance="$OPTARG"
       ;;
     e)
       # -e must be the last parameter, if given. The remaining parameters are
@@ -72,7 +76,7 @@ fi
 # If we've set -f, we should get a floating terminal. Setting the WMCLASS 
 # instance to begin with "floating" will signal to i3's configured rules to 
 # float the window.
-instance="${float:+floating/}${command:-alacritty}"
+instance="${float:+floating/}${instance:-${command:-alacritty}}"
 
 exec alacritty \
   --class alacritty,"$instance" \
