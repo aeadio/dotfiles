@@ -14,5 +14,5 @@
   required = true
 [diff]
   external = difft
-[alias]
-	pullall = !git pull && git submodule sync --recursive && git submodule update --init --recursive
+[commit]
+  template = ~/config/git/commit-template.txt
