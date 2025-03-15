@@ -5,7 +5,7 @@
 # within the list.
 
 wallpapers=(
-  $^@(.e,'[[ $REPLY:e == (j(e|)pg|png|tiff|bmp) ]]',N)
+  $^@(.e,'[[ $REPLY:e == (jp(e|)g|png|tiff|bmp) ]]',N)
   $^@/**.(jp(e|)g|png|tiff|bmp)(N)
 )
 
