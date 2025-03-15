@@ -15,7 +15,7 @@ menu() {
 case $(sed -n '/^case.*| menu/,/^esac/ { /^\s*#/d; s/^\s*\([^)]\+\))\s.*/\1/p }' $0 | menu) in
   lock)      loginctl lock-session self || "$HOME"/bin/lock ;;
   logout)    loginctl kill-session self || "$HOME"/bin/stopx ;;
-  sleep)     loginctl suspend-then-hibernate ;;
+  sleep)     loginctl suspend ;;
 # hibernate) loginctl hibernate ;;
   reboot)    loginctl reboot ;;
   shutdown)  loginctl poweroff ;;
