@@ -1,0 +1,9 @@
+#!/bin/sh
+
+xclip -selection clipboard -o |
+  while IFS= read -r line || [[ -n $line ]]; do 
+    xdotool keyup Shift_L Shift_R Control_L Control_R Alt_L Alt_R Super_L Super_R
+    xdotool type --delay 1 "$line"
+    xdotool keydown Shift
+    xdotool key Return
+  done
