@@ -2,7 +2,10 @@
   hosts: 'localhost'
   vars:
     settings:
-      - { key: 'exportPath', value: '/Users/ant/Pictures/Screenshots', domain: 'pl.maketheweb.cleanshotx' }
+      - { key: 'exportPath',               value: "{{ lookup('env', 'HOME') }}/Pictures/Screenshots",       domain: 'pl.maketheweb.cleanshotx' }
+      - { key: 'mediaNameTemplate',        value: ["%y", "-", "%m", "-", "%d", "T", "%H", "%M", "%S", "Z"], domain: 'pl.maketheweb.cleanshotx' }
+      - { key: 'showMenubarIcon',          value: 0,                                                        domain: 'pl.maketheweb.cleanshotx' }
+      - { key: 'useUTCTimezoneInFilename', value: 1,                                                        domain: 'pl.maketheweb.cleanshotx' }
   tasks:
     - include_role: 
         name: ../roles/macos-defaults
