@@ -82,6 +82,7 @@ typeset -A float=(
   ['^AppTamer$']=
   ['^AWS VPN Client$']=
   ['^Battle.net$']=
+  ['^Bear$']='^Settings$'
   ['^BetterTouchTool$']=
   ['^BlockBlock']=
   ['^CleanShot']=
