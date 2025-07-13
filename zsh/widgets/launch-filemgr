@@ -1,7 +1,7 @@
 # vim: ft=sh ts=2 sw=2 et:
 
-# Launch file manager from the current terminal, saving the input buffer to be 
-# restored after file manager exits.
+# Launch ranger from the current terminal, saving the input buffer to be 
+# restored after ranger exits.
 
 emulate -L zsh -o extended_glob
 
@@ -9,5 +9,5 @@ if [[ -n $BUFFER && $BUFFER != [[:space:]]# ]]; then
   zle push-input
 fi
 
-BUFFER="f"
+BUFFER=". ranger"
 zle accept-line
