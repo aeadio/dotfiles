@@ -41,8 +41,8 @@ ralt + rcmd + rctrl + rshift + lshift - 0x18      : yabai -m window --space 12
 
 ralt + rcmd + rctrl + rshift          - t         : yabai -m space --layout ${${${$(yabai -m query --spaces --space | jq -r '.type'):#bsp}:/float/bsp}:-float}
 
-ralt + rcmd + rctrl + rshift          - f         : yabai-float
-ralt + rcmd + rctrl + rshift + lshift - f         : yabai -m window --toggle float
+ralt + rcmd + rctrl + rshift          - f         : yabai -m window --toggle float
+ralt + rcmd + rctrl + rshift + lshift - f         : yabai-float
 ralt + rcmd + rctrl + rshift          - s         : yabai -m window --toggle sticky
 ralt + rcmd + rctrl + rshift          - t         : yabai -m window --toggle topmost
 ralt + rcmd + rctrl + rshift          - a         : yabai -m window --toggle split
