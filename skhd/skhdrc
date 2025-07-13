@@ -75,6 +75,12 @@ ralt + rcmd + rctrl + rshift + lshift - x         : alacritty
 ralt + rcmd + rctrl + rshift          - e         : code -n
 ralt + rcmd + rctrl + rshift + lshift - p         : open -a /Applications/1Password.app
 ralt + rcmd + rctrl + rshift          - h         : open -a Finder
-ralt + rcmd + rctrl + rshift          - c         : alacritty -e clac
 ralt + rcmd + rctrl + rshift          - n         : open -a /Applications/Bear.app
 ralt + rcmd + rctrl + rshift + lshift - n         : alacritty -e micro
+
+# Externally-mapped apps:
+# hyper + c: Numi (calculator)
+# hyper + d: Nightfall (toggle dark mode)
+# hyper + p: 1Password
+# hyper + r: Reminders MenuBar
+# hyper + v: Maccy (clipboard manager)
