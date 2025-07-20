@@ -82,6 +82,6 @@ ralt + rcmd + rctrl + rshift + lshift - n         : open "bear://x-callback-url/
 # Externally-mapped apps:
 # hyper + c: Numi (calculator)
 # hyper + d: Nightfall (toggle dark mode)
-# hyper + p: 1Password
+# hyper + p: 1Password Quick Access
 # hyper + r: Reminders MenuBar
 # hyper + v: Maccy (clipboard manager)
