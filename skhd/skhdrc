@@ -78,7 +78,7 @@ ralt + rcmd + rctrl + rshift          - e         : code -n
 ralt + rcmd + rctrl + rshift + lshift - p         : open -a /Applications/1Password.app
 ralt + rcmd + rctrl + rshift          - h         : osascript -e 'tell application "Finder" to make new Finder window to home'
 ralt + rcmd + rctrl + rshift          - n         : osascript -e 'tell application "Bear" to activate'
-ralt + rcmd + rctrl + rshift + lshift - n         : alacritty -e micro
+ralt + rcmd + rctrl + rshift + lshift - n         : open "bear://x-callback-url/create?title=$(date +'%Y-%m-%d%%20%I%%3a%m%%20%p')&text=%23temporary%0A%0A&new_window=yes&float=yes"
 
 # Externally-mapped apps:
 # hyper + c: Numi (calculator)
