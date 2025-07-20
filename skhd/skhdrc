@@ -73,7 +73,6 @@ ralt + rcmd + rctrl + rshift + lshift - z         : open -gna /Applications/Viva
 ralt + rcmd + rctrl + rshift          - b         : open -gna /Applications/Vivaldi.app --args --profile-directory="Profile 1" --new-window
 ralt + rcmd + rctrl + rshift + lshift - b         : open -gna /Applications/Vivaldi.app --args --profile-directory="Profile 1" --new-window --incognito  
 ralt + rcmd + rctrl + rshift          - x         : "$HOME"/bin/iterm2
-ralt + rcmd + rctrl + rshift + lshift - x         : alacritty
 ralt + rcmd + rctrl + rshift          - e         : code -n
 ralt + rcmd + rctrl + rshift + lshift - p         : open -a /Applications/1Password.app
 ralt + rcmd + rctrl + rshift          - h         : osascript -e 'tell application "Finder" to make new Finder window to home'

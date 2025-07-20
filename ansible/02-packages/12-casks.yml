@@ -4,7 +4,6 @@
     - community.general.homebrew_cask:
         cask:
           - 1password
-          - alacritty
           - alfred@4
           - app-tamer
           - appcleaner

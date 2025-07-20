@@ -76,7 +76,6 @@ typeset -A float=(
   
   # Apps
   ['^1Password']=
-  ['^alacritty$']=
   ['^Alfred']=
   ['^AppCleaner$']=
   ['^AppTamer$']=
