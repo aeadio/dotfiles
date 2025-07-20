@@ -68,8 +68,10 @@ ralt + rcmd + rctrl + rshift          - f7        : yabai --start-service
 ralt + rcmd + rctrl + rshift          - l         : pmset displaysleepnow
 
 # Launch apps
-ralt + rcmd + rctrl + rshift          - z         : open -gna /Applications/Vivaldi.app
-ralt + rcmd + rctrl + rshift + lshift - z         : open -gna /Applications/Vivaldi.app --args --incognito
+ralt + rcmd + rctrl + rshift          - z         : open -gna /Applications/Vivaldi.app --args --profile-directory="Default"   --new-window
+ralt + rcmd + rctrl + rshift + lshift - z         : open -gna /Applications/Vivaldi.app --args --profile-directory="Default"   --new-window --incognito  
+ralt + rcmd + rctrl + rshift          - b         : open -gna /Applications/Vivaldi.app --args --profile-directory="Profile 1" --new-window
+ralt + rcmd + rctrl + rshift + lshift - b         : open -gna /Applications/Vivaldi.app --args --profile-directory="Profile 1" --new-window --incognito  
 ralt + rcmd + rctrl + rshift          - x         : "$HOME"/bin/iterm2
 ralt + rcmd + rctrl + rshift + lshift - x         : alacritty
 ralt + rcmd + rctrl + rshift          - e         : code -n
