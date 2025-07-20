@@ -77,7 +77,7 @@ ralt + rcmd + rctrl + rshift + lshift - x         : alacritty
 ralt + rcmd + rctrl + rshift          - e         : code -n
 ralt + rcmd + rctrl + rshift + lshift - p         : open -a /Applications/1Password.app
 ralt + rcmd + rctrl + rshift          - h         : osascript -e 'tell application "Finder" to make new Finder window to home'
-ralt + rcmd + rctrl + rshift          - n         : open -a /Applications/Bear.app
+ralt + rcmd + rctrl + rshift          - n         : osascript -e 'tell application "Bear" to activate'
 ralt + rcmd + rctrl + rshift + lshift - n         : alacritty -e micro
 
 # Externally-mapped apps:
