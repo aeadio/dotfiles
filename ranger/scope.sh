@@ -310,13 +310,13 @@ handle_mime() {
         text/* | */xml)
             ## Syntax highlight
             if [[ "$( stat --printf='%s' -- "${FILE_PATH}" )" -le "${HIGHLIGHT_SIZE_MAX}" ]]; then
-                if [[ "$( tput colors )" -ge 256 ]]; then
-                    local pygmentize_format='terminal256'
-                    local highlight_format='xterm256'
-                else
+                #if [[ "$( tput colors )" -ge 256 ]]; then
+                #    local pygmentize_format='terminal256'
+                #    local highlight_format='xterm256'
+                #else
                     local pygmentize_format='terminal'
                     local highlight_format='ansi'
-                fi
+                #fi
                 env HIGHLIGHT_OPTIONS="${HIGHLIGHT_OPTIONS}" highlight \
                     --out-format="${highlight_format}" \
                     --force -- "${FILE_PATH}" && exit 5
