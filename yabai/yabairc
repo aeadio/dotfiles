@@ -81,7 +81,7 @@ typeset -A float=(
   ['^AppTamer$']=
   ['^AWS VPN Client$']=
   ['^Battle.net$']=
-  ['^Bear$']='^(Settings|)$'  # empty title is a popout note
+  ['^Bear$']='!^Bear$'
   ['^BetterTouchTool$']=
   ['^BlockBlock']=
   ['^CleanShot']=
@@ -126,11 +126,29 @@ sudo yabai --load-sa
 # Load config
 yabai -m config $config
 
-for app in ${(k)float};
-  yabai -m rule --add app=$app ${float[$app]:+title=$float[$app]} manage=off label="float:$app${title:+:$title}"
+for app in ${(k)float}; do
+  title=$float[$app]
+  if [[ $title == \!* ]]; then
+    title=${title#!}
+    yabai -m rule --add app=$app title!=$title manage=off label="float:$app:!$title"
+  elif [[ -n $title ]]; then
+    yabai -m rule --add app=$app title=$title manage=off label="float:$app:$title"
+  else
+    yabai -m rule --add app=$app manage=off label="float:$app"
+  fi
+done
 
-for app in ${(k)sticky};
-  yabai -m rule --add app=$app ${sticky[$app]:+title=$sticky[$app]} sticky=on label="sticky:$app"
+for app in ${(k)sticky}; do
+  title=$sticky[$app]
+  if [[ $title == \!* ]]; then
+    title=${title#!}
+    yabai -m rule --add app=$app title!=$title sticky=on label="sticky:$app:!$title"
+  elif [[ -n $title ]]; then
+    yabai -m rule --add app=$app title=$title sticky=on label="sticky:$app:$title"
+  else
+    yabai -m rule --add app=$app sticky=on label="sticky:$app"
+  fi
+done
 
 # Since 7.0, rules are not applied on existing windows. Apply immediately on 
 # any window that existed on startup/restart.
