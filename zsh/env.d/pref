@@ -12,9 +12,10 @@ typeset -gx TERMINAL='iterm2'
 
 # App exports
 # Per-app configuration overrides
-typeset -gx HIGHLIGHT_STYLE='nord'
+typeset -gx HIGHLIGHT_STYLE='base16/nord'
+typeset -gx HIGHLIGHT_TABWIDTH='2'
 typeset -gx LESSHISTFILE='-'
-typeset -gx MOAR='-style nord -statusbar plain -no-clear-on-exit'
+typeset -gx MOAR='-style nord -colors 16 -statusbar plain -no-clear-on-exit'
 
 case $OSTYPE in
   darwin*)
